@@ -41,7 +41,7 @@ param endOfLifeDate string = ''
 param roleAssignments roleAssignmentType
 
 @sys.description('Optional. Tags for all resources.')
-param tags object = {}
+param tags object?
 
 @sys.description('Optional. A list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery Application.')
 param customActions array = []
@@ -124,7 +124,7 @@ type roleAssignmentType = {
   principalId: string
 
   @sys.description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @sys.description('Optional. The description of the role assignment.')
   description: string?

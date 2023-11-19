@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "4742101117506662139"
+      "version": "0.23.1.45101",
+      "templateHash": "9716129657217536595"
     },
     "name": "Policy Insights Remediations",
     "description": "This module deploys a Policy Insights Remediation.",
@@ -179,8 +179,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "9807832589850582654"
+              "version": "0.23.1.45101",
+              "templateHash": "11915278545941211218"
             },
             "name": "Policy Insights Remediations (Management Group scope)",
             "description": "This module deploys a Policy Insights Remediation on a Management Group scope.",
@@ -375,8 +375,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "8491362450892267233"
+              "version": "0.23.1.45101",
+              "templateHash": "15638854500024270747"
             },
             "name": "Policy Insights Remediations (Subscription scope)",
             "description": "This module deploys a Policy Insights Remediation on a Subscription scope.",
@@ -571,8 +571,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "1603868954809777625"
+              "version": "0.23.1.45101",
+              "templateHash": "6808524543119403982"
             },
             "name": "Policy Insights Remediations (Resource Group scope)",
             "description": "This module deploys a Policy Insights Remediation on a Resource Group scope.",

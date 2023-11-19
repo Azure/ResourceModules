@@ -22,11 +22,10 @@ param publicIPResourceID string = ''
 @description('Optional. This is to add any additional Public IP configurations on top of the Public IP with subnet IP configuration.')
 param additionalPublicIpConfigurations array = []
 
-@description('Optional. Specifies if a Public IP should be created by default if one is not provided.')
-param isCreateDefaultPublicIP bool = true
-
-@description('Optional. Specifies the properties of the Public IP to create and be used by Azure Firewall. If it\'s not provided and publicIPResourceID is empty, a \'-pip\' suffix will be appended to the Firewall\'s name.')
-param publicIPAddressObject object = {}
+@description('Optional. Specifies the properties of the Public IP to create and be used by the Firewall, if no existing public IP was provided.')
+param publicIPAddressObject object = {
+  name: '${name}-pip'
+}
 
 @description('Optional. The Management Public IP resource ID to associate to the AzureFirewallManagementSubnet. If empty, then the Management Public IP that is created as part of this module will be applied to the AzureFirewallManagementSubnet.')
 param managementIPResourceID string = ''
@@ -67,17 +66,8 @@ param zones array = [
   '3'
 ]
 
-@description('Optional. Diagnostic Storage Account resource identifier.')
-param diagnosticStorageAccountId string = ''
-
-@description('Optional. Log Analytics workspace resource identifier.')
-param diagnosticWorkspaceId string = ''
-
-@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param diagnosticEventHubAuthorizationRuleId string = ''
-
-@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param diagnosticEventHubName string = ''
+@description('Optional. The diagnostic settings of the service.')
+param diagnosticSettings diagnosticSettingType
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -89,33 +79,10 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the Azure Firewall resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
-
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
-@allowed([
-  ''
-  'allLogs'
-  'AzureFirewallApplicationRule'
-  'AzureFirewallNetworkRule'
-  'AzureFirewallDnsProxy'
-])
-param diagnosticLogCategoriesToEnable array = [
-  'allLogs'
-]
-
-@description('Optional. The name of metrics that will be streamed.')
-@allowed([
-  'AllMetrics'
-])
-param diagnosticMetricsToEnable array = [
-  'AllMetrics'
-]
-
-@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
-param diagnosticSettingsName string = ''
 
 var azureSkuName = empty(vNetId) ? 'AZFW_Hub' : 'AZFW_VNet'
 var requiresManagementIp = azureSkuTier == 'Basic' ? true : false
@@ -125,7 +92,7 @@ var isCreateDefaultManagementIP = empty(managementIPResourceID) && requiresManag
 // Prep ipConfigurations object AzureFirewallSubnet for different uses cases:
 // 1. Use existing Public IP
 // 2. Use new Public IP created in this module
-// 3. Do not use a Public IP if isCreateDefaultPublicIP is false
+// 3. Do not use a Public IP if publicIPAddressObject is empty
 
 var additionalPublicIpConfigurationsVar = [for ipConfiguration in additionalPublicIpConfigurations: {
   name: ipConfiguration.name
@@ -135,26 +102,19 @@ var additionalPublicIpConfigurationsVar = [for ipConfiguration in additionalPubl
     } : null
   }
 }]
-var subnetVar = {
-  subnet: {
-    id: '${vNetId}/subnets/AzureFirewallSubnet' // The subnet name must be AzureFirewallSubnet
-  }
-}
-var existingPip = {
-  publicIPAddress: {
-    id: publicIPResourceID
-  }
-}
-var newPip = {
-  publicIPAddress: (empty(publicIPResourceID) && isCreateDefaultPublicIP) ? {
-    id: publicIPAddress.outputs.resourceId
-  } : null
-}
 var ipConfigurations = concat([
     {
       name: !empty(publicIPResourceID) ? last(split(publicIPResourceID, '/')) : publicIPAddress.outputs.name
-      //Use existing Public IP, new Public IP created in this module, or none if isCreateDefaultPublicIP is false
-      properties: union(subnetVar, !empty(publicIPResourceID) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+      properties: union({
+          subnet: {
+            id: '${vNetId}/subnets/AzureFirewallSubnet' // The subnet name must be AzureFirewallSubnet
+          }
+        }, (!empty(publicIPResourceID) || !empty(publicIPAddressObject)) ? {
+          //Use existing Public IP, new Public IP created in this module, or none if neither
+          publicIPAddress: {
+            id: !empty(publicIPResourceID) ? publicIPResourceID : publicIPAddress.outputs.resourceId
+          }
+        } : {})
     }
   ], additionalPublicIpConfigurationsVar)
 
@@ -163,46 +123,21 @@ var ipConfigurations = concat([
 // 1. Use existing Management Public IP
 // 2. Use new Management Public IP created in this module
 
-var managementSubnetVar = {
-  subnet: {
-    id: '${vNetId}/subnets/AzureFirewallManagementSubnet' // The subnet name must be AzureFirewallManagementSubnet for a 'Basic' SKU tier firewall
-  }
-}
-var existingMip = {
-  publicIPAddress: {
-    id: managementIPResourceID
-  }
-}
-var newMip = {
-  publicIPAddress: empty(managementIPResourceID) && isCreateDefaultManagementIP ? {
-    id: managementIPAddress.outputs.resourceId
-  } : null
-}
 var managementIPConfiguration = {
   name: !empty(managementIPResourceID) ? last(split(managementIPResourceID, '/')) : managementIPAddress.outputs.name
-  //Use existing Management Public IP, new Management Public IP created in this module, or none if isCreateDefaultManagementIP is false
-  properties: union(managementSubnetVar, !empty(managementIPResourceID) ? existingMip : {}, (isCreateDefaultManagementIP ? newMip : {}))
+  properties: union({
+      subnet: {
+        id: '${vNetId}/subnets/AzureFirewallManagementSubnet' // The subnet name must be AzureFirewallManagementSubnet for a 'Basic' SKU tier firewall
+      }
+    }, (!empty(publicIPResourceID) || !empty(managementIPAddressObject)) ? {
+      // Use existing Management Public IP, new Management Public IP created in this module, or none if neither
+      publicIPAddress: {
+        id: !empty(managementIPResourceID) ? managementIPResourceID : managementIPAddress.outputs.resourceId
+      }
+    } : {})
 }
 
 // ----------------------------------------------------------------------------
-
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
-  category: category
-  enabled: true
-}]
-
-var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
-  {
-    categoryGroup: 'allLogs'
-    enabled: true
-  }
-] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
-
-var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
-  category: metric
-  timeGrain: null
-  enabled: true
-}]
 
 var enableReferencedModulesTelemetry = false
 
@@ -226,38 +161,26 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-// create a Public IP address if one is not provided and the flag is true
-module publicIPAddress '../../network/public-ip-address/main.bicep' = if (empty(publicIPResourceID) && isCreateDefaultPublicIP && azureSkuName == 'AZFW_VNet') {
+module publicIPAddress '../../network/public-ip-address/main.bicep' = if (empty(publicIPResourceID) && azureSkuName == 'AZFW_VNet') {
   name: '${uniqueString(deployment().name, location)}-Firewall-PIP'
   params: {
-    name: contains(publicIPAddressObject, 'name') ? (!(empty(publicIPAddressObject.name)) ? publicIPAddressObject.name : '${name}-pip') : '${name}-pip'
+    name: publicIPAddressObject.name
     publicIPPrefixResourceId: contains(publicIPAddressObject, 'publicIPPrefixResourceId') ? (!(empty(publicIPAddressObject.publicIPPrefixResourceId)) ? publicIPAddressObject.publicIPPrefixResourceId : '') : ''
     publicIPAllocationMethod: contains(publicIPAddressObject, 'publicIPAllocationMethod') ? (!(empty(publicIPAddressObject.publicIPAllocationMethod)) ? publicIPAddressObject.publicIPAllocationMethod : 'Static') : 'Static'
     skuName: contains(publicIPAddressObject, 'skuName') ? (!(empty(publicIPAddressObject.skuName)) ? publicIPAddressObject.skuName : 'Standard') : 'Standard'
     skuTier: contains(publicIPAddressObject, 'skuTier') ? (!(empty(publicIPAddressObject.skuTier)) ? publicIPAddressObject.skuTier : 'Regional') : 'Regional'
     roleAssignments: contains(publicIPAddressObject, 'roleAssignments') ? (!empty(publicIPAddressObject.roleAssignments) ? publicIPAddressObject.roleAssignments : []) : []
-    diagnosticMetricsToEnable: contains(publicIPAddressObject, 'diagnosticMetricsToEnable') ? (!(empty(publicIPAddressObject.diagnosticMetricsToEnable)) ? publicIPAddressObject.diagnosticMetricsToEnable : [
-      'AllMetrics'
-    ]) : [
-      'AllMetrics'
-    ]
-    diagnosticLogCategoriesToEnable: contains(publicIPAddressObject, 'diagnosticLogCategoriesToEnable') ? publicIPAddressObject.diagnosticLogCategoriesToEnable : [
-      'allLogs'
-    ]
+    diagnosticSettings: publicIPAddressObject.?diagnosticSettings
     location: location
-    diagnosticStorageAccountId: diagnosticStorageAccountId
-    diagnosticWorkspaceId: diagnosticWorkspaceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticEventHubName
     lock: lock
-    tags: tags
+    tags: publicIPAddressObject.?tags ?? tags
     zones: zones
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
 // create a Management Public IP address if one is not provided and the flag is true
-module managementIPAddress '../../network/public-ip-address/main.bicep' = if (empty(managementIPResourceID) && isCreateDefaultManagementIP && azureSkuName == 'AZFW_VNet') {
+module managementIPAddress '../../network/public-ip-address/main.bicep' = if (isCreateDefaultManagementIP && azureSkuName == 'AZFW_VNet') {
   name: '${uniqueString(deployment().name, location)}-Firewall-MIP'
   params: {
     name: contains(managementIPAddressObject, 'name') ? (!(empty(managementIPAddressObject.name)) ? managementIPAddressObject.name : '${name}-mip') : '${name}-mip'
@@ -266,21 +189,9 @@ module managementIPAddress '../../network/public-ip-address/main.bicep' = if (em
     skuName: contains(managementIPAddressObject, 'skuName') ? (!(empty(managementIPAddressObject.skuName)) ? managementIPAddressObject.skuName : 'Standard') : 'Standard'
     skuTier: contains(managementIPAddressObject, 'skuTier') ? (!(empty(managementIPAddressObject.skuTier)) ? managementIPAddressObject.skuTier : 'Regional') : 'Regional'
     roleAssignments: contains(managementIPAddressObject, 'roleAssignments') ? (!empty(managementIPAddressObject.roleAssignments) ? managementIPAddressObject.roleAssignments : []) : []
-    diagnosticMetricsToEnable: contains(managementIPAddressObject, 'diagnosticMetricsToEnable') ? (!(empty(managementIPAddressObject.diagnosticMetricsToEnable)) ? managementIPAddressObject.diagnosticMetricsToEnable : [
-      'AllMetrics'
-    ]) : [
-      'AllMetrics'
-    ]
-    diagnosticLogCategoriesToEnable: contains(managementIPAddressObject, 'diagnosticLogCategoriesToEnable') ? managementIPAddressObject.diagnosticLogCategoriesToEnable : [
-      'allLogs'
-    ]
+    diagnosticSettings: managementIPAddressObject.?diagnosticSettings
     location: location
-    diagnosticStorageAccountId: diagnosticStorageAccountId
-    diagnosticWorkspaceId: diagnosticWorkspaceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticEventHubName
-    lock: lock
-    tags: tags
+    tags: managementIPAddressObject.?tags ?? tags
     zones: zones
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -318,10 +229,6 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-04-01' = {
       id: virtualHubId
     } : null
   }
-  dependsOn: [
-    publicIPAddress
-    managementIPAddress
-  ]
 }
 
 resource azureFirewall_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock ?? {}) && lock.?kind != 'None') {
@@ -333,18 +240,31 @@ resource azureFirewall_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!em
   scope: azureFirewall
 }
 
-resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
+resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for (diagnosticSetting, index) in (diagnosticSettings ?? []): {
+  name: diagnosticSetting.?name ?? '${name}-diagnosticSettings'
   properties: {
-    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
-    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
-    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-    metrics: diagnosticsMetrics
-    logs: diagnosticsLogs
+    storageAccountId: diagnosticSetting.?storageAccountResourceId
+    workspaceId: diagnosticSetting.?workspaceResourceId
+    eventHubAuthorizationRuleId: diagnosticSetting.?eventHubAuthorizationRuleResourceId
+    eventHubName: diagnosticSetting.?eventHubName
+    metrics: diagnosticSetting.?metricCategories ?? [
+      {
+        category: 'AllMetrics'
+        timeGrain: null
+        enabled: true
+      }
+    ]
+    logs: diagnosticSetting.?logCategoriesAndGroups ?? [
+      {
+        categoryGroup: 'AllLogs'
+        enabled: true
+      }
+    ]
+    marketplacePartnerId: diagnosticSetting.?marketplacePartnerResourceId
+    logAnalyticsDestinationType: diagnosticSetting.?logAnalyticsDestinationType
   }
   scope: azureFirewall
-}
+}]
 
 resource azureFirewall_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for (roleAssignment, index) in (roleAssignments ?? []): {
   name: guid(azureFirewall.id, roleAssignment.principalId, roleAssignment.roleDefinitionIdOrName)
@@ -407,7 +327,7 @@ type roleAssignmentType = {
   principalId: string
 
   @description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @description('Optional. The description of the role assignment.')
   description: string?
@@ -420,4 +340,42 @@ type roleAssignmentType = {
 
   @description('Optional. The Resource Id of the delegated managed identity resource.')
   delegatedManagedIdentityResourceId: string?
+}[]?
+
+type diagnosticSettingType = {
+  @description('Optional. The name of diagnostic setting.')
+  name: string?
+
+  @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
+  logCategoriesAndGroups: {
+    @description('Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.')
+    category: string?
+
+    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to \'AllLogs\' to collect all logs.')
+    categoryGroup: string?
+  }[]?
+
+  @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
+  metricCategories: {
+    @description('Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to \'AllMetrics\' to collect all metrics.')
+    category: string
+  }[]?
+
+  @description('Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.')
+  logAnalyticsDestinationType: ('Dedicated' | 'AzureDiagnostics')?
+
+  @description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  workspaceResourceId: string?
+
+  @description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  storageAccountResourceId: string?
+
+  @description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+  eventHubAuthorizationRuleResourceId: string?
+
+  @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  eventHubName: string?
+
+  @description('Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
+  marketplacePartnerResourceId: string?
 }[]?

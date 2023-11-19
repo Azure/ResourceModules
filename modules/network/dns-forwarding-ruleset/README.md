@@ -1,5 +1,7 @@
 # Dns Forwarding Rulesets `[Microsoft.Network/dnsForwardingRulesets]`
 
+> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
+
 This template deploys an dns forwarding ruleset.
 
 ## Navigation
@@ -28,10 +30,67 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.dns-forwarding-ruleset:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module dnsForwardingRuleset 'br:bicep/modules/network.dns-forwarding-ruleset:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ndfrsmin'
+  params: {
+    // Required parameters
+    dnsResolverOutboundEndpointResourceIds: [
+      '<dnsResolverOutboundEndpointsResourceId>'
+    ]
+    name: 'ndfrsmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "dnsResolverOutboundEndpointResourceIds": {
+      "value": [
+        "<dnsResolverOutboundEndpointsResourceId>"
+      ]
+    },
+    "name": {
+      "value": "ndfrsmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -42,13 +101,13 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module dnsForwardingRuleset 'br:bicep/modules/network.dns-forwarding-ruleset:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ndfrscom'
+  name: '${uniqueString(deployment().name, location)}-test-ndfrsmax'
   params: {
     // Required parameters
     dnsResolverOutboundEndpointResourceIds: [
       '<dnsResolverOutboundEndpointsId>'
     ]
-    name: 'ndfrscom001'
+    name: 'ndfrsmax001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     forwardingRules: [
@@ -106,7 +165,7 @@ module dnsForwardingRuleset 'br:bicep/modules/network.dns-forwarding-ruleset:1.0
       ]
     },
     "name": {
-      "value": "ndfrscom001"
+      "value": "ndfrsmax001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -161,9 +220,9 @@ module dnsForwardingRuleset 'br:bicep/modules/network.dns-forwarding-ruleset:1.0
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -172,15 +231,47 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module dnsForwardingRuleset 'br:bicep/modules/network.dns-forwarding-ruleset:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ndfrsmin'
+  name: '${uniqueString(deployment().name, location)}-test-ndfrswaf'
   params: {
     // Required parameters
     dnsResolverOutboundEndpointResourceIds: [
-      '<dnsResolverOutboundEndpointsResourceId>'
+      '<dnsResolverOutboundEndpointsId>'
     ]
-    name: 'ndfrsmin001'
+    name: 'ndfrswaf001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    forwardingRules: [
+      {
+        domainName: 'contoso.'
+        forwardingRuleState: 'Enabled'
+        name: 'rule1'
+        targetDnsServers: [
+          {
+            ipAddress: '192.168.0.1'
+            port: '53'
+          }
+        ]
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    vNetLinks: [
+      '<virtualNetworkResourceId>'
+    ]
   }
 }
 ```
@@ -200,15 +291,57 @@ module dnsForwardingRuleset 'br:bicep/modules/network.dns-forwarding-ruleset:1.0
     // Required parameters
     "dnsResolverOutboundEndpointResourceIds": {
       "value": [
-        "<dnsResolverOutboundEndpointsResourceId>"
+        "<dnsResolverOutboundEndpointsId>"
       ]
     },
     "name": {
-      "value": "ndfrsmin001"
+      "value": "ndfrswaf001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "forwardingRules": {
+      "value": [
+        {
+          "domainName": "contoso.",
+          "forwardingRuleState": "Enabled",
+          "name": "rule1",
+          "targetDnsServers": [
+            {
+              "ipAddress": "192.168.0.1",
+              "port": "53"
+            }
+          ]
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "vNetLinks": {
+      "value": [
+        "<virtualNetworkResourceId>"
+      ]
     }
   }
 }
@@ -372,7 +505,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `vNetLinks`
 

@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "12768498740595616170"
+      "version": "0.23.1.45101",
+      "templateHash": "5346116636281635704"
     },
     "name": "Metric Alerts",
     "description": "This module deploys a Metric Alert.",
@@ -216,7 +216,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

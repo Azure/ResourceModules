@@ -64,7 +64,13 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy).
 - Required: Yes
 - Type: string
-- Allowed: `[AllowedValuesPolicy, MaxValuePolicy]`
+- Allowed:
+  ```Bicep
+  [
+    'AllowedValuesPolicy'
+    'MaxValuePolicy'
+  ]
+  ```
 
 ### Parameter: `factData`
 
@@ -78,7 +84,21 @@ The fact data of the policy.
 The fact name of the policy.
 - Required: Yes
 - Type: string
-- Allowed: `[EnvironmentTemplate, GalleryImage, LabPremiumVmCount, LabTargetCost, LabVmCount, LabVmSize, ScheduleEditPermission, UserOwnedLabPremiumVmCount, UserOwnedLabVmCount, UserOwnedLabVmCountInSubnet]`
+- Allowed:
+  ```Bicep
+  [
+    'EnvironmentTemplate'
+    'GalleryImage'
+    'LabPremiumVmCount'
+    'LabTargetCost'
+    'LabVmCount'
+    'LabVmSize'
+    'ScheduleEditPermission'
+    'UserOwnedLabPremiumVmCount'
+    'UserOwnedLabVmCount'
+    'UserOwnedLabVmCountInSubnet'
+  ]
+  ```
 
 ### Parameter: `labName`
 
@@ -105,14 +125,20 @@ The status of the policy.
 - Required: No
 - Type: string
 - Default: `'Enabled'`
-- Allowed: `[Disabled, Enabled]`
+- Allowed:
+  ```Bicep
+  [
+    'Disabled'
+    'Enabled'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `threshold`
 

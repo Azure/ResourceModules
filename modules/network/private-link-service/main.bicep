@@ -12,7 +12,7 @@ param location string = resourceGroup().location
 param lock lockType
 
 @description('Optional. Tags to be applied on all resources/resource groups in this deployment.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The extended location of the load balancer.')
 param extendedLocation object = {}
@@ -136,7 +136,7 @@ type roleAssignmentType = {
   principalId: string
 
   @description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @description('Optional. The description of the role assignment.')
   description: string?

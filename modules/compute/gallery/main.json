@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "17534490293657424034"
+      "version": "0.23.1.45101",
+      "templateHash": "8907363611903070816"
     },
     "name": "Azure Compute Galleries",
     "description": "This module deploys an Azure Compute Gallery (formerly known as Shared Image Gallery).",
@@ -155,7 +155,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags for all resources."
       }
@@ -269,7 +269,9 @@
           "endOfLifeDate": "[if(contains(parameters('applications')[copyIndex()], 'endOfLifeDate'), createObject('value', parameters('applications')[copyIndex()].endOfLifeDate), createObject('value', ''))]",
           "roleAssignments": "[if(contains(parameters('applications')[copyIndex()], 'roleAssignments'), createObject('value', parameters('applications')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
           "customActions": "[if(contains(parameters('applications')[copyIndex()], 'customActions'), createObject('value', parameters('applications')[copyIndex()].customActions), createObject('value', createArray()))]",
-          "tags": "[if(contains(parameters('applications')[copyIndex()], 'tags'), createObject('value', parameters('applications')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('applications')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
@@ -281,8 +283,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "13186916483114520290"
+              "version": "0.23.1.45101",
+              "templateHash": "8232745966352037801"
             },
             "name": "Compute Galleries Applications",
             "description": "This module deploys an Azure Compute Gallery Application.",
@@ -438,7 +440,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags for all resources."
               }
@@ -601,7 +603,9 @@
           "endOfLife": "[if(contains(parameters('images')[copyIndex()], 'endOfLife'), createObject('value', parameters('images')[copyIndex()].endOfLife), createObject('value', ''))]",
           "excludedDiskTypes": "[if(contains(parameters('images')[copyIndex()], 'excludedDiskTypes'), createObject('value', parameters('images')[copyIndex()].excludedDiskTypes), createObject('value', createArray()))]",
           "roleAssignments": "[if(contains(parameters('images')[copyIndex()], 'roleAssignments'), createObject('value', parameters('images')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
-          "tags": "[if(contains(parameters('images')[copyIndex()], 'tags'), createObject('value', parameters('images')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('images')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
@@ -613,8 +617,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "13132790244989513026"
+              "version": "0.23.1.45101",
+              "templateHash": "3383509605637851908"
             },
             "name": "Compute Galleries Image Definitions",
             "description": "This module deploys an Azure Compute Gallery Image Definition.",
@@ -913,7 +917,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags for all resources."
               }

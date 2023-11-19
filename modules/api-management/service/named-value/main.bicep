@@ -18,7 +18,7 @@ param keyVault object = {}
 param name string
 
 @description('Optional. Tags that when provided can be used to filter the NamedValue list. - string.')
-param tags array = []
+param tags array?
 
 @description('Optional. Determines whether the value is a secret and should be encrypted or not. Default value is false.')
 #disable-next-line secure-secrets-in-params // Not a secret
@@ -49,7 +49,7 @@ resource namedValue 'Microsoft.ApiManagement/service/namedValues@2021-08-01' = {
   name: name
   parent: service
   properties: {
-    tags: !empty(tags) ? tags : null
+    tags: tags
     secret: secret
     displayName: displayName
     value: keyVaultEmpty ? value : null

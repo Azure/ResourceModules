@@ -29,8 +29,9 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/service-fabric.cluster:1.0.0`.
 
 - [Cert](#example-1-cert)
-- [Using large parameter set](#example-2-using-large-parameter-set)
-- [Using only defaults](#example-3-using-only-defaults)
+- [Using only defaults](#example-2-using-only-defaults)
+- [Using large parameter set](#example-3-using-large-parameter-set)
+- [WAF-aligned](#example-4-waf-aligned)
 
 ### Example 1: _Cert_
 
@@ -143,7 +144,99 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using large parameter set_
+### Example 2: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sfcmin'
+  params: {
+    // Required parameters
+    managementEndpoint: 'https://sfcmin001.westeurope.cloudapp.azure.com:19080'
+    name: 'sfcmin001'
+    nodeTypes: [
+      {
+        applicationPorts: {
+          endPort: 30000
+          startPort: 20000
+        }
+        clientConnectionEndpointPort: 19000
+        durabilityLevel: 'Bronze'
+        ephemeralPorts: {
+          endPort: 65534
+          startPort: 49152
+        }
+        httpGatewayEndpointPort: 19080
+        isPrimary: true
+        name: 'Node01'
+      }
+    ]
+    reliabilityLevel: 'None'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "managementEndpoint": {
+      "value": "https://sfcmin001.westeurope.cloudapp.azure.com:19080"
+    },
+    "name": {
+      "value": "sfcmin001"
+    },
+    "nodeTypes": {
+      "value": [
+        {
+          "applicationPorts": {
+            "endPort": 30000,
+            "startPort": 20000
+          },
+          "clientConnectionEndpointPort": 19000,
+          "durabilityLevel": "Bronze",
+          "ephemeralPorts": {
+            "endPort": 65534,
+            "startPort": 49152
+          },
+          "httpGatewayEndpointPort": 19080,
+          "isPrimary": true,
+          "name": "Node01"
+        }
+      ]
+    },
+    "reliabilityLevel": {
+      "value": "None"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -154,11 +247,11 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sfccom'
+  name: '${uniqueString(deployment().name, location)}-test-sfcmax'
   params: {
     // Required parameters
-    managementEndpoint: 'https://sfccom001.westeurope.cloudapp.azure.com:19080'
-    name: 'sfccom001'
+    managementEndpoint: 'https://sfcmax001.westeurope.cloudapp.azure.com:19080'
+    name: 'sfcmax001'
     nodeTypes: [
       {
         applicationPorts: {
@@ -296,15 +389,13 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
     ]
     roleAssignments: [
       {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
+        principalId: '<principalId>'
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
     tags: {
-      clusterName: 'sfccom001'
+      clusterName: 'sfcmax001'
       'hidden-title': 'This is visible in the resource name'
       resourceType: 'Service Fabric'
     }
@@ -345,10 +436,10 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
   "parameters": {
     // Required parameters
     "managementEndpoint": {
-      "value": "https://sfccom001.westeurope.cloudapp.azure.com:19080"
+      "value": "https://sfcmax001.westeurope.cloudapp.azure.com:19080"
     },
     "name": {
-      "value": "sfccom001"
+      "value": "sfcmax001"
     },
     "nodeTypes": {
       "value": [
@@ -516,9 +607,7 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
     "roleAssignments": {
       "value": [
         {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
+          "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
@@ -526,7 +615,7 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
     },
     "tags": {
       "value": {
-        "clusterName": "sfccom001",
+        "clusterName": "sfcmax001",
         "hidden-title": "This is visible in the resource name",
         "resourceType": "Service Fabric"
       }
@@ -561,9 +650,9 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
 </details>
 <p>
 
-### Example 3: _Using only defaults_
+### Example 4: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -572,12 +661,32 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sfcmin'
+  name: '${uniqueString(deployment().name, location)}-test-sfcwaf'
   params: {
     // Required parameters
-    managementEndpoint: 'https://sfcmin001.westeurope.cloudapp.azure.com:19080'
-    name: 'sfcmin001'
+    managementEndpoint: 'https://sfcwaf001.westeurope.cloudapp.azure.com:19080'
+    name: 'sfcwaf001'
     nodeTypes: [
+      {
+        applicationPorts: {
+          endPort: 30000
+          startPort: 20000
+        }
+        clientConnectionEndpointPort: 19000
+        durabilityLevel: 'Silver'
+        ephemeralPorts: {
+          endPort: 65534
+          startPort: 49152
+        }
+        httpGatewayEndpointPort: 19080
+        isPrimary: true
+        isStateless: false
+        multipleAvailabilityZones: false
+        name: 'Node01'
+        placementProperties: {}
+        reverseProxyEndpointPort: ''
+        vmInstanceCount: 5
+      }
       {
         applicationPorts: {
           endPort: 30000
@@ -586,17 +695,143 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
         clientConnectionEndpointPort: 19000
         durabilityLevel: 'Bronze'
         ephemeralPorts: {
-          endPort: 65534
-          startPort: 49152
+          endPort: 64000
+          httpGatewayEndpointPort: 19007
+          isPrimary: true
+          name: 'Node02'
+          startPort: 49000
+          vmInstanceCount: 5
         }
-        httpGatewayEndpointPort: 19080
-        isPrimary: true
-        name: 'Node01'
       }
     ]
-    reliabilityLevel: 'None'
+    reliabilityLevel: 'Silver'
     // Non-required parameters
+    addOnFeatures: [
+      'BackupRestoreService'
+      'DnsService'
+      'RepairManager'
+      'ResourceMonitorService'
+    ]
+    applicationTypes: [
+      {
+        name: 'WordCount'
+      }
+    ]
+    azureActiveDirectory: {
+      clientApplication: '<clientApplication>'
+      clusterApplication: 'cf33fea8-b30f-424f-ab73-c48d99e0b222'
+      tenantId: '<tenantId>'
+    }
+    certificateCommonNames: {
+      commonNames: [
+        {
+          certificateCommonName: 'certcommon'
+          certificateIssuerThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
+        }
+      ]
+      x509StoreName: ''
+    }
+    clientCertificateCommonNames: [
+      {
+        certificateCommonName: 'clientcommoncert1'
+        certificateIssuerThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
+        isAdmin: false
+      }
+      {
+        certificateCommonName: 'clientcommoncert2'
+        certificateIssuerThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC131'
+        isAdmin: false
+      }
+    ]
+    clientCertificateThumbprints: [
+      {
+        certificateThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
+        isAdmin: false
+      }
+      {
+        certificateThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC131'
+        isAdmin: false
+      }
+    ]
+    diagnosticsStorageAccountConfig: {
+      blobEndpoint: '<blobEndpoint>'
+      protectedAccountKeyName: 'StorageAccountKey1'
+      queueEndpoint: '<queueEndpoint>'
+      storageAccountName: '<storageAccountName>'
+      tableEndpoint: '<tableEndpoint>'
+    }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    fabricSettings: [
+      {
+        name: 'Security'
+        parameters: [
+          {
+            name: 'ClusterProtectionLevel'
+            value: 'EncryptAndSign'
+          }
+        ]
+      }
+      {
+        name: 'UpgradeService'
+        parameters: [
+          {
+            name: 'AppPollIntervalInSeconds'
+            value: '60'
+          }
+        ]
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    maxUnusedVersionsToKeep: 2
+    notifications: [
+      {
+        isEnabled: true
+        notificationCategory: 'WaveProgress'
+        notificationLevel: 'Critical'
+        notificationTargets: [
+          {
+            notificationChannel: 'EmailUser'
+            receivers: [
+              'SomeReceiver'
+            ]
+          }
+        ]
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      clusterName: 'sfcwaf001'
+      'hidden-title': 'This is visible in the resource name'
+      resourceType: 'Service Fabric'
+    }
+    upgradeDescription: {
+      deltaHealthPolicy: {
+        maxPercentDeltaUnhealthyApplications: 0
+        maxPercentDeltaUnhealthyNodes: 0
+        maxPercentUpgradeDomainDeltaUnhealthyNodes: 0
+      }
+      forceRestart: false
+      healthCheckRetryTimeout: '00:45:00'
+      healthCheckStableDuration: '00:01:00'
+      healthCheckWaitDuration: '00:00:30'
+      healthPolicy: {
+        maxPercentUnhealthyApplications: 0
+        maxPercentUnhealthyNodes: 0
+      }
+      upgradeDomainTimeout: '02:00:00'
+      upgradeReplicaSetCheckTimeout: '1.00:00:00'
+      upgradeTimeout: '02:00:00'
+    }
+    vmImage: 'Linux'
   }
 }
 ```
@@ -615,10 +850,10 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
   "parameters": {
     // Required parameters
     "managementEndpoint": {
-      "value": "https://sfcmin001.westeurope.cloudapp.azure.com:19080"
+      "value": "https://sfcwaf001.westeurope.cloudapp.azure.com:19080"
     },
     "name": {
-      "value": "sfcmin001"
+      "value": "sfcwaf001"
     },
     "nodeTypes": {
       "value": [
@@ -628,23 +863,199 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
             "startPort": 20000
           },
           "clientConnectionEndpointPort": 19000,
-          "durabilityLevel": "Bronze",
+          "durabilityLevel": "Silver",
           "ephemeralPorts": {
             "endPort": 65534,
             "startPort": 49152
           },
           "httpGatewayEndpointPort": 19080,
           "isPrimary": true,
-          "name": "Node01"
+          "isStateless": false,
+          "multipleAvailabilityZones": false,
+          "name": "Node01",
+          "placementProperties": {},
+          "reverseProxyEndpointPort": "",
+          "vmInstanceCount": 5
+        },
+        {
+          "applicationPorts": {
+            "endPort": 30000,
+            "startPort": 20000
+          },
+          "clientConnectionEndpointPort": 19000,
+          "durabilityLevel": "Bronze",
+          "ephemeralPorts": {
+            "endPort": 64000,
+            "httpGatewayEndpointPort": 19007,
+            "isPrimary": true,
+            "name": "Node02",
+            "startPort": 49000,
+            "vmInstanceCount": 5
+          }
         }
       ]
     },
     "reliabilityLevel": {
-      "value": "None"
+      "value": "Silver"
     },
     // Non-required parameters
+    "addOnFeatures": {
+      "value": [
+        "BackupRestoreService",
+        "DnsService",
+        "RepairManager",
+        "ResourceMonitorService"
+      ]
+    },
+    "applicationTypes": {
+      "value": [
+        {
+          "name": "WordCount"
+        }
+      ]
+    },
+    "azureActiveDirectory": {
+      "value": {
+        "clientApplication": "<clientApplication>",
+        "clusterApplication": "cf33fea8-b30f-424f-ab73-c48d99e0b222",
+        "tenantId": "<tenantId>"
+      }
+    },
+    "certificateCommonNames": {
+      "value": {
+        "commonNames": [
+          {
+            "certificateCommonName": "certcommon",
+            "certificateIssuerThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130"
+          }
+        ],
+        "x509StoreName": ""
+      }
+    },
+    "clientCertificateCommonNames": {
+      "value": [
+        {
+          "certificateCommonName": "clientcommoncert1",
+          "certificateIssuerThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
+          "isAdmin": false
+        },
+        {
+          "certificateCommonName": "clientcommoncert2",
+          "certificateIssuerThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC131",
+          "isAdmin": false
+        }
+      ]
+    },
+    "clientCertificateThumbprints": {
+      "value": [
+        {
+          "certificateThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
+          "isAdmin": false
+        },
+        {
+          "certificateThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC131",
+          "isAdmin": false
+        }
+      ]
+    },
+    "diagnosticsStorageAccountConfig": {
+      "value": {
+        "blobEndpoint": "<blobEndpoint>",
+        "protectedAccountKeyName": "StorageAccountKey1",
+        "queueEndpoint": "<queueEndpoint>",
+        "storageAccountName": "<storageAccountName>",
+        "tableEndpoint": "<tableEndpoint>"
+      }
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "fabricSettings": {
+      "value": [
+        {
+          "name": "Security",
+          "parameters": [
+            {
+              "name": "ClusterProtectionLevel",
+              "value": "EncryptAndSign"
+            }
+          ]
+        },
+        {
+          "name": "UpgradeService",
+          "parameters": [
+            {
+              "name": "AppPollIntervalInSeconds",
+              "value": "60"
+            }
+          ]
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "maxUnusedVersionsToKeep": {
+      "value": 2
+    },
+    "notifications": {
+      "value": [
+        {
+          "isEnabled": true,
+          "notificationCategory": "WaveProgress",
+          "notificationLevel": "Critical",
+          "notificationTargets": [
+            {
+              "notificationChannel": "EmailUser",
+              "receivers": [
+                "SomeReceiver"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "clusterName": "sfcwaf001",
+        "hidden-title": "This is visible in the resource name",
+        "resourceType": "Service Fabric"
+      }
+    },
+    "upgradeDescription": {
+      "value": {
+        "deltaHealthPolicy": {
+          "maxPercentDeltaUnhealthyApplications": 0,
+          "maxPercentDeltaUnhealthyNodes": 0,
+          "maxPercentUpgradeDomainDeltaUnhealthyNodes": 0
+        },
+        "forceRestart": false,
+        "healthCheckRetryTimeout": "00:45:00",
+        "healthCheckStableDuration": "00:01:00",
+        "healthCheckWaitDuration": "00:00:30",
+        "healthPolicy": {
+          "maxPercentUnhealthyApplications": 0,
+          "maxPercentUnhealthyNodes": 0
+        },
+        "upgradeDomainTimeout": "02:00:00",
+        "upgradeReplicaSetCheckTimeout": "1.00:00:00",
+        "upgradeTimeout": "02:00:00"
+      }
+    },
+    "vmImage": {
+      "value": "Linux"
     }
   }
 }
@@ -706,7 +1117,15 @@ The list of add-on features to enable in the cluster.
 - Required: No
 - Type: array
 - Default: `[]`
-- Allowed: `[BackupRestoreService, DnsService, RepairManager, ResourceMonitorService]`
+- Allowed:
+  ```Bicep
+  [
+    'BackupRestoreService'
+    'DnsService'
+    'RepairManager'
+    'ResourceMonitorService'
+  ]
+  ```
 
 ### Parameter: `applicationTypes`
 
@@ -720,21 +1139,21 @@ Array of Service Fabric cluster application types.
 The settings to enable AAD authentication on the cluster.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `certificate`
 
 Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `certificateCommonNames`
 
 Describes a list of server certificates referenced by common name that are used to secure the cluster.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `clientCertificateCommonNames`
 
@@ -762,7 +1181,7 @@ The Service Fabric runtime version of the cluster. This property can only by set
 The storage account information for storing Service Fabric diagnostic logs.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -863,28 +1282,98 @@ Indicates a list of notification channels for cluster events.
 The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://learn.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9.
 - Required: Yes
 - Type: string
-- Allowed: `[Bronze, Gold, None, Platinum, Silver]`
+- Allowed:
+  ```Bicep
+  [
+    'Bronze'
+    'Gold'
+    'None'
+    'Platinum'
+    'Silver'
+  ]
+  ```
 
 ### Parameter: `reverseProxyCertificate`
 
 Describes the certificate details.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `reverseProxyCertificateCommonNames`
 
 Describes a list of server certificates referenced by common name that are used to secure the cluster.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `roleAssignments`
 
 Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 - Required: No
 - Type: array
-- Default: `[]`
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+
+### Parameter: `roleAssignments.condition`
+
+Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.conditionVersion`
+
+Optional. Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed: `[2.0]`
+
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
+
+Optional. The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.description`
+
+Optional. The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.principalId`
+
+Required. The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.principalType`
+
+Optional. The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `sfZonalUpgradeMode`
 
@@ -892,21 +1381,26 @@ This property controls the logical grouping of VMs in upgrade domains (UDs). Thi
 - Required: No
 - Type: string
 - Default: `'Hierarchical'`
-- Allowed: `[Hierarchical, Parallel]`
+- Allowed:
+  ```Bicep
+  [
+    'Hierarchical'
+    'Parallel'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `upgradeDescription`
 
 Describes the policy used when upgrading the cluster.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `upgradeMode`
 
@@ -914,7 +1408,13 @@ The upgrade mode of the cluster when new Service Fabric runtime version is avail
 - Required: No
 - Type: string
 - Default: `'Automatic'`
-- Allowed: `[Automatic, Manual]`
+- Allowed:
+  ```Bicep
+  [
+    'Automatic'
+    'Manual'
+  ]
+  ```
 
 ### Parameter: `upgradePauseEndTimestampUtc`
 
@@ -936,7 +1436,14 @@ Indicates when new cluster runtime version upgrades will be applied after they a
 - Required: No
 - Type: string
 - Default: `'Wave0'`
-- Allowed: `[Wave0, Wave1, Wave2]`
+- Allowed:
+  ```Bicep
+  [
+    'Wave0'
+    'Wave1'
+    'Wave2'
+  ]
+  ```
 
 ### Parameter: `vmImage`
 
@@ -951,7 +1458,13 @@ This property defines the upgrade mode for the virtual machine scale set, it is 
 - Required: No
 - Type: string
 - Default: `'Hierarchical'`
-- Allowed: `[Hierarchical, Parallel]`
+- Allowed:
+  ```Bicep
+  [
+    'Hierarchical'
+    'Parallel'
+  ]
+  ```
 
 ### Parameter: `waveUpgradePaused`
 

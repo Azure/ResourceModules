@@ -108,7 +108,14 @@ The hypervisor generation of the Virtual Machine.</p>- If this value is not spec
 - Required: No
 - Type: string
 - Default: `''`
-- Allowed: `['', V1, V2]`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    'V1'
+    'V2'
+  ]
+  ```
 
 ### Parameter: `isAcceleratedNetworkSupported`
 
@@ -116,7 +123,13 @@ The image supports accelerated networking.</p>Accelerated networking enables sin
 - Required: No
 - Type: string
 - Default: `'false'`
-- Allowed: `[false, true]`
+- Allowed:
+  ```Bicep
+  [
+    'false'
+    'true'
+  ]
+  ```
 
 ### Parameter: `isHibernateSupported`
 
@@ -124,7 +137,13 @@ The image will support hibernation.
 - Required: No
 - Type: string
 - Default: `'false'`
-- Allowed: `[false, true]`
+- Allowed:
+  ```Bicep
+  [
+    'false'
+    'true'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -180,7 +199,13 @@ This property allows the user to specify whether the virtual machines created un
 - Required: No
 - Type: string
 - Default: `'Generalized'`
-- Allowed: `[Generalized, Specialized]`
+- Allowed:
+  ```Bicep
+  [
+    'Generalized'
+    'Specialized'
+  ]
+  ```
 
 ### Parameter: `osType`
 
@@ -188,7 +213,13 @@ OS type of the image to be created.
 - Required: No
 - Type: string
 - Default: `'Windows'`
-- Allowed: `[Linux, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    'Linux'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `planName`
 
@@ -306,7 +337,15 @@ The security type of the image. Requires a hyperVGeneration V2.
 - Required: No
 - Type: string
 - Default: `'Standard'`
-- Allowed: `[ConfidentialVM, ConfidentialVMSupported, Standard, TrustedLaunch]`
+- Allowed:
+  ```Bicep
+  [
+    'ConfidentialVM'
+    'ConfidentialVMSupported'
+    'Standard'
+    'TrustedLaunch'
+  ]
+  ```
 
 ### Parameter: `sku`
 
@@ -320,7 +359,6 @@ The name of the gallery Image Definition SKU.
 Tags for all resources.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

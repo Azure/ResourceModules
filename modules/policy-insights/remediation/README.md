@@ -121,7 +121,7 @@ module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
 
 ```bicep
 module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-pirmgmin'
+  name: '${uniqueString(deployment().name, location)}-test-pirmgmin'
   params: {
     // Required parameters
     name: 'pirmgmin001'
@@ -170,7 +170,7 @@ module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
 
 ```bicep
 module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-pirrgcom'
+  name: '${uniqueString(deployment().name, location)}-test-pirrgcom'
   params: {
     // Required parameters
     name: 'pirrgcom001'
@@ -251,7 +251,7 @@ module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
 
 ```bicep
 module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-pirrgmin'
+  name: '${uniqueString(deployment().name, location)}-test-pirrgmin'
   params: {
     // Required parameters
     name: 'pirrgmin001'
@@ -300,7 +300,7 @@ module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
 
 ```bicep
 module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-pirsubcom'
+  name: '${uniqueString(deployment().name, location)}-test-pirsubcom'
   params: {
     // Required parameters
     name: 'pirsubcom001'
@@ -381,7 +381,7 @@ module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
 
 ```bicep
 module remediation 'br:bicep/modules/policy-insights.remediation:1.0.0' = {
-  name: '${uniqueString(deployment().name)}-test-pirsubmin'
+  name: '${uniqueString(deployment().name, location)}-test-pirsubmin'
   params: {
     // Required parameters
     name: 'pirsubmin001'
@@ -522,7 +522,13 @@ The way resources to remediate are discovered. Defaults to ExistingNonCompliant 
 - Required: No
 - Type: string
 - Default: `'ExistingNonCompliant'`
-- Allowed: `[ExistingNonCompliant, ReEvaluateCompliance]`
+- Allowed:
+  ```Bicep
+  [
+    'ExistingNonCompliant'
+    'ReEvaluateCompliance'
+  ]
+  ```
 
 ### Parameter: `resourceGroupName`
 

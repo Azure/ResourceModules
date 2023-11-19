@@ -5,14 +5,29 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "6454914933986539170"
+      "version": "0.23.1.45101",
+      "templateHash": "14030600332300784655"
     },
     "name": "Azure NetApp Files",
     "description": "This module deploys an Azure NetApp File.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "userAssignedResourceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource."
+          }
+        }
+      },
+      "nullable": true
+    },
     "lockType": {
       "type": "object",
       "properties": {
@@ -161,11 +176,10 @@
         "description": "Optional. Capacity pools to create."
       }
     },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. The ID(s) to assign to the resource."
+        "description": "Optional. The managed identity definition for this resource."
       }
     },
     "roleAssignments": {
@@ -189,7 +203,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags for all resources."
       }
@@ -214,8 +228,8 @@
         "organizationalUnit": "[if(not(empty(parameters('domainJoinOU'))), parameters('domainJoinOU'), null())]"
       }
     ],
-    "identityType": "[if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None')]",
-    "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createObject()))), 'UserAssigned', null()), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "builtInRoleNames": {
       "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
       "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
@@ -318,7 +332,9 @@
           "coolAccess": "[if(contains(parameters('capacityPools')[copyIndex()], 'coolAccess'), createObject('value', parameters('capacityPools')[copyIndex()].coolAccess), createObject('value', false()))]",
           "roleAssignments": "[if(contains(parameters('capacityPools')[copyIndex()], 'roleAssignments'), createObject('value', parameters('capacityPools')[copyIndex()].roleAssignments), createObject('value', createArray()))]",
           "encryptionType": "[if(contains(parameters('capacityPools')[copyIndex()], 'encryptionType'), createObject('value', parameters('capacityPools')[copyIndex()].encryptionType), createObject('value', 'Single'))]",
-          "tags": "[if(contains(parameters('capacityPools')[copyIndex()], 'tags'), createObject('value', parameters('capacityPools')[copyIndex()].tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('capacityPools')[copyIndex()], 'tags'), parameters('tags'))]"
+          },
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
@@ -330,8 +346,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "14242430981421830183"
+              "version": "0.23.1.45101",
+              "templateHash": "1846961475837822728"
             },
             "name": "Azure NetApp Files Capacity Pools",
             "description": "This module deploys an Azure NetApp Files Capacity Pool.",
@@ -427,7 +443,7 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags for all resources."
               }
@@ -623,8 +639,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "15651177191996280153"
+                      "version": "0.23.1.45101",
+                      "templateHash": "3333217353540724741"
                     },
                     "name": "Azure NetApp Files Capacity Pool Volumes",
                     "description": "This module deploys an Azure NetApp Files Capacity Pool Volume.",

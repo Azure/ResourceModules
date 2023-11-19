@@ -1,11 +1,12 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "17975356792950377604"
+      "templateHash": "6739306478169191405"
     },
     "name": "Resources Tags Subscription Scope",
     "description": "This module deploys a Resource Tag on a Subscription scope.",
@@ -14,7 +15,7 @@
   "parameters": {
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags for the resource group. If not provided, removes existing tags."
       }
@@ -41,8 +42,8 @@
       }
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -57,18 +58,18 @@
         }
       }
     },
-    {
+    "tag": {
       "type": "Microsoft.Resources/tags",
       "apiVersion": "2021-04-01",
       "name": "default",
       "properties": {
-        "tags": "[if(parameters('onlyUpdate'), union(reference(subscriptionResourceId('Microsoft.Resources/deployments', format('{0}-ReadTags', deployment().name)), '2022-09-01').outputs.existingTags.value, parameters('tags')), parameters('tags'))]"
+        "tags": "[if(parameters('onlyUpdate'), union(reference('readTags').outputs.existingTags.value, coalesce(parameters('tags'), createObject())), parameters('tags'))]"
       },
       "dependsOn": [
-        "[subscriptionResourceId('Microsoft.Resources/deployments', format('{0}-ReadTags', deployment().name))]"
+        "readTags"
       ]
     },
-    {
+    "readTags": {
       "condition": "[parameters('onlyUpdate')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -86,7 +87,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.22.6.54827",
-              "templateHash": "18269006446765776342"
+              "templateHash": "9833962804635676625"
             }
           },
           "parameters": {
@@ -105,13 +106,13 @@
               "metadata": {
                 "description": "Tags currently applied to the subscription level."
               },
-              "value": "[if(contains(reference(subscriptionResourceId('Microsoft.Resources/tags', parameters('name')), '2021-04-01'), 'tags'), reference(subscriptionResourceId('Microsoft.Resources/tags', parameters('name')), '2021-04-01').tags, createObject())]"
+              "value": "[coalesce(tryGet(reference(subscriptionResourceId('Microsoft.Resources/tags', parameters('name')), '2021-04-01'), 'tags'), reference(subscriptionResourceId('Microsoft.Resources/tags', parameters('name')), '2021-04-01', 'full'))]"
             }
           }
         }
       }
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -125,7 +126,7 @@
       "metadata": {
         "description": "The applied tags."
       },
-      "value": "[if(parameters('onlyUpdate'), union(reference(subscriptionResourceId('Microsoft.Resources/deployments', format('{0}-ReadTags', deployment().name)), '2022-09-01').outputs.existingTags.value, parameters('tags')), parameters('tags'))]"
+      "value": "[coalesce(if(parameters('onlyUpdate'), union(reference('readTags').outputs.existingTags.value, coalesce(parameters('tags'), createObject())), parameters('tags')), createObject())]"
     },
     "resourceId": {
       "type": "string",

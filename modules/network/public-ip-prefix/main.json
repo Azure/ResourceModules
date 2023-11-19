@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "17531002451033298883"
+      "version": "0.23.1.45101",
+      "templateHash": "9244193973447540175"
     },
     "name": "Public IP Prefixes",
     "description": "This module deploys a Public IP Prefix.",
@@ -142,7 +142,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

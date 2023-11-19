@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "379140032937405547"
+      "version": "0.23.1.45101",
+      "templateHash": "8576779256610363047"
     },
     "name": "Service Endpoint Policies",
     "description": "This module deploys a Service Endpoint Policy.",
@@ -154,7 +154,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

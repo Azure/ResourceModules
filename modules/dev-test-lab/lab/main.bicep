@@ -15,7 +15,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The properties of any lab announcement associated with this lab.')
 param announcement object = {}
@@ -57,11 +57,11 @@ param premiumDataDisks string = 'Disabled'
 @description('Optional. The properties of any lab support message associated with this lab.')
 param support object = {}
 
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
-@description('Optional. The ID(s) to assign to the virtual machines associated with this lab.')
-param managementIdentities object = {}
+@description('Optional. The resource ID(s) to assign to the virtual machines associated with this lab.')
+param managementIdentitiesResourceIds string[] = []
 
 @description('Optional. Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab.')
 param vmCreationResourceGroupId string = resourceGroup().id
@@ -116,6 +116,15 @@ param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
 
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourceIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
+
+var identity = !empty(managedIdentities) ? {
+  type: !empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
+} : any(null)
+
+var formattedManagementIdentities = !empty(managementIdentitiesResourceIds) ? reduce(map((managementIdentitiesResourceIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) : {} // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
+
 var builtInRoleNames = {
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
   'DevTest Labs User': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76283e04-6283-4c54-8f91-bcf1374a3c64')
@@ -142,10 +151,7 @@ resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' = {
   name: name
   location: location
   tags: tags
-  identity: {
-    type: !empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
-    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : any(null)
-  }
+  identity: identity
   properties: {
     artifactsStorageAccount: artifactsStorageAccount
     announcement: announcement
@@ -156,7 +162,7 @@ resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' = {
     mandatoryArtifactsResourceIdsWindows: mandatoryArtifactsResourceIdsWindows
     premiumDataDisks: premiumDataDisks
     support: support
-    managementIdentities: managementIdentities
+    managementIdentities: formattedManagementIdentities
     vmCreationResourceGroupId: vmCreationResourceGroupId
     browserConnect: browserConnect
     disableAutoUpgradeCseMinorVersion: disableAutoUpgradeCseMinorVersion
@@ -182,7 +188,7 @@ module lab_virtualNetworks 'virtualnetwork/main.bicep' = [for (virtualNetwork, i
   params: {
     labName: lab.name
     name: virtualNetwork.name
-    tags: tags
+    tags: virtualNetwork.?tags ?? tags
     externalProviderResourceId: virtualNetwork.externalProviderResourceId
     description: contains(virtualNetwork, 'description') ? virtualNetwork.description : ''
     allowedSubnets: contains(virtualNetwork, 'allowedSubnets') ? virtualNetwork.allowedSubnets : []
@@ -196,7 +202,7 @@ module lab_policies 'policyset/policy/main.bicep' = [for (policy, index) in poli
   params: {
     labName: lab.name
     name: policy.name
-    tags: tags
+    tags: policy.?tags ?? tags
     description: contains(policy, 'description') ? policy.description : ''
     evaluatorType: policy.evaluatorType
     factData: contains(policy, 'factData') ? policy.factData : ''
@@ -212,7 +218,7 @@ module lab_schedules 'schedule/main.bicep' = [for (schedule, index) in schedules
   params: {
     labName: lab.name
     name: schedule.name
-    tags: tags
+    tags: schedule.?tags ?? tags
     taskType: schedule.taskType
     dailyRecurrence: contains(schedule, 'dailyRecurrence') ? schedule.dailyRecurrence : {}
     hourlyRecurrence: contains(schedule, 'hourlyRecurrence') ? schedule.hourlyRecurrence : {}
@@ -231,7 +237,7 @@ module lab_notificationChannels 'notificationchannel/main.bicep' = [for (notific
   params: {
     labName: lab.name
     name: notificationChannel.name
-    tags: tags
+    tags: notificationChannel.?tags ?? tags
     description: contains(notificationChannel, 'description') ? notificationChannel.description : ''
     events: notificationChannel.events
     emailRecipient: contains(notificationChannel, 'emailRecipient') ? notificationChannel.emailRecipient : ''
@@ -246,7 +252,7 @@ module lab_artifactSources 'artifactsource/main.bicep' = [for (artifactSource, i
   params: {
     labName: lab.name
     name: artifactSource.name
-    tags: tags
+    tags: artifactSource.?tags ?? tags
     displayName: contains(artifactSource, 'displayName') ? artifactSource.displayName : artifactSource.name
     branchRef: contains(artifactSource, 'branchRef') ? artifactSource.branchRef : ''
     folderPath: contains(artifactSource, 'folderPath') ? artifactSource.folderPath : ''
@@ -262,7 +268,7 @@ module lab_costs 'cost/main.bicep' = if (!empty(costs)) {
   name: '${uniqueString(deployment().name, location)}-Lab-Costs'
   params: {
     labName: lab.name
-    tags: tags
+    tags: costs.?tags ?? tags
     currencyCode: contains(costs, 'currencyCode') ? costs.currencyCode : 'USD'
     cycleType: costs.cycleType
     cycleStartDateTime: contains(costs, 'cycleStartDateTime') ? costs.cycleStartDateTime : ''
@@ -297,9 +303,6 @@ resource lab_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01
   scope: lab
 }]
 
-@description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = lab.identity.principalId
-
 @description('The unique identifier for the lab. Used to track tags that the lab applies to each resource that it creates.')
 output uniqueIdentifier string = lab.properties.uniqueIdentifier
 
@@ -312,12 +315,20 @@ output resourceId string = lab.id
 @description('The name of the lab.')
 output name string = lab.name
 
+@description('The principal ID of the system assigned identity.')
+output systemAssignedMIPrincipalId string = contains(lab.identity, 'principalId') ? lab.identity.principalId : ''
+
 @description('The location the resource was deployed into.')
 output location string = lab.location
 
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourceIds: string[]
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')
@@ -335,7 +346,7 @@ type roleAssignmentType = {
   principalId: string
 
   @description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @description('Optional. The description of the role assignment.')
   description: string?

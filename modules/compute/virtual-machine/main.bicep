@@ -81,11 +81,8 @@ param licenseType string = ''
 @description('Optional. The list of SSH public keys used to authenticate with linux based VMs.')
 param publicKeys array = []
 
-@description('Optional. Enables system assigned managed identity on the resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True".')
-param systemAssignedIdentity bool = false
-
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True".')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. Whether boot diagnostics should be enabled on the Virtual Machine. Boot diagnostics will be enabled with a managed storage account if no bootDiagnosticsStorageAccountName value is provided. If bootDiagnostics and bootDiagnosticsStorageAccountName values are not provided, boot diagnostics will be disabled.')
 param bootDiagnostics bool = false
@@ -114,40 +111,6 @@ param availabilityZone int = 0
 // External resources
 @description('Required. Configures NICs and PIPs.')
 param nicConfigurations array
-
-@description('Optional. The name of the PIP diagnostic setting, if deployed.')
-param pipDiagnosticSettingsName string = '${name}-diagnosticSettings'
-
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
-@allowed([
-  ''
-  'allLogs'
-  'DDoSProtectionNotifications'
-  'DDoSMitigationFlowLogs'
-  'DDoSMitigationReports'
-])
-param pipdiagnosticLogCategoriesToEnable array = [
-  'allLogs'
-]
-
-@description('Optional. The name of metrics that will be streamed.')
-@allowed([
-  'AllMetrics'
-])
-param pipdiagnosticMetricsToEnable array = [
-  'AllMetrics'
-]
-
-@description('Optional. The name of the NIC diagnostic setting, if deployed.')
-param nicDiagnosticSettingsName string = '${name}-diagnosticSettings'
-
-@description('Optional. The name of metrics that will be streamed.')
-@allowed([
-  'AllMetrics'
-])
-param nicdiagnosticMetricsToEnable array = [
-  'AllMetrics'
-]
 
 @description('Optional. Recovery service vault name to add VMs to backup.')
 param backupVaultName string = ''
@@ -223,18 +186,6 @@ param extensionCustomScriptProtectedSetting object = {}
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Resource ID of the diagnostic storage account.')
-param diagnosticStorageAccountId string = ''
-
-@description('Optional. Resource ID of the diagnostic log analytics workspace.')
-param diagnosticWorkspaceId string = ''
-
-@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param diagnosticEventHubAuthorizationRuleId string = ''
-
-@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param diagnosticEventHubName string = ''
-
 @description('Optional. The lock settings of the service.')
 param lock lockType
 
@@ -242,7 +193,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -343,22 +294,12 @@ var accountSasProperties = {
   signedProtocol: 'https'
 }
 
-/* Determine Identity Type.
-  First, we determine if the System-Assigned Managed Identity should be enabled.
-    If AADJoin Extension is enabled then we automatically add SystemAssigned to the identityType because AADJoin requires the System-Assigned Managed Identity.
-    If the AADJoin Extension is not enabled then we add SystemAssigned to the identityType only if the value of the systemAssignedIdentity parameter is true.
-  Second, we determine if User Assigned Identities are assigned to the VM via the userAssignedIdentities parameter.
-  Third, we take the outcome of these two values and determine the identityType
-    If the System Identity and User Identities are assigned then the identityType is 'SystemAssigned,UserAssigned'
-    If only the system Identity is assigned then the identityType is 'SystemAssigned'
-    If only user managed Identities are assigned, then the identityType is 'UserAssigned'
-    Finally, if no identities are assigned, then the identityType is 'none'.
-*/
-var identityType = (extensionAadJoinConfig.enabled ? true : systemAssignedIdentity) ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourceIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+// If AADJoin Extension is enabled then we automatically enable SystemAssigned (required by AADJoin), otherwise we follow the usual logic.
+var identity = !empty(managedIdentities) ? {
+  type: (extensionAadJoinConfig.enabled ? true : (managedIdentities.?systemAssigned ?? false)) ? (!empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'UserAssigned' : null)
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
 } : null
 
 var enableReferencedModulesTelemetry = false
@@ -402,23 +343,15 @@ module vm_nic 'modules/nested_networkInterface.bicep' = [for (nicConfiguration, 
     networkInterfaceName: '${name}${nicConfiguration.nicSuffix}'
     virtualMachineName: name
     location: location
-    tags: tags
     enableIPForwarding: contains(nicConfiguration, 'enableIPForwarding') ? (!empty(nicConfiguration.enableIPForwarding) ? nicConfiguration.enableIPForwarding : false) : false
     enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : true
     dnsServers: contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? nicConfiguration.dnsServers : []) : []
     networkSecurityGroupResourceId: contains(nicConfiguration, 'networkSecurityGroupResourceId') ? nicConfiguration.networkSecurityGroupResourceId : ''
     ipConfigurations: nicConfiguration.ipConfigurations
-    lock: lock
-    diagnosticStorageAccountId: diagnosticStorageAccountId
-    diagnosticWorkspaceId: diagnosticWorkspaceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticEventHubName
-    pipDiagnosticSettingsName: pipDiagnosticSettingsName
-    nicDiagnosticSettingsName: nicDiagnosticSettingsName
-    pipdiagnosticMetricsToEnable: pipdiagnosticMetricsToEnable
-    pipdiagnosticLogCategoriesToEnable: pipdiagnosticLogCategoriesToEnable
-    nicDiagnosticMetricsToEnable: nicdiagnosticMetricsToEnable
-    roleAssignments: contains(nicConfiguration, 'roleAssignments') ? (!empty(nicConfiguration.roleAssignments) ? nicConfiguration.roleAssignments : []) : []
+    lock: nicConfiguration.?lock ?? lock
+    tags: nicConfiguration.?tags ?? tags
+    diagnosticSettings: nicConfiguration.?diagnosticSettings
+    roleAssignments: nicConfiguration.?roleAssignments
   }
 }]
 
@@ -539,7 +472,7 @@ module vm_aadJoinExtension 'extension/main.bicep' = if (extensionAadJoinConfig.e
     autoUpgradeMinorVersion: contains(extensionAadJoinConfig, 'autoUpgradeMinorVersion') ? extensionAadJoinConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionAadJoinConfig, 'enableAutomaticUpgrade') ? extensionAadJoinConfig.enableAutomaticUpgrade : false
     settings: contains(extensionAadJoinConfig, 'settings') ? extensionAadJoinConfig.settings : {}
-    tags: contains(extensionAadJoinConfig, 'tags') ? extensionAadJoinConfig.tags : {}
+    tags: extensionAadJoinConfig.?tags ?? tags
   }
 }
 
@@ -554,7 +487,7 @@ module vm_domainJoinExtension 'extension/main.bicep' = if (extensionDomainJoinCo
     autoUpgradeMinorVersion: contains(extensionDomainJoinConfig, 'autoUpgradeMinorVersion') ? extensionDomainJoinConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDomainJoinConfig, 'enableAutomaticUpgrade') ? extensionDomainJoinConfig.enableAutomaticUpgrade : false
     settings: extensionDomainJoinConfig.settings
-    tags: contains(extensionDomainJoinConfig, 'tags') ? extensionDomainJoinConfig.tags : {}
+    tags: extensionDomainJoinConfig.?tags ?? tags
     protectedSettings: {
       Password: extensionDomainJoinPassword
     }
@@ -573,7 +506,7 @@ module vm_microsoftAntiMalwareExtension 'extension/main.bicep' = if (extensionAn
     autoUpgradeMinorVersion: contains(extensionAntiMalwareConfig, 'autoUpgradeMinorVersion') ? extensionAntiMalwareConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionAntiMalwareConfig, 'enableAutomaticUpgrade') ? extensionAntiMalwareConfig.enableAutomaticUpgrade : false
     settings: extensionAntiMalwareConfig.settings
-    tags: contains(extensionAntiMalwareConfig, 'tags') ? extensionAntiMalwareConfig.tags : {}
+    tags: extensionAntiMalwareConfig.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
@@ -596,7 +529,7 @@ module vm_microsoftMonitoringAgentExtension 'extension/main.bicep' = if (extensi
     settings: {
       workspaceId: !empty(monitoringWorkspaceId) ? vm_logAnalyticsWorkspace.properties.customerId : ''
     }
-    tags: contains(extensionMonitoringAgentConfig, 'tags') ? extensionMonitoringAgentConfig.tags : {}
+    tags: extensionMonitoringAgentConfig.?tags ?? tags
     protectedSettings: {
       workspaceKey: !empty(monitoringWorkspaceId) ? vm_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
@@ -615,7 +548,7 @@ module vm_dependencyAgentExtension 'extension/main.bicep' = if (extensionDepende
     autoUpgradeMinorVersion: contains(extensionDependencyAgentConfig, 'autoUpgradeMinorVersion') ? extensionDependencyAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDependencyAgentConfig, 'enableAutomaticUpgrade') ? extensionDependencyAgentConfig.enableAutomaticUpgrade : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    tags: contains(extensionDependencyAgentConfig, 'tags') ? extensionDependencyAgentConfig.tags : {}
+    tags: extensionDependencyAgentConfig.?tags ?? tags
   }
 }
 
@@ -630,7 +563,7 @@ module vm_networkWatcherAgentExtension 'extension/main.bicep' = if (extensionNet
     autoUpgradeMinorVersion: contains(extensionNetworkWatcherAgentConfig, 'autoUpgradeMinorVersion') ? extensionNetworkWatcherAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionNetworkWatcherAgentConfig, 'enableAutomaticUpgrade') ? extensionNetworkWatcherAgentConfig.enableAutomaticUpgrade : false
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    tags: contains(extensionNetworkWatcherAgentConfig, 'tags') ? extensionNetworkWatcherAgentConfig.tags : {}
+    tags: extensionNetworkWatcherAgentConfig.?tags ?? tags
   }
 }
 
@@ -645,7 +578,7 @@ module vm_desiredStateConfigurationExtension 'extension/main.bicep' = if (extens
     autoUpgradeMinorVersion: contains(extensionDSCConfig, 'autoUpgradeMinorVersion') ? extensionDSCConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDSCConfig, 'enableAutomaticUpgrade') ? extensionDSCConfig.enableAutomaticUpgrade : false
     settings: contains(extensionDSCConfig, 'settings') ? extensionDSCConfig.settings : {}
-    tags: contains(extensionDSCConfig, 'tags') ? extensionDSCConfig.tags : {}
+    tags: extensionDSCConfig.?tags ?? tags
     protectedSettings: contains(extensionDSCConfig, 'protectedSettings') ? extensionDSCConfig.protectedSettings : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -664,7 +597,7 @@ module vm_customScriptExtension 'extension/main.bicep' = if (extensionCustomScri
     settings: {
       fileUris: [for fileData in extensionCustomScriptConfig.fileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
-    tags: contains(extensionCustomScriptConfig, 'tags') ? extensionCustomScriptConfig.tags : {}
+    tags: extensionCustomScriptConfig.?tags ?? tags
     protectedSettings: extensionCustomScriptProtectedSetting
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -685,7 +618,7 @@ module vm_azureDiskEncryptionExtension 'extension/main.bicep' = if (extensionAzu
     enableAutomaticUpgrade: contains(extensionAzureDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionAzureDiskEncryptionConfig.enableAutomaticUpgrade : false
     forceUpdateTag: contains(extensionAzureDiskEncryptionConfig, 'forceUpdateTag') ? extensionAzureDiskEncryptionConfig.forceUpdateTag : '1.0'
     settings: extensionAzureDiskEncryptionConfig.settings
-    tags: contains(extensionAzureDiskEncryptionConfig, 'tags') ? extensionAzureDiskEncryptionConfig.tags : {}
+    tags: extensionAzureDiskEncryptionConfig.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
@@ -751,7 +684,7 @@ output resourceId string = vm.id
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(vm.identity, 'principalId') ? vm.identity.principalId : ''
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(vm.identity, 'principalId') ? vm.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
 output location string = vm.location
@@ -759,6 +692,14 @@ output location string = vm.location
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourceIds: string[]?
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')
@@ -776,7 +717,7 @@ type roleAssignmentType = {
   principalId: string
 
   @description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @description('Optional. The description of the role assignment.')
   description: string?
@@ -789,4 +730,42 @@ type roleAssignmentType = {
 
   @description('Optional. The Resource Id of the delegated managed identity resource.')
   delegatedManagedIdentityResourceId: string?
+}[]?
+
+type diagnosticSettingType = {
+  @description('Optional. The name of diagnostic setting.')
+  name: string?
+
+  @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
+  logCategoriesAndGroups: {
+    @description('Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.')
+    category: string?
+
+    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to \'AllLogs\' to collect all logs.')
+    categoryGroup: string?
+  }[]?
+
+  @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
+  metricCategories: {
+    @description('Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to \'AllMetrics\' to collect all metrics.')
+    category: string
+  }[]?
+
+  @description('Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.')
+  logAnalyticsDestinationType: ('Dedicated' | 'AzureDiagnostics')?
+
+  @description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  workspaceResourceId: string?
+
+  @description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  storageAccountResourceId: string?
+
+  @description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+  eventHubAuthorizationRuleResourceId: string?
+
+  @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  eventHubName: string?
+
+  @description('Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
+  marketplacePartnerResourceId: string?
 }[]?

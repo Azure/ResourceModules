@@ -33,27 +33,26 @@ param federatedClientId string = 'None'
 @description('Optional. Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.')
 param rotationToLatestKeyVersionEnabled bool = false
 
-@description('Conditional. Enables system assigned managed identity on the resource. Required if userAssignedIdentities is empty.')
-param systemAssignedIdentity bool = true
-
-@description('Conditional. The ID(s) to assign to the resource. Required if systemAssignedIdentity is set to "false".')
-param userAssignedIdentities object = {}
+@description('Optional. The managed identity definition for this resource. At least one identity type is required.')
+param managedIdentities managedIdentitiesType = {
+  systemAssigned: true
+}
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the disk encryption resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : 'UserAssigned'
+var formattedUserAssignedIdentities = reduce(map((managedIdentities.?userAssignedResourceIds ?? []), (id) => { '${id}': {} }), {}, (cur, next) => union(cur, next)) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
 
-var identity = {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-}
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'UserAssigned' : null)
+  userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
+} : null
 
 var builtInRoleNames = {
 
@@ -91,12 +90,12 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = {
 }
 
 // Note: This is only enabled for user-assigned identities as the service's system-assigned identity isn't available during its initial deployment
-module keyVaultPermissions 'modules/nested_keyVaultPermissions.bicep' = [for (userAssignedIdentityId, index) in items(userAssignedIdentities): {
+module keyVaultPermissions 'modules/nested_keyVaultPermissions.bicep' = [for (userAssignedIdentityResourceId, index) in (managedIdentities.?userAssignedResourceIds ?? []): {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVPermissions-${index}'
   params: {
     keyName: keyName
     keyVaultResourceId: keyVaultResourceId
-    userAssignedIdentityResourceId: userAssignedIdentityId.key
+    userAssignedIdentityResourceId: userAssignedIdentityResourceId
     rbacAuthorizationEnabled: keyVault.properties.enableRbacAuthorization
   }
   scope: resourceGroup(split(keyVaultResourceId, '/')[2], split(keyVaultResourceId, '/')[4])
@@ -155,8 +154,8 @@ output name string = diskEncryptionSet.name
 @description('The resource group the disk encryption set was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The principal ID of the disk encryption set.')
-output principalId string = systemAssignedIdentity == true ? diskEncryptionSet.identity.principalId : ''
+@description('The principal ID of the system assigned identity.')
+output systemAssignedMIPrincipalId string = (managedIdentities.?systemAssigned ?? false) && contains(diskEncryptionSet.identity, 'principalId') ? diskEncryptionSet.identity.principalId : ''
 
 @description('The idenities of the disk encryption set.')
 output identities object = diskEncryptionSet.identity
@@ -170,6 +169,14 @@ output location string = diskEncryptionSet.location
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourceIds: string[]?
+}
 
 type lockType = {
   @description('Optional. Specify the name of lock.')
@@ -187,7 +194,7 @@ type roleAssignmentType = {
   principalId: string
 
   @description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @description('Optional. The description of the role assignment.')
   description: string?

@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "15947534421126412986"
+      "version": "0.23.1.45101",
+      "templateHash": "5802465844150331034"
     },
     "name": "Public SSH Keys",
     "description": "This module deploys a Public SSH Key.\r\n\r\n> Note: The resource does not auto-generate the key for you.",
@@ -140,7 +140,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the availability set resource."
       }

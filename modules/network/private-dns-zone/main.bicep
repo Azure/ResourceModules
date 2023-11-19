@@ -39,7 +39,7 @@ param location string = 'global'
 param roleAssignments roleAssignmentType
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The lock settings of the service.')
 param lock lockType
@@ -193,7 +193,7 @@ module privateDnsZone_virtualNetworkLinks 'virtual-network-link/main.bicep' = [f
     virtualNetworkResourceId: virtualNetworkLink.virtualNetworkResourceId
     location: contains(virtualNetworkLink, 'location') ? virtualNetworkLink.location : 'global'
     registrationEnabled: contains(virtualNetworkLink, 'registrationEnabled') ? virtualNetworkLink.registrationEnabled : false
-    tags: contains(virtualNetworkLink, 'tags') ? virtualNetworkLink.tags : {}
+    tags: virtualNetworkLink.?tags ?? tags
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -253,7 +253,7 @@ type roleAssignmentType = {
   principalId: string
 
   @description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @description('Optional. The description of the role assignment.')
   description: string?

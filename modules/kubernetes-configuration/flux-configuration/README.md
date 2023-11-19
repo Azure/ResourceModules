@@ -27,124 +27,11 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/kubernetes-configuration.flux-configuration:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module fluxConfiguration 'br:bicep/modules/kubernetes-configuration.flux-configuration:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-kcfccom'
-  params: {
-    // Required parameters
-    clusterName: '<clusterName>'
-    name: 'kcfccom001'
-    namespace: 'flux-system'
-    sourceKind: 'GitRepository'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    gitRepository: {
-      repositoryRef: {
-        branch: 'main'
-      }
-      sshKnownHosts: ''
-      syncIntervalInSeconds: 300
-      timeoutInSeconds: 180
-      url: 'https://github.com/mspnp/aks-baseline'
-    }
-    kustomizations: {
-      unified: {
-        dependsOn: []
-        force: false
-        path: './cluster-manifests'
-        postBuild: {
-          substitute: {
-            TEST_VAR1: 'foo'
-            TEST_VAR2: 'bar'
-          }
-        }
-        prune: true
-        syncIntervalInSeconds: 300
-        timeoutInSeconds: 300
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "clusterName": {
-      "value": "<clusterName>"
-    },
-    "name": {
-      "value": "kcfccom001"
-    },
-    "namespace": {
-      "value": "flux-system"
-    },
-    "sourceKind": {
-      "value": "GitRepository"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "gitRepository": {
-      "value": {
-        "repositoryRef": {
-          "branch": "main"
-        },
-        "sshKnownHosts": "",
-        "syncIntervalInSeconds": 300,
-        "timeoutInSeconds": 180,
-        "url": "https://github.com/mspnp/aks-baseline"
-      }
-    },
-    "kustomizations": {
-      "value": {
-        "unified": {
-          "dependsOn": [],
-          "force": false,
-          "path": "./cluster-manifests",
-          "postBuild": {
-            "substitute": {
-              "TEST_VAR1": "foo",
-              "TEST_VAR2": "bar"
-            }
-          },
-          "prune": true,
-          "syncIntervalInSeconds": 300,
-          "timeoutInSeconds": 300
-        }
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -224,6 +111,210 @@ module fluxConfiguration 'br:bicep/modules/kubernetes-configuration.flux-configu
 </details>
 <p>
 
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module fluxConfiguration 'br:bicep/modules/kubernetes-configuration.flux-configuration:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-kcfcmax'
+  params: {
+    // Required parameters
+    clusterName: '<clusterName>'
+    name: 'kcfcmax001'
+    namespace: 'flux-system'
+    sourceKind: 'GitRepository'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    gitRepository: {
+      repositoryRef: {
+        branch: 'main'
+      }
+      sshKnownHosts: ''
+      syncIntervalInSeconds: 300
+      timeoutInSeconds: 180
+      url: 'https://github.com/mspnp/aks-baseline'
+    }
+    kustomizations: {
+      unified: {
+        dependsOn: []
+        force: false
+        path: './cluster-manifests'
+        prune: true
+        syncIntervalInSeconds: 300
+        timeoutInSeconds: 300
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "clusterName": {
+      "value": "<clusterName>"
+    },
+    "name": {
+      "value": "kcfcmax001"
+    },
+    "namespace": {
+      "value": "flux-system"
+    },
+    "sourceKind": {
+      "value": "GitRepository"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "gitRepository": {
+      "value": {
+        "repositoryRef": {
+          "branch": "main"
+        },
+        "sshKnownHosts": "",
+        "syncIntervalInSeconds": 300,
+        "timeoutInSeconds": 180,
+        "url": "https://github.com/mspnp/aks-baseline"
+      }
+    },
+    "kustomizations": {
+      "value": {
+        "unified": {
+          "dependsOn": [],
+          "force": false,
+          "path": "./cluster-manifests",
+          "prune": true,
+          "syncIntervalInSeconds": 300,
+          "timeoutInSeconds": 300
+        }
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module fluxConfiguration 'br:bicep/modules/kubernetes-configuration.flux-configuration:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-kcfcwaf'
+  params: {
+    // Required parameters
+    clusterName: '<clusterName>'
+    name: 'kcfcwaf001'
+    namespace: 'flux-system'
+    sourceKind: 'GitRepository'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    gitRepository: {
+      repositoryRef: {
+        branch: 'main'
+      }
+      sshKnownHosts: ''
+      syncIntervalInSeconds: 300
+      timeoutInSeconds: 180
+      url: 'https://github.com/mspnp/aks-baseline'
+    }
+    kustomizations: {
+      unified: {
+        dependsOn: []
+        force: false
+        path: './cluster-manifests'
+        prune: true
+        syncIntervalInSeconds: 300
+        timeoutInSeconds: 300
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "clusterName": {
+      "value": "<clusterName>"
+    },
+    "name": {
+      "value": "kcfcwaf001"
+    },
+    "namespace": {
+      "value": "flux-system"
+    },
+    "sourceKind": {
+      "value": "GitRepository"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "gitRepository": {
+      "value": {
+        "repositoryRef": {
+          "branch": "main"
+        },
+        "sshKnownHosts": "",
+        "syncIntervalInSeconds": 300,
+        "timeoutInSeconds": 180,
+        "url": "https://github.com/mspnp/aks-baseline"
+      }
+    },
+    "kustomizations": {
+      "value": {
+        "unified": {
+          "dependsOn": [],
+          "force": false,
+          "path": "./cluster-manifests",
+          "prune": true,
+          "syncIntervalInSeconds": 300,
+          "timeoutInSeconds": 300
+        }
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -254,7 +345,7 @@ module fluxConfiguration 'br:bicep/modules/kubernetes-configuration.flux-configu
 Parameters to reconcile to the GitRepository source kind type.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `clusterName`
 
@@ -267,7 +358,7 @@ The name of the AKS cluster that should be configured.
 Key-value pairs of protected configuration settings for the configuration.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -281,14 +372,14 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Parameters to reconcile to the GitRepository source kind type.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `kustomizations`
 
 Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `location`
 
@@ -314,14 +405,26 @@ The namespace to which this configuration is installed to. Maximum of 253 lower 
 Scope at which the configuration will be installed.
 - Required: Yes
 - Type: string
-- Allowed: `[cluster, namespace]`
+- Allowed:
+  ```Bicep
+  [
+    'cluster'
+    'namespace'
+  ]
+  ```
 
 ### Parameter: `sourceKind`
 
 Source Kind to pull the configuration data from.
 - Required: Yes
 - Type: string
-- Allowed: `[Bucket, GitRepository]`
+- Allowed:
+  ```Bicep
+  [
+    'Bucket'
+    'GitRepository'
+  ]
+  ```
 
 ### Parameter: `suspend`
 

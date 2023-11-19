@@ -172,7 +172,7 @@ type roleAssignmentType = {
   principalId: string
 
   @sys.description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @sys.description('Optional. The description of the role assignment.')
   description: string?

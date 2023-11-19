@@ -27,6 +27,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.application-security-group:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -39,10 +40,10 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module applicationSecurityGroup 'br:bicep/modules/network.application-security-group:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nasgcom'
+  name: '${uniqueString(deployment().name, location)}-test-nasgmax'
   params: {
     // Required parameters
-    name: 'nasgcom001'
+    name: 'nasgmax001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: {
@@ -79,7 +80,93 @@ module applicationSecurityGroup 'br:bicep/modules/network.application-security-g
   "parameters": {
     // Required parameters
     "name": {
-      "value": "nasgcom001"
+      "value": "nasgmax001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module applicationSecurityGroup 'br:bicep/modules/network.application-security-group:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nasgwaf'
+  params: {
+    // Required parameters
+    name: 'nasgwaf001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nasgwaf001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -253,7 +340,6 @@ Required. The name of the role to assign. If it cannot be found you can specify 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

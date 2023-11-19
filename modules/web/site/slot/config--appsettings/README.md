@@ -59,7 +59,7 @@ The name of the parent site resource. Required if the template is used in a stan
 The app settings key-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -73,7 +73,16 @@ Enable telemetry via the Customer Usage Attribution ID (GUID).
 Type of slot to deploy.
 - Required: Yes
 - Type: string
-- Allowed: `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]`
+- Allowed:
+  ```Bicep
+  [
+    'app'
+    'functionapp'
+    'functionapplinux'
+    'functionappworkflowapp'
+    'functionappworkflowapplinux'
+  ]
+  ```
 
 ### Parameter: `setAzureWebJobsDashboard`
 

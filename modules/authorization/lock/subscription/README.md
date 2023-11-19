@@ -43,7 +43,13 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Set lock level.
 - Required: Yes
 - Type: string
-- Allowed: `[CanNotDelete, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `name`
 

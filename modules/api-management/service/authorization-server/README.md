@@ -67,21 +67,36 @@ OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.
 HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional. - HEAD, OPTIONS, TRACE, GET, POST, PUT, PATCH, DELETE.
 - Required: No
 - Type: array
-- Default: `[GET]`
+- Default:
+  ```Bicep
+  [
+    'GET'
+  ]
+  ```
 
 ### Parameter: `bearerTokenSendingMethods`
 
 Specifies the mechanism by which access token is passed to the API. - authorizationHeader or query.
 - Required: No
 - Type: array
-- Default: `[authorizationHeader]`
+- Default:
+  ```Bicep
+  [
+    'authorizationHeader'
+  ]
+  ```
 
 ### Parameter: `clientAuthenticationMethod`
 
 Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or Body. When Body is specified, client credentials and other parameters are passed within the request body in the application/x-www-form-urlencoded format. - Basic or Body.
 - Required: No
 - Type: array
-- Default: `[Basic]`
+- Default:
+  ```Bicep
+  [
+    'Basic'
+  ]
+  ```
 
 ### Parameter: `clientId`
 

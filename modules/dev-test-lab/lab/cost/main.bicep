@@ -15,7 +15,7 @@ param labName string
 param cycleType string
 
 @sys.description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @sys.description('Conditional. Reporting cycle start date in the zulu time format (e.g. 2023-12-01T00:00:00.000Z). Required if cycleType is set to "Custom".')
 param cycleStartDateTime string = ''

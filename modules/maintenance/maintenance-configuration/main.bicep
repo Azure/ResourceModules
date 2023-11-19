@@ -42,7 +42,7 @@ param namespace string = ''
 param roleAssignments roleAssignmentType
 
 @description('Optional. Gets or sets tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Gets or sets the visibility of the configuration. The default value is \'Custom\'.')
 @allowed([
@@ -153,7 +153,7 @@ type roleAssignmentType = {
   principalId: string
 
   @description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @description('Optional. The description of the role assignment.')
   description: string?

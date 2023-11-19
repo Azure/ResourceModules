@@ -9,7 +9,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Tags of the Firewall policy resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Configures this gateway to accept traffic from non Virtual WAN networks.')
 param allowNonVirtualWanTraffic bool = false
@@ -130,7 +130,7 @@ type roleAssignmentType = {
   principalId: string
 
   @description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @description('Optional. The description of the role assignment.')
   description: string?

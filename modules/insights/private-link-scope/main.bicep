@@ -19,10 +19,10 @@ param roleAssignments roleAssignmentType
 param scopedResources array = []
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
-param privateEndpoints array = []
+param privateEndpoints privateEndpointType
 
 @description('Optional. Resource tags.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -75,27 +75,27 @@ resource privateLinkScope_lock 'Microsoft.Authorization/locks@2020-05-01' = if (
   scope: privateLinkScope
 }
 
-module privateLinkScope_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-PvtLinkScope-PrivateEndpoint-${index}'
+module privateLinkScope_privateEndpoints '../../network/private-endpoint/main.bicep' = [for (privateEndpoint, index) in (privateEndpoints ?? []): {
+  name: '${uniqueString(deployment().name, location)}-privateLinkScope-PrivateEndpoint-${index}'
   params: {
     groupIds: [
-      privateEndpoint.service
+      privateEndpoint.?service ?? 'azuremonitor'
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(privateLinkScope.id, '/'))}-${privateEndpoint.service}-${index}'
+    name: privateEndpoint.?name ?? 'pep-${last(split(privateLinkScope.id, '/'))}-${privateEndpoint.?service ?? 'azuremonitor'}-${index}'
     serviceResourceId: privateLinkScope.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-    location: contains(privateEndpoint, 'location') ? privateEndpoint.location : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    enableDefaultTelemetry: privateEndpoint.?enableDefaultTelemetry ?? enableReferencedModulesTelemetry
+    location: privateEndpoint.?location ?? reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: privateEndpoint.?lock ?? lock
-    privateDnsZoneGroupName: contains(privateEndpoint, 'privateDnsZoneGroupName') ? privateEndpoint.privateDnsZoneGroupName : 'default'
-    privateDnsZoneResourceIds: contains(privateEndpoint, 'privateDnsZoneResourceIds') ? privateEndpoint.privateDnsZoneResourceIds : []
-    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
-    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
-    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
-    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
-    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
-    applicationSecurityGroupResourceIds: contains(privateEndpoint, 'applicationSecurityGroupResourceIds') ? privateEndpoint.applicationSecurityGroupResourceIds : []
-    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
+    privateDnsZoneGroupName: privateEndpoint.?privateDnsZoneGroupName
+    privateDnsZoneResourceIds: privateEndpoint.?privateDnsZoneResourceIds
+    roleAssignments: privateEndpoint.?roleAssignments
+    tags: privateEndpoint.?tags ?? tags
+    manualPrivateLinkServiceConnections: privateEndpoint.?manualPrivateLinkServiceConnections
+    customDnsConfigs: privateEndpoint.?customDnsConfigs
+    ipConfigurations: privateEndpoint.?ipConfigurations
+    applicationSecurityGroupResourceIds: privateEndpoint.?applicationSecurityGroupResourceIds
+    customNetworkInterfaceName: privateEndpoint.?customNetworkInterfaceName
   }
 }]
 
@@ -145,7 +145,7 @@ type roleAssignmentType = {
   principalId: string
 
   @description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @description('Optional. The description of the role assignment.')
   description: string?
@@ -158,4 +158,72 @@ type roleAssignmentType = {
 
   @description('Optional. The Resource Id of the delegated managed identity resource.')
   delegatedManagedIdentityResourceId: string?
+}[]?
+
+type privateEndpointType = {
+  @description('Optional. The name of the private endpoint.')
+  name: string?
+
+  @description('Optional. The location to deploy the private endpoint to.')
+  location: string?
+
+  @description('Optional. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob".')
+  service: string?
+
+  @description('Required. Resource ID of the subnet where the endpoint needs to be created.')
+  subnetResourceId: string
+
+  @description('Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided.')
+  privateDnsZoneGroupName: string?
+
+  @description('Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones.')
+  privateDnsZoneResourceIds: string[]?
+
+  @description('Optional. Custom DNS configurations.')
+  customDnsConfigs: {
+    @description('Required. Fqdn that resolves to private endpoint ip address.')
+    fqdn: string?
+
+    @description('Required. A list of private ip addresses of the private endpoint.')
+    ipAddresses: string[]
+  }[]?
+
+  @description('Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.')
+  ipConfigurations: {
+    @description('Required. The name of the resource that is unique within a resource group.')
+    name: string
+
+    @description('Required. Properties of private endpoint IP configurations.')
+    properties: {
+      @description('Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.')
+      groupId: string
+
+      @description('Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.')
+      memberName: string
+
+      @description('Required. A private ip address obtained from the private endpoint\'s subnet.')
+      privateIPAddress: string
+    }
+  }[]?
+
+  @description('Optional. Application security groups in which the private endpoint IP configuration is included.')
+  applicationSecurityGroupResourceIds: string[]?
+
+  @description('Optional. The custom name of the network interface attached to the private endpoint.')
+  customNetworkInterfaceName: string?
+
+  @description('Optional. Specify the type of lock.')
+  lock: lockType
+
+  @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+  roleAssignments: roleAssignmentType
+
+  @description('Optional. Tags to be applied on all resources/resource groups in this deployment.')
+  tags: object?
+
+  @description('Optional. Manual PrivateLink Service Connections.')
+  manualPrivateLinkServiceConnections: array?
+
+  @description('Optional. Enable/Disable usage telemetry for module.')
+  enableTelemetry: bool?
 }[]?

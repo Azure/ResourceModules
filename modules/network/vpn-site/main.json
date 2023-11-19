@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "6363080366806288405"
+      "version": "0.23.1.45101",
+      "templateHash": "12353107767353318428"
     },
     "name": "VPN Sites",
     "description": "This module deploys a VPN Site.",
@@ -127,7 +127,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }

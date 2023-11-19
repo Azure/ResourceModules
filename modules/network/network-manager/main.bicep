@@ -17,7 +17,7 @@ param lock lockType
 param roleAssignments roleAssignmentType
 
 @sys.description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @maxLength(500)
 @sys.description('Optional. A description of the network manager.')
@@ -185,7 +185,7 @@ type roleAssignmentType = {
   principalId: string
 
   @sys.description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @sys.description('Optional. The description of the role assignment.')
   description: string?

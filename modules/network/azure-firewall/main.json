@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "3226240362527583277"
+      "version": "0.23.1.45101",
+      "templateHash": "13795244529737704006"
     },
     "name": "Azure Firewalls",
     "description": "This module deploys an Azure Firewall.",
@@ -103,6 +103,112 @@
         }
       },
       "nullable": true
+    },
+    "diagnosticSettingType": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The name of diagnostic setting."
+            }
+          },
+          "logCategoriesAndGroups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here."
+                  }
+                },
+                "categoryGroup": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs."
+                  }
+                }
+              }
+            },
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+            }
+          },
+          "metricCategories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics."
+                  }
+                }
+              }
+            },
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+            }
+          },
+          "logAnalyticsDestinationType": {
+            "type": "string",
+            "allowedValues": [
+              "AzureDiagnostics",
+              "Dedicated"
+            ],
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
+            }
+          },
+          "workspaceResourceId": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+            }
+          },
+          "storageAccountResourceId": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+            }
+          },
+          "eventHubAuthorizationRuleResourceId": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+            }
+          },
+          "eventHubName": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+            }
+          },
+          "marketplacePartnerResourceId": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
+            }
+          }
+        }
+      },
+      "nullable": true
     }
   },
   "parameters": {
@@ -145,18 +251,13 @@
         "description": "Optional. This is to add any additional Public IP configurations on top of the Public IP with subnet IP configuration."
       }
     },
-    "isCreateDefaultPublicIP": {
-      "type": "bool",
-      "defaultValue": true,
-      "metadata": {
-        "description": "Optional. Specifies if a Public IP should be created by default if one is not provided."
-      }
-    },
     "publicIPAddressObject": {
       "type": "object",
-      "defaultValue": {},
+      "defaultValue": {
+        "name": "[format('{0}-pip', parameters('name'))]"
+      },
       "metadata": {
-        "description": "Optional. Specifies the properties of the Public IP to create and be used by Azure Firewall. If it's not provided and publicIPResourceID is empty, a '-pip' suffix will be appended to the Firewall's name."
+        "description": "Optional. Specifies the properties of the Public IP to create and be used by the Firewall, if no existing public IP was provided."
       }
     },
     "managementIPResourceID": {
@@ -238,32 +339,10 @@
         "description": "Optional. Zone numbers e.g. 1,2,3."
       }
     },
-    "diagnosticStorageAccountId": {
-      "type": "string",
-      "defaultValue": "",
+    "diagnosticSettings": {
+      "$ref": "#/definitions/diagnosticSettingType",
       "metadata": {
-        "description": "Optional. Diagnostic Storage Account resource identifier."
-      }
-    },
-    "diagnosticWorkspaceId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Log Analytics workspace resource identifier."
-      }
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
-      }
-    },
-    "diagnosticEventHubName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
+        "description": "Optional. The diagnostic settings of the service."
       }
     },
     "location": {
@@ -287,7 +366,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the Azure Firewall resource."
       }
@@ -297,41 +376,6 @@
       "defaultValue": true,
       "metadata": {
         "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
-      }
-    },
-    "diagnosticLogCategoriesToEnable": {
-      "type": "array",
-      "defaultValue": [
-        "allLogs"
-      ],
-      "allowedValues": [
-        "",
-        "allLogs",
-        "AzureFirewallApplicationRule",
-        "AzureFirewallNetworkRule",
-        "AzureFirewallDnsProxy"
-      ],
-      "metadata": {
-        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
-      }
-    },
-    "diagnosticMetricsToEnable": {
-      "type": "array",
-      "defaultValue": [
-        "AllMetrics"
-      ],
-      "allowedValues": [
-        "AllMetrics"
-      ],
-      "metadata": {
-        "description": "Optional. The name of metrics that will be streamed."
-      }
-    },
-    "diagnosticSettingsName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
       }
     }
   },
@@ -346,49 +390,11 @@
             "publicIPAddress": "[if(contains(parameters('additionalPublicIpConfigurations')[copyIndex('additionalPublicIpConfigurationsVar')], 'publicIPAddressResourceId'), createObject('id', parameters('additionalPublicIpConfigurations')[copyIndex('additionalPublicIpConfigurationsVar')].publicIPAddressResourceId), null())]"
           }
         }
-      },
-      {
-        "name": "diagnosticsLogsSpecified",
-        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
-        "input": {
-          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-          "enabled": true
-        }
-      },
-      {
-        "name": "diagnosticsMetrics",
-        "count": "[length(parameters('diagnosticMetricsToEnable'))]",
-        "input": {
-          "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
-          "timeGrain": null,
-          "enabled": true
-        }
       }
     ],
     "azureSkuName": "[if(empty(parameters('vNetId')), 'AZFW_Hub', 'AZFW_VNet')]",
     "requiresManagementIp": "[if(equals(parameters('azureSkuTier'), 'Basic'), true(), false())]",
     "isCreateDefaultManagementIP": "[and(empty(parameters('managementIPResourceID')), variables('requiresManagementIp'))]",
-    "subnetVar": {
-      "subnet": {
-        "id": "[format('{0}/subnets/AzureFirewallSubnet', parameters('vNetId'))]"
-      }
-    },
-    "existingPip": {
-      "publicIPAddress": {
-        "id": "[parameters('publicIPResourceID')]"
-      }
-    },
-    "managementSubnetVar": {
-      "subnet": {
-        "id": "[format('{0}/subnets/AzureFirewallManagementSubnet', parameters('vNetId'))]"
-      }
-    },
-    "existingMip": {
-      "publicIPAddress": {
-        "id": "[parameters('managementIPResourceID')]"
-      }
-    },
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "enableReferencedModulesTelemetry": false,
     "builtInRoleNames": {
       "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
@@ -420,7 +426,7 @@
       "location": "[parameters('location')]",
       "zones": "[if(equals(length(parameters('zones')), 0), null(), parameters('zones'))]",
       "tags": "[parameters('tags')]",
-      "properties": "[if(equals(variables('azureSkuName'), 'AZFW_VNet'), createObject('threatIntelMode', parameters('threatIntelMode'), 'firewallPolicy', if(not(empty(parameters('firewallPolicyId'))), createObject('id', parameters('firewallPolicyId')), null()), 'ipConfigurations', concat(createArray(createObject('name', if(not(empty(parameters('publicIPResourceID'))), last(split(parameters('publicIPResourceID'), '/')), reference('publicIPAddress').outputs.name.value), 'properties', union(variables('subnetVar'), if(not(empty(parameters('publicIPResourceID'))), variables('existingPip'), createObject()), if(parameters('isCreateDefaultPublicIP'), createObject('publicIPAddress', if(and(empty(parameters('publicIPResourceID')), parameters('isCreateDefaultPublicIP')), createObject('id', reference('publicIPAddress').outputs.resourceId.value), null())), createObject())))), variables('additionalPublicIpConfigurationsVar')), 'managementIpConfiguration', if(variables('requiresManagementIp'), createObject('name', if(not(empty(parameters('managementIPResourceID'))), last(split(parameters('managementIPResourceID'), '/')), reference('managementIPAddress').outputs.name.value), 'properties', union(variables('managementSubnetVar'), if(not(empty(parameters('managementIPResourceID'))), variables('existingMip'), createObject()), if(variables('isCreateDefaultManagementIP'), createObject('publicIPAddress', if(and(empty(parameters('managementIPResourceID')), variables('isCreateDefaultManagementIP')), createObject('id', reference('managementIPAddress').outputs.resourceId.value), null())), createObject()))), null()), 'sku', createObject('name', variables('azureSkuName'), 'tier', parameters('azureSkuTier')), 'applicationRuleCollections', parameters('applicationRuleCollections'), 'natRuleCollections', parameters('natRuleCollections'), 'networkRuleCollections', parameters('networkRuleCollections')), createObject('firewallPolicy', if(not(empty(parameters('firewallPolicyId'))), createObject('id', parameters('firewallPolicyId')), null()), 'sku', createObject('name', variables('azureSkuName'), 'tier', parameters('azureSkuTier')), 'hubIPAddresses', if(not(empty(parameters('hubIPAddresses'))), parameters('hubIPAddresses'), null()), 'virtualHub', if(not(empty(parameters('virtualHubId'))), createObject('id', parameters('virtualHubId')), null())))]",
+      "properties": "[if(equals(variables('azureSkuName'), 'AZFW_VNet'), createObject('threatIntelMode', parameters('threatIntelMode'), 'firewallPolicy', if(not(empty(parameters('firewallPolicyId'))), createObject('id', parameters('firewallPolicyId')), null()), 'ipConfigurations', concat(createArray(createObject('name', if(not(empty(parameters('publicIPResourceID'))), last(split(parameters('publicIPResourceID'), '/')), reference('publicIPAddress').outputs.name.value), 'properties', union(createObject('subnet', createObject('id', format('{0}/subnets/AzureFirewallSubnet', parameters('vNetId')))), if(or(not(empty(parameters('publicIPResourceID'))), not(empty(parameters('publicIPAddressObject')))), createObject('publicIPAddress', createObject('id', if(not(empty(parameters('publicIPResourceID'))), parameters('publicIPResourceID'), reference('publicIPAddress').outputs.resourceId.value))), createObject())))), variables('additionalPublicIpConfigurationsVar')), 'managementIpConfiguration', if(variables('requiresManagementIp'), createObject('name', if(not(empty(parameters('managementIPResourceID'))), last(split(parameters('managementIPResourceID'), '/')), reference('managementIPAddress').outputs.name.value), 'properties', union(createObject('subnet', createObject('id', format('{0}/subnets/AzureFirewallManagementSubnet', parameters('vNetId')))), if(or(not(empty(parameters('publicIPResourceID'))), not(empty(parameters('managementIPAddressObject')))), createObject('publicIPAddress', createObject('id', if(not(empty(parameters('managementIPResourceID'))), parameters('managementIPResourceID'), reference('managementIPAddress').outputs.resourceId.value))), createObject()))), null()), 'sku', createObject('name', variables('azureSkuName'), 'tier', parameters('azureSkuTier')), 'applicationRuleCollections', parameters('applicationRuleCollections'), 'natRuleCollections', parameters('natRuleCollections'), 'networkRuleCollections', parameters('networkRuleCollections')), createObject('firewallPolicy', if(not(empty(parameters('firewallPolicyId'))), createObject('id', parameters('firewallPolicyId')), null()), 'sku', createObject('name', variables('azureSkuName'), 'tier', parameters('azureSkuTier')), 'hubIPAddresses', if(not(empty(parameters('hubIPAddresses'))), parameters('hubIPAddresses'), null()), 'virtualHub', if(not(empty(parameters('virtualHubId'))), createObject('id', parameters('virtualHubId')), null())))]",
       "dependsOn": [
         "managementIPAddress",
         "publicIPAddress"
@@ -441,18 +447,23 @@
       ]
     },
     "azureFirewall_diagnosticSettings": {
-      "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
+      "copy": {
+        "name": "azureFirewall_diagnosticSettings",
+        "count": "[length(coalesce(parameters('diagnosticSettings'), createArray()))]"
+      },
       "type": "Microsoft.Insights/diagnosticSettings",
       "apiVersion": "2021-05-01-preview",
       "scope": "[format('Microsoft.Network/azureFirewalls/{0}', parameters('name'))]",
-      "name": "[if(not(empty(parameters('diagnosticSettingsName'))), parameters('diagnosticSettingsName'), format('{0}-diagnosticSettings', parameters('name')))]",
+      "name": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'name'), format('{0}-diagnosticSettings', parameters('name')))]",
       "properties": {
-        "storageAccountId": "[if(not(empty(parameters('diagnosticStorageAccountId'))), parameters('diagnosticStorageAccountId'), null())]",
-        "workspaceId": "[if(not(empty(parameters('diagnosticWorkspaceId'))), parameters('diagnosticWorkspaceId'), null())]",
-        "eventHubAuthorizationRuleId": "[if(not(empty(parameters('diagnosticEventHubAuthorizationRuleId'))), parameters('diagnosticEventHubAuthorizationRuleId'), null())]",
-        "eventHubName": "[if(not(empty(parameters('diagnosticEventHubName'))), parameters('diagnosticEventHubName'), null())]",
-        "metrics": "[variables('diagnosticsMetrics')]",
-        "logs": "[variables('diagnosticsLogs')]"
+        "storageAccountId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'storageAccountResourceId')]",
+        "workspaceId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'workspaceResourceId')]",
+        "eventHubAuthorizationRuleId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubAuthorizationRuleResourceId')]",
+        "eventHubName": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubName')]",
+        "metrics": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'metricCategories'), createArray(createObject('category', 'AllMetrics', 'timeGrain', null(), 'enabled', true())))]",
+        "logs": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logCategoriesAndGroups'), createArray(createObject('categoryGroup', 'AllLogs', 'enabled', true())))]",
+        "marketplacePartnerId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'marketplacePartnerResourceId')]",
+        "logAnalyticsDestinationType": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logAnalyticsDestinationType')]"
       },
       "dependsOn": [
         "azureFirewall"
@@ -481,7 +492,7 @@
       ]
     },
     "publicIPAddress": {
-      "condition": "[and(and(empty(parameters('publicIPResourceID')), parameters('isCreateDefaultPublicIP')), equals(variables('azureSkuName'), 'AZFW_VNet'))]",
+      "condition": "[and(empty(parameters('publicIPResourceID')), equals(variables('azureSkuName'), 'AZFW_VNet'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('{0}-Firewall-PIP', uniqueString(deployment().name, parameters('location')))]",
@@ -491,34 +502,25 @@
         },
         "mode": "Incremental",
         "parameters": {
-          "name": "[if(contains(parameters('publicIPAddressObject'), 'name'), if(not(empty(parameters('publicIPAddressObject').name)), createObject('value', parameters('publicIPAddressObject').name), createObject('value', format('{0}-pip', parameters('name')))), createObject('value', format('{0}-pip', parameters('name'))))]",
+          "name": {
+            "value": "[parameters('publicIPAddressObject').name]"
+          },
           "publicIPPrefixResourceId": "[if(contains(parameters('publicIPAddressObject'), 'publicIPPrefixResourceId'), if(not(empty(parameters('publicIPAddressObject').publicIPPrefixResourceId)), createObject('value', parameters('publicIPAddressObject').publicIPPrefixResourceId), createObject('value', '')), createObject('value', ''))]",
           "publicIPAllocationMethod": "[if(contains(parameters('publicIPAddressObject'), 'publicIPAllocationMethod'), if(not(empty(parameters('publicIPAddressObject').publicIPAllocationMethod)), createObject('value', parameters('publicIPAddressObject').publicIPAllocationMethod), createObject('value', 'Static')), createObject('value', 'Static'))]",
           "skuName": "[if(contains(parameters('publicIPAddressObject'), 'skuName'), if(not(empty(parameters('publicIPAddressObject').skuName)), createObject('value', parameters('publicIPAddressObject').skuName), createObject('value', 'Standard')), createObject('value', 'Standard'))]",
           "skuTier": "[if(contains(parameters('publicIPAddressObject'), 'skuTier'), if(not(empty(parameters('publicIPAddressObject').skuTier)), createObject('value', parameters('publicIPAddressObject').skuTier), createObject('value', 'Regional')), createObject('value', 'Regional'))]",
           "roleAssignments": "[if(contains(parameters('publicIPAddressObject'), 'roleAssignments'), if(not(empty(parameters('publicIPAddressObject').roleAssignments)), createObject('value', parameters('publicIPAddressObject').roleAssignments), createObject('value', createArray())), createObject('value', createArray()))]",
-          "diagnosticMetricsToEnable": "[if(contains(parameters('publicIPAddressObject'), 'diagnosticMetricsToEnable'), if(not(empty(parameters('publicIPAddressObject').diagnosticMetricsToEnable)), createObject('value', parameters('publicIPAddressObject').diagnosticMetricsToEnable), createObject('value', createArray('AllMetrics'))), createObject('value', createArray('AllMetrics')))]",
-          "diagnosticLogCategoriesToEnable": "[if(contains(parameters('publicIPAddressObject'), 'diagnosticLogCategoriesToEnable'), createObject('value', parameters('publicIPAddressObject').diagnosticLogCategoriesToEnable), createObject('value', createArray('allLogs')))]",
+          "diagnosticSettings": {
+            "value": "[tryGet(parameters('publicIPAddressObject'), 'diagnosticSettings')]"
+          },
           "location": {
             "value": "[parameters('location')]"
-          },
-          "diagnosticStorageAccountId": {
-            "value": "[parameters('diagnosticStorageAccountId')]"
-          },
-          "diagnosticWorkspaceId": {
-            "value": "[parameters('diagnosticWorkspaceId')]"
-          },
-          "diagnosticEventHubAuthorizationRuleId": {
-            "value": "[parameters('diagnosticEventHubAuthorizationRuleId')]"
-          },
-          "diagnosticEventHubName": {
-            "value": "[parameters('diagnosticEventHubName')]"
           },
           "lock": {
             "value": "[parameters('lock')]"
           },
           "tags": {
-            "value": "[parameters('tags')]"
+            "value": "[coalesce(tryGet(parameters('publicIPAddressObject'), 'tags'), parameters('tags'))]"
           },
           "zones": {
             "value": "[parameters('zones')]"
@@ -534,8 +536,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "17964103943026732172"
+              "version": "0.23.1.45101",
+              "templateHash": "15536304828480480757"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -632,6 +634,112 @@
                 }
               },
               "nullable": true
+            },
+            "diagnosticSettingType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of diagnostic setting."
+                    }
+                  },
+                  "logCategoriesAndGroups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here."
+                          }
+                        },
+                        "categoryGroup": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs."
+                          }
+                        }
+                      }
+                    },
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                    }
+                  },
+                  "metricCategories": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "metadata": {
+                            "description": "Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics."
+                          }
+                        }
+                      }
+                    },
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                    }
+                  },
+                  "logAnalyticsDestinationType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "AzureDiagnostics",
+                      "Dedicated"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
+                    }
+                  },
+                  "workspaceResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "storageAccountResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "eventHubAuthorizationRuleResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+                    }
+                  },
+                  "eventHubName": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "marketplacePartnerResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
+                    }
+                  }
+                }
+              },
+              "nullable": true
             }
           },
           "parameters": {
@@ -699,32 +807,10 @@
                 "description": "Optional. IP address version."
               }
             },
-            "diagnosticStorageAccountId": {
-              "type": "string",
-              "defaultValue": "",
+            "diagnosticSettings": {
+              "$ref": "#/definitions/diagnosticSettingType",
               "metadata": {
-                "description": "Optional. Resource ID of the diagnostic storage account."
-              }
-            },
-            "diagnosticWorkspaceId": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Resource ID of the diagnostic log analytics workspace."
-              }
-            },
-            "diagnosticEventHubAuthorizationRuleId": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
-              }
-            },
-            "diagnosticEventHubName": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
+                "description": "Optional. The diagnostic settings of the service."
               }
             },
             "domainNameLabel": {
@@ -790,68 +876,13 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
-              }
-            },
-            "diagnosticLogCategoriesToEnable": {
-              "type": "array",
-              "defaultValue": [
-                "allLogs"
-              ],
-              "allowedValues": [
-                "",
-                "allLogs",
-                "DDoSProtectionNotifications",
-                "DDoSMitigationFlowLogs",
-                "DDoSMitigationReports"
-              ],
-              "metadata": {
-                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
-              }
-            },
-            "diagnosticMetricsToEnable": {
-              "type": "array",
-              "defaultValue": [
-                "AllMetrics"
-              ],
-              "allowedValues": [
-                "AllMetrics"
-              ],
-              "metadata": {
-                "description": "Optional. The name of metrics that will be streamed."
-              }
-            },
-            "diagnosticSettingsName": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
               }
             }
           },
           "variables": {
-            "copy": [
-              {
-                "name": "diagnosticsLogsSpecified",
-                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
-                "input": {
-                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-                  "enabled": true
-                }
-              },
-              {
-                "name": "diagnosticsMetrics",
-                "count": "[length(parameters('diagnosticMetricsToEnable'))]",
-                "input": {
-                  "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
-                  "timeGrain": null,
-                  "enabled": true
-                }
-              }
-            ],
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "builtInRoleNames": {
               "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
               "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
@@ -912,18 +943,23 @@
               ]
             },
             "publicIpAddress_diagnosticSettings": {
-              "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
+              "copy": {
+                "name": "publicIpAddress_diagnosticSettings",
+                "count": "[length(coalesce(parameters('diagnosticSettings'), createArray()))]"
+              },
               "type": "Microsoft.Insights/diagnosticSettings",
               "apiVersion": "2021-05-01-preview",
               "scope": "[format('Microsoft.Network/publicIPAddresses/{0}', parameters('name'))]",
-              "name": "[if(not(empty(parameters('diagnosticSettingsName'))), parameters('diagnosticSettingsName'), format('{0}-diagnosticSettings', parameters('name')))]",
+              "name": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'name'), format('{0}-diagnosticSettings', parameters('name')))]",
               "properties": {
-                "storageAccountId": "[if(not(empty(parameters('diagnosticStorageAccountId'))), parameters('diagnosticStorageAccountId'), null())]",
-                "workspaceId": "[if(not(empty(parameters('diagnosticWorkspaceId'))), parameters('diagnosticWorkspaceId'), null())]",
-                "eventHubAuthorizationRuleId": "[if(not(empty(parameters('diagnosticEventHubAuthorizationRuleId'))), parameters('diagnosticEventHubAuthorizationRuleId'), null())]",
-                "eventHubName": "[if(not(empty(parameters('diagnosticEventHubName'))), parameters('diagnosticEventHubName'), null())]",
-                "metrics": "[variables('diagnosticsMetrics')]",
-                "logs": "[variables('diagnosticsLogs')]"
+                "storageAccountId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'storageAccountResourceId')]",
+                "workspaceId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'workspaceResourceId')]",
+                "eventHubAuthorizationRuleId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubAuthorizationRuleResourceId')]",
+                "eventHubName": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubName')]",
+                "metrics": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'metricCategories'), createArray(createObject('category', 'AllMetrics', 'timeGrain', null(), 'enabled', true())))]",
+                "logs": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logCategoriesAndGroups'), createArray(createObject('categoryGroup', 'AllLogs', 'enabled', true())))]",
+                "marketplacePartnerId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'marketplacePartnerResourceId')]",
+                "logAnalyticsDestinationType": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logAnalyticsDestinationType')]"
               },
               "dependsOn": [
                 "publicIpAddress"
@@ -992,7 +1028,7 @@
       }
     },
     "managementIPAddress": {
-      "condition": "[and(and(empty(parameters('managementIPResourceID')), variables('isCreateDefaultManagementIP')), equals(variables('azureSkuName'), 'AZFW_VNet'))]",
+      "condition": "[and(variables('isCreateDefaultManagementIP'), equals(variables('azureSkuName'), 'AZFW_VNet'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('{0}-Firewall-MIP', uniqueString(deployment().name, parameters('location')))]",
@@ -1008,28 +1044,14 @@
           "skuName": "[if(contains(parameters('managementIPAddressObject'), 'skuName'), if(not(empty(parameters('managementIPAddressObject').skuName)), createObject('value', parameters('managementIPAddressObject').skuName), createObject('value', 'Standard')), createObject('value', 'Standard'))]",
           "skuTier": "[if(contains(parameters('managementIPAddressObject'), 'skuTier'), if(not(empty(parameters('managementIPAddressObject').skuTier)), createObject('value', parameters('managementIPAddressObject').skuTier), createObject('value', 'Regional')), createObject('value', 'Regional'))]",
           "roleAssignments": "[if(contains(parameters('managementIPAddressObject'), 'roleAssignments'), if(not(empty(parameters('managementIPAddressObject').roleAssignments)), createObject('value', parameters('managementIPAddressObject').roleAssignments), createObject('value', createArray())), createObject('value', createArray()))]",
-          "diagnosticMetricsToEnable": "[if(contains(parameters('managementIPAddressObject'), 'diagnosticMetricsToEnable'), if(not(empty(parameters('managementIPAddressObject').diagnosticMetricsToEnable)), createObject('value', parameters('managementIPAddressObject').diagnosticMetricsToEnable), createObject('value', createArray('AllMetrics'))), createObject('value', createArray('AllMetrics')))]",
-          "diagnosticLogCategoriesToEnable": "[if(contains(parameters('managementIPAddressObject'), 'diagnosticLogCategoriesToEnable'), createObject('value', parameters('managementIPAddressObject').diagnosticLogCategoriesToEnable), createObject('value', createArray('allLogs')))]",
+          "diagnosticSettings": {
+            "value": "[tryGet(parameters('managementIPAddressObject'), 'diagnosticSettings')]"
+          },
           "location": {
             "value": "[parameters('location')]"
           },
-          "diagnosticStorageAccountId": {
-            "value": "[parameters('diagnosticStorageAccountId')]"
-          },
-          "diagnosticWorkspaceId": {
-            "value": "[parameters('diagnosticWorkspaceId')]"
-          },
-          "diagnosticEventHubAuthorizationRuleId": {
-            "value": "[parameters('diagnosticEventHubAuthorizationRuleId')]"
-          },
-          "diagnosticEventHubName": {
-            "value": "[parameters('diagnosticEventHubName')]"
-          },
-          "lock": {
-            "value": "[parameters('lock')]"
-          },
           "tags": {
-            "value": "[parameters('tags')]"
+            "value": "[coalesce(tryGet(parameters('managementIPAddressObject'), 'tags'), parameters('tags'))]"
           },
           "zones": {
             "value": "[parameters('zones')]"
@@ -1045,8 +1067,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "17964103943026732172"
+              "version": "0.23.1.45101",
+              "templateHash": "15536304828480480757"
             },
             "name": "Public IP Addresses",
             "description": "This module deploys a Public IP Address.",
@@ -1143,6 +1165,112 @@
                 }
               },
               "nullable": true
+            },
+            "diagnosticSettingType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of diagnostic setting."
+                    }
+                  },
+                  "logCategoriesAndGroups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here."
+                          }
+                        },
+                        "categoryGroup": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs."
+                          }
+                        }
+                      }
+                    },
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                    }
+                  },
+                  "metricCategories": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "metadata": {
+                            "description": "Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics."
+                          }
+                        }
+                      }
+                    },
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                    }
+                  },
+                  "logAnalyticsDestinationType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "AzureDiagnostics",
+                      "Dedicated"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
+                    }
+                  },
+                  "workspaceResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "storageAccountResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "eventHubAuthorizationRuleResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+                    }
+                  },
+                  "eventHubName": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "marketplacePartnerResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
+                    }
+                  }
+                }
+              },
+              "nullable": true
             }
           },
           "parameters": {
@@ -1210,32 +1338,10 @@
                 "description": "Optional. IP address version."
               }
             },
-            "diagnosticStorageAccountId": {
-              "type": "string",
-              "defaultValue": "",
+            "diagnosticSettings": {
+              "$ref": "#/definitions/diagnosticSettingType",
               "metadata": {
-                "description": "Optional. Resource ID of the diagnostic storage account."
-              }
-            },
-            "diagnosticWorkspaceId": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Resource ID of the diagnostic log analytics workspace."
-              }
-            },
-            "diagnosticEventHubAuthorizationRuleId": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
-              }
-            },
-            "diagnosticEventHubName": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
+                "description": "Optional. The diagnostic settings of the service."
               }
             },
             "domainNameLabel": {
@@ -1301,68 +1407,13 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
-              }
-            },
-            "diagnosticLogCategoriesToEnable": {
-              "type": "array",
-              "defaultValue": [
-                "allLogs"
-              ],
-              "allowedValues": [
-                "",
-                "allLogs",
-                "DDoSProtectionNotifications",
-                "DDoSMitigationFlowLogs",
-                "DDoSMitigationReports"
-              ],
-              "metadata": {
-                "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
-              }
-            },
-            "diagnosticMetricsToEnable": {
-              "type": "array",
-              "defaultValue": [
-                "AllMetrics"
-              ],
-              "allowedValues": [
-                "AllMetrics"
-              ],
-              "metadata": {
-                "description": "Optional. The name of metrics that will be streamed."
-              }
-            },
-            "diagnosticSettingsName": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
               }
             }
           },
           "variables": {
-            "copy": [
-              {
-                "name": "diagnosticsLogsSpecified",
-                "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
-                "input": {
-                  "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-                  "enabled": true
-                }
-              },
-              {
-                "name": "diagnosticsMetrics",
-                "count": "[length(parameters('diagnosticMetricsToEnable'))]",
-                "input": {
-                  "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
-                  "timeGrain": null,
-                  "enabled": true
-                }
-              }
-            ],
-            "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
             "builtInRoleNames": {
               "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
               "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
@@ -1423,18 +1474,23 @@
               ]
             },
             "publicIpAddress_diagnosticSettings": {
-              "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
+              "copy": {
+                "name": "publicIpAddress_diagnosticSettings",
+                "count": "[length(coalesce(parameters('diagnosticSettings'), createArray()))]"
+              },
               "type": "Microsoft.Insights/diagnosticSettings",
               "apiVersion": "2021-05-01-preview",
               "scope": "[format('Microsoft.Network/publicIPAddresses/{0}', parameters('name'))]",
-              "name": "[if(not(empty(parameters('diagnosticSettingsName'))), parameters('diagnosticSettingsName'), format('{0}-diagnosticSettings', parameters('name')))]",
+              "name": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'name'), format('{0}-diagnosticSettings', parameters('name')))]",
               "properties": {
-                "storageAccountId": "[if(not(empty(parameters('diagnosticStorageAccountId'))), parameters('diagnosticStorageAccountId'), null())]",
-                "workspaceId": "[if(not(empty(parameters('diagnosticWorkspaceId'))), parameters('diagnosticWorkspaceId'), null())]",
-                "eventHubAuthorizationRuleId": "[if(not(empty(parameters('diagnosticEventHubAuthorizationRuleId'))), parameters('diagnosticEventHubAuthorizationRuleId'), null())]",
-                "eventHubName": "[if(not(empty(parameters('diagnosticEventHubName'))), parameters('diagnosticEventHubName'), null())]",
-                "metrics": "[variables('diagnosticsMetrics')]",
-                "logs": "[variables('diagnosticsLogs')]"
+                "storageAccountId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'storageAccountResourceId')]",
+                "workspaceId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'workspaceResourceId')]",
+                "eventHubAuthorizationRuleId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubAuthorizationRuleResourceId')]",
+                "eventHubName": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubName')]",
+                "metrics": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'metricCategories'), createArray(createObject('category', 'AllMetrics', 'timeGrain', null(), 'enabled', true())))]",
+                "logs": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logCategoriesAndGroups'), createArray(createObject('categoryGroup', 'AllLogs', 'enabled', true())))]",
+                "marketplacePartnerId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'marketplacePartnerResourceId')]",
+                "logAnalyticsDestinationType": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logAnalyticsDestinationType')]"
               },
               "dependsOn": [
                 "publicIpAddress"

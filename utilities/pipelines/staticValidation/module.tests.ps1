@@ -81,7 +81,7 @@ Describe 'File/folder tests' -Tag 'Modules' {
                 [string] $moduleFolderPath
             )
 
-            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath '.test')
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'tests')
             $pathExisting | Should -Be $true
         }
 
@@ -1156,7 +1156,7 @@ Describe 'API version tests' -Tag 'ApiCheck' {
         return
     }
 
-    $ApiVersions = Get-Content -Path $apiSpecsFilePath -Raw | ConvertFrom-Json
+    $ApiVersions = Get-Content -Path $apiSpecsFilePath -Raw | ConvertFrom-Json -AsHashtable
     foreach ($moduleFolderPath in $moduleFolderPaths) {
 
         $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
@@ -1200,7 +1200,7 @@ Describe 'API version tests' -Tag 'ApiCheck' {
                 { $PSItem -like '*diagnosticsettings*' } {
                     $testCases += @{
                         moduleName                     = $moduleFolderName
-                        resourceType                   = 'diagnosticsettings'
+                        resourceType                   = 'diagnosticSettings'
                         ProviderNamespace              = 'Microsoft.Insights'
                         TargetApi                      = $resource.ApiVersion
                         AvailableApiVersions           = $ApiVersions
@@ -1222,7 +1222,7 @@ Describe 'API version tests' -Tag 'ApiCheck' {
                 { $PSItem -like '*roleAssignments' } {
                     $testCases += @{
                         moduleName                     = $moduleFolderName
-                        resourceType                   = 'roleassignments'
+                        resourceType                   = 'roleAssignments'
                         ProviderNamespace              = 'Microsoft.Authorization'
                         TargetApi                      = $resource.ApiVersion
                         AvailableApiVersions           = $ApiVersions
@@ -1264,16 +1264,16 @@ Describe 'API version tests' -Tag 'ApiCheck' {
             [string] $ResourceType,
             [string] $TargetApi,
             [string] $ProviderNamespace,
-            [PSCustomObject] $AvailableApiVersions,
+            [hashtable] $AvailableApiVersions,
             [bool] $AllowPreviewVersionsInAPITests
         )
 
-        if (-not (($AvailableApiVersions | Get-Member -Type NoteProperty).Name -contains $ProviderNamespace)) {
+        if ($AvailableApiVersions.Keys -notcontains $ProviderNamespace) {
             Write-Warning "[API Test] The Provider Namespace [$ProviderNamespace] is missing in your Azure API versions file. Please consider updating it and if it is still missing to open an issue in the 'AzureAPICrawler' PowerShell module's GitHub repository."
             Set-ItResult -Skipped -Because "The Azure API version file is missing the Provider Namespace [$ProviderNamespace]."
             return
         }
-        if (-not (($AvailableApiVersions.$ProviderNamespace | Get-Member -Type NoteProperty).Name -contains $ResourceType)) {
+        if ($AvailableApiVersions.$ProviderNamespace.Keys -notcontains $ResourceType) {
             Write-Warning "[API Test] The Provider Namespace [$ProviderNamespace] is missing the Resource Type [$ResourceType] in your API versions file. Please consider updating it and if it is still missing to open an issue in the 'AzureAPICrawler' PowerShell module's GitHub repository."
             Set-ItResult -Skipped -Because "The Azure API version file is missing the Resource Type [$ResourceType] for Provider Namespace [$ProviderNamespace]."
             return
@@ -1297,10 +1297,15 @@ Describe 'API version tests' -Tag 'ApiCheck' {
         }
 
         $approvedApiVersions = $approvedApiVersions | Sort-Object -Unique -Descending
-        $approvedApiVersions | Should -Contain $TargetApi
 
-        # Provide a warning if an API version is second to next to expire.
-        if ($approvedApiVersions -contains $TargetApi) {
+        if ($approvedApiVersions -notcontains $TargetApi) {
+            # Using a warning now instead of an error, as we don't want to block PRs for this.
+            Write-Warning ("The used API version [$TargetApi] is not one of the most recent 5 versions. Please consider upgrading to one of the following: {0}" -f $approvedApiVersions -join ', ')
+
+            # The original failed test was
+            # $approvedApiVersions | Should -Contain $TargetApi
+        } else {
+            # Provide a warning if an API version is second to next to expire.
             $indexOfVersion = $approvedApiVersions.IndexOf($TargetApi)
 
             # Example

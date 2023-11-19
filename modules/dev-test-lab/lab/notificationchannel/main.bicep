@@ -15,7 +15,7 @@ param labName string
 param name string
 
 @sys.description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @sys.description('Optional. Description of notification.')
 param description string = ''

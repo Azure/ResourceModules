@@ -30,6 +30,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/security.azure-security-center:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -42,7 +43,69 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module azureSecurityCenter 'br:bicep/modules/security.azure-security-center:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-sasccom'
+  name: '${uniqueString(deployment().name, location)}-test-sascmax'
+  params: {
+    // Required parameters
+    workspaceId: '<workspaceId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    securityContactProperties: {
+      alertNotifications: 'Off'
+      alertsToAdmins: 'Off'
+      email: 'foo@contoso.com'
+      phone: '+12345678'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "workspaceId": {
+      "value": "<workspaceId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "securityContactProperties": {
+      "value": {
+        "alertNotifications": "Off",
+        "alertsToAdmins": "Off",
+        "email": "foo@contoso.com",
+        "phone": "+12345678"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureSecurityCenter 'br:bicep/modules/security.azure-security-center:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sascwaf'
   params: {
     // Required parameters
     workspaceId: '<workspaceId>'
@@ -133,7 +196,13 @@ The pricing tier value for AppServices. Azure Security Center is provided in two
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `armPricingTier`
 
@@ -141,7 +210,13 @@ The pricing tier value for ARM. Azure Security Center is provided in two pricing
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `autoProvision`
 
@@ -149,7 +224,13 @@ Describes what kind of security agent provisioning action to take. - On or Off.
 - Required: No
 - Type: string
 - Default: `'On'`
-- Allowed: `[Off, On]`
+- Allowed:
+  ```Bicep
+  [
+    'Off'
+    'On'
+  ]
+  ```
 
 ### Parameter: `containerRegistryPricingTier`
 
@@ -157,7 +238,13 @@ The pricing tier value for ContainerRegistry. Azure Security Center is provided 
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `containersTier`
 
@@ -165,7 +252,13 @@ The pricing tier value for containers. Azure Security Center is provided in two 
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `cosmosDbsTier`
 
@@ -173,14 +266,20 @@ The pricing tier value for CosmosDbs. Azure Security Center is provided in two p
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `deviceSecurityGroupProperties`
 
 Device Security group data.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `dnsPricingTier`
 
@@ -188,7 +287,13 @@ The pricing tier value for DNS. Azure Security Center is provided in two pricing
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -202,7 +307,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 Security Solution data.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `keyVaultsPricingTier`
 
@@ -210,7 +315,13 @@ The pricing tier value for KeyVaults. Azure Security Center is provided in two p
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `kubernetesServicePricingTier`
 
@@ -218,7 +329,13 @@ The pricing tier value for KubernetesService. Azure Security Center is provided 
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `location`
 
@@ -233,7 +350,13 @@ The pricing tier value for OpenSourceRelationalDatabases. Azure Security Center 
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `scope`
 
@@ -246,7 +369,7 @@ All the VMs in this scope will send their security data to the mentioned workspa
 Security contact data.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `sqlServersPricingTier`
 
@@ -254,7 +377,13 @@ The pricing tier value for SqlServers. Azure Security Center is provided in two 
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `sqlServerVirtualMachinesPricingTier`
 
@@ -262,7 +391,13 @@ The pricing tier value for SqlServerVirtualMachines. Azure Security Center is pr
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `storageAccountsPricingTier`
 
@@ -270,7 +405,13 @@ The pricing tier value for StorageAccounts. Azure Security Center is provided in
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `virtualMachinesPricingTier`
 
@@ -278,7 +419,13 @@ The pricing tier value for VMs. Azure Security Center is provided in two pricing
 - Required: No
 - Type: string
 - Default: `'Free'`
-- Allowed: `[Free, Standard]`
+- Allowed:
+  ```Bicep
+  [
+    'Free'
+    'Standard'
+  ]
+  ```
 
 ### Parameter: `workspaceId`
 

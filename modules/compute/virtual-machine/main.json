@@ -5,14 +5,37 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "17296216559349998726"
+      "version": "0.23.1.45101",
+      "templateHash": "10032149803242831111"
     },
     "name": "Virtual Machines",
     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "systemAssigned": {
+          "type": "bool",
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. Enables system assigned managed identity on the resource."
+          }
+        },
+        "userAssignedResourceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource."
+          }
+        }
+      },
+      "nullable": true
+    },
     "lockType": {
       "type": "object",
       "properties": {
@@ -98,6 +121,112 @@
             "nullable": true,
             "metadata": {
               "description": "Optional. The Resource Id of the delegated managed identity resource."
+            }
+          }
+        }
+      },
+      "nullable": true
+    },
+    "diagnosticSettingType": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The name of diagnostic setting."
+            }
+          },
+          "logCategoriesAndGroups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here."
+                  }
+                },
+                "categoryGroup": {
+                  "type": "string",
+                  "nullable": true,
+                  "metadata": {
+                    "description": "Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs."
+                  }
+                }
+              }
+            },
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+            }
+          },
+          "metricCategories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics."
+                  }
+                }
+              }
+            },
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+            }
+          },
+          "logAnalyticsDestinationType": {
+            "type": "string",
+            "allowedValues": [
+              "AzureDiagnostics",
+              "Dedicated"
+            ],
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
+            }
+          },
+          "workspaceResourceId": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+            }
+          },
+          "storageAccountResourceId": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+            }
+          },
+          "eventHubAuthorizationRuleResourceId": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+            }
+          },
+          "eventHubName": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+            }
+          },
+          "marketplacePartnerResourceId": {
+            "type": "string",
+            "nullable": true,
+            "metadata": {
+              "description": "Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
             }
           }
         }
@@ -266,18 +395,10 @@
         "description": "Optional. The list of SSH public keys used to authenticate with linux based VMs."
       }
     },
-    "systemAssignedIdentity": {
-      "type": "bool",
-      "defaultValue": false,
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. Enables system assigned managed identity on the resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = \"True\"."
-      }
-    },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
-      "metadata": {
-        "description": "Optional. The ID(s) to assign to the resource."
+        "description": "Optional. The managed identity definition for this resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = \"True\"."
       }
     },
     "bootDiagnostics": {
@@ -332,60 +453,6 @@
       "type": "array",
       "metadata": {
         "description": "Required. Configures NICs and PIPs."
-      }
-    },
-    "pipDiagnosticSettingsName": {
-      "type": "string",
-      "defaultValue": "[format('{0}-diagnosticSettings', parameters('name'))]",
-      "metadata": {
-        "description": "Optional. The name of the PIP diagnostic setting, if deployed."
-      }
-    },
-    "pipdiagnosticLogCategoriesToEnable": {
-      "type": "array",
-      "defaultValue": [
-        "allLogs"
-      ],
-      "allowedValues": [
-        "",
-        "allLogs",
-        "DDoSProtectionNotifications",
-        "DDoSMitigationFlowLogs",
-        "DDoSMitigationReports"
-      ],
-      "metadata": {
-        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
-      }
-    },
-    "pipdiagnosticMetricsToEnable": {
-      "type": "array",
-      "defaultValue": [
-        "AllMetrics"
-      ],
-      "allowedValues": [
-        "AllMetrics"
-      ],
-      "metadata": {
-        "description": "Optional. The name of metrics that will be streamed."
-      }
-    },
-    "nicDiagnosticSettingsName": {
-      "type": "string",
-      "defaultValue": "[format('{0}-diagnosticSettings', parameters('name'))]",
-      "metadata": {
-        "description": "Optional. The name of the NIC diagnostic setting, if deployed."
-      }
-    },
-    "nicdiagnosticMetricsToEnable": {
-      "type": "array",
-      "defaultValue": [
-        "AllMetrics"
-      ],
-      "allowedValues": [
-        "AllMetrics"
-      ],
-      "metadata": {
-        "description": "Optional. The name of metrics that will be streamed."
       }
     },
     "backupVaultName": {
@@ -526,34 +593,6 @@
         "description": "Optional. Location for all resources."
       }
     },
-    "diagnosticStorageAccountId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Resource ID of the diagnostic storage account."
-      }
-    },
-    "diagnosticWorkspaceId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Resource ID of the diagnostic log analytics workspace."
-      }
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
-      }
-    },
-    "diagnosticEventHubName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
-      }
-    },
     "lock": {
       "$ref": "#/definitions/lockType",
       "metadata": {
@@ -568,7 +607,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -718,8 +757,8 @@
       "signedResourceTypes": "o",
       "signedProtocol": "https"
     },
-    "identityType": "[if(if(parameters('extensionAadJoinConfig').enabled, true(), parameters('systemAssignedIdentity')), if(not(empty(parameters('userAssignedIdentities'))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None'))]",
-    "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]",
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
+    "identity": "[if(not(empty(parameters('managedIdentities'))), createObject('type', if(if(parameters('extensionAadJoinConfig').enabled, true(), coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false())), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createObject()))), 'SystemAssigned,UserAssigned', 'SystemAssigned'), if(not(empty(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createObject()))), 'UserAssigned', null())), 'userAssignedIdentities', if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())), null())]",
     "enableReferencedModulesTelemetry": false,
     "builtInRoleNames": {
       "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
@@ -934,9 +973,6 @@
           "location": {
             "value": "[parameters('location')]"
           },
-          "tags": {
-            "value": "[parameters('tags')]"
-          },
           "enableIPForwarding": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'enableIPForwarding'), if(not(empty(parameters('nicConfigurations')[copyIndex()].enableIPForwarding)), createObject('value', parameters('nicConfigurations')[copyIndex()].enableIPForwarding), createObject('value', false())), createObject('value', false()))]",
           "enableAcceleratedNetworking": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'enableAcceleratedNetworking'), createObject('value', parameters('nicConfigurations')[copyIndex()].enableAcceleratedNetworking), createObject('value', true()))]",
           "dnsServers": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'dnsServers'), if(not(empty(parameters('nicConfigurations')[copyIndex()].dnsServers)), createObject('value', parameters('nicConfigurations')[copyIndex()].dnsServers), createObject('value', createArray())), createObject('value', createArray()))]",
@@ -945,36 +981,17 @@
             "value": "[parameters('nicConfigurations')[copyIndex()].ipConfigurations]"
           },
           "lock": {
-            "value": "[parameters('lock')]"
+            "value": "[coalesce(tryGet(parameters('nicConfigurations')[copyIndex()], 'lock'), parameters('lock'))]"
           },
-          "diagnosticStorageAccountId": {
-            "value": "[parameters('diagnosticStorageAccountId')]"
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('nicConfigurations')[copyIndex()], 'tags'), parameters('tags'))]"
           },
-          "diagnosticWorkspaceId": {
-            "value": "[parameters('diagnosticWorkspaceId')]"
+          "diagnosticSettings": {
+            "value": "[tryGet(parameters('nicConfigurations')[copyIndex()], 'diagnosticSettings')]"
           },
-          "diagnosticEventHubAuthorizationRuleId": {
-            "value": "[parameters('diagnosticEventHubAuthorizationRuleId')]"
-          },
-          "diagnosticEventHubName": {
-            "value": "[parameters('diagnosticEventHubName')]"
-          },
-          "pipDiagnosticSettingsName": {
-            "value": "[parameters('pipDiagnosticSettingsName')]"
-          },
-          "nicDiagnosticSettingsName": {
-            "value": "[parameters('nicDiagnosticSettingsName')]"
-          },
-          "pipdiagnosticMetricsToEnable": {
-            "value": "[parameters('pipdiagnosticMetricsToEnable')]"
-          },
-          "pipdiagnosticLogCategoriesToEnable": {
-            "value": "[parameters('pipdiagnosticLogCategoriesToEnable')]"
-          },
-          "nicDiagnosticMetricsToEnable": {
-            "value": "[parameters('nicdiagnosticMetricsToEnable')]"
-          },
-          "roleAssignments": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'roleAssignments'), if(not(empty(parameters('nicConfigurations')[copyIndex()].roleAssignments)), createObject('value', parameters('nicConfigurations')[copyIndex()].roleAssignments), createObject('value', createArray())), createObject('value', createArray()))]"
+          "roleAssignments": {
+            "value": "[tryGet(parameters('nicConfigurations')[copyIndex()], 'roleAssignments')]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -983,8 +1000,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "586060813007467238"
+              "version": "0.23.1.45101",
+              "templateHash": "10451257297733630828"
             }
           },
           "definitions": {
@@ -1012,6 +1029,178 @@
                 }
               },
               "nullable": true
+            },
+            "diagnosticSettingType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of diagnostic setting."
+                    }
+                  },
+                  "logCategoriesAndGroups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here."
+                          }
+                        },
+                        "categoryGroup": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to \u0007llLogs to collect all logs."
+                          }
+                        }
+                      }
+                    },
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                    }
+                  },
+                  "metricCategories": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "metadata": {
+                            "description": "Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to AllMetrics to collect all metrics."
+                          }
+                        }
+                      }
+                    },
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                    }
+                  },
+                  "logAnalyticsDestinationType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "AzureDiagnostics",
+                      "Dedicated"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
+                    }
+                  },
+                  "workspaceResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "storageAccountResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "eventHubAuthorizationRuleResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+                    }
+                  },
+                  "eventHubName": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                    }
+                  },
+                  "marketplacePartnerResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            },
+            "roleAssignmentType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "roleDefinitionIdOrName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                    }
+                  },
+                  "principalId": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+                    }
+                  },
+                  "principalType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "Device",
+                      "ForeignGroup",
+                      "Group",
+                      "ServicePrincipal",
+                      "User"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The principal type of the assigned principal ID."
+                    }
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The description of the role assignment."
+                    }
+                  },
+                  "condition": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                    }
+                  },
+                  "conditionVersion": {
+                    "type": "string",
+                    "allowedValues": [
+                      "2.0"
+                    ],
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. Version of the condition."
+                    }
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "type": "string",
+                    "nullable": true,
+                    "metadata": {
+                      "description": "Optional. The Resource Id of the delegated managed identity resource."
+                    }
+                  }
+                }
+              },
+              "nullable": true
             }
           },
           "parameters": {
@@ -1025,7 +1214,8 @@
               "type": "string"
             },
             "tags": {
-              "type": "object"
+              "type": "object",
+              "nullable": true
             },
             "enableIPForwarding": {
               "type": "bool",
@@ -1052,46 +1242,16 @@
             "lock": {
               "$ref": "#/definitions/lockType"
             },
-            "diagnosticStorageAccountId": {
-              "type": "string"
-            },
-            "diagnosticWorkspaceId": {
-              "type": "string"
-            },
-            "diagnosticEventHubAuthorizationRuleId": {
-              "type": "string"
-            },
-            "diagnosticEventHubName": {
-              "type": "string"
-            },
-            "pipdiagnosticMetricsToEnable": {
-              "type": "array"
-            },
-            "pipdiagnosticLogCategoriesToEnable": {
-              "type": "array"
-            },
-            "nicDiagnosticMetricsToEnable": {
-              "type": "array"
+            "diagnosticSettings": {
+              "$ref": "#/definitions/diagnosticSettingType",
+              "metadata": {
+                "description": "Optional. The diagnostic settings of the Network Interface."
+              }
             },
             "roleAssignments": {
-              "type": "array",
-              "defaultValue": [],
+              "$ref": "#/definitions/roleAssignmentType",
               "metadata": {
                 "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
-              }
-            },
-            "pipDiagnosticSettingsName": {
-              "type": "string",
-              "defaultValue": "[format('{0}-diagnosticSettings', parameters('virtualMachineName'))]",
-              "metadata": {
-                "description": "Optional. The name of the PIP diagnostic setting, if deployed."
-              }
-            },
-            "nicDiagnosticSettingsName": {
-              "type": "string",
-              "defaultValue": "[format('{0}-diagnosticSettings', parameters('virtualMachineName'))]",
-              "metadata": {
-                "description": "Optional. The name of the NIC diagnostic setting, if deployed."
               }
             }
           },
@@ -1117,29 +1277,8 @@
                   "name": {
                     "value": "[format('{0}{1}', parameters('virtualMachineName'), parameters('ipConfigurations')[copyIndex()].pipconfiguration.publicIpNameSuffix)]"
                   },
-                  "diagnosticEventHubAuthorizationRuleId": {
-                    "value": "[parameters('diagnosticEventHubAuthorizationRuleId')]"
-                  },
-                  "diagnosticEventHubName": {
-                    "value": "[parameters('diagnosticEventHubName')]"
-                  },
-                  "diagnosticLogCategoriesToEnable": {
-                    "value": "[parameters('pipdiagnosticLogCategoriesToEnable')]"
-                  },
-                  "diagnosticMetricsToEnable": {
-                    "value": "[parameters('pipdiagnosticMetricsToEnable')]"
-                  },
-                  "diagnosticSettingsName": {
-                    "value": "[parameters('pipDiagnosticSettingsName')]"
-                  },
-                  "diagnosticStorageAccountId": {
-                    "value": "[parameters('diagnosticStorageAccountId')]"
-                  },
-                  "diagnosticWorkspaceId": {
-                    "value": "[parameters('diagnosticWorkspaceId')]"
-                  },
-                  "enableDefaultTelemetry": {
-                    "value": "[variables('enableReferencedModulesTelemetry')]"
+                  "diagnosticSettings": {
+                    "value": "[tryGet(parameters('ipConfigurations')[copyIndex()], 'diagnosticSettings')]"
                   },
                   "location": {
                     "value": "[parameters('location')]"
@@ -1154,7 +1293,7 @@
                   "skuName": "[if(contains(parameters('ipConfigurations')[copyIndex()], 'skuName'), createObject('value', parameters('ipConfigurations')[copyIndex()].skuName), createObject('value', 'Standard'))]",
                   "skuTier": "[if(contains(parameters('ipConfigurations')[copyIndex()], 'skuTier'), createObject('value', parameters('ipConfigurations')[copyIndex()].skuTier), createObject('value', 'Regional'))]",
                   "tags": {
-                    "value": "[parameters('tags')]"
+                    "value": "[coalesce(tryGet(parameters('ipConfigurations')[copyIndex()], 'tags'), parameters('tags'))]"
                   },
                   "zones": "[if(contains(parameters('ipConfigurations')[copyIndex()], 'zones'), createObject('value', parameters('ipConfigurations')[copyIndex()].zones), createObject('value', createArray()))]"
                 },
@@ -1165,8 +1304,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "17964103943026732172"
+                      "version": "0.23.1.45101",
+                      "templateHash": "15536304828480480757"
                     },
                     "name": "Public IP Addresses",
                     "description": "This module deploys a Public IP Address.",
@@ -1263,6 +1402,112 @@
                         }
                       },
                       "nullable": true
+                    },
+                    "diagnosticSettingType": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. The name of diagnostic setting."
+                            }
+                          },
+                          "logCategoriesAndGroups": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "category": {
+                                  "type": "string",
+                                  "nullable": true,
+                                  "metadata": {
+                                    "description": "Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here."
+                                  }
+                                },
+                                "categoryGroup": {
+                                  "type": "string",
+                                  "nullable": true,
+                                  "metadata": {
+                                    "description": "Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs."
+                                  }
+                                }
+                              }
+                            },
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                            }
+                          },
+                          "metricCategories": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "category": {
+                                  "type": "string",
+                                  "metadata": {
+                                    "description": "Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics."
+                                  }
+                                }
+                              }
+                            },
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                            }
+                          },
+                          "logAnalyticsDestinationType": {
+                            "type": "string",
+                            "allowedValues": [
+                              "AzureDiagnostics",
+                              "Dedicated"
+                            ],
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
+                            }
+                          },
+                          "workspaceResourceId": {
+                            "type": "string",
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                            }
+                          },
+                          "storageAccountResourceId": {
+                            "type": "string",
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                            }
+                          },
+                          "eventHubAuthorizationRuleResourceId": {
+                            "type": "string",
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+                            }
+                          },
+                          "eventHubName": {
+                            "type": "string",
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                            }
+                          },
+                          "marketplacePartnerResourceId": {
+                            "type": "string",
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
+                            }
+                          }
+                        }
+                      },
+                      "nullable": true
                     }
                   },
                   "parameters": {
@@ -1330,32 +1575,10 @@
                         "description": "Optional. IP address version."
                       }
                     },
-                    "diagnosticStorageAccountId": {
-                      "type": "string",
-                      "defaultValue": "",
+                    "diagnosticSettings": {
+                      "$ref": "#/definitions/diagnosticSettingType",
                       "metadata": {
-                        "description": "Optional. Resource ID of the diagnostic storage account."
-                      }
-                    },
-                    "diagnosticWorkspaceId": {
-                      "type": "string",
-                      "defaultValue": "",
-                      "metadata": {
-                        "description": "Optional. Resource ID of the diagnostic log analytics workspace."
-                      }
-                    },
-                    "diagnosticEventHubAuthorizationRuleId": {
-                      "type": "string",
-                      "defaultValue": "",
-                      "metadata": {
-                        "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
-                      }
-                    },
-                    "diagnosticEventHubName": {
-                      "type": "string",
-                      "defaultValue": "",
-                      "metadata": {
-                        "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
+                        "description": "Optional. The diagnostic settings of the service."
                       }
                     },
                     "domainNameLabel": {
@@ -1421,68 +1644,13 @@
                     },
                     "tags": {
                       "type": "object",
-                      "defaultValue": {},
+                      "nullable": true,
                       "metadata": {
                         "description": "Optional. Tags of the resource."
-                      }
-                    },
-                    "diagnosticLogCategoriesToEnable": {
-                      "type": "array",
-                      "defaultValue": [
-                        "allLogs"
-                      ],
-                      "allowedValues": [
-                        "",
-                        "allLogs",
-                        "DDoSProtectionNotifications",
-                        "DDoSMitigationFlowLogs",
-                        "DDoSMitigationReports"
-                      ],
-                      "metadata": {
-                        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
-                      }
-                    },
-                    "diagnosticMetricsToEnable": {
-                      "type": "array",
-                      "defaultValue": [
-                        "AllMetrics"
-                      ],
-                      "allowedValues": [
-                        "AllMetrics"
-                      ],
-                      "metadata": {
-                        "description": "Optional. The name of metrics that will be streamed."
-                      }
-                    },
-                    "diagnosticSettingsName": {
-                      "type": "string",
-                      "defaultValue": "",
-                      "metadata": {
-                        "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
                       }
                     }
                   },
                   "variables": {
-                    "copy": [
-                      {
-                        "name": "diagnosticsLogsSpecified",
-                        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
-                        "input": {
-                          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
-                          "enabled": true
-                        }
-                      },
-                      {
-                        "name": "diagnosticsMetrics",
-                        "count": "[length(parameters('diagnosticMetricsToEnable'))]",
-                        "input": {
-                          "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
-                          "timeGrain": null,
-                          "enabled": true
-                        }
-                      }
-                    ],
-                    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true())), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
                     "builtInRoleNames": {
                       "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
                       "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
@@ -1543,18 +1711,23 @@
                       ]
                     },
                     "publicIpAddress_diagnosticSettings": {
-                      "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
+                      "copy": {
+                        "name": "publicIpAddress_diagnosticSettings",
+                        "count": "[length(coalesce(parameters('diagnosticSettings'), createArray()))]"
+                      },
                       "type": "Microsoft.Insights/diagnosticSettings",
                       "apiVersion": "2021-05-01-preview",
                       "scope": "[format('Microsoft.Network/publicIPAddresses/{0}', parameters('name'))]",
-                      "name": "[if(not(empty(parameters('diagnosticSettingsName'))), parameters('diagnosticSettingsName'), format('{0}-diagnosticSettings', parameters('name')))]",
+                      "name": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'name'), format('{0}-diagnosticSettings', parameters('name')))]",
                       "properties": {
-                        "storageAccountId": "[if(not(empty(parameters('diagnosticStorageAccountId'))), parameters('diagnosticStorageAccountId'), null())]",
-                        "workspaceId": "[if(not(empty(parameters('diagnosticWorkspaceId'))), parameters('diagnosticWorkspaceId'), null())]",
-                        "eventHubAuthorizationRuleId": "[if(not(empty(parameters('diagnosticEventHubAuthorizationRuleId'))), parameters('diagnosticEventHubAuthorizationRuleId'), null())]",
-                        "eventHubName": "[if(not(empty(parameters('diagnosticEventHubName'))), parameters('diagnosticEventHubName'), null())]",
-                        "metrics": "[variables('diagnosticsMetrics')]",
-                        "logs": "[variables('diagnosticsLogs')]"
+                        "storageAccountId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'storageAccountResourceId')]",
+                        "workspaceId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'workspaceResourceId')]",
+                        "eventHubAuthorizationRuleId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubAuthorizationRuleResourceId')]",
+                        "eventHubName": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubName')]",
+                        "metrics": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'metricCategories'), createArray(createObject('category', 'AllMetrics', 'timeGrain', null(), 'enabled', true())))]",
+                        "logs": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logCategoriesAndGroups'), createArray(createObject('categoryGroup', 'AllLogs', 'enabled', true())))]",
+                        "marketplacePartnerId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'marketplacePartnerResourceId')]",
+                        "logAnalyticsDestinationType": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logAnalyticsDestinationType')]"
                       },
                       "dependsOn": [
                         "publicIpAddress"
@@ -1650,23 +1823,8 @@
                   "tags": {
                     "value": "[parameters('tags')]"
                   },
-                  "diagnosticEventHubAuthorizationRuleId": {
-                    "value": "[parameters('diagnosticEventHubAuthorizationRuleId')]"
-                  },
-                  "diagnosticEventHubName": {
-                    "value": "[parameters('diagnosticEventHubName')]"
-                  },
-                  "diagnosticStorageAccountId": {
-                    "value": "[parameters('diagnosticStorageAccountId')]"
-                  },
-                  "diagnosticMetricsToEnable": {
-                    "value": "[parameters('nicDiagnosticMetricsToEnable')]"
-                  },
-                  "diagnosticSettingsName": {
-                    "value": "[parameters('nicDiagnosticSettingsName')]"
-                  },
-                  "diagnosticWorkspaceId": {
-                    "value": "[parameters('diagnosticWorkspaceId')]"
+                  "diagnosticSettings": {
+                    "value": "[parameters('diagnosticSettings')]"
                   },
                   "dnsServers": "[if(not(empty(parameters('dnsServers'))), createObject('value', parameters('dnsServers')), createObject('value', createArray()))]",
                   "enableAcceleratedNetworking": {
@@ -1691,8 +1849,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "11496161506514027711"
+                      "version": "0.23.1.45101",
+                      "templateHash": "2750011165297287068"
                     },
                     "name": "Network Interface",
                     "description": "This module deploys a Network Interface.",
@@ -1789,6 +1947,86 @@
                         }
                       },
                       "nullable": true
+                    },
+                    "diagnosticSettingType": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. The name of diagnostic setting."
+                            }
+                          },
+                          "metricCategories": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "category": {
+                                  "type": "string",
+                                  "metadata": {
+                                    "description": "Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics."
+                                  }
+                                }
+                              }
+                            },
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
+                            }
+                          },
+                          "logAnalyticsDestinationType": {
+                            "type": "string",
+                            "allowedValues": [
+                              "AzureDiagnostics",
+                              "Dedicated"
+                            ],
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type."
+                            }
+                          },
+                          "workspaceResourceId": {
+                            "type": "string",
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                            }
+                          },
+                          "storageAccountResourceId": {
+                            "type": "string",
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                            }
+                          },
+                          "eventHubAuthorizationRuleResourceId": {
+                            "type": "string",
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+                            }
+                          },
+                          "eventHubName": {
+                            "type": "string",
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+                            }
+                          },
+                          "marketplacePartnerResourceId": {
+                            "type": "string",
+                            "nullable": true,
+                            "metadata": {
+                              "description": "Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs."
+                            }
+                          }
+                        }
+                      },
+                      "nullable": true
                     }
                   },
                   "parameters": {
@@ -1807,7 +2045,7 @@
                     },
                     "tags": {
                       "type": "object",
-                      "defaultValue": {},
+                      "nullable": true,
                       "metadata": {
                         "description": "Optional. Tags of the resource."
                       }
@@ -1898,66 +2136,14 @@
                         "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
                       }
                     },
-                    "diagnosticStorageAccountId": {
-                      "type": "string",
-                      "defaultValue": "",
+                    "diagnosticSettings": {
+                      "$ref": "#/definitions/diagnosticSettingType",
                       "metadata": {
-                        "description": "Optional. Resource ID of the diagnostic storage account."
-                      }
-                    },
-                    "diagnosticWorkspaceId": {
-                      "type": "string",
-                      "defaultValue": "",
-                      "metadata": {
-                        "description": "Optional. Resource identifier of log analytics."
-                      }
-                    },
-                    "diagnosticEventHubAuthorizationRuleId": {
-                      "type": "string",
-                      "defaultValue": "",
-                      "metadata": {
-                        "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
-                      }
-                    },
-                    "diagnosticEventHubName": {
-                      "type": "string",
-                      "defaultValue": "",
-                      "metadata": {
-                        "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
-                      }
-                    },
-                    "diagnosticMetricsToEnable": {
-                      "type": "array",
-                      "defaultValue": [
-                        "AllMetrics"
-                      ],
-                      "allowedValues": [
-                        "AllMetrics"
-                      ],
-                      "metadata": {
-                        "description": "Optional. The name of metrics that will be streamed."
-                      }
-                    },
-                    "diagnosticSettingsName": {
-                      "type": "string",
-                      "defaultValue": "",
-                      "metadata": {
-                        "description": "Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to \"<resourceName>-diagnosticSettings\"."
+                        "description": "Optional. The diagnostic settings of the service."
                       }
                     }
                   },
                   "variables": {
-                    "copy": [
-                      {
-                        "name": "diagnosticsMetrics",
-                        "count": "[length(parameters('diagnosticMetricsToEnable'))]",
-                        "input": {
-                          "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
-                          "timeGrain": null,
-                          "enabled": true
-                        }
-                      }
-                    ],
                     "builtInRoleNames": {
                       "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
                       "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
@@ -2025,17 +2211,22 @@
                       }
                     },
                     "networkInterface_diagnosticSettings": {
-                      "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
+                      "copy": {
+                        "name": "networkInterface_diagnosticSettings",
+                        "count": "[length(coalesce(parameters('diagnosticSettings'), createArray()))]"
+                      },
                       "type": "Microsoft.Insights/diagnosticSettings",
                       "apiVersion": "2021-05-01-preview",
                       "scope": "[format('Microsoft.Network/networkInterfaces/{0}', parameters('name'))]",
-                      "name": "[if(not(empty(parameters('diagnosticSettingsName'))), parameters('diagnosticSettingsName'), format('{0}-diagnosticSettings', parameters('name')))]",
+                      "name": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'name'), format('{0}-diagnosticSettings', parameters('name')))]",
                       "properties": {
-                        "storageAccountId": "[if(not(empty(parameters('diagnosticStorageAccountId'))), parameters('diagnosticStorageAccountId'), null())]",
-                        "workspaceId": "[if(not(empty(parameters('diagnosticWorkspaceId'))), parameters('diagnosticWorkspaceId'), null())]",
-                        "eventHubAuthorizationRuleId": "[if(not(empty(parameters('diagnosticEventHubAuthorizationRuleId'))), parameters('diagnosticEventHubAuthorizationRuleId'), null())]",
-                        "eventHubName": "[if(not(empty(parameters('diagnosticEventHubName'))), parameters('diagnosticEventHubName'), null())]",
-                        "metrics": "[variables('diagnosticsMetrics')]"
+                        "storageAccountId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'storageAccountResourceId')]",
+                        "workspaceId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'workspaceResourceId')]",
+                        "eventHubAuthorizationRuleId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubAuthorizationRuleResourceId')]",
+                        "eventHubName": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'eventHubName')]",
+                        "metrics": "[coalesce(tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'metricCategories'), createArray(createObject('category', 'AllMetrics', 'timeGrain', null(), 'enabled', true())))]",
+                        "marketplacePartnerId": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'marketplacePartnerResourceId')]",
+                        "logAnalyticsDestinationType": "[tryGet(coalesce(parameters('diagnosticSettings'), createArray())[copyIndex()], 'logAnalyticsDestinationType')]"
                       },
                       "dependsOn": [
                         "networkInterface"
@@ -2142,16 +2333,19 @@
           "autoUpgradeMinorVersion": "[if(contains(parameters('extensionAadJoinConfig'), 'autoUpgradeMinorVersion'), createObject('value', parameters('extensionAadJoinConfig').autoUpgradeMinorVersion), createObject('value', true()))]",
           "enableAutomaticUpgrade": "[if(contains(parameters('extensionAadJoinConfig'), 'enableAutomaticUpgrade'), createObject('value', parameters('extensionAadJoinConfig').enableAutomaticUpgrade), createObject('value', false()))]",
           "settings": "[if(contains(parameters('extensionAadJoinConfig'), 'settings'), createObject('value', parameters('extensionAadJoinConfig').settings), createObject('value', createObject()))]",
-          "tags": "[if(contains(parameters('extensionAadJoinConfig'), 'tags'), createObject('value', parameters('extensionAadJoinConfig').tags), createObject('value', createObject()))]"
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionAadJoinConfig'), 'tags'), parameters('tags'))]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "version": "0.23.1.45101",
+              "templateHash": "5421737065579119324"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -2244,14 +2438,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -2265,7 +2459,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -2281,9 +2481,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -2311,7 +2514,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -2349,7 +2552,9 @@
           "settings": {
             "value": "[parameters('extensionDomainJoinConfig').settings]"
           },
-          "tags": "[if(contains(parameters('extensionDomainJoinConfig'), 'tags'), createObject('value', parameters('extensionDomainJoinConfig').tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionDomainJoinConfig'), 'tags'), parameters('tags'))]"
+          },
           "protectedSettings": {
             "value": {
               "Password": "[parameters('extensionDomainJoinPassword')]"
@@ -2361,12 +2566,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "version": "0.23.1.45101",
+              "templateHash": "5421737065579119324"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -2459,14 +2665,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -2480,7 +2686,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -2496,9 +2708,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -2526,7 +2741,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -2564,19 +2779,22 @@
           "settings": {
             "value": "[parameters('extensionAntiMalwareConfig').settings]"
           },
-          "tags": "[if(contains(parameters('extensionAntiMalwareConfig'), 'tags'), createObject('value', parameters('extensionAntiMalwareConfig').tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionAntiMalwareConfig'), 'tags'), parameters('tags'))]"
+          },
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "version": "0.23.1.45101",
+              "templateHash": "5421737065579119324"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -2669,14 +2887,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -2690,7 +2908,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -2706,9 +2930,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -2736,7 +2963,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -2774,7 +3001,9 @@
               "workspaceId": "[if(not(empty(parameters('monitoringWorkspaceId'))), reference('vm_logAnalyticsWorkspace').customerId, '')]"
             }
           },
-          "tags": "[if(contains(parameters('extensionMonitoringAgentConfig'), 'tags'), createObject('value', parameters('extensionMonitoringAgentConfig').tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionMonitoringAgentConfig'), 'tags'), parameters('tags'))]"
+          },
           "protectedSettings": {
             "value": {
               "workspaceKey": "[if(not(empty(parameters('monitoringWorkspaceId'))), listKeys(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '//'), '/')[2], split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), '////'), '/')[4]), 'Microsoft.OperationalInsights/workspaces', last(split(if(not(empty(parameters('monitoringWorkspaceId'))), parameters('monitoringWorkspaceId'), 'law'), '/'))), '2021-06-01').primarySharedKey, '')]"
@@ -2786,12 +3015,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "version": "0.23.1.45101",
+              "templateHash": "5421737065579119324"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -2884,14 +3114,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -2905,7 +3135,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -2921,9 +3157,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -2951,7 +3190,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -2988,16 +3227,19 @@
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
-          "tags": "[if(contains(parameters('extensionDependencyAgentConfig'), 'tags'), createObject('value', parameters('extensionDependencyAgentConfig').tags), createObject('value', createObject()))]"
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionDependencyAgentConfig'), 'tags'), parameters('tags'))]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "version": "0.23.1.45101",
+              "templateHash": "5421737065579119324"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -3090,14 +3332,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -3111,7 +3353,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -3127,9 +3375,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -3157,7 +3408,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -3193,16 +3444,19 @@
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           },
-          "tags": "[if(contains(parameters('extensionNetworkWatcherAgentConfig'), 'tags'), createObject('value', parameters('extensionNetworkWatcherAgentConfig').tags), createObject('value', createObject()))]"
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionNetworkWatcherAgentConfig'), 'tags'), parameters('tags'))]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "version": "0.23.1.45101",
+              "templateHash": "5421737065579119324"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -3295,14 +3549,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -3316,7 +3570,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -3332,9 +3592,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -3362,7 +3625,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -3398,7 +3661,9 @@
           "autoUpgradeMinorVersion": "[if(contains(parameters('extensionDSCConfig'), 'autoUpgradeMinorVersion'), createObject('value', parameters('extensionDSCConfig').autoUpgradeMinorVersion), createObject('value', true()))]",
           "enableAutomaticUpgrade": "[if(contains(parameters('extensionDSCConfig'), 'enableAutomaticUpgrade'), createObject('value', parameters('extensionDSCConfig').enableAutomaticUpgrade), createObject('value', false()))]",
           "settings": "[if(contains(parameters('extensionDSCConfig'), 'settings'), createObject('value', parameters('extensionDSCConfig').settings), createObject('value', createObject()))]",
-          "tags": "[if(contains(parameters('extensionDSCConfig'), 'tags'), createObject('value', parameters('extensionDSCConfig').tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionDSCConfig'), 'tags'), parameters('tags'))]"
+          },
           "protectedSettings": "[if(contains(parameters('extensionDSCConfig'), 'protectedSettings'), createObject('value', parameters('extensionDSCConfig').protectedSettings), createObject('value', createObject()))]",
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
@@ -3406,12 +3671,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "version": "0.23.1.45101",
+              "templateHash": "5421737065579119324"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -3504,14 +3770,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -3525,7 +3791,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -3541,9 +3813,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -3571,7 +3846,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -3613,7 +3888,9 @@
               ]
             }
           },
-          "tags": "[if(contains(parameters('extensionCustomScriptConfig'), 'tags'), createObject('value', parameters('extensionCustomScriptConfig').tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionCustomScriptConfig'), 'tags'), parameters('tags'))]"
+          },
           "protectedSettings": {
             "value": "[parameters('extensionCustomScriptProtectedSetting')]"
           },
@@ -3623,12 +3900,13 @@
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "version": "0.23.1.45101",
+              "templateHash": "5421737065579119324"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -3721,14 +3999,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -3742,7 +4020,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -3758,9 +4042,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -3788,7 +4075,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -3826,19 +4113,22 @@
           "settings": {
             "value": "[parameters('extensionAzureDiskEncryptionConfig').settings]"
           },
-          "tags": "[if(contains(parameters('extensionAzureDiskEncryptionConfig'), 'tags'), createObject('value', parameters('extensionAzureDiskEncryptionConfig').tags), createObject('value', createObject()))]",
+          "tags": {
+            "value": "[coalesce(tryGet(parameters('extensionAzureDiskEncryptionConfig'), 'tags'), parameters('tags'))]"
+          },
           "enableDefaultTelemetry": {
             "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "16166330808348655128"
+              "version": "0.23.1.45101",
+              "templateHash": "5421737065579119324"
             },
             "name": "Virtual Machine Extensions",
             "description": "This module deploys a Virtual Machine Extension.",
@@ -3931,14 +4221,14 @@
             },
             "tags": {
               "type": "object",
-              "defaultValue": {},
+              "nullable": true,
               "metadata": {
                 "description": "Optional. Tags of the resource."
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -3952,7 +4242,13 @@
                 }
               }
             },
-            {
+            "virtualMachine": {
+              "existing": true,
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('virtualMachineName')]"
+            },
+            "extension": {
               "type": "Microsoft.Compute/virtualMachines/extensions",
               "apiVersion": "2022-11-01",
               "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -3968,9 +4264,12 @@
                 "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
                 "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
                 "suppressFailures": "[parameters('supressFailures')]"
-              }
+              },
+              "dependsOn": [
+                "virtualMachine"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",
@@ -3998,7 +4297,7 @@
               "metadata": {
                 "description": "The location the resource was deployed into."
               },
-              "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+              "value": "[reference('extension', '2022-11-01', 'full').location]"
             }
           }
         }
@@ -4049,8 +4348,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "7148492251760573310"
+              "version": "0.23.1.45101",
+              "templateHash": "9921011786088905122"
             },
             "name": "Recovery Service Vaults Protection Container Protected Item",
             "description": "This module deploys a Recovery Services Vault Protection Container Protected Item.",
@@ -4207,12 +4506,12 @@
       },
       "value": "[resourceGroup().name]"
     },
-    "systemAssignedPrincipalId": {
+    "systemAssignedMIPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference('vm', '2022-11-01', 'full').identity, 'principalId')), reference('vm', '2022-11-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(coalesce(tryGet(parameters('managedIdentities'), 'systemAssigned'), false()), contains(reference('vm', '2022-11-01', 'full').identity, 'principalId')), reference('vm', '2022-11-01', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",

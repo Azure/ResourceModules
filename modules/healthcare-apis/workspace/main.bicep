@@ -23,7 +23,7 @@ param roleAssignments roleAssignmentType
 param publicNetworkAccess string = 'Disabled'
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -110,9 +110,9 @@ module workspace_fhirservices 'fhirservice/main.bicep' = [for (fhir, index) in f
     location: location
     workspaceName: workspace.name
     kind: fhir.kind
-    tags: contains(fhir, 'tags') ? fhir.tags : {}
+    tags: fhir.?tags ?? tags
     publicNetworkAccess: contains(fhir, 'publicNetworkAccess') ? fhir.publicNetworkAccess : 'Disabled'
-    systemAssignedIdentity: contains(fhir, 'systemAssignedIdentity') ? fhir.systemAssignedIdentity : false
+    managedIdentities: contains(fhir, 'managedIdentities') ? fhir.managedIdentities : null
     roleAssignments: contains(fhir, 'roleAssignments') ? fhir.roleAssignments : []
     accessPolicyObjectIds: contains(fhir, 'accessPolicyObjectIds') ? fhir.accessPolicyObjectIds : []
     acrLoginServers: contains(fhir, 'acrLoginServers') ? fhir.acrLoginServers : []
@@ -124,10 +124,7 @@ module workspace_fhirservices 'fhirservice/main.bicep' = [for (fhir, index) in f
     corsMethods: contains(fhir, 'corsMethods') ? fhir.corsMethods : []
     corsMaxAge: contains(fhir, 'corsMaxAge') ? fhir.corsMaxAge : -1
     corsAllowCredentials: contains(fhir, 'corsAllowCredentials') ? fhir.corsAllowCredentials : false
-    diagnosticStorageAccountId: contains(fhir, 'diagnosticStorageAccountId') ? fhir.diagnosticStorageAccountId : ''
-    diagnosticWorkspaceId: contains(fhir, 'diagnosticWorkspaceId') ? fhir.diagnosticWorkspaceId : ''
-    diagnosticEventHubAuthorizationRuleId: contains(fhir, 'diagnosticEventHubAuthorizationRuleId') ? fhir.diagnosticEventHubAuthorizationRuleId : ''
-    diagnosticEventHubName: contains(fhir, 'diagnosticEventHubName') ? fhir.diagnosticEventHubName : ''
+    diagnosticSettings: fhir.?diagnosticSettings
     exportStorageAccountName: contains(fhir, 'exportStorageAccountName') ? fhir.exportStorageAccountName : ''
     importStorageAccountName: contains(fhir, 'importStorageAccountName') ? fhir.importStorageAccountName : ''
     importEnabled: contains(fhir, 'importEnabled') ? fhir.importEnabled : false
@@ -136,9 +133,6 @@ module workspace_fhirservices 'fhirservice/main.bicep' = [for (fhir, index) in f
     resourceVersionPolicy: contains(fhir, 'resourceVersionPolicy') ? fhir.resourceVersionPolicy : 'versioned'
     resourceVersionOverrides: contains(fhir, 'resourceVersionOverrides') ? fhir.resourceVersionOverrides : {}
     smartProxyEnabled: contains(fhir, 'smartProxyEnabled') ? fhir.smartProxyEnabled : false
-    userAssignedIdentities: contains(fhir, 'userAssignedIdentities') ? fhir.userAssignedIdentities : {}
-    diagnosticLogCategoriesToEnable: contains(fhir, 'diagnosticLogCategoriesToEnable') ? fhir.diagnosticLogCategoriesToEnable : [ 'AuditLogs' ]
-    diagnosticMetricsToEnable: contains(fhir, 'diagnosticMetricsToEnable') ? fhir.diagnosticMetricsToEnable : [ 'AllMetrics' ]
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -149,21 +143,16 @@ module workspace_dicomservices 'dicomservice/main.bicep' = [for (dicom, index) i
     name: dicom.name
     location: location
     workspaceName: workspace.name
-    tags: contains(dicom, 'tags') ? dicom.tags : {}
+    tags: dicom.?tags ?? tags
     publicNetworkAccess: contains(dicom, 'publicNetworkAccess') ? dicom.publicNetworkAccess : 'Disabled'
-    systemAssignedIdentity: contains(dicom, 'systemAssignedIdentity') ? dicom.systemAssignedIdentity : false
+    managedIdentities: contains(dicom, 'managedIdentities') ? dicom.managedIdentities : null
     corsOrigins: contains(dicom, 'corsOrigins') ? dicom.corsOrigins : []
     corsHeaders: contains(dicom, 'corsHeaders') ? dicom.corsHeaders : []
     corsMethods: contains(dicom, 'corsMethods') ? dicom.corsMethods : []
     corsMaxAge: contains(dicom, 'corsMaxAge') ? dicom.corsMaxAge : -1
     corsAllowCredentials: contains(dicom, 'corsAllowCredentials') ? dicom.corsAllowCredentials : false
-    diagnosticStorageAccountId: contains(dicom, 'diagnosticStorageAccountId') ? dicom.diagnosticStorageAccountId : ''
-    diagnosticWorkspaceId: contains(dicom, 'diagnosticWorkspaceId') ? dicom.diagnosticWorkspaceId : ''
-    diagnosticEventHubAuthorizationRuleId: contains(dicom, 'diagnosticEventHubAuthorizationRuleId') ? dicom.diagnosticEventHubAuthorizationRuleId : ''
-    diagnosticEventHubName: contains(dicom, 'diagnosticEventHubName') ? dicom.diagnosticEventHubName : ''
+    diagnosticSettings: dicom.?diagnosticSettings
     lock: dicom.?lock ?? lock
-    userAssignedIdentities: contains(dicom, 'userAssignedIdentities') ? dicom.userAssignedIdentities : {}
-    diagnosticLogCategoriesToEnable: contains(dicom, 'diagnosticLogCategoriesToEnable') ? dicom.diagnosticLogCategoriesToEnable : [ 'AuditLogs' ]
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -174,7 +163,7 @@ module workspace_iotconnector 'iotconnector/main.bicep' = [for (iotConnector, in
     name: iotConnector.name
     location: location
     workspaceName: workspace.name
-    tags: contains(iotConnector, 'tags') ? iotConnector.tags : {}
+    tags: iotConnector.?tags ?? tags
     eventHubName: iotConnector.eventHubName
     eventHubNamespaceName: iotConnector.eventHubNamespaceName
     deviceMapping: contains(iotConnector, 'deviceMapping') ? iotConnector.deviceMapping : {
@@ -183,15 +172,9 @@ module workspace_iotconnector 'iotconnector/main.bicep' = [for (iotConnector, in
     }
     fhirdestination: contains(iotConnector, 'fhirdestination') ? iotConnector.fhirdestination : {}
     consumerGroup: contains(iotConnector, 'consumerGroup') ? iotConnector.consumerGroup : iotConnector.name
-    systemAssignedIdentity: contains(iotConnector, 'systemAssignedIdentity') ? iotConnector.systemAssignedIdentity : false
-    diagnosticStorageAccountId: contains(iotConnector, 'diagnosticStorageAccountId') ? iotConnector.diagnosticStorageAccountId : ''
-    diagnosticWorkspaceId: contains(iotConnector, 'diagnosticWorkspaceId') ? iotConnector.diagnosticWorkspaceId : ''
-    diagnosticEventHubAuthorizationRuleId: contains(iotConnector, 'diagnosticEventHubAuthorizationRuleId') ? iotConnector.diagnosticEventHubAuthorizationRuleId : ''
-    diagnosticEventHubName: contains(iotConnector, 'diagnosticEventHubName') ? iotConnector.diagnosticEventHubName : ''
+    managedIdentities: contains(iotConnector, 'managedIdentities') ? iotConnector.managedIdentities : null
+    diagnosticSettings: iotConnector.?diagnosticSettings
     lock: iotConnector.?lock ?? lock
-    userAssignedIdentities: contains(iotConnector, 'userAssignedIdentities') ? iotConnector.userAssignedIdentities : {}
-    diagnosticLogCategoriesToEnable: contains(iotConnector, 'diagnosticLogCategoriesToEnable') ? iotConnector.diagnosticLogCategoriesToEnable : [ 'DiagnosticLogs' ]
-    diagnosticMetricsToEnable: contains(iotConnector, 'diagnosticMetricsToEnable') ? iotConnector.diagnosticMetricsToEnable : [ 'AllMetrics' ]
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -228,7 +211,7 @@ type roleAssignmentType = {
   principalId: string
 
   @description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @description('Optional. The description of the role assignment.')
   description: string?

@@ -125,7 +125,16 @@ The expiry time's offset in minutes.
 The frequency of the deployment schedule. When using 'Hour', 'Day', 'Week' or 'Month', an interval needs to be provided.
 - Required: Yes
 - Type: string
-- Allowed: `[Day, Hour, Month, OneTime, Week]`
+- Allowed:
+  ```Bicep
+  [
+    'Day'
+    'Hour'
+    'Month'
+    'OneTime'
+    'Week'
+  ]
+  ```
 
 ### Parameter: `includeUpdates`
 
@@ -161,7 +170,42 @@ Can be used with frequency 'Month'. Provides the specific days of the month to r
 - Required: No
 - Type: array
 - Default: `[]`
-- Allowed: `[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]`
+- Allowed:
+  ```Bicep
+  [
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    14
+    15
+    16
+    17
+    18
+    19
+    20
+    21
+    22
+    23
+    24
+    25
+    26
+    27
+    28
+    29
+    30
+    31
+  ]
+  ```
 
 ### Parameter: `monthlyOccurrences`
 
@@ -209,14 +253,20 @@ Array of functions from a Log Analytics workspace, used to scope the deployment 
 The operating system to be configured by the deployment schedule.
 - Required: Yes
 - Type: string
-- Allowed: `[Linux, Windows]`
+- Allowed:
+  ```Bicep
+  [
+    'Linux'
+    'Windows'
+  ]
+  ```
 
 ### Parameter: `postTaskParameters`
 
 Parameters provided to the task running after the deployment schedule.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `postTaskSource`
 
@@ -230,7 +280,7 @@ The source of the task running after the deployment schedule.
 Parameters provided to the task running before the deployment schedule.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `preTaskSource`
 
@@ -244,7 +294,15 @@ The source of the task running before the deployment schedule.
 Reboot setting for the deployment schedule.
 - Required: Yes
 - Type: string
-- Allowed: `[Always, IfRequired, Never, RebootOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'Always'
+    'IfRequired'
+    'Never'
+    'RebootOnly'
+  ]
+  ```
 
 ### Parameter: `scheduleDescription`
 
@@ -265,14 +323,19 @@ Specify locations to which to scope the deployment schedule to.
 Specify the resources to scope the deployment schedule to.
 - Required: No
 - Type: array
-- Default: `[[subscription().id]]`
+- Default:
+  ```Bicep
+  [
+    '[subscription().id]'
+  ]
+  ```
 
 ### Parameter: `scopeByTags`
 
 Specify tags to which to scope the deployment schedule to.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `scopeByTagsOperation`
 
@@ -280,7 +343,13 @@ Enables the scopeByTags to require All (Tag A and Tag B) or Any (Tag A or Tag B)
 - Required: No
 - Type: string
 - Default: `'All'`
-- Allowed: `[All, Any]`
+- Allowed:
+  ```Bicep
+  [
+    'All'
+    'Any'
+  ]
+  ```
 
 ### Parameter: `startTime`
 
@@ -301,8 +370,27 @@ Time zone for the deployment schedule. IANA ID or a Windows Time Zone ID.
 Update classification included in the deployment schedule.
 - Required: No
 - Type: array
-- Default: `[Critical, Security]`
-- Allowed: `[Critical, Definition, FeaturePack, Other, Security, ServicePack, Tools, UpdateRollup, Updates]`
+- Default:
+  ```Bicep
+  [
+    'Critical'
+    'Security'
+  ]
+  ```
+- Allowed:
+  ```Bicep
+  [
+    'Critical'
+    'Definition'
+    'FeaturePack'
+    'Other'
+    'Security'
+    'ServicePack'
+    'Tools'
+    'UpdateRollup'
+    'Updates'
+  ]
+  ```
 
 ### Parameter: `weekDays`
 
@@ -310,7 +398,18 @@ Required when used with frequency 'Week'. Specified the day of the week to run t
 - Required: No
 - Type: array
 - Default: `[]`
-- Allowed: `[Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday]`
+- Allowed:
+  ```Bicep
+  [
+    'Friday'
+    'Monday'
+    'Saturday'
+    'Sunday'
+    'Thursday'
+    'Tuesday'
+    'Wednesday'
+  ]
+  ```
 
 
 ## Outputs

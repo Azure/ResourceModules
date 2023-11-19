@@ -26,168 +26,11 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/app.container-app:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
-
-This instance deploys the module with most of its features enabled.
-
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-mcappcom'
-  params: {
-    // Required parameters
-    containers: [
-      {
-        image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
-        name: 'simple-hello-world-container'
-        probes: [
-          {
-            httpGet: {
-              httpHeaders: [
-                {
-                  name: 'Custom-Header'
-                  value: 'Awesome'
-                }
-              ]
-              path: '/health'
-              port: 8080
-            }
-            initialDelaySeconds: 3
-            periodSeconds: 3
-            type: 'Liveness'
-          }
-        ]
-        resources: {
-          cpu: '<cpu>'
-          memory: '0.5Gi'
-        }
-      }
-    ]
-    environmentId: '<environmentId>'
-    name: 'mcappcom001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    location: '<location>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    secrets: {
-      secureList: [
-        {
-          name: 'customtest'
-          value: '<value>'
-        }
-      ]
-    }
-    tags: {
-      Env: 'test'
-      'hidden-title': 'This is visible in the resource name'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "containers": {
-      "value": [
-        {
-          "image": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest",
-          "name": "simple-hello-world-container",
-          "probes": [
-            {
-              "httpGet": {
-                "httpHeaders": [
-                  {
-                    "name": "Custom-Header",
-                    "value": "Awesome"
-                  }
-                ],
-                "path": "/health",
-                "port": 8080
-              },
-              "initialDelaySeconds": 3,
-              "periodSeconds": 3,
-              "type": "Liveness"
-            }
-          ],
-          "resources": {
-            "cpu": "<cpu>",
-            "memory": "0.5Gi"
-          }
-        }
-      ]
-    },
-    "environmentId": {
-      "value": "<environmentId>"
-    },
-    "name": {
-      "value": "mcappcom001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "location": {
-      "value": "<location>"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "secrets": {
-      "value": {
-        "secureList": [
-          {
-            "name": "customtest",
-            "value": "<value>"
-          }
-        ]
-      }
-    },
-    "tags": {
-      "value": {
-        "Env": "test",
-        "hidden-title": "This is visible in the resource name"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 2: _Using only defaults_
+### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
 
@@ -275,6 +118,330 @@ module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
 </details>
 <p>
 
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-mcappmax'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+        name: 'simple-hello-world-container'
+        probes: [
+          {
+            httpGet: {
+              httpHeaders: [
+                {
+                  name: 'Custom-Header'
+                  value: 'Awesome'
+                }
+              ]
+              path: '/health'
+              port: 8080
+            }
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            type: 'Liveness'
+          }
+        ]
+        resources: {
+          cpu: '<cpu>'
+          memory: '0.5Gi'
+        }
+      }
+    ]
+    environmentId: '<environmentId>'
+    name: 'mcappmax001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    secrets: {
+      secureList: [
+        {
+          name: 'customtest'
+          value: '<value>'
+        }
+      ]
+    }
+    tags: {
+      Env: 'test'
+      'hidden-title': 'This is visible in the resource name'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "image": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest",
+          "name": "simple-hello-world-container",
+          "probes": [
+            {
+              "httpGet": {
+                "httpHeaders": [
+                  {
+                    "name": "Custom-Header",
+                    "value": "Awesome"
+                  }
+                ],
+                "path": "/health",
+                "port": 8080
+              },
+              "initialDelaySeconds": 3,
+              "periodSeconds": 3,
+              "type": "Liveness"
+            }
+          ],
+          "resources": {
+            "cpu": "<cpu>",
+            "memory": "0.5Gi"
+          }
+        }
+      ]
+    },
+    "environmentId": {
+      "value": "<environmentId>"
+    },
+    "name": {
+      "value": "mcappmax001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "secrets": {
+      "value": {
+        "secureList": [
+          {
+            "name": "customtest",
+            "value": "<value>"
+          }
+        ]
+      }
+    },
+    "tags": {
+      "value": {
+        "Env": "test",
+        "hidden-title": "This is visible in the resource name"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-mcappwaf'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+        name: 'simple-hello-world-container'
+        probes: [
+          {
+            httpGet: {
+              httpHeaders: [
+                {
+                  name: 'Custom-Header'
+                  value: 'Awesome'
+                }
+              ]
+              path: '/health'
+              port: 8080
+            }
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            type: 'Liveness'
+          }
+        ]
+        resources: {
+          cpu: '<cpu>'
+          memory: '0.5Gi'
+        }
+      }
+    ]
+    environmentId: '<environmentId>'
+    name: 'mcappwaf001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    secrets: {
+      secureList: [
+        {
+          name: 'customtest'
+          value: '<value>'
+        }
+      ]
+    }
+    tags: {
+      Env: 'test'
+      'hidden-title': 'This is visible in the resource name'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "image": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest",
+          "name": "simple-hello-world-container",
+          "probes": [
+            {
+              "httpGet": {
+                "httpHeaders": [
+                  {
+                    "name": "Custom-Header",
+                    "value": "Awesome"
+                  }
+                ],
+                "path": "/health",
+                "port": 8080
+              },
+              "initialDelaySeconds": 3,
+              "periodSeconds": 3,
+              "type": "Liveness"
+            }
+          ],
+          "resources": {
+            "cpu": "<cpu>",
+            "memory": "0.5Gi"
+          }
+        }
+      ]
+    },
+    "environmentId": {
+      "value": "<environmentId>"
+    },
+    "name": {
+      "value": "mcappwaf001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "secrets": {
+      "value": {
+        "secureList": [
+          {
+            "name": "customtest",
+            "value": "<value>"
+          }
+        ]
+      }
+    },
+    "tags": {
+      "value": {
+        "Env": "test",
+        "hidden-title": "This is visible in the resource name"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -303,6 +470,7 @@ module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
 | [`ipSecurityRestrictions`](#parameter-ipsecurityrestrictions) | array | Rules to restrict incoming IP address. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`maxInactiveRevisions`](#parameter-maxinactiverevisions) | int | Max inactive revisions a Container App can have. |
 | [`registries`](#parameter-registries) | array | Collection of private container registry credentials for containers used by the Container app. |
 | [`revisionSuffix`](#parameter-revisionsuffix) | string | User friendly suffix that is appended to the revision name. |
@@ -311,13 +479,11 @@ module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
 | [`scaleMinReplicas`](#parameter-scaleminreplicas) | int | Minimum number of container replicas. |
 | [`scaleRules`](#parameter-scalerules) | array | Scaling rules. |
 | [`secrets`](#parameter-secrets) | secureObject | The secrets of the Container App. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`trafficLabel`](#parameter-trafficlabel) | string | Associates a traffic label with a revision. Label name should be consist of lower case alphanumeric characters or dashes. |
 | [`trafficLatestRevision`](#parameter-trafficlatestrevision) | bool | Indicates that the traffic weight belongs to a latest stable revision. |
 | [`trafficRevisionName`](#parameter-trafficrevisionname) | string | Name of a revision. |
 | [`trafficWeight`](#parameter-trafficweight) | int | Traffic weight assigned to a revision. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource IDs and The dictionary values can be empty objects ({}) in requests. |
 | [`volumes`](#parameter-volumes) | array | List of volume definitions for the Container App. |
 | [`workloadProfileType`](#parameter-workloadprofiletype) | string | Workload profile type to pin for container app execution. |
 
@@ -327,7 +493,13 @@ ActiveRevisionsMode controls how active revisions are handled for the Container 
 - Required: No
 - Type: string
 - Default: `'Single'`
-- Allowed: `[Multiple, Single]`
+- Allowed:
+  ```Bicep
+  [
+    'Multiple'
+    'Single'
+  ]
+  ```
 
 ### Parameter: `containers`
 
@@ -347,7 +519,7 @@ Custom domain bindings for Container App hostnames.
 Dapr configuration for the Container App.
 - Required: No
 - Type: object
-- Default: `{object}`
+- Default: `{}`
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -396,7 +568,15 @@ Ingress transport protocol.
 - Required: No
 - Type: string
 - Default: `'auto'`
-- Allowed: `[auto, http, http2, tcp]`
+- Allowed:
+  ```Bicep
+  [
+    'auto'
+    'http'
+    'http2'
+    'tcp'
+  ]
+  ```
 
 ### Parameter: `initContainersTemplate`
 
@@ -445,6 +625,32 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourceIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
 
 ### Parameter: `maxInactiveRevisions`
 
@@ -567,21 +773,13 @@ Scaling rules.
 The secrets of the Container App.
 - Required: No
 - Type: secureObject
-- Default: `{object}`
-
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
+- Default: `{}`
 
 ### Parameter: `tags`
 
 Tags of the resource.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 ### Parameter: `trafficLabel`
 
@@ -611,13 +809,6 @@ Traffic weight assigned to a revision.
 - Type: int
 - Default: `100`
 
-### Parameter: `userAssignedIdentities`
-
-The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource IDs and The dictionary values can be empty objects ({}) in requests.
-- Required: No
-- Type: object
-- Default: `{object}`
-
 ### Parameter: `volumes`
 
 List of volume definitions for the Container App.
@@ -641,6 +832,7 @@ Workload profile type to pin for container app execution.
 | `name` | string | The name of the Container App. |
 | `resourceGroupName` | string | The name of the resource group the Container App was deployed into. |
 | `resourceId` | string | The resource ID of the Container App. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

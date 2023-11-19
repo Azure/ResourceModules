@@ -27,10 +27,227 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.front-door:1.0.0`.
 
-- [Using large parameter set](#example-1-using-large-parameter-set)
-- [Using only defaults](#example-2-using-only-defaults)
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
-### Example 1: _Using large parameter set_
+### Example 1: _Using only defaults_
+
+This instance deploys the module with the minimum set of required parameters.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nfdmin'
+  params: {
+    // Required parameters
+    backendPools: [
+      {
+        name: 'backendPool'
+        properties: {
+          backends: [
+            {
+              address: 'biceptest.local'
+              backendHostHeader: 'backendAddress'
+              enabledState: 'Enabled'
+              httpPort: 80
+              httpsPort: 443
+              priority: 1
+              weight: 50
+            }
+          ]
+          HealthProbeSettings: {
+            id: '<id>'
+          }
+          LoadBalancingSettings: {
+            id: '<id>'
+          }
+        }
+      }
+    ]
+    frontendEndpoints: [
+      {
+        name: 'frontEnd'
+        properties: {
+          hostName: '<hostName>'
+          sessionAffinityEnabledState: 'Disabled'
+          sessionAffinityTtlSeconds: 60
+        }
+      }
+    ]
+    healthProbeSettings: [
+      {
+        name: 'heathProbe'
+        properties: {
+          intervalInSeconds: 60
+          path: '/'
+          protocol: 'Https'
+        }
+      }
+    ]
+    loadBalancingSettings: [
+      {
+        name: 'loadBalancer'
+        properties: {
+          additionalLatencyMilliseconds: 0
+          sampleSize: 50
+          successfulSamplesRequired: 1
+        }
+      }
+    ]
+    name: '<name>'
+    routingRules: [
+      {
+        name: 'routingRule'
+        properties: {
+          acceptedProtocols: [
+            'Https'
+          ]
+          enabledState: 'Enabled'
+          frontendEndpoints: [
+            {
+              id: '<id>'
+            }
+          ]
+          patternsToMatch: [
+            '/*'
+          ]
+          routeConfiguration: {
+            '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
+            backendPool: {
+              id: '<id>'
+            }
+          }
+        }
+      }
+    ]
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "backendPools": {
+      "value": [
+        {
+          "name": "backendPool",
+          "properties": {
+            "backends": [
+              {
+                "address": "biceptest.local",
+                "backendHostHeader": "backendAddress",
+                "enabledState": "Enabled",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "priority": 1,
+                "weight": 50
+              }
+            ],
+            "HealthProbeSettings": {
+              "id": "<id>"
+            },
+            "LoadBalancingSettings": {
+              "id": "<id>"
+            }
+          }
+        }
+      ]
+    },
+    "frontendEndpoints": {
+      "value": [
+        {
+          "name": "frontEnd",
+          "properties": {
+            "hostName": "<hostName>",
+            "sessionAffinityEnabledState": "Disabled",
+            "sessionAffinityTtlSeconds": 60
+          }
+        }
+      ]
+    },
+    "healthProbeSettings": {
+      "value": [
+        {
+          "name": "heathProbe",
+          "properties": {
+            "intervalInSeconds": 60,
+            "path": "/",
+            "protocol": "Https"
+          }
+        }
+      ]
+    },
+    "loadBalancingSettings": {
+      "value": [
+        {
+          "name": "loadBalancer",
+          "properties": {
+            "additionalLatencyMilliseconds": 0,
+            "sampleSize": 50,
+            "successfulSamplesRequired": 1
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "<name>"
+    },
+    "routingRules": {
+      "value": [
+        {
+          "name": "routingRule",
+          "properties": {
+            "acceptedProtocols": [
+              "Https"
+            ],
+            "enabledState": "Enabled",
+            "frontendEndpoints": [
+              {
+                "id": "<id>"
+              }
+            ],
+            "patternsToMatch": [
+              "/*"
+            ],
+            "routeConfiguration": {
+              "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
+              "backendPool": {
+                "id": "<id>"
+              }
+            }
+          }
+        }
+      ]
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
 
@@ -41,7 +258,7 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nfdcom'
+  name: '${uniqueString(deployment().name, location)}-test-nfdmax'
   params: {
     // Required parameters
     backendPools: [
@@ -308,9 +525,9 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
 </details>
 <p>
 
-### Example 2: _Using only defaults_
+### Example 3: _WAF-aligned_
 
-This instance deploys the module with the minimum set of required parameters.
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
 
 <details>
@@ -319,7 +536,7 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-nfdmin'
+  name: '${uniqueString(deployment().name, location)}-test-nfdwaf'
   params: {
     // Required parameters
     backendPools: [
@@ -334,6 +551,10 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
               httpPort: 80
               httpsPort: 443
               priority: 1
+              privateLinkAlias: ''
+              privateLinkApprovalMessage: ''
+              privateLinkLocation: ''
+              privateLinkResourceId: ''
               weight: 50
             }
           ]
@@ -360,6 +581,8 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
       {
         name: 'heathProbe'
         properties: {
+          enabledState: ''
+          healthProbeMethod: ''
           intervalInSeconds: 60
           path: '/'
           protocol: 'Https'
@@ -382,6 +605,7 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
         name: 'routingRule'
         properties: {
           acceptedProtocols: [
+            'Http'
             'Https'
           ]
           enabledState: 'Enabled'
@@ -398,12 +622,31 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
             backendPool: {
               id: '<id>'
             }
+            forwardingProtocol: 'MatchRequest'
           }
         }
       }
     ]
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enforceCertificateNameCheck: 'Disabled'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sendRecvTimeoutSeconds: 10
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -434,6 +677,10 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
                 "httpPort": 80,
                 "httpsPort": 443,
                 "priority": 1,
+                "privateLinkAlias": "",
+                "privateLinkApprovalMessage": "",
+                "privateLinkLocation": "",
+                "privateLinkResourceId": "",
                 "weight": 50
               }
             ],
@@ -464,6 +711,8 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
         {
           "name": "heathProbe",
           "properties": {
+            "enabledState": "",
+            "healthProbeMethod": "",
             "intervalInSeconds": 60,
             "path": "/",
             "protocol": "Https"
@@ -492,6 +741,7 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
           "name": "routingRule",
           "properties": {
             "acceptedProtocols": [
+              "Http",
               "Https"
             ],
             "enabledState": "Enabled",
@@ -507,7 +757,8 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
               "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
               "backendPool": {
                 "id": "<id>"
-              }
+              },
+              "forwardingProtocol": "MatchRequest"
             }
           }
         }
@@ -516,6 +767,34 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "enforceCertificateNameCheck": {
+      "value": "Disabled"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sendRecvTimeoutSeconds": {
+      "value": 10
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -542,18 +821,13 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`diagnosticEventHubAuthorizationRuleId`](#parameter-diagnosticeventhubauthorizationruleid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`diagnosticEventHubName`](#parameter-diagnosticeventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`diagnosticLogCategoriesToEnable`](#parameter-diagnosticlogcategoriestoenable) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`diagnosticStorageAccountId`](#parameter-diagnosticstorageaccountid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`diagnosticWorkspaceId`](#parameter-diagnosticworkspaceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`enabledState`](#parameter-enabledstate) | string | State of the frontdoor resource. |
 | [`enforceCertificateNameCheck`](#parameter-enforcecertificatenamecheck) | string | Enforce certificate name check of the frontdoor resource. |
 | [`friendlyName`](#parameter-friendlyname) | string | Friendly name of the frontdoor resource. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`metricsToEnable`](#parameter-metricstoenable) | array | The name of metrics that will be streamed. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`sendRecvTimeoutSeconds`](#parameter-sendrecvtimeoutseconds) | int | Certificate name check time of the frontdoor resource. |
 | [`tags`](#parameter-tags) | object | Resource tags. |
@@ -564,41 +838,120 @@ Backend address pool of the frontdoor resource.
 - Required: Yes
 - Type: array
 
-### Parameter: `diagnosticEventHubAuthorizationRuleId`
+### Parameter: `diagnosticSettings`
 
-Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticEventHubName`
-
-Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `diagnosticLogCategoriesToEnable`
-
-The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+The diagnostic settings of the service.
 - Required: No
 - Type: array
-- Default: `[allLogs]`
-- Allowed: `['', allLogs, FrontdoorAccessLog, FrontdoorWebApplicationFirewallLog]`
 
-### Parameter: `diagnosticStorageAccountId`
 
-Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | No | string | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | No | string | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+
+### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
+
+Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+
 - Required: No
 - Type: string
-- Default: `''`
 
-### Parameter: `diagnosticWorkspaceId`
+### Parameter: `diagnosticSettings.eventHubName`
 
-Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
 - Required: No
 - Type: string
-- Default: `''`
+
+### Parameter: `diagnosticSettings.logAnalyticsDestinationType`
+
+Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
+
+- Required: No
+- Type: string
+- Allowed: `[AzureDiagnostics, Dedicated]`
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups`
+
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettingslogcategoriesandgroupscategory) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
+| [`categoryGroup`](#parameter-diagnosticsettingslogcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs. |
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.category`
+
+Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.logCategoriesAndGroups.categoryGroup`
+
+Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs.
+
+- Required: No
+- Type: string
+
+
+### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
+
+Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.metricCategories`
+
+Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+
+- Required: No
+- Type: array
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`category`](#parameter-diagnosticsettingsmetriccategoriescategory) | Yes | string | Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics. |
+
+### Parameter: `diagnosticSettings.metricCategories.category`
+
+Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics.
+
+- Required: Yes
+- Type: string
+
+
+### Parameter: `diagnosticSettings.name`
+
+Optional. The name of diagnostic setting.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.storageAccountResourceId`
+
+Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
+
+### Parameter: `diagnosticSettings.workspaceResourceId`
+
+Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+
+- Required: No
+- Type: string
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -679,14 +1032,6 @@ Optional. Specify the name of lock.
 
 - Required: No
 - Type: string
-
-### Parameter: `metricsToEnable`
-
-The name of metrics that will be streamed.
-- Required: No
-- Type: array
-- Default: `[AllMetrics]`
-- Allowed: `[AllMetrics]`
 
 ### Parameter: `name`
 
@@ -780,7 +1125,6 @@ Certificate name check time of the frontdoor resource.
 Resource tags.
 - Required: No
 - Type: object
-- Default: `{object}`
 
 
 ## Outputs

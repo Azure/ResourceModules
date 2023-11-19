@@ -120,7 +120,7 @@ param excludedDiskTypes array = []
 param roleAssignments roleAssignmentType
 
 @sys.description('Optional. Tags for all resources.')
-param tags object = {}
+param tags object?
 
 var builtInRoleNames = {
   'Compute Gallery Sharing Admin': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '1ef6a3be-d0ac-425d-8c01-acb62866290b')
@@ -247,7 +247,7 @@ type roleAssignmentType = {
   principalId: string
 
   @sys.description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @sys.description('Optional. The description of the role assignment.')
   description: string?

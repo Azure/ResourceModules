@@ -1,11 +1,12 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.22.6.54827",
-      "templateHash": "66122595863754952"
+      "templateHash": "4870857598190177606"
     },
     "name": "CDN Profiles Endpoints",
     "description": "This module deploys a CDN Profile Endpoint.",
@@ -39,7 +40,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Endpoint tags."
       }
@@ -55,8 +56,8 @@
   "variables": {
     "enableReferencedModulesTelemetry": false
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -70,15 +71,24 @@
         }
       }
     },
-    {
+    "profile": {
+      "existing": true,
+      "type": "Microsoft.Cdn/profiles",
+      "apiVersion": "2021-06-01",
+      "name": "[parameters('profileName')]"
+    },
+    "endpoint": {
       "type": "Microsoft.Cdn/profiles/endpoints",
       "apiVersion": "2021-06-01",
       "name": "[format('{0}/{1}', parameters('profileName'), parameters('name'))]",
       "location": "[parameters('location')]",
       "properties": "[parameters('properties')]",
-      "tags": "[parameters('tags')]"
+      "tags": "[parameters('tags')]",
+      "dependsOn": [
+        "profile"
+      ]
     },
-    {
+    "endpoint_origins": {
       "copy": {
         "name": "endpoint_origins",
         "count": "[length(parameters('properties').origins)]"
@@ -278,9 +288,12 @@
             }
           }
         }
-      }
+      },
+      "dependsOn": [
+        "profile"
+      ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -308,14 +321,14 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', parameters('profileName'), parameters('name')), '2021-06-01', 'full').location]"
+      "value": "[reference('endpoint', '2021-06-01', 'full').location]"
     },
     "endpointProperties": {
       "type": "object",
       "metadata": {
         "description": "The properties of the endpoint."
       },
-      "value": "[reference(resourceId('Microsoft.Cdn/profiles/endpoints', parameters('profileName'), parameters('name')), '2021-06-01')]"
+      "value": "[reference('endpoint')]"
     }
   }
 }

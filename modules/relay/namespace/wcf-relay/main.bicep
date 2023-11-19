@@ -56,12 +56,23 @@ param authorizationRules array = [
 param lock lockType
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
-param roleAssignments array = []
+param roleAssignments roleAssignmentType
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
+
+var builtInRoleNames = {
+  'Azure Relay Listener': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '26e0b698-aa6d-4085-9386-aadae190014d')
+  'Azure Relay Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '2787bf04-f1f5-4bfe-8383-c8a24483ee38')
+  'Azure Relay Sender': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '26baccc8-eea7-41f1-98f4-1762cc7f685d')
+  Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
+  Owner: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
+  Reader: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
+  'Role Based Access Control Administrator (Preview)': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')
+  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
+}
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -110,17 +121,18 @@ resource wcfRelay_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(l
   scope: wcfRelay
 }
 
-module wcfRelay_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-Rbac-${index}'
-  params: {
-    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
-    principalIds: roleAssignment.principalIds
-    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
-    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
-    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: wcfRelay.id
+resource wcfRelay_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for (roleAssignment, index) in (roleAssignments ?? []): {
+  name: guid(wcfRelay.id, roleAssignment.principalId, roleAssignment.roleDefinitionIdOrName)
+  properties: {
+    roleDefinitionId: contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : roleAssignment.roleDefinitionIdOrName
+    principalId: roleAssignment.principalId
+    description: roleAssignment.?description
+    principalType: roleAssignment.?principalType
+    condition: roleAssignment.?condition
+    conditionVersion: !empty(roleAssignment.?condition) ? (roleAssignment.?conditionVersion ?? '2.0') : null // Must only be set if condtion is set
+    delegatedManagedIdentityResourceId: roleAssignment.?delegatedManagedIdentityResourceId
   }
+  scope: wcfRelay
 }]
 
 @description('The name of the deployed wcf relay.')
@@ -143,3 +155,26 @@ type lockType = {
   @description('Optional. Specify the type of lock.')
   kind: ('CanNotDelete' | 'ReadOnly' | 'None')?
 }?
+
+type roleAssignmentType = {
+  @description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.')
+  roleDefinitionIdOrName: string
+
+  @description('Required. The principal ID of the principal (user/group/identity) to assign the role to.')
+  principalId: string
+
+  @description('Optional. The principal type of the assigned principal ID.')
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
+
+  @description('Optional. The description of the role assignment.')
+  description: string?
+
+  @description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"')
+  condition: string?
+
+  @description('Optional. Version of the condition.')
+  conditionVersion: '2.0'?
+
+  @description('Optional. The Resource Id of the delegated managed identity resource.')
+  delegatedManagedIdentityResourceId: string?
+}[]?

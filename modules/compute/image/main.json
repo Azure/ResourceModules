@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "15652042467625410891"
+      "version": "0.23.1.45101",
+      "templateHash": "18345867974770384550"
     },
     "name": "Images",
     "description": "This module deploys a Compute Image.",
@@ -140,7 +140,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
