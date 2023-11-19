@@ -47,7 +47,7 @@ This module deploys a Storage Account Blob Service.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`isVersioningEnabled`](#parameter-isversioningenabled) | bool | Use versioning to automatically maintain previous versions of your blobs. |
 | [`lastAccessTimeTrackingPolicyEnabled`](#parameter-lastaccesstimetrackingpolicyenabled) | bool | The blob service property to configure last access time based tracking policy. When set to true last access time based tracking is enabled. |
-| [`restorePolicyDays`](#parameter-restorepolicydays) | int | how long this blob can be restored. It should be less than DeleteRetentionPolicy days. |
+| [`restorePolicyDays`](#parameter-restorepolicydays) | int | How long this blob can be restored. It should be less than DeleteRetentionPolicy days. |
 | [`restorePolicyEnabled`](#parameter-restorepolicyenabled) | bool | The blob service properties for blob restore policy. If point-in-time restore is enabled, then versioning, change feed, and blob soft delete must also be enabled. |
 
 ### Parameter: `automaticSnapshotPolicyEnabled`
@@ -69,7 +69,6 @@ The blob service properties for change feed events. Indicates whether change fee
 Indicates whether change feed event logging is enabled for the Blob service. Indicates the duration of changeFeed retention in days. A "0" value indicates an infinite retention of the change feed.
 - Required: No
 - Type: int
-- Default: `7`
 
 ### Parameter: `containerDeleteRetentionPolicyAllowPermanentDelete`
 
@@ -83,7 +82,6 @@ This property when set to true allows deletion of the soft deleted blob versions
 Indicates the number of days that the deleted item should be retained.
 - Required: No
 - Type: int
-- Default: `7`
 
 ### Parameter: `containerDeleteRetentionPolicyEnabled`
 
@@ -125,7 +123,6 @@ This property when set to true allows deletion of the soft deleted blob versions
 Indicates the number of days that the deleted blob should be retained.
 - Required: No
 - Type: int
-- Default: `7`
 
 ### Parameter: `deleteRetentionPolicyEnabled`
 
@@ -272,10 +269,9 @@ The blob service property to configure last access time based tracking policy. W
 
 ### Parameter: `restorePolicyDays`
 
-how long this blob can be restored. It should be less than DeleteRetentionPolicy days.
+How long this blob can be restored. It should be less than DeleteRetentionPolicy days.
 - Required: No
 - Type: int
-- Default: `6`
 
 ### Parameter: `restorePolicyEnabled`
 
