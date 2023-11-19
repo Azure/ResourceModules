@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "10696407376477942681"
+      "templateHash": "18255279964987657305"
     },
     "name": "Storage Account blob Services",
     "description": "This module deploys a Storage Account Blob Service.",
@@ -292,10 +292,7 @@
       "name": "[format('{0}/{1}', parameters('storageAccountName'), variables('name'))]",
       "properties": {
         "automaticSnapshotPolicyEnabled": "[parameters('automaticSnapshotPolicyEnabled')]",
-        "changeFeed": {
-          "enabled": "[parameters('changeFeedEnabled')]",
-          "retentionInDays": "[parameters('changeFeedRetentionInDays')]"
-        },
+        "changeFeed": "[if(parameters('changeFeedEnabled'), createObject('enabled', true(), 'retentionInDays', parameters('changeFeedRetentionInDays')), null())]",
         "containerDeleteRetentionPolicy": {
           "enabled": "[parameters('containerDeleteRetentionPolicyEnabled')]",
           "days": "[parameters('containerDeleteRetentionPolicyDays')]",
@@ -316,10 +313,7 @@
           "name": "[if(equals(parameters('lastAccessTimeTrackingPolicyEnabled'), true()), 'AccessTimeTracking', null())]",
           "trackingGranularityInDays": "[if(equals(parameters('lastAccessTimeTrackingPolicyEnabled'), true()), 1, null())]"
         },
-        "restorePolicy": {
-          "enabled": "[parameters('restorePolicyEnabled')]",
-          "days": "[if(equals(parameters('restorePolicyEnabled'), true()), parameters('restorePolicyDays'), null())]"
-        }
+        "restorePolicy": "[if(parameters('restorePolicyEnabled'), createObject('enabled', true(), 'days', parameters('restorePolicyDays')), null())]"
       },
       "dependsOn": [
         "storageAccount"

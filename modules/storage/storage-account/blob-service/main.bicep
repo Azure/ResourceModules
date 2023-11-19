@@ -93,10 +93,10 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01
   parent: storageAccount
   properties: {
     automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
-    changeFeed: {
-      enabled: changeFeedEnabled
+    changeFeed: changeFeedEnabled ? {
+      enabled: true
       retentionInDays: changeFeedRetentionInDays
-    }
+    } : null
     containerDeleteRetentionPolicy: {
       enabled: containerDeleteRetentionPolicyEnabled
       days: containerDeleteRetentionPolicyDays
@@ -117,10 +117,10 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01
       name: lastAccessTimeTrackingPolicyEnabled == true ? 'AccessTimeTracking' : null
       trackingGranularityInDays: lastAccessTimeTrackingPolicyEnabled == true ? 1 : null
     }
-    restorePolicy: {
-      enabled: restorePolicyEnabled
-      days: restorePolicyEnabled == true ? restorePolicyDays : null
-    }
+    restorePolicy: restorePolicyEnabled ? {
+      enabled: true
+      days: restorePolicyDays
+    } : null
   }
 }
 

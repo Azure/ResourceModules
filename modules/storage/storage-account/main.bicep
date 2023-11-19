@@ -402,19 +402,19 @@ module storageAccount_blobServices 'blob-service/main.bicep' = if (!empty(blobSe
     containers: contains(blobServices, 'containers') ? blobServices.containers : []
     automaticSnapshotPolicyEnabled: contains(blobServices, 'automaticSnapshotPolicyEnabled') ? blobServices.automaticSnapshotPolicyEnabled : false
     changeFeedEnabled: contains(blobServices, 'changeFeedEnabled') ? blobServices.changeFeedEnabled : false
-    changeFeedRetentionInDays: contains(blobServices, 'changeFeedRetentionInDays') ? blobServices.changeFeedRetentionInDays : 7
+    changeFeedRetentionInDays: blobServices.?changeFeedRetentionInDays
     containerDeleteRetentionPolicyEnabled: contains(blobServices, 'containerDeleteRetentionPolicyEnabled') ? blobServices.containerDeleteRetentionPolicyEnabled : false
-    containerDeleteRetentionPolicyDays: contains(blobServices, 'containerDeleteRetentionPolicyDays') ? blobServices.containerDeleteRetentionPolicyDays : 7
+    containerDeleteRetentionPolicyDays: blobServices.?containerDeleteRetentionPolicyDays
     containerDeleteRetentionPolicyAllowPermanentDelete: contains(blobServices, 'containerDeleteRetentionPolicyAllowPermanentDelete') ? blobServices.containerDeleteRetentionPolicyAllowPermanentDelete : false
     corsRules: contains(blobServices, 'corsRules') ? blobServices.corsRules : []
     defaultServiceVersion: contains(blobServices, 'defaultServiceVersion') ? blobServices.defaultServiceVersion : ''
     deleteRetentionPolicyAllowPermanentDelete: contains(blobServices, 'deleteRetentionPolicyAllowPermanentDelete') ? blobServices.deleteRetentionPolicyAllowPermanentDelete : false
     deleteRetentionPolicyEnabled: contains(blobServices, 'deleteRetentionPolicyEnabled') ? blobServices.deleteRetentionPolicyEnabled : false
-    deleteRetentionPolicyDays: contains(blobServices, 'deleteRetentionPolicyDays') ? blobServices.deleteRetentionPolicyDays : 7
+    deleteRetentionPolicyDays: blobServices.?deleteRetentionPolicyDays
     isVersioningEnabled: contains(blobServices, 'isVersioningEnabled') ? blobServices.isVersioningEnabled : false
     lastAccessTimeTrackingPolicyEnabled: contains(blobServices, 'lastAccessTimeTrackingPolicyEnabled') ? blobServices.lastAccessTimeTrackingPolicyEnabled : false
     restorePolicyEnabled: contains(blobServices, 'restorePolicyEnabled') ? blobServices.restorePolicyEnabled : false
-    restorePolicyDays: contains(blobServices, 'restorePolicyDays') ? blobServices.restorePolicyDays : 6
+    restorePolicyDays: blobServices.?restorePolicyDays
     diagnosticSettings: blobServices.?diagnosticSettings
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
