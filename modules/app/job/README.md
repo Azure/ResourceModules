@@ -391,13 +391,6 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
       parallelism: 1
       replicaCompletionCount: 1
     }
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'ContainerApp Reader'
-      }
-    ]
     secrets: {
       secureList: [
         {
@@ -492,15 +485,6 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
         "parallelism": 1,
         "replicaCompletionCount": 1
       }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "ContainerApp Reader"
-        }
-      ]
     },
     "secrets": {
       "value": {
