@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "4013697482173328246"
+      "templateHash": "8572950365871080651"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Clusters",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
@@ -69,7 +69,7 @@
           "roleDefinitionIdOrName": {
             "type": "string",
             "metadata": {
-              "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+              "description": "Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
             }
           },
           "principalId": {
@@ -923,7 +923,7 @@
     "roleAssignments": {
       "$ref": "#/definitions/roleAssignmentType",
       "metadata": {
-        "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+        "description": "Optional. Array of role assignments to create."
       }
     },
     "lock": {
@@ -1249,7 +1249,7 @@
       "scope": "[format('Microsoft.ContainerService/managedClusters/{0}', parameters('name'))]",
       "name": "[guid(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
       "properties": {
-        "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+        "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], if(contains(coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, '/providers/Microsoft.Authorization/roleDefinitions/'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)))]",
         "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
         "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
         "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
@@ -1804,7 +1804,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-              "templateHash": "18265527122738367400"
+              "templateHash": "548642834195454661"
             },
             "name": "Kubernetes Configuration Extensions",
             "description": "This module deploys a Kubernetes Configuration Extension.",
@@ -1967,7 +1967,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.23.1.45101",
-                      "templateHash": "8985718648814286209"
+                      "templateHash": "10031296768791737313"
                     },
                     "name": "Kubernetes Configuration Flux Configurations",
                     "description": "This module deploys a Kubernetes Configuration Flux Configuration.",
@@ -2023,9 +2023,8 @@
                     },
                     "kustomizations": {
                       "type": "object",
-                      "defaultValue": {},
                       "metadata": {
-                        "description": "Optional. Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster."
+                        "description": "Required. Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster."
                       }
                     },
                     "namespace": {
@@ -2079,14 +2078,14 @@
                     },
                     {
                       "type": "Microsoft.KubernetesConfiguration/fluxConfigurations",
-                      "apiVersion": "2022-03-01",
+                      "apiVersion": "2023-05-01",
                       "scope": "[format('Microsoft.ContainerService/managedClusters/{0}', parameters('clusterName'))]",
                       "name": "[parameters('name')]",
                       "properties": {
                         "bucket": "[if(not(empty(parameters('bucket'))), parameters('bucket'), null())]",
                         "configurationProtectedSettings": "[if(not(empty(parameters('configurationProtectedSettings'))), parameters('configurationProtectedSettings'), createObject())]",
                         "gitRepository": "[if(not(empty(parameters('gitRepository'))), parameters('gitRepository'), null())]",
-                        "kustomizations": "[if(not(empty(parameters('kustomizations'))), parameters('kustomizations'), createObject())]",
+                        "kustomizations": "[parameters('kustomizations')]",
                         "namespace": "[parameters('namespace')]",
                         "scope": "[parameters('scope')]",
                         "sourceKind": "[parameters('sourceKind')]",
