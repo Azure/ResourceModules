@@ -68,5 +68,21 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
       timeoutInSeconds: 180
       url: 'https://github.com/mspnp/aks-baseline'
     }
+    kustomizations: {
+      unified: {
+        dependsOn: []
+        force: false
+        path: './cluster-manifests'
+        prune: true
+        syncIntervalInSeconds: 300
+        timeoutInSeconds: 300
+        postBuild: {
+          substitute: {
+            TEST_VAR1: 'foo'
+            TEST_VAR2: 'bar'
+          }
+        }
+      }
+    }
   }
 }]
