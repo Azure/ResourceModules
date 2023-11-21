@@ -67,13 +67,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
         subject: 'system:serviceaccount:default:workload-identity-sa'
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'

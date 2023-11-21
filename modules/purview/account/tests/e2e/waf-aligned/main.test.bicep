@@ -94,13 +94,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
         workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     accountPrivateEndpoints: [
       {
         privateDnsZoneResourceIds: [

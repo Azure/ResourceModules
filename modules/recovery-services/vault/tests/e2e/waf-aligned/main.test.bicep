@@ -350,13 +350,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
         }
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     monitoringSettings: {
       azureMonitorAlertSettings: {
         alertsForAllJobFailures: 'Enabled'

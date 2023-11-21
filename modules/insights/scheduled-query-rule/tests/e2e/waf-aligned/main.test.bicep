@@ -85,13 +85,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     }
     evaluationFrequency: 'PT5M'
     queryTimeRange: 'PT5M'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     scopes: [
       nestedDependencies.outputs.logAnalyticsWorkspaceResourceId
     ]

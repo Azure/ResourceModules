@@ -88,13 +88,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     }
     maxSessionLimit: 99999
     personalDesktopAssignmentType: 'Automatic'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     vmTemplate: {
       customImageId: null
       domain: 'domainname.onmicrosoft.com'

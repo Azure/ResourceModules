@@ -55,7 +55,7 @@ This module deploys an Event Hub Namespace Event Hub.
 | [`retentionDescriptionCleanupPolicy`](#parameter-retentiondescriptioncleanuppolicy) | string | Retention cleanup policy. Enumerates the possible values for cleanup policy. |
 | [`retentionDescriptionRetentionTimeInHours`](#parameter-retentiondescriptionretentiontimeinhours) | int | Retention time in hours. Number of hours to retain the events for this Event Hub. This value is only used when cleanupPolicy is Delete. If cleanupPolicy is Compact the returned value of this property is Long.MaxValue. |
 | [`retentionDescriptionTombstoneRetentionTimeInHours`](#parameter-retentiondescriptiontombstoneretentiontimeinhours) | int | Retention cleanup policy. Number of hours to retain the tombstone markers of a compacted Event Hub. This value is only used when cleanupPolicy is Compact. Consumer must complete reading the tombstone marker within this specified amount of time if consumer begins from starting offset to ensure they get a valid snapshot for the specific key described by the tombstone marker within the compacted Event Hub. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`status`](#parameter-status) | string | Enumerates the possible values for the status of the Event Hub. |
 
 ### Parameter: `authorizationRules`
@@ -251,7 +251,7 @@ Retention cleanup policy. Number of hours to retain the tombstone markers of a c
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -264,7 +264,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -312,7 +312,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string

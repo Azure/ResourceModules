@@ -67,13 +67,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     osDiskCaching: 'ReadWrite'
     osType: 'Windows'
     hyperVGeneration: 'V1'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     zoneResilient: true
     diskEncryptionSetResourceId: nestedDependencies.outputs.diskEncryptionSetResourceId
     osState: 'Generalized'

@@ -210,13 +210,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
 
     }
     vmImage: 'Linux'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     applicationTypes: [
       {
         name: 'WordCount' // not idempotent

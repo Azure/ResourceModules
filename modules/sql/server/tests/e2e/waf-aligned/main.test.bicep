@@ -82,13 +82,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password
     location: location
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     vulnerabilityAssessmentsObj: {
       name: 'default'
       emailSubscriptionAdmins: true

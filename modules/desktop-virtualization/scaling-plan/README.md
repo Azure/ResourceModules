@@ -111,7 +111,17 @@ module scalingPlan 'br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0' 
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     schedules: [
@@ -208,7 +218,17 @@ module scalingPlan 'br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0' 
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -297,13 +317,6 @@ module scalingPlan 'br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0' 
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     friendlyName: 'My Scaling Plan'
     hostPoolType: 'Pooled'
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
     schedules: [
       {
         daysOfWeek: [
@@ -392,15 +405,6 @@ module scalingPlan 'br:bicep/modules/desktop-virtualization.scaling-plan:1.0.0' 
     },
     "hostPoolType": {
       "value": "Pooled"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
     },
     "schedules": {
       "value": [

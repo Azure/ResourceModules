@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "7208377569507005040"
+      "templateHash": "10987132052882747001"
     },
     "name": "Network Managers",
     "description": "This module deploys a Network Manager.",
@@ -258,7 +258,7 @@
       "scope": "[format('Microsoft.Network/networkManagers/{0}', parameters('name'))]",
       "name": "[guid(resourceId('Microsoft.Network/networkManagers', parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
       "properties": {
-        "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+        "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], if(contains(coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, '/providers/Microsoft.Authorization/roleDefinitions/'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)))]",
         "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
         "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
         "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
@@ -303,10 +303,10 @@
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-              "templateHash": "3787957853488500608"
+              "templateHash": "9383612824689647197"
             },
             "name": "Network Manager Network Groups",
-            "description": "This module deploys a Network Manager Network Group.\r\nA network group is a collection of same-type network resources that you can associate with network manager configurations. You can add same-type network resources after you create the network group.",
+            "description": "This module deploys a Network Manager Network Group.\nA network group is a collection of same-type network resources that you can associate with network manager configurations. You can add same-type network resources after you create the network group.",
             "owner": "Azure/module-maintainers"
           },
           "parameters": {
@@ -409,10 +409,10 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.23.1.45101",
-                      "templateHash": "6119539562042886994"
+                      "templateHash": "6270695242836306169"
                     },
                     "name": "Network Manager Network Group Static Members",
-                    "description": "This module deploys a Network Manager Network Group Static Member.\r\nStatic membership allows you to explicitly add virtual networks to a group by manually selecting individual virtual networks.",
+                    "description": "This module deploys a Network Manager Network Group Static Member.\nStatic membership allows you to explicitly add virtual networks to a group by manually selecting individual virtual networks.",
                     "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
@@ -572,10 +572,10 @@
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-              "templateHash": "16434535140284685195"
+              "templateHash": "9661323239609366787"
             },
             "name": "Network Manager Connectivity Configurations",
-            "description": "This module deploys a Network Manager Connectivity Configuration.\r\nConnectivity configurations define hub-and-spoke or mesh topologies applied to one or more network groups.",
+            "description": "This module deploys a Network Manager Connectivity Configuration.\nConnectivity configurations define hub-and-spoke or mesh topologies applied to one or more network groups.",
             "owner": "Azure/module-maintainers"
           },
           "parameters": {
@@ -751,10 +751,10 @@
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-              "templateHash": "5036358037363252898"
+              "templateHash": "15324552358719749208"
             },
             "name": "Network Manager Scope Connections",
-            "description": "This module deploys a Network Manager Scope Connection.\r\nCreate a cross-tenant connection to manage a resource from another tenant.",
+            "description": "This module deploys a Network Manager Scope Connection.\nCreate a cross-tenant connection to manage a resource from another tenant.",
             "owner": "Azure/module-maintainers"
           },
           "parameters": {
@@ -890,10 +890,10 @@
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-              "templateHash": "11083461428572717010"
+              "templateHash": "220686347521741612"
             },
             "name": "Network Manager Security Admin Configurations",
-            "description": "This module deploys an Network Manager Security Admin Configuration.\r\nA security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.",
+            "description": "This module deploys an Network Manager Security Admin Configuration.\nA security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.",
             "owner": "Azure/module-maintainers"
           },
           "parameters": {
@@ -1012,10 +1012,10 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.23.1.45101",
-                      "templateHash": "17187717862116828818"
+                      "templateHash": "10245325643114384455"
                     },
                     "name": "Network Manager Security Admin Configuration Rule Collections",
-                    "description": "This module deploys an Network Manager Security Admin Configuration Rule Collection.\r\nA security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules. Security admin rules allows enforcing security policy criteria that matches the conditions set. Warning: A rule collection without rule will cause a deployment configuration for security admin goal state in network manager to fail.",
+                    "description": "This module deploys an Network Manager Security Admin Configuration Rule Collection.\nA security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules. Security admin rules allows enforcing security policy criteria that matches the conditions set. Warning: A rule collection without rule will cause a deployment configuration for security admin goal state in network manager to fail.",
                     "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
@@ -1147,10 +1147,10 @@
                             "_generator": {
                               "name": "bicep",
                               "version": "0.23.1.45101",
-                              "templateHash": "144106033297451553"
+                              "templateHash": "6215293821297223443"
                             },
                             "name": "Network Manager Security Admin Configuration Rule Collection Rules",
-                            "description": "This module deploys an Azure Virtual Network Manager (AVNM) Security Admin Configuration Rule Collection Rule.\r\nA security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.",
+                            "description": "This module deploys an Azure Virtual Network Manager (AVNM) Security Admin Configuration Rule Collection Rule.\nA security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.",
                             "owner": "Azure/module-maintainers"
                           },
                           "parameters": {

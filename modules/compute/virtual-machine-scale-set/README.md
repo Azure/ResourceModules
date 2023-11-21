@@ -1267,7 +1267,7 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
 | [`provisionVMAgent`](#parameter-provisionvmagent) | bool | Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later. |
 | [`proximityPlacementGroupResourceId`](#parameter-proximityplacementgroupresourceid) | string | Resource ID of a proximity placement group. |
 | [`publicKeys`](#parameter-publickeys) | array | The list of SSH public keys used to authenticate with linux based VMs. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`sasTokenValidityLength`](#parameter-sastokenvaliditylength) | string | SAS token validity length to use to download files from storage accounts. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
 | [`scaleInPolicy`](#parameter-scaleinpolicy) | object | Specifies the scale-in policy that decides which virtual machines are chosen for removal when a Virtual Machine Scale Set is scaled-in. |
 | [`scaleSetFaultDomain`](#parameter-scalesetfaultdomain) | int | Fault Domain count for each placement group. |
@@ -1808,7 +1808,7 @@ The list of SSH public keys used to authenticate with linux based VMs.
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -1821,7 +1821,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -1869,7 +1869,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string

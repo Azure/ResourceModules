@@ -91,13 +91,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
         actionGroupId: nestedDependencies.outputs.actionGroupResourceId
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     scopes: [
       subscription().id
     ]

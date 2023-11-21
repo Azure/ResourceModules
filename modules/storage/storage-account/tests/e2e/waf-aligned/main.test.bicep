@@ -270,13 +270,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     diagnosticSettings: [
       {
         name: 'customSetting'

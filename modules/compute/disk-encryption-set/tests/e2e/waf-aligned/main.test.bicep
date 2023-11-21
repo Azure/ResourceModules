@@ -64,13 +64,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     }
     keyName: nestedDependencies.outputs.keyName
     keyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     managedIdentities: {
       userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
