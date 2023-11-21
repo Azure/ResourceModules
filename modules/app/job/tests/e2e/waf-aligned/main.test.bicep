@@ -113,12 +113,5 @@ module testDeployment '../../../main.bicep' = {
         ]
       }
     ]
-    roleAssignments: [
-      {
-        principalId: nestedDependencies.outputs.managedIdentityResourceId
-        roleDefinitionIdOrName: 'ContainerApp Reader'
-        principalType: 'ServicePrincipal'
-      }
-    ]
   }
 }

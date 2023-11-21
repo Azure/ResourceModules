@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "12303802246802299756"
+      "templateHash": "7782694235197058482"
     },
     "name": "Storage Accounts",
     "description": "This module deploys a Storage Account.",
@@ -1833,19 +1833,27 @@
           "containers": "[if(contains(parameters('blobServices'), 'containers'), createObject('value', parameters('blobServices').containers), createObject('value', createArray()))]",
           "automaticSnapshotPolicyEnabled": "[if(contains(parameters('blobServices'), 'automaticSnapshotPolicyEnabled'), createObject('value', parameters('blobServices').automaticSnapshotPolicyEnabled), createObject('value', false()))]",
           "changeFeedEnabled": "[if(contains(parameters('blobServices'), 'changeFeedEnabled'), createObject('value', parameters('blobServices').changeFeedEnabled), createObject('value', false()))]",
-          "changeFeedRetentionInDays": "[if(contains(parameters('blobServices'), 'changeFeedRetentionInDays'), createObject('value', parameters('blobServices').changeFeedRetentionInDays), createObject('value', 7))]",
+          "changeFeedRetentionInDays": {
+            "value": "[tryGet(parameters('blobServices'), 'changeFeedRetentionInDays')]"
+          },
           "containerDeleteRetentionPolicyEnabled": "[if(contains(parameters('blobServices'), 'containerDeleteRetentionPolicyEnabled'), createObject('value', parameters('blobServices').containerDeleteRetentionPolicyEnabled), createObject('value', false()))]",
-          "containerDeleteRetentionPolicyDays": "[if(contains(parameters('blobServices'), 'containerDeleteRetentionPolicyDays'), createObject('value', parameters('blobServices').containerDeleteRetentionPolicyDays), createObject('value', 7))]",
+          "containerDeleteRetentionPolicyDays": {
+            "value": "[tryGet(parameters('blobServices'), 'containerDeleteRetentionPolicyDays')]"
+          },
           "containerDeleteRetentionPolicyAllowPermanentDelete": "[if(contains(parameters('blobServices'), 'containerDeleteRetentionPolicyAllowPermanentDelete'), createObject('value', parameters('blobServices').containerDeleteRetentionPolicyAllowPermanentDelete), createObject('value', false()))]",
           "corsRules": "[if(contains(parameters('blobServices'), 'corsRules'), createObject('value', parameters('blobServices').corsRules), createObject('value', createArray()))]",
           "defaultServiceVersion": "[if(contains(parameters('blobServices'), 'defaultServiceVersion'), createObject('value', parameters('blobServices').defaultServiceVersion), createObject('value', ''))]",
           "deleteRetentionPolicyAllowPermanentDelete": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyAllowPermanentDelete'), createObject('value', parameters('blobServices').deleteRetentionPolicyAllowPermanentDelete), createObject('value', false()))]",
           "deleteRetentionPolicyEnabled": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyEnabled'), createObject('value', parameters('blobServices').deleteRetentionPolicyEnabled), createObject('value', false()))]",
-          "deleteRetentionPolicyDays": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyDays'), createObject('value', parameters('blobServices').deleteRetentionPolicyDays), createObject('value', 7))]",
+          "deleteRetentionPolicyDays": {
+            "value": "[tryGet(parameters('blobServices'), 'deleteRetentionPolicyDays')]"
+          },
           "isVersioningEnabled": "[if(contains(parameters('blobServices'), 'isVersioningEnabled'), createObject('value', parameters('blobServices').isVersioningEnabled), createObject('value', false()))]",
           "lastAccessTimeTrackingPolicyEnabled": "[if(contains(parameters('blobServices'), 'lastAccessTimeTrackingPolicyEnabled'), createObject('value', parameters('blobServices').lastAccessTimeTrackingPolicyEnabled), createObject('value', false()))]",
           "restorePolicyEnabled": "[if(contains(parameters('blobServices'), 'restorePolicyEnabled'), createObject('value', parameters('blobServices').restorePolicyEnabled), createObject('value', false()))]",
-          "restorePolicyDays": "[if(contains(parameters('blobServices'), 'restorePolicyDays'), createObject('value', parameters('blobServices').restorePolicyDays), createObject('value', 6))]",
+          "restorePolicyDays": {
+            "value": "[tryGet(parameters('blobServices'), 'restorePolicyDays')]"
+          },
           "diagnosticSettings": {
             "value": "[tryGet(parameters('blobServices'), 'diagnosticSettings')]"
           },
@@ -1861,7 +1869,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-              "templateHash": "2468823120254808431"
+              "templateHash": "18255279964987657305"
             },
             "name": "Storage Account blob Services",
             "description": "This module deploys a Storage Account Blob Service.",
@@ -1999,7 +2007,7 @@
             },
             "changeFeedRetentionInDays": {
               "type": "int",
-              "defaultValue": 7,
+              "nullable": true,
               "minValue": 0,
               "maxValue": 146000,
               "metadata": {
@@ -2015,7 +2023,7 @@
             },
             "containerDeleteRetentionPolicyDays": {
               "type": "int",
-              "defaultValue": 7,
+              "nullable": true,
               "minValue": 1,
               "maxValue": 365,
               "metadata": {
@@ -2052,7 +2060,7 @@
             },
             "deleteRetentionPolicyDays": {
               "type": "int",
-              "defaultValue": 7,
+              "nullable": true,
               "minValue": 1,
               "maxValue": 365,
               "metadata": {
@@ -2089,10 +2097,10 @@
             },
             "restorePolicyDays": {
               "type": "int",
-              "defaultValue": 6,
+              "nullable": true,
               "minValue": 1,
               "metadata": {
-                "description": "Optional. how long this blob can be restored. It should be less than DeleteRetentionPolicy days."
+                "description": "Optional. How long this blob can be restored. It should be less than DeleteRetentionPolicy days."
               }
             },
             "containers": {
@@ -2147,13 +2155,10 @@
               "name": "[format('{0}/{1}', parameters('storageAccountName'), variables('name'))]",
               "properties": {
                 "automaticSnapshotPolicyEnabled": "[parameters('automaticSnapshotPolicyEnabled')]",
-                "changeFeed": {
-                  "enabled": "[parameters('changeFeedEnabled')]",
-                  "retentionInDays": "[if(equals(parameters('changeFeedEnabled'), true()), if(not(equals(parameters('changeFeedRetentionInDays'), 0)), parameters('changeFeedRetentionInDays'), null()), null())]"
-                },
+                "changeFeed": "[if(parameters('changeFeedEnabled'), createObject('enabled', true(), 'retentionInDays', parameters('changeFeedRetentionInDays')), null())]",
                 "containerDeleteRetentionPolicy": {
                   "enabled": "[parameters('containerDeleteRetentionPolicyEnabled')]",
-                  "days": "[if(equals(parameters('containerDeleteRetentionPolicyEnabled'), true()), parameters('containerDeleteRetentionPolicyDays'), null())]",
+                  "days": "[parameters('containerDeleteRetentionPolicyDays')]",
                   "allowPermanentDelete": "[if(equals(parameters('containerDeleteRetentionPolicyEnabled'), true()), parameters('containerDeleteRetentionPolicyAllowPermanentDelete'), null())]"
                 },
                 "cors": {
@@ -2162,7 +2167,7 @@
                 "defaultServiceVersion": "[if(not(empty(parameters('defaultServiceVersion'))), parameters('defaultServiceVersion'), null())]",
                 "deleteRetentionPolicy": {
                   "enabled": "[parameters('deleteRetentionPolicyEnabled')]",
-                  "days": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyDays'), null())]",
+                  "days": "[parameters('deleteRetentionPolicyDays')]",
                   "allowPermanentDelete": "[if(and(parameters('deleteRetentionPolicyEnabled'), parameters('deleteRetentionPolicyAllowPermanentDelete')), true(), null())]"
                 },
                 "isVersioningEnabled": "[parameters('isVersioningEnabled')]",
@@ -2171,10 +2176,7 @@
                   "name": "[if(equals(parameters('lastAccessTimeTrackingPolicyEnabled'), true()), 'AccessTimeTracking', null())]",
                   "trackingGranularityInDays": "[if(equals(parameters('lastAccessTimeTrackingPolicyEnabled'), true()), 1, null())]"
                 },
-                "restorePolicy": {
-                  "enabled": "[parameters('restorePolicyEnabled')]",
-                  "days": "[if(equals(parameters('restorePolicyEnabled'), true()), parameters('restorePolicyDays'), null())]"
-                }
+                "restorePolicy": "[if(parameters('restorePolicyEnabled'), createObject('enabled', true(), 'days', parameters('restorePolicyDays')), null())]"
               },
               "dependsOn": [
                 "storageAccount"
