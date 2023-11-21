@@ -86,6 +86,13 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
       name: 'myCustomLockName'
     }
     publicIPAllocationMethod: 'Static'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalType: 'ServicePrincipal'
+      }
+    ]
     skuName: 'Standard'
     zones: [
       '1'

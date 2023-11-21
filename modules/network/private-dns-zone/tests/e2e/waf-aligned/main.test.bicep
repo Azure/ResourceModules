@@ -140,6 +140,13 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
         ttl: 3600
       }
     ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalType: 'ServicePrincipal'
+      }
+    ]
     soa: [
       {
         name: '@'
