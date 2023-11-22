@@ -36,14 +36,6 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 // ============== //
 
 @batchSize(1)
-<<<<<<< HEAD
-module testDeployment '../../../main.bicep' =[for iteration in [ 'init', 'idem' ]: {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
-  params: {}
-}
-]
-=======
 module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
@@ -51,4 +43,3 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
->>>>>>> 3d827c3621e7d83ad5b9d9266e593f0afc6b7683

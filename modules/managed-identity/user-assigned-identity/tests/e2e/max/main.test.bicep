@@ -44,11 +44,7 @@ module nestedDependencies 'dependencies.bicep' = {
 // ============== //
 
 @batchSize(1)
-<<<<<<< HEAD
-module testDeployment '../../../main.bicep' =[for iteration in [ 'init', 'idem' ]: {
-=======
 module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
->>>>>>> 3d827c3621e7d83ad5b9d9266e593f0afc6b7683
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
@@ -90,9 +86,4 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
       Role: 'DeploymentValidation'
     }
   }
-<<<<<<< HEAD
-}
-]
-=======
 }]
->>>>>>> 3d827c3621e7d83ad5b9d9266e593f0afc6b7683
