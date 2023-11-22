@@ -44,7 +44,11 @@ module nestedDependencies 'dependencies.bicep' = {
 // ============== //
 
 @batchSize(1)
+<<<<<<< HEAD
 module testDeployment '../../../main.bicep' =[for iteration in [ 'init', 'idem' ]: {
+=======
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
+>>>>>>> 3d827c3621e7d83ad5b9d9266e593f0afc6b7683
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
@@ -65,7 +69,17 @@ module testDeployment '../../../main.bicep' =[for iteration in [ 'init', 'idem' 
     ]
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalType: 'ServicePrincipal'
+      }
+      {
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalType: 'ServicePrincipal'
+      }
+      {
+        roleDefinitionIdOrName: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
         principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }
@@ -76,5 +90,9 @@ module testDeployment '../../../main.bicep' =[for iteration in [ 'init', 'idem' 
       Role: 'DeploymentValidation'
     }
   }
+<<<<<<< HEAD
 }
 ]
+=======
+}]
+>>>>>>> 3d827c3621e7d83ad5b9d9266e593f0afc6b7683

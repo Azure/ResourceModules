@@ -15,7 +15,7 @@ param changeFeedEnabled bool = true
 @minValue(0)
 @maxValue(146000)
 @description('Optional. Indicates whether change feed event logging is enabled for the Blob service. Indicates the duration of changeFeed retention in days. A "0" value indicates an infinite retention of the change feed.')
-param changeFeedRetentionInDays int = 7
+param changeFeedRetentionInDays int?
 
 @description('Optional. The blob service properties for container soft delete. Indicates whether DeleteRetentionPolicy is enabled.')
 param containerDeleteRetentionPolicyEnabled bool = true
@@ -23,7 +23,7 @@ param containerDeleteRetentionPolicyEnabled bool = true
 @minValue(1)
 @maxValue(365)
 @description('Optional. Indicates the number of days that the deleted item should be retained.')
-param containerDeleteRetentionPolicyDays int = 7
+param containerDeleteRetentionPolicyDays int?
 
 @description('Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share.')
 param containerDeleteRetentionPolicyAllowPermanentDelete bool = false
@@ -40,7 +40,7 @@ param deleteRetentionPolicyEnabled bool = true
 @minValue(1)
 @maxValue(365)
 @description('Optional. Indicates the number of days that the deleted blob should be retained.')
-param deleteRetentionPolicyDays int = 7
+param deleteRetentionPolicyDays int?
 
 @description('Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share.')
 param deleteRetentionPolicyAllowPermanentDelete bool = false
@@ -55,8 +55,8 @@ param lastAccessTimeTrackingPolicyEnabled bool = false
 param restorePolicyEnabled bool = true
 
 @minValue(1)
-@description('Optional. how long this blob can be restored. It should be less than DeleteRetentionPolicy days.')
-param restorePolicyDays int = 6
+@description('Optional. How long this blob can be restored. It should be less than DeleteRetentionPolicy days.')
+param restorePolicyDays int?
 
 @description('Optional. Blob containers to create.')
 param containers array = []
@@ -93,13 +93,13 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01
   parent: storageAccount
   properties: {
     automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
-    changeFeed: {
-      enabled: changeFeedEnabled
-      retentionInDays: changeFeedEnabled == true ? (changeFeedRetentionInDays != 0 ? changeFeedRetentionInDays : null) : null
-    }
+    changeFeed: changeFeedEnabled ? {
+      enabled: true
+      retentionInDays: changeFeedRetentionInDays
+    } : null
     containerDeleteRetentionPolicy: {
       enabled: containerDeleteRetentionPolicyEnabled
-      days: containerDeleteRetentionPolicyEnabled == true ? containerDeleteRetentionPolicyDays : null
+      days: containerDeleteRetentionPolicyDays
       allowPermanentDelete: containerDeleteRetentionPolicyEnabled == true ? containerDeleteRetentionPolicyAllowPermanentDelete : null
     }
     cors: {
@@ -108,7 +108,7 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01
     defaultServiceVersion: !empty(defaultServiceVersion) ? defaultServiceVersion : null
     deleteRetentionPolicy: {
       enabled: deleteRetentionPolicyEnabled
-      days: deleteRetentionPolicyEnabled == true ? deleteRetentionPolicyDays : null
+      days: deleteRetentionPolicyDays
       allowPermanentDelete: deleteRetentionPolicyEnabled && deleteRetentionPolicyAllowPermanentDelete ? true : null
     }
     isVersioningEnabled: isVersioningEnabled
@@ -117,10 +117,10 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01
       name: lastAccessTimeTrackingPolicyEnabled == true ? 'AccessTimeTracking' : null
       trackingGranularityInDays: lastAccessTimeTrackingPolicyEnabled == true ? 1 : null
     }
-    restorePolicy: {
-      enabled: restorePolicyEnabled
-      days: restorePolicyEnabled == true ? restorePolicyDays : null
-    }
+    restorePolicy: restorePolicyEnabled ? {
+      enabled: true
+      days: restorePolicyDays
+    } : null
   }
 }
 
@@ -200,7 +200,7 @@ type diagnosticSettingType = {
   }[]?
 
   @description('Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.')
-  logAnalyticsDestinationType: ('Dedicated' | 'AzureDiagnostics' | null)?
+  logAnalyticsDestinationType: ('Dedicated' | 'AzureDiagnostics')?
 
   @description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
   workspaceResourceId: string?

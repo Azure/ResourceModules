@@ -142,7 +142,7 @@ resource networkManager_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!e
 resource networkManager_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for (roleAssignment, index) in (roleAssignments ?? []): {
   name: guid(networkManager.id, roleAssignment.principalId, roleAssignment.roleDefinitionIdOrName)
   properties: {
-    roleDefinitionId: contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : roleAssignment.roleDefinitionIdOrName
+    roleDefinitionId: contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : contains(roleAssignment.roleDefinitionIdOrName, '/providers/Microsoft.Authorization/roleDefinitions/') ? roleAssignment.roleDefinitionIdOrName : subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleAssignment.roleDefinitionIdOrName)
     principalId: roleAssignment.principalId
     description: roleAssignment.?description
     principalType: roleAssignment.?principalType
@@ -185,7 +185,7 @@ type roleAssignmentType = {
   principalId: string
 
   @sys.description('Optional. The principal type of the assigned principal ID.')
-  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | null)?
+  principalType: ('ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device')?
 
   @sys.description('Optional. The description of the role assignment.')
   description: string?

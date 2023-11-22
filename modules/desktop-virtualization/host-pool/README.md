@@ -29,6 +29,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -134,7 +135,17 @@ module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     tags: {
@@ -244,9 +255,209 @@ module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "type": {
+      "value": "Pooled"
+    },
+    "vmTemplate": {
+      "value": {
+        "customImageId": "<customImageId>",
+        "domain": "domainname.onmicrosoft.com",
+        "galleryImageOffer": "office-365",
+        "galleryImagePublisher": "microsoftwindowsdesktop",
+        "galleryImageSKU": "20h1-evd-o365pp",
+        "imageType": "Gallery",
+        "imageUri": "<imageUri>",
+        "namePrefix": "avdv2",
+        "osDiskType": "StandardSSD_LRS",
+        "useManagedDisks": true,
+        "vmSize": {
+          "cores": 2,
+          "id": "Standard_D2s_v3",
+          "ram": 8
+        }
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dvhpwaf'
+  params: {
+    // Required parameters
+    name: 'dvhpwaf001'
+    // Non-required parameters
+    agentUpdate: {
+      maintenanceWindows: [
+        {
+          dayOfWeek: 'Friday'
+          hour: 7
+        }
+        {
+          dayOfWeek: 'Saturday'
+          hour: 8
+        }
+      ]
+      maintenanceWindowTimeZone: 'Alaskan Standard Time'
+      type: 'Scheduled'
+      useSessionHostLocalTime: false
+    }
+    customRdpProperty: 'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'
+    description: 'My first AVD Host Pool'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    friendlyName: 'AVDv2'
+    loadBalancerType: 'BreadthFirst'
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    maxSessionLimit: 99999
+    personalDesktopAssignmentType: 'Automatic'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    type: 'Pooled'
+    vmTemplate: {
+      customImageId: '<customImageId>'
+      domain: 'domainname.onmicrosoft.com'
+      galleryImageOffer: 'office-365'
+      galleryImagePublisher: 'microsoftwindowsdesktop'
+      galleryImageSKU: '20h1-evd-o365pp'
+      imageType: 'Gallery'
+      imageUri: '<imageUri>'
+      namePrefix: 'avdv2'
+      osDiskType: 'StandardSSD_LRS'
+      useManagedDisks: true
+      vmSize: {
+        cores: 2
+        id: 'Standard_D2s_v3'
+        ram: 8
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dvhpwaf001"
+    },
+    // Non-required parameters
+    "agentUpdate": {
+      "value": {
+        "maintenanceWindows": [
+          {
+            "dayOfWeek": "Friday",
+            "hour": 7
+          },
+          {
+            "dayOfWeek": "Saturday",
+            "hour": 8
+          }
+        ],
+        "maintenanceWindowTimeZone": "Alaskan Standard Time",
+        "type": "Scheduled",
+        "useSessionHostLocalTime": false
+      }
+    },
+    "customRdpProperty": {
+      "value": "audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;"
+    },
+    "description": {
+      "value": "My first AVD Host Pool"
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "friendlyName": {
+      "value": "AVDv2"
+    },
+    "loadBalancerType": {
+      "value": "BreadthFirst"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "maxSessionLimit": {
+      "value": 99999
+    },
+    "personalDesktopAssignmentType": {
+      "value": "Automatic"
     },
     "tags": {
       "value": {

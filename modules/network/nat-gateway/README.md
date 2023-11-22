@@ -31,6 +31,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
 - [Combine a generated and provided Public IP Prefix](#example-2-combine-a-generated-and-provided-public-ip-prefix)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -89,7 +90,17 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     tags: {
@@ -166,7 +177,17 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -228,7 +249,17 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     tags: {
@@ -294,7 +325,153 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nngwaf'
+  params: {
+    // Required parameters
+    name: 'nngwaf001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    publicIPAddressObjects: [
+      {
+        diagnosticSettings: [
+          {
+            eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+            eventHubName: '<eventHubName>'
+            metricCategories: [
+              {
+                category: 'AllMetrics'
+              }
+            ]
+            name: 'customSetting'
+            storageAccountResourceId: '<storageAccountResourceId>'
+            workspaceResourceId: '<workspaceResourceId>'
+          }
+        ]
+        name: 'nngwaf001-pip'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        skuTier: 'Regional'
+        zones: [
+          '1'
+          '2'
+          '3'
+        ]
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nngwaf001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "publicIPAddressObjects": {
+      "value": [
+        {
+          "diagnosticSettings": [
+            {
+              "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+              "eventHubName": "<eventHubName>",
+              "metricCategories": [
+                {
+                  "category": "AllMetrics"
+                }
+              ],
+              "name": "customSetting",
+              "storageAccountResourceId": "<storageAccountResourceId>",
+              "workspaceResourceId": "<workspaceResourceId>"
+            }
+          ],
+          "name": "nngwaf001-pip",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "skuTier": "Regional",
+          "zones": [
+            "1",
+            "2",
+            "3"
+          ]
         }
       ]
     },
@@ -333,7 +510,7 @@ module natGateway 'br:bicep/modules/network.nat-gateway:1.0.0' = {
 | [`publicIPPrefixObjects`](#parameter-publicipprefixobjects) | array | Specifies the properties of the Public IP Prefixes to create and be used by the NAT Gateway. |
 | [`publicIPPrefixResourceIds`](#parameter-publicipprefixresourceids) | array | Existing Public IP Prefixes resource IDs to use for the NAT Gateway. |
 | [`publicIpResourceIds`](#parameter-publicipresourceids) | array | Existing Public IP Address resource IDs to use for the NAT Gateway. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`tags`](#parameter-tags) | object | Tags for the resource. |
 | [`zones`](#parameter-zones) | array | A list of availability zones denoting the zone in which Nat Gateway should be deployed. |
 
@@ -419,7 +596,7 @@ Existing Public IP Address resource IDs to use for the NAT Gateway.
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -432,7 +609,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -480,7 +657,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string

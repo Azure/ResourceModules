@@ -32,6 +32,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -120,11 +121,19 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
       authenticationType: 'IdentityBased'
       endpointUri: '<endpointUri>'
       entityPath: '<entityPath>'
-      userAssignedIdentity: '<userAssignedIdentity>'
+      managedIdentities: {
+        userAssignedResourceId: '<userAssignedResourceId>'
+      }
     }
     lock: {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
     }
     privateEndpoints: [
       {
@@ -145,15 +154,14 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
       authenticationType: 'IdentityBased'
       endpointUri: '<endpointUri>'
       entityPath: '<entityPath>'
-      userAssignedIdentity: '<userAssignedIdentity>'
+      managedIdentities: {
+        userAssignedResourceId: '<userAssignedResourceId>'
+      }
     }
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
-    }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -206,13 +214,23 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
         "authenticationType": "IdentityBased",
         "endpointUri": "<endpointUri>",
         "entityPath": "<entityPath>",
-        "userAssignedIdentity": "<userAssignedIdentity>"
+        "managedIdentities": {
+          "userAssignedResourceId": "<userAssignedResourceId>"
+        }
       }
     },
     "lock": {
       "value": {
         "kind": "CanNotDelete",
         "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
       }
     },
     "privateEndpoints": {
@@ -239,7 +257,9 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
         "authenticationType": "IdentityBased",
         "endpointUri": "<endpointUri>",
         "entityPath": "<entityPath>",
-        "userAssignedIdentity": "<userAssignedIdentity>"
+        "managedIdentities": {
+          "userAssignedResourceId": "<userAssignedResourceId>"
+        }
       }
     },
     "tags": {
@@ -248,10 +268,197 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
         "hidden-title": "This is visible in the resource name",
         "Role": "DeploymentValidation"
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instance:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dtdtiwaf'
+  params: {
+    // Required parameters
+    name: 'dtdtiwaf001'
+    // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventGridEndpoint: {
+      eventGridDomainId: '<eventGridDomainId>'
+      topicEndpoint: '<topicEndpoint>'
+    }
+    eventHubEndpoint: {
+      authenticationType: 'IdentityBased'
+      endpointUri: '<endpointUri>'
+      entityPath: '<entityPath>'
+      managedIdentities: {
+        userAssignedResourceId: '<userAssignedResourceId>'
+      }
+    }
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    serviceBusEndpoint: {
+      authenticationType: 'IdentityBased'
+      endpointUri: '<endpointUri>'
+      entityPath: '<entityPath>'
+      managedIdentities: {
+        userAssignedResourceId: '<userAssignedResourceId>'
+      }
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dtdtiwaf001"
     },
-    "userAssignedIdentities": {
+    // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "eventGridEndpoint": {
       "value": {
-        "<managedIdentityResourceId>": {}
+        "eventGridDomainId": "<eventGridDomainId>",
+        "topicEndpoint": "<topicEndpoint>"
+      }
+    },
+    "eventHubEndpoint": {
+      "value": {
+        "authenticationType": "IdentityBased",
+        "endpointUri": "<endpointUri>",
+        "entityPath": "<entityPath>",
+        "managedIdentities": {
+          "userAssignedResourceId": "<userAssignedResourceId>"
+        }
+      }
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "serviceBusEndpoint": {
+      "value": {
+        "authenticationType": "IdentityBased",
+        "endpointUri": "<endpointUri>",
+        "entityPath": "<entityPath>",
+        "managedIdentities": {
+          "userAssignedResourceId": "<userAssignedResourceId>"
+        }
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
       }
     }
   }
@@ -280,13 +487,12 @@ module digitalTwinsInstance 'br:bicep/modules/digital-twins.digital-twins-instan
 | [`eventHubEndpoint`](#parameter-eventhubendpoint) | object | Event Hub Endpoint. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | [`serviceBusEndpoint`](#parameter-servicebusendpoint) | object | Service Bus Endpoint. |
-| [`systemAssignedIdentity`](#parameter-systemassignedidentity) | bool | Enables system assigned managed identity on the resource. |
 | [`tags`](#parameter-tags) | object | Resource tags. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The ID(s) to assign to the resource. |
 
 ### Parameter: `diagnosticSettings`
 
@@ -458,6 +664,32 @@ Optional. Specify the name of lock.
 - Required: No
 - Type: string
 
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource.
+- Required: No
+- Type: object
+
+
+| Name | Required | Type | Description |
+| :-- | :-- | :--| :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.systemAssigned`
+
+Optional. Enables system assigned managed identity on the resource.
+
+- Required: No
+- Type: bool
+
+### Parameter: `managedIdentities.userAssignedResourceIds`
+
+Optional. The resource ID(s) to assign to the resource.
+
+- Required: No
+- Type: array
+
 ### Parameter: `name`
 
 The name of the Digital Twin Instance.
@@ -484,7 +716,7 @@ Configuration details for private endpoints. For security reasons, it is recomme
 | [`name`](#parameter-privateendpointsname) | No | string | Optional. The name of the private endpoint. |
 | [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | No | string | Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided. |
 | [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | No | array | Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
-| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignments to create. |
 | [`service`](#parameter-privateendpointsservice) | No | string | Optional. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
 | [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | Yes | string | Required. Resource ID of the subnet where the endpoint needs to be created. |
 | [`tags`](#parameter-privateendpointstags) | No | object | Optional. Tags to be applied on all resources/resource groups in this deployment. |
@@ -636,7 +868,7 @@ Optional. The private DNS zone groups to associate the private endpoint with. A 
 
 ### Parameter: `privateEndpoints.roleAssignments`
 
-Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Optional. Array of role assignments to create.
 
 - Required: No
 - Type: array
@@ -692,7 +924,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -740,7 +972,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string
@@ -752,25 +984,11 @@ Service Bus Endpoint.
 - Type: object
 - Default: `{}`
 
-### Parameter: `systemAssignedIdentity`
-
-Enables system assigned managed identity on the resource.
-- Required: No
-- Type: bool
-- Default: `False`
-
 ### Parameter: `tags`
 
 Resource tags.
 - Required: No
 - Type: object
-
-### Parameter: `userAssignedIdentities`
-
-The ID(s) to assign to the resource.
-- Required: No
-- Type: object
-- Default: `{}`
 
 
 ## Outputs
@@ -782,6 +1000,7 @@ The ID(s) to assign to the resource.
 | `name` | string | The name of the Digital Twins Instance. |
 | `resourceGroupName` | string | The name of the resource group the resource was created in. |
 | `resourceId` | string | The resource ID of the Digital Twins Instance. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

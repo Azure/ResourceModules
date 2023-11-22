@@ -28,6 +28,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -191,6 +192,104 @@ module webtest 'br:bicep/modules/insights.webtest:1.0.0' = {
     },
     "syntheticMonitorId": {
       "value": "iwtmax001"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module webtest 'br:bicep/modules/insights.webtest:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-iwtwaf'
+  params: {
+    // Required parameters
+    name: 'iwtwaf001'
+    request: {
+      HttpVerb: 'GET'
+      RequestUrl: 'https://learn.microsoft.com/en-us/'
+    }
+    tags: {
+      'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
+      'hidden-title': 'This is visible in the resource name'
+    }
+    webTestName: 'wt$iwtwaf001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    locations: [
+      {
+        Id: 'emea-nl-ams-azr'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    syntheticMonitorId: 'iwtwaf001'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "iwtwaf001"
+    },
+    "request": {
+      "value": {
+        "HttpVerb": "GET",
+        "RequestUrl": "https://learn.microsoft.com/en-us/"
+      }
+    },
+    "tags": {
+      "value": {
+        "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource",
+        "hidden-title": "This is visible in the resource name"
+      }
+    },
+    "webTestName": {
+      "value": "wt$iwtwaf001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "locations": {
+      "value": [
+        {
+          "Id": "emea-nl-ams-azr"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "syntheticMonitorId": {
+      "value": "iwtwaf001"
     }
   }
 }

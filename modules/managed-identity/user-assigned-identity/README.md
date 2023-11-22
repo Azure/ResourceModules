@@ -100,6 +100,20 @@ name: '${uniqueString(deployment().name, location)}-test-miauimax'
         roleDefinitionIdOrName: 'Reader'
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
+<<<<<<< HEAD
+=======
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
+>>>>>>> 3d827c3621e7d83ad5b9d9266e593f0afc6b7683
       }
     ]
     tags: {
@@ -152,7 +166,17 @@ name: '${uniqueString(deployment().name, location)}-test-miauimax'
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -172,7 +196,11 @@ name: '${uniqueString(deployment().name, location)}-test-miauimax'
 
 ### Example 3: _WAF-aligned_
 
+<<<<<<< HEAD
 This instance deploys the module in alignment with the best-pratices of the Well-Architectured-Framework.
+=======
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+>>>>>>> 3d827c3621e7d83ad5b9d9266e593f0afc6b7683
 
 
 <details>
@@ -181,6 +209,7 @@ This instance deploys the module in alignment with the best-pratices of the Well
 
 ```bicep
 module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-identity:1.0.0' = {
+<<<<<<< HEAD
 name: '${uniqueString(deployment().name, location)}-test-miauiwaf'
   params: {
     name: 'miuaiwaf001'
@@ -191,10 +220,18 @@ name: '${uniqueString(deployment().name, location)}-test-miauiwaf'
     federatedIdentityCredentials: [
       {
         name: 'test-fed-cred-miuaiwaf-001'
+=======
+  name: '${uniqueString(deployment().name, location)}-test-miuaiwaf'
+  params: {
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    federatedIdentityCredentials: [
+      {
+>>>>>>> 3d827c3621e7d83ad5b9d9266e593f0afc6b7683
         audiences: [
           'api://AzureADTokenExchange'
         ]
         issuer: '<issuer>'
+<<<<<<< HEAD
         subject: 'system:serviceaccount:default:workload-identity-sa'
       }
     ]
@@ -208,6 +245,20 @@ name: '${uniqueString(deployment().name, location)}-test-miauiwaf'
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
+=======
+        name: 'test-fed-cred-miuaiwaf-001'
+        subject: 'system:serviceaccount:default:workload-identity-sa'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    name: 'miuaiwaf001'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+>>>>>>> 3d827c3621e7d83ad5b9d9266e593f0afc6b7683
       Role: 'DeploymentValidation'
     }
   }
@@ -226,6 +277,12 @@ name: '${uniqueString(deployment().name, location)}-test-miauiwaf'
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+<<<<<<< HEAD
+=======
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+>>>>>>> 3d827c3621e7d83ad5b9d9266e593f0afc6b7683
     "federatedIdentityCredentials": {
       "value": [
         {
@@ -247,6 +304,7 @@ name: '${uniqueString(deployment().name, location)}-test-miauiwaf'
     "name": {
       "value": "miuaiwaf001"
     },
+<<<<<<< HEAD
     "roleAssignments": {
       "value": [
         {
@@ -256,6 +314,8 @@ name: '${uniqueString(deployment().name, location)}-test-miauiwaf'
         }
       ]
     },
+=======
+>>>>>>> 3d827c3621e7d83ad5b9d9266e593f0afc6b7683
     "tags": {
       "value": {
         "Environment": "Non-Prod",
@@ -282,7 +342,7 @@ name: '${uniqueString(deployment().name, location)}-test-miauiwaf'
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`name`](#parameter-name) | string | Name of the User Assigned Identity. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 
 ### Parameter: `enableTelemetry`
@@ -342,7 +402,7 @@ Name of the User Assigned Identity.
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -355,7 +415,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -403,7 +463,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string

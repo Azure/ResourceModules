@@ -29,6 +29,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -359,7 +360,17 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     sendRecvTimeoutSeconds: 10
@@ -503,9 +514,281 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
+    },
+    "sendRecvTimeoutSeconds": {
+      "value": 10
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nfdwaf'
+  params: {
+    // Required parameters
+    backendPools: [
+      {
+        name: 'backendPool'
+        properties: {
+          backends: [
+            {
+              address: 'biceptest.local'
+              backendHostHeader: 'backendAddress'
+              enabledState: 'Enabled'
+              httpPort: 80
+              httpsPort: 443
+              priority: 1
+              privateLinkAlias: ''
+              privateLinkApprovalMessage: ''
+              privateLinkLocation: ''
+              privateLinkResourceId: ''
+              weight: 50
+            }
+          ]
+          HealthProbeSettings: {
+            id: '<id>'
+          }
+          LoadBalancingSettings: {
+            id: '<id>'
+          }
+        }
+      }
+    ]
+    frontendEndpoints: [
+      {
+        name: 'frontEnd'
+        properties: {
+          hostName: '<hostName>'
+          sessionAffinityEnabledState: 'Disabled'
+          sessionAffinityTtlSeconds: 60
+        }
+      }
+    ]
+    healthProbeSettings: [
+      {
+        name: 'heathProbe'
+        properties: {
+          enabledState: ''
+          healthProbeMethod: ''
+          intervalInSeconds: 60
+          path: '/'
+          protocol: 'Https'
+        }
+      }
+    ]
+    loadBalancingSettings: [
+      {
+        name: 'loadBalancer'
+        properties: {
+          additionalLatencyMilliseconds: 0
+          sampleSize: 50
+          successfulSamplesRequired: 1
+        }
+      }
+    ]
+    name: '<name>'
+    routingRules: [
+      {
+        name: 'routingRule'
+        properties: {
+          acceptedProtocols: [
+            'Http'
+            'Https'
+          ]
+          enabledState: 'Enabled'
+          frontendEndpoints: [
+            {
+              id: '<id>'
+            }
+          ]
+          patternsToMatch: [
+            '/*'
+          ]
+          routeConfiguration: {
+            '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
+            backendPool: {
+              id: '<id>'
+            }
+            forwardingProtocol: 'MatchRequest'
+          }
+        }
+      }
+    ]
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enforceCertificateNameCheck: 'Disabled'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    sendRecvTimeoutSeconds: 10
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "backendPools": {
+      "value": [
+        {
+          "name": "backendPool",
+          "properties": {
+            "backends": [
+              {
+                "address": "biceptest.local",
+                "backendHostHeader": "backendAddress",
+                "enabledState": "Enabled",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "priority": 1,
+                "privateLinkAlias": "",
+                "privateLinkApprovalMessage": "",
+                "privateLinkLocation": "",
+                "privateLinkResourceId": "",
+                "weight": 50
+              }
+            ],
+            "HealthProbeSettings": {
+              "id": "<id>"
+            },
+            "LoadBalancingSettings": {
+              "id": "<id>"
+            }
+          }
+        }
+      ]
+    },
+    "frontendEndpoints": {
+      "value": [
+        {
+          "name": "frontEnd",
+          "properties": {
+            "hostName": "<hostName>",
+            "sessionAffinityEnabledState": "Disabled",
+            "sessionAffinityTtlSeconds": 60
+          }
+        }
+      ]
+    },
+    "healthProbeSettings": {
+      "value": [
+        {
+          "name": "heathProbe",
+          "properties": {
+            "enabledState": "",
+            "healthProbeMethod": "",
+            "intervalInSeconds": 60,
+            "path": "/",
+            "protocol": "Https"
+          }
+        }
+      ]
+    },
+    "loadBalancingSettings": {
+      "value": [
+        {
+          "name": "loadBalancer",
+          "properties": {
+            "additionalLatencyMilliseconds": 0,
+            "sampleSize": 50,
+            "successfulSamplesRequired": 1
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "<name>"
+    },
+    "routingRules": {
+      "value": [
+        {
+          "name": "routingRule",
+          "properties": {
+            "acceptedProtocols": [
+              "Http",
+              "Https"
+            ],
+            "enabledState": "Enabled",
+            "frontendEndpoints": [
+              {
+                "id": "<id>"
+              }
+            ],
+            "patternsToMatch": [
+              "/*"
+            ],
+            "routeConfiguration": {
+              "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
+              "backendPool": {
+                "id": "<id>"
+              },
+              "forwardingProtocol": "MatchRequest"
+            }
+          }
+        }
+      ]
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enforceCertificateNameCheck": {
+      "value": "Disabled"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "sendRecvTimeoutSeconds": {
       "value": 10
@@ -549,7 +832,7 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
 | [`friendlyName`](#parameter-friendlyname) | string | Friendly name of the frontdoor resource. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`sendRecvTimeoutSeconds`](#parameter-sendrecvtimeoutseconds) | int | Certificate name check time of the frontdoor resource. |
 | [`tags`](#parameter-tags) | object | Resource tags. |
 
@@ -762,7 +1045,7 @@ The name of the frontDoor.
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -775,7 +1058,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -823,7 +1106,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string

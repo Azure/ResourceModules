@@ -1,5 +1,7 @@
 # Logic Apps (Workflows) `[Microsoft.Logic/workflows]`
 
+> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
+
 This module deploys a Logic App (Workflow).
 
 ## Navigation
@@ -29,6 +31,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/logic.workflow:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -66,7 +69,7 @@ module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
       name: 'myCustomLockName'
     }
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -161,7 +164,201 @@ module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
     },
     "managedIdentities": {
       "value": {
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "workflowActions": {
+      "value": {
+        "HTTP": {
+          "inputs": {
+            "body": {
+              "BeginPeakTime": "<BeginPeakTime>",
+              "EndPeakTime": "<EndPeakTime>",
+              "HostPoolName": "<HostPoolName>",
+              "LAWorkspaceName": "<LAWorkspaceName>",
+              "LimitSecondsToForceLogOffUser": "<LimitSecondsToForceLogOffUser>",
+              "LogOffMessageBody": "<LogOffMessageBody>",
+              "LogOffMessageTitle": "<LogOffMessageTitle>",
+              "MinimumNumberOfRDSH": 1,
+              "ResourceGroupName": "<ResourceGroupName>",
+              "SessionThresholdPerCPU": 1,
+              "UtcOffset": "<UtcOffset>"
+            },
+            "method": "POST",
+            "uri": "https://testStringForValidation.com"
+          },
+          "type": "Http"
+        }
+      }
+    },
+    "workflowTriggers": {
+      "value": {
+        "Recurrence": {
+          "recurrence": {
+            "frequency": "Minute",
+            "interval": 15
+          },
+          "type": "Recurrence"
+        }
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workflow 'br:bicep/modules/logic.workflow:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-lwwaf'
+  params: {
+    // Required parameters
+    name: 'lwwaf001'
+    // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    workflowActions: {
+      HTTP: {
+        inputs: {
+          body: {
+            BeginPeakTime: '<BeginPeakTime>'
+            EndPeakTime: '<EndPeakTime>'
+            HostPoolName: '<HostPoolName>'
+            LAWorkspaceName: '<LAWorkspaceName>'
+            LimitSecondsToForceLogOffUser: '<LimitSecondsToForceLogOffUser>'
+            LogOffMessageBody: '<LogOffMessageBody>'
+            LogOffMessageTitle: '<LogOffMessageTitle>'
+            MinimumNumberOfRDSH: 1
+            ResourceGroupName: '<ResourceGroupName>'
+            SessionThresholdPerCPU: 1
+            UtcOffset: '<UtcOffset>'
+          }
+          method: 'POST'
+          uri: 'https://testStringForValidation.com'
+        }
+        type: 'Http'
+      }
+    }
+    workflowTriggers: {
+      Recurrence: {
+        recurrence: {
+          frequency: 'Minute'
+          interval: 15
+        }
+        type: 'Recurrence'
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "lwwaf001"
+    },
+    // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -468,7 +665,7 @@ The managed identity definition for this resource. Only one type of identity is 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -477,7 +674,7 @@ Optional. Enables system assigned managed identity on the resource.
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
 Optional. The resource ID(s) to assign to the resource.
 

@@ -32,6 +32,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -159,7 +160,17 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     skuName: 'premium'
@@ -297,7 +308,17 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -306,6 +327,236 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
     },
     "storageAccountName": {
       "value": "sadwmax001"
+    },
+    "storageAccountSkuName": {
+      "value": "Standard_ZRS"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "vnetAddressPrefix": {
+      "value": "10.100"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dwwaf'
+  params: {
+    // Required parameters
+    name: 'dwwaf001'
+    // Non-required parameters
+    amlWorkspaceResourceId: '<amlWorkspaceResourceId>'
+    customerManagedKey: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+    }
+    customerManagedKeyManagedDisk: {
+      keyName: '<keyName>'
+      keyVaultResourceId: '<keyVaultResourceId>'
+      rotationToLatestKeyVersionEnabled: true
+    }
+    customPrivateSubnetName: '<customPrivateSubnetName>'
+    customPublicSubnetName: '<customPublicSubnetName>'
+    customVirtualNetworkResourceId: '<customVirtualNetworkResourceId>'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        logCategoriesAndGroups: [
+          {
+            category: 'jobs'
+          }
+          {
+            category: 'notebook'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    disablePublicIp: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    loadBalancerBackendPoolName: '<loadBalancerBackendPoolName>'
+    loadBalancerResourceId: '<loadBalancerResourceId>'
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedResourceGroupResourceId: '<managedResourceGroupResourceId>'
+    natGatewayName: 'nat-gateway'
+    prepareEncryption: true
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    publicIpName: 'nat-gw-public-ip'
+    publicNetworkAccess: 'Disabled'
+    requiredNsgRules: 'NoAzureDatabricksRules'
+    requireInfrastructureEncryption: true
+    skuName: 'premium'
+    storageAccountName: 'sadwwaf001'
+    storageAccountSkuName: 'Standard_ZRS'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    vnetAddressPrefix: '10.100'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dwwaf001"
+    },
+    // Non-required parameters
+    "amlWorkspaceResourceId": {
+      "value": "<amlWorkspaceResourceId>"
+    },
+    "customerManagedKey": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>"
+      }
+    },
+    "customerManagedKeyManagedDisk": {
+      "value": {
+        "keyName": "<keyName>",
+        "keyVaultResourceId": "<keyVaultResourceId>",
+        "rotationToLatestKeyVersionEnabled": true
+      }
+    },
+    "customPrivateSubnetName": {
+      "value": "<customPrivateSubnetName>"
+    },
+    "customPublicSubnetName": {
+      "value": "<customPublicSubnetName>"
+    },
+    "customVirtualNetworkResourceId": {
+      "value": "<customVirtualNetworkResourceId>"
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "logCategoriesAndGroups": [
+            {
+              "category": "jobs"
+            },
+            {
+              "category": "notebook"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "disablePublicIp": {
+      "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "loadBalancerBackendPoolName": {
+      "value": "<loadBalancerBackendPoolName>"
+    },
+    "loadBalancerResourceId": {
+      "value": "<loadBalancerResourceId>"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedResourceGroupResourceId": {
+      "value": "<managedResourceGroupResourceId>"
+    },
+    "natGatewayName": {
+      "value": "nat-gateway"
+    },
+    "prepareEncryption": {
+      "value": true
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "publicIpName": {
+      "value": "nat-gw-public-ip"
+    },
+    "publicNetworkAccess": {
+      "value": "Disabled"
+    },
+    "requiredNsgRules": {
+      "value": "NoAzureDatabricksRules"
+    },
+    "requireInfrastructureEncryption": {
+      "value": true
+    },
+    "skuName": {
+      "value": "premium"
+    },
+    "storageAccountName": {
+      "value": "sadwwaf001"
     },
     "storageAccountSkuName": {
       "value": "Standard_ZRS"
@@ -361,7 +612,7 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | 	The network access type for accessing workspace. Set value to disabled to access workspace only via private link. |
 | [`requiredNsgRules`](#parameter-requirednsgrules) | string | Gets or sets a value indicating whether data plane (clusters) to control plane communication happen over private endpoint. |
 | [`requireInfrastructureEncryption`](#parameter-requireinfrastructureencryption) | bool | A boolean indicating whether or not the DBFS root file system will be enabled with secondary layer of encryption with platform managed keys for data at rest. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`skuName`](#parameter-skuname) | string | The pricing tier of workspace. |
 | [`storageAccountName`](#parameter-storageaccountname) | string | Default DBFS storage account name. |
 | [`storageAccountSkuName`](#parameter-storageaccountskuname) | string | Storage account SKU name. |
@@ -692,7 +943,7 @@ Configuration details for private endpoints. For security reasons, it is recomme
 | [`name`](#parameter-privateendpointsname) | No | string | Optional. The name of the private endpoint. |
 | [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | No | string | Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided. |
 | [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | No | array | Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
-| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignments to create. |
 | [`service`](#parameter-privateendpointsservice) | No | string | Optional. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
 | [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | Yes | string | Required. Resource ID of the subnet where the endpoint needs to be created. |
 | [`tags`](#parameter-privateendpointstags) | No | object | Optional. Tags to be applied on all resources/resource groups in this deployment. |
@@ -844,7 +1095,7 @@ Optional. The private DNS zone groups to associate the private endpoint with. A 
 
 ### Parameter: `privateEndpoints.roleAssignments`
 
-Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Optional. Array of role assignments to create.
 
 - Required: No
 - Type: array
@@ -914,7 +1165,7 @@ A boolean indicating whether or not the DBFS root file system will be enabled wi
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -927,7 +1178,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -975,7 +1226,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string

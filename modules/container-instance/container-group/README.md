@@ -30,6 +30,7 @@ The following section provides usage examples for the module, which were used to
 - [Encr](#example-2-encr)
 - [Using large parameter set](#example-3-using-large-parameter-set)
 - [Private](#example-4-private)
+- [WAF-aligned](#example-5-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -216,7 +217,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -325,7 +326,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -423,7 +424,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -525,7 +526,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -631,7 +632,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -753,7 +754,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -775,6 +776,206 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
           "name": "my-name"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 5: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cicgwaf'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        name: 'az-aci-x-001'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '80'
+              protocol: 'Tcp'
+            }
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+      {
+        name: 'az-aci-x-002'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '8080'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+    ]
+    name: 'cicgwaf001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ipAddressPorts: [
+      {
+        port: 80
+        protocol: 'Tcp'
+      }
+      {
+        port: 443
+        protocol: 'Tcp'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "name": "az-aci-x-001",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "80",
+                "protocol": "Tcp"
+              },
+              {
+                "port": "443",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        },
+        {
+          "name": "az-aci-x-002",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "8080",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "cicgwaf001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ipAddressPorts": {
+      "value": [
+        {
+          "port": 80,
+          "protocol": "Tcp"
+        },
+        {
+          "port": 443,
+          "protocol": "Tcp"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -994,7 +1195,7 @@ The managed identity definition for this resource.
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -1003,7 +1204,7 @@ Optional. Enables system assigned managed identity on the resource.
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
 Optional. The resource ID(s) to assign to the resource.
 

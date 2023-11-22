@@ -46,6 +46,7 @@ The following section provides usage examples for the module, which were used to
 - [Using large parameter set](#example-3-using-large-parameter-set)
 - [Nfs](#example-4-nfs)
 - [V1](#example-5-v1)
+- [WAF-aligned](#example-6-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -142,7 +143,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managedIdentities: {
       systemAssigned: false
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -227,7 +228,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     "managedIdentities": {
       "value": {
         "systemAssigned": false,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -283,6 +284,946 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
   params: {
     // Required parameters
     name: 'ssamax001'
+    // Non-required parameters
+    allowBlobPublicAccess: false
+    blobServices: {
+      automaticSnapshotPolicyEnabled: true
+      containerDeleteRetentionPolicyDays: 10
+      containerDeleteRetentionPolicyEnabled: true
+      containers: [
+        {
+          enableNfsV3AllSquash: true
+          enableNfsV3RootSquash: true
+          name: 'avdscripts'
+          publicAccess: 'None'
+          roleAssignments: [
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: 'Owner'
+            }
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+            }
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
+            }
+          ]
+        }
+        {
+          allowProtectedAppendWrites: false
+          enableWORM: true
+          metadata: {
+            testKey: 'testValue'
+          }
+          name: 'archivecontainer'
+          publicAccess: 'None'
+          WORMRetention: 666
+        }
+      ]
+      deleteRetentionPolicyDays: 9
+      deleteRetentionPolicyEnabled: true
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+      lastAccessTimeTrackingPolicyEnabled: true
+    }
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enableHierarchicalNamespace: true
+    enableNfsV3: true
+    enableSftp: true
+    fileServices: {
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+      shares: [
+        {
+          accessTier: 'Hot'
+          name: 'avdprofiles'
+          roleAssignments: [
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: 'Owner'
+            }
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+            }
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
+            }
+          ]
+          shareQuota: 5120
+        }
+        {
+          name: 'avdprofiles2'
+          shareQuota: 102400
+        }
+      ]
+    }
+    largeFileSharesState: 'Enabled'
+    localUsers: [
+      {
+        hasSharedKey: false
+        hasSshKey: true
+        hasSshPassword: false
+        homeDirectory: 'avdscripts'
+        name: 'testuser'
+        permissionScopes: [
+          {
+            permissions: 'r'
+            resourceName: 'avdscripts'
+            service: 'blob'
+          }
+        ]
+        storageAccountName: 'ssamax001'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    managementPolicyRules: [
+      {
+        definition: {
+          actions: {
+            baseBlob: {
+              delete: {
+                daysAfterModificationGreaterThan: 30
+              }
+              tierToCool: {
+                daysAfterLastAccessTimeGreaterThan: 5
+              }
+            }
+          }
+          filters: {
+            blobIndexMatch: [
+              {
+                name: 'BlobIndex'
+                op: '=='
+                value: '1'
+              }
+            ]
+            blobTypes: [
+              'blockBlob'
+            ]
+            prefixMatch: [
+              'sample-container/log'
+            ]
+          }
+        }
+        enabled: true
+        name: 'FirstRule'
+        type: 'Lifecycle'
+      }
+    ]
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          action: 'Allow'
+          value: '1.1.1.1'
+        }
+      ]
+      virtualNetworkRules: [
+        {
+          action: 'Allow'
+          id: '<id>'
+        }
+      ]
+    }
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'blob'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    queueServices: {
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+      queues: [
+        {
+          metadata: {
+            key1: 'value1'
+            key2: 'value2'
+          }
+          name: 'queue1'
+          roleAssignments: [
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: 'Owner'
+            }
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+            }
+            {
+              principalId: '<principalId>'
+              principalType: 'ServicePrincipal'
+              roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
+            }
+          ]
+        }
+        {
+          metadata: {}
+          name: 'queue2'
+        }
+      ]
+    }
+    requireInfrastructureEncryption: true
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
+      }
+    ]
+    sasExpirationPeriod: '180.00:00:00'
+    skuName: 'Standard_LRS'
+    tableServices: {
+      diagnosticSettings: [
+        {
+          eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+          eventHubName: '<eventHubName>'
+          metricCategories: [
+            {
+              category: 'AllMetrics'
+            }
+          ]
+          name: 'customSetting'
+          storageAccountResourceId: '<storageAccountResourceId>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+      tables: [
+        'table1'
+        'table2'
+      ]
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ssamax001"
+    },
+    // Non-required parameters
+    "allowBlobPublicAccess": {
+      "value": false
+    },
+    "blobServices": {
+      "value": {
+        "automaticSnapshotPolicyEnabled": true,
+        "containerDeleteRetentionPolicyDays": 10,
+        "containerDeleteRetentionPolicyEnabled": true,
+        "containers": [
+          {
+            "enableNfsV3AllSquash": true,
+            "enableNfsV3RootSquash": true,
+            "name": "avdscripts",
+            "publicAccess": "None",
+            "roleAssignments": [
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "Owner"
+              },
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+              },
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
+              }
+            ]
+          },
+          {
+            "allowProtectedAppendWrites": false,
+            "enableWORM": true,
+            "metadata": {
+              "testKey": "testValue"
+            },
+            "name": "archivecontainer",
+            "publicAccess": "None",
+            "WORMRetention": 666
+          }
+        ],
+        "deleteRetentionPolicyDays": 9,
+        "deleteRetentionPolicyEnabled": true,
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
+        "lastAccessTimeTrackingPolicyEnabled": true
+      }
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enableHierarchicalNamespace": {
+      "value": true
+    },
+    "enableNfsV3": {
+      "value": true
+    },
+    "enableSftp": {
+      "value": true
+    },
+    "fileServices": {
+      "value": {
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
+        "shares": [
+          {
+            "accessTier": "Hot",
+            "name": "avdprofiles",
+            "roleAssignments": [
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "Owner"
+              },
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+              },
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
+              }
+            ],
+            "shareQuota": 5120
+          },
+          {
+            "name": "avdprofiles2",
+            "shareQuota": 102400
+          }
+        ]
+      }
+    },
+    "largeFileSharesState": {
+      "value": "Enabled"
+    },
+    "localUsers": {
+      "value": [
+        {
+          "hasSharedKey": false,
+          "hasSshKey": true,
+          "hasSshPassword": false,
+          "homeDirectory": "avdscripts",
+          "name": "testuser",
+          "permissionScopes": [
+            {
+              "permissions": "r",
+              "resourceName": "avdscripts",
+              "service": "blob"
+            }
+          ],
+          "storageAccountName": "ssamax001"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "managementPolicyRules": {
+      "value": [
+        {
+          "definition": {
+            "actions": {
+              "baseBlob": {
+                "delete": {
+                  "daysAfterModificationGreaterThan": 30
+                },
+                "tierToCool": {
+                  "daysAfterLastAccessTimeGreaterThan": 5
+                }
+              }
+            },
+            "filters": {
+              "blobIndexMatch": [
+                {
+                  "name": "BlobIndex",
+                  "op": "==",
+                  "value": "1"
+                }
+              ],
+              "blobTypes": [
+                "blockBlob"
+              ],
+              "prefixMatch": [
+                "sample-container/log"
+              ]
+            }
+          },
+          "enabled": true,
+          "name": "FirstRule",
+          "type": "Lifecycle"
+        }
+      ]
+    },
+    "networkAcls": {
+      "value": {
+        "bypass": "AzureServices",
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "action": "Allow",
+            "value": "1.1.1.1"
+          }
+        ],
+        "virtualNetworkRules": [
+          {
+            "action": "Allow",
+            "id": "<id>"
+          }
+        ]
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "blob",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "queueServices": {
+      "value": {
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
+        "queues": [
+          {
+            "metadata": {
+              "key1": "value1",
+              "key2": "value2"
+            },
+            "name": "queue1",
+            "roleAssignments": [
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "Owner"
+              },
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+              },
+              {
+                "principalId": "<principalId>",
+                "principalType": "ServicePrincipal",
+                "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
+              }
+            ]
+          },
+          {
+            "metadata": {},
+            "name": "queue2"
+          }
+        ]
+      }
+    },
+    "requireInfrastructureEncryption": {
+      "value": true
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
+        }
+      ]
+    },
+    "sasExpirationPeriod": {
+      "value": "180.00:00:00"
+    },
+    "skuName": {
+      "value": "Standard_LRS"
+    },
+    "tableServices": {
+      "value": {
+        "diagnosticSettings": [
+          {
+            "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+            "eventHubName": "<eventHubName>",
+            "metricCategories": [
+              {
+                "category": "AllMetrics"
+              }
+            ],
+            "name": "customSetting",
+            "storageAccountResourceId": "<storageAccountResourceId>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ],
+        "tables": [
+          "table1",
+          "table2"
+        ]
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 4: _Nfs_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ssanfs'
+  params: {
+    // Required parameters
+    name: 'ssanfs001'
+    // Non-required parameters
+    allowBlobPublicAccess: false
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    fileServices: {
+      shares: [
+        {
+          enabledProtocols: 'NFS'
+          name: 'nfsfileshare'
+        }
+      ]
+    }
+    kind: 'FileStorage'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
+      }
+    ]
+    skuName: 'Premium_LRS'
+    supportsHttpsTrafficOnly: false
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ssanfs001"
+    },
+    // Non-required parameters
+    "allowBlobPublicAccess": {
+      "value": false
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "fileServices": {
+      "value": {
+        "shares": [
+          {
+            "enabledProtocols": "NFS",
+            "name": "nfsfileshare"
+          }
+        ]
+      }
+    },
+    "kind": {
+      "value": "FileStorage"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
+        }
+      ]
+    },
+    "skuName": {
+      "value": "Premium_LRS"
+    },
+    "supportsHttpsTrafficOnly": {
+      "value": false
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 5: _V1_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ssav1'
+  params: {
+    // Required parameters
+    name: 'ssav1001'
+    // Non-required parameters
+    allowBlobPublicAccess: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    kind: 'Storage'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "ssav1001"
+    },
+    // Non-required parameters
+    "allowBlobPublicAccess": {
+      "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "kind": {
+      "value": "Storage"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 6: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ssawaf'
+  params: {
+    // Required parameters
+    name: 'ssawaf001'
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
@@ -399,7 +1340,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
             service: 'blob'
           }
         ]
-        storageAccountName: 'ssamax001'
+        storageAccountName: 'ssawaf001'
       }
     ]
     lock: {
@@ -408,7 +1349,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -513,13 +1454,6 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
       ]
     }
     requireInfrastructureEncryption: true
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
     sasExpirationPeriod: '180.00:00:00'
     skuName: 'Standard_LRS'
     tableServices: {
@@ -565,7 +1499,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "ssamax001"
+      "value": "ssawaf001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -702,7 +1636,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
               "service": "blob"
             }
           ],
-          "storageAccountName": "ssamax001"
+          "storageAccountName": "ssawaf001"
         }
       ]
     },
@@ -715,7 +1649,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -831,15 +1765,6 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
     "requireInfrastructureEncryption": {
       "value": true
     },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
     "sasExpirationPeriod": {
       "value": "180.00:00:00"
     },
@@ -867,232 +1792,6 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
           "table2"
         ]
       }
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 4: _Nfs_
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssanfs'
-  params: {
-    // Required parameters
-    name: 'ssanfs001'
-    // Non-required parameters
-    allowBlobPublicAccess: false
-    diagnosticSettings: [
-      {
-        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
-        eventHubName: '<eventHubName>'
-        metricCategories: [
-          {
-            category: 'AllMetrics'
-          }
-        ]
-        name: 'customSetting'
-        storageAccountResourceId: '<storageAccountResourceId>'
-        workspaceResourceId: '<workspaceResourceId>'
-      }
-    ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    fileServices: {
-      shares: [
-        {
-          enabledProtocols: 'NFS'
-          name: 'nfsfileshare'
-        }
-      ]
-    }
-    kind: 'FileStorage'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
-    managedIdentities: {
-      systemAssigned: true
-      userAssignedResourcesIds: [
-        '<managedIdentityResourceId>'
-      ]
-    }
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    skuName: 'Premium_LRS'
-    supportsHttpsTrafficOnly: false
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "ssanfs001"
-    },
-    // Non-required parameters
-    "allowBlobPublicAccess": {
-      "value": false
-    },
-    "diagnosticSettings": {
-      "value": [
-        {
-          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
-          "eventHubName": "<eventHubName>",
-          "metricCategories": [
-            {
-              "category": "AllMetrics"
-            }
-          ],
-          "name": "customSetting",
-          "storageAccountResourceId": "<storageAccountResourceId>",
-          "workspaceResourceId": "<workspaceResourceId>"
-        }
-      ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "fileServices": {
-      "value": {
-        "shares": [
-          {
-            "enabledProtocols": "NFS",
-            "name": "nfsfileshare"
-          }
-        ]
-      }
-    },
-    "kind": {
-      "value": "FileStorage"
-    },
-    "lock": {
-      "value": {
-        "kind": "CanNotDelete",
-        "name": "myCustomLockName"
-      }
-    },
-    "managedIdentities": {
-      "value": {
-        "systemAssigned": true,
-        "userAssignedResourcesIds": [
-          "<managedIdentityResourceId>"
-        ]
-      }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "skuName": {
-      "value": "Premium_LRS"
-    },
-    "supportsHttpsTrafficOnly": {
-      "value": false
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 5: _V1_
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssav1'
-  params: {
-    // Required parameters
-    name: 'ssav1001'
-    // Non-required parameters
-    allowBlobPublicAccess: false
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    kind: 'Storage'
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "ssav1001"
-    },
-    // Non-required parameters
-    "allowBlobPublicAccess": {
-      "value": false
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "kind": {
-      "value": "Storage"
     },
     "tags": {
       "value": {
@@ -1158,7 +1857,7 @@ module storageAccount 'br:bicep/modules/storage.storage-account:1.0.0' = {
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set. |
 | [`queueServices`](#parameter-queueservices) | object | Queue service and queues to create. |
 | [`requireInfrastructureEncryption`](#parameter-requireinfrastructureencryption) | bool | A Boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`sasExpirationPeriod`](#parameter-sasexpirationperiod) | string | The SAS expiration period. DD.HH:MM:SS. |
 | [`skuName`](#parameter-skuname) | string | Storage Account Sku Name. |
 | [`supportsHttpsTrafficOnly`](#parameter-supportshttpstrafficonly) | bool | Allows HTTPS traffic only to storage service if sets to true. |
@@ -1519,7 +2218,7 @@ The managed identity definition for this resource.
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -1528,7 +2227,7 @@ Optional. Enables system assigned managed identity on the resource.
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
 Optional. The resource ID(s) to assign to the resource.
 
@@ -1590,7 +2289,7 @@ Configuration details for private endpoints. For security reasons, it is recomme
 | [`name`](#parameter-privateendpointsname) | No | string | Optional. The name of the private endpoint. |
 | [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | No | string | Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided. |
 | [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | No | array | Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
-| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignments to create. |
 | [`service`](#parameter-privateendpointsservice) | Yes | string | Required. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
 | [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | Yes | string | Required. Resource ID of the subnet where the endpoint needs to be created. |
 | [`tags`](#parameter-privateendpointstags) | No | object | Optional. Tags to be applied on all resources/resource groups in this deployment. |
@@ -1742,7 +2441,7 @@ Optional. The private DNS zone groups to associate the private endpoint with. A 
 
 ### Parameter: `privateEndpoints.roleAssignments`
 
-Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Optional. Array of role assignments to create.
 
 - Required: No
 - Type: array
@@ -1799,7 +2498,7 @@ A Boolean indicating whether or not the service applies a secondary layer of enc
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -1812,7 +2511,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -1860,7 +2559,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string

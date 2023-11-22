@@ -34,6 +34,7 @@ The following section provides usage examples for the module, which were used to
 - [Using only defaults](#example-1-using-only-defaults)
 - [Encr](#example-2-encr)
 - [Using large parameter set](#example-3-using-large-parameter-set)
+- [WAF-aligned](#example-4-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -132,7 +133,7 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managedIdentities: {
       systemAssigned: false
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -202,7 +203,7 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
     "managedIdentities": {
       "value": {
         "systemAssigned": false,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -269,7 +270,7 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
         location: 'westeurope'
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             '<managedIdentityResourceId>'
           ]
         }
@@ -314,7 +315,7 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
     }
     managedIdentities: {
       systemAssigned: false
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -336,7 +337,17 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     tags: {
@@ -387,7 +398,7 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
           "location": "westeurope",
           "managedIdentities": {
             "systemAssigned": false,
-            "userAssignedResourcesIds": [
+            "userAssignedResourceIds": [
               "<managedIdentityResourceId>"
             ]
           },
@@ -446,7 +457,7 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
     "managedIdentities": {
       "value": {
         "systemAssigned": false,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -474,7 +485,253 @@ module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = 
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspace 'br:bicep/modules/machine-learning-services.workspace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-mlswwaf'
+  params: {
+    // Required parameters
+    associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
+    associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
+    associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
+    name: 'mlswwaf001'
+    sku: 'Premium'
+    // Non-required parameters
+    computes: [
+      {
+        computeLocation: 'westeurope'
+        computeType: 'AmlCompute'
+        description: 'Default CPU Cluster'
+        disableLocalAuth: false
+        location: 'westeurope'
+        managedIdentities: {
+          systemAssigned: false
+          userAssignedResourceIds: [
+            '<managedIdentityResourceId>'
+          ]
+        }
+        name: 'DefaultCPU'
+        properties: {
+          enableNodePublicIp: true
+          isolatedNetwork: false
+          osType: 'Linux'
+          remoteLoginPortPublicAccess: 'Disabled'
+          scaleSettings: {
+            maxNodeCount: 3
+            minNodeCount: 0
+            nodeIdleTimeBeforeScaleDown: 'PT5M'
+          }
+          vmPriority: 'Dedicated'
+          vmSize: 'STANDARD_DS11_V2'
+        }
+        sku: 'Basic'
+      }
+    ]
+    description: 'The cake is a lie.'
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    discoveryUrl: 'http://example.com'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    imageBuildCompute: 'testcompute'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: false
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "associatedApplicationInsightsResourceId": {
+      "value": "<associatedApplicationInsightsResourceId>"
+    },
+    "associatedKeyVaultResourceId": {
+      "value": "<associatedKeyVaultResourceId>"
+    },
+    "associatedStorageAccountResourceId": {
+      "value": "<associatedStorageAccountResourceId>"
+    },
+    "name": {
+      "value": "mlswwaf001"
+    },
+    "sku": {
+      "value": "Premium"
+    },
+    // Non-required parameters
+    "computes": {
+      "value": [
+        {
+          "computeLocation": "westeurope",
+          "computeType": "AmlCompute",
+          "description": "Default CPU Cluster",
+          "disableLocalAuth": false,
+          "location": "westeurope",
+          "managedIdentities": {
+            "systemAssigned": false,
+            "userAssignedResourceIds": [
+              "<managedIdentityResourceId>"
+            ]
+          },
+          "name": "DefaultCPU",
+          "properties": {
+            "enableNodePublicIp": true,
+            "isolatedNetwork": false,
+            "osType": "Linux",
+            "remoteLoginPortPublicAccess": "Disabled",
+            "scaleSettings": {
+              "maxNodeCount": 3,
+              "minNodeCount": 0,
+              "nodeIdleTimeBeforeScaleDown": "PT5M"
+            },
+            "vmPriority": "Dedicated",
+            "vmSize": "STANDARD_DS11_V2"
+          },
+          "sku": "Basic"
+        }
+      ]
+    },
+    "description": {
+      "value": "The cake is a lie."
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "discoveryUrl": {
+      "value": "http://example.com"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "imageBuildCompute": {
+      "value": "testcompute"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": false,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "primaryUserAssignedIdentity": {
+      "value": "<primaryUserAssignedIdentity>"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -816,7 +1073,7 @@ The managed identity definition for this resource. At least one identity type is
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -825,7 +1082,7 @@ Optional. Enables system assigned managed identity on the resource.
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
 Optional. The resource ID(s) to assign to the resource.
 

@@ -25,6 +25,7 @@ This module deploys a Web or Function App.
 | `Microsoft.Web/sites/config` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 | `Microsoft.Web/sites/hybridConnectionNamespaces/relays` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/hybridConnectionNamespaces/relays) |
 | `Microsoft.Web/sites/slots` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/slots) |
+| `Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 | `Microsoft.Web/sites/slots/config` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 | `Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/slots/hybridConnectionNamespaces/relays) |
 
@@ -125,6 +126,16 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
         runtimeVersion: '~1'
       }
     }
+    basicPublishingCredentialsPolicies: [
+      {
+        allow: false
+        name: 'ftp'
+      }
+      {
+        allow: false
+        name: 'scm'
+      }
+    ]
     diagnosticSettings: [
       {
         eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
@@ -153,7 +164,7 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -174,7 +185,17 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     setAzureWebJobsDashboard: true
@@ -285,6 +306,18 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
         }
       }
     },
+    "basicPublishingCredentialsPolicies": {
+      "value": [
+        {
+          "allow": false,
+          "name": "ftp"
+        },
+        {
+          "allow": false,
+          "name": "scm"
+        }
+      ]
+    },
     "diagnosticSettings": {
       "value": [
         {
@@ -324,7 +357,7 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -349,7 +382,17 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -450,9 +493,11 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     // Non-required parameters
     basicPublishingCredentialsPolicies: [
       {
+        allow: false
         name: 'ftp'
       }
       {
+        allow: false
         name: 'scm'
       }
     ]
@@ -484,7 +529,7 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -506,7 +551,17 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     scmSiteAlsoStopped: true
@@ -521,6 +576,16 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     }
     slots: [
       {
+        basicPublishingCredentialsPolicies: [
+          {
+            allow: false
+            name: 'ftp'
+          }
+          {
+            allow: false
+            name: 'scm'
+          }
+        ]
         diagnosticSettings: [
           {
             eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
@@ -568,6 +633,14 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
         }
       }
       {
+        basicPublishingCredentialsPolicies: [
+          {
+            name: 'ftp'
+          }
+          {
+            name: 'scm'
+          }
+        ]
         name: 'slot2'
       }
     ]
@@ -604,9 +677,11 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     "basicPublishingCredentialsPolicies": {
       "value": [
         {
+          "allow": false,
           "name": "ftp"
         },
         {
+          "allow": false,
           "name": "scm"
         }
       ]
@@ -650,7 +725,7 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -678,7 +753,17 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -699,6 +784,16 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
     "slots": {
       "value": [
         {
+          "basicPublishingCredentialsPolicies": [
+            {
+              "allow": false,
+              "name": "ftp"
+            },
+            {
+              "allow": false,
+              "name": "scm"
+            }
+          ],
           "diagnosticSettings": [
             {
               "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
@@ -746,6 +841,14 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
           }
         },
         {
+          "basicPublishingCredentialsPolicies": [
+            {
+              "name": "ftp"
+            },
+            {
+              "name": "scm"
+            }
+          ],
           "name": "slot2"
         }
       ]
@@ -861,7 +964,7 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
 | [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | [`redundancyMode`](#parameter-redundancymode) | string | Site redundancy mode. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`scmSiteAlsoStopped`](#parameter-scmsitealsostopped) | bool | Stop SCM (KUDU) site when the app is stopped. |
 | [`setAzureWebJobsDashboard`](#parameter-setazurewebjobsdashboard) | bool | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
 | [`siteConfig`](#parameter-siteconfig) | object | The site config object. |
@@ -1197,7 +1300,7 @@ The managed identity definition for this resource.
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -1206,7 +1309,7 @@ Optional. Enables system assigned managed identity on the resource.
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
 Optional. The resource ID(s) to assign to the resource.
 
@@ -1239,7 +1342,7 @@ Configuration details for private endpoints. For security reasons, it is recomme
 | [`name`](#parameter-privateendpointsname) | No | string | Optional. The name of the private endpoint. |
 | [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | No | string | Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided. |
 | [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | No | array | Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
-| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignments to create. |
 | [`service`](#parameter-privateendpointsservice) | No | string | Optional. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
 | [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | Yes | string | Required. Resource ID of the subnet where the endpoint needs to be created. |
 | [`tags`](#parameter-privateendpointstags) | No | object | Optional. Tags to be applied on all resources/resource groups in this deployment. |
@@ -1391,7 +1494,7 @@ Optional. The private DNS zone groups to associate the private endpoint with. A 
 
 ### Parameter: `privateEndpoints.roleAssignments`
 
-Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Optional. Array of role assignments to create.
 
 - Required: No
 - Type: array
@@ -1451,7 +1554,7 @@ Site redundancy mode.
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -1464,7 +1567,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -1512,7 +1615,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string
@@ -1611,7 +1714,7 @@ Virtual Network Route All enabled. This causes all outbound traffic to have Virt
 | `resourceId` | string | The resource ID of the site. |
 | `slotResourceIds` | array | The list of the slot resource ids. |
 | `slots` | array | The list of the slots. |
-| `slotSystemAssignedPrincipalIds` | array | The principal ID of the system assigned identity of slots. |
+| `slotSystemAssignedMIPrincipalIds` | array | The principal ID of the system assigned identity of slots. |
 | `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules

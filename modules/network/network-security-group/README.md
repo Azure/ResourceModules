@@ -30,6 +30,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -113,7 +114,17 @@ module networkSecurityGroup 'br:bicep/modules/network.network-security-group:1.0
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     securityRules: [
@@ -231,9 +242,239 @@ module networkSecurityGroup 'br:bicep/modules/network.network-security-group:1.0
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
+    },
+    "securityRules": {
+      "value": [
+        {
+          "name": "Specific",
+          "properties": {
+            "access": "Allow",
+            "description": "Tests specific IPs and ports",
+            "destinationAddressPrefix": "*",
+            "destinationPortRange": "8080",
+            "direction": "Inbound",
+            "priority": 100,
+            "protocol": "*",
+            "sourceAddressPrefix": "*",
+            "sourcePortRange": "*"
+          }
+        },
+        {
+          "name": "Ranges",
+          "properties": {
+            "access": "Allow",
+            "description": "Tests Ranges",
+            "destinationAddressPrefixes": [
+              "10.2.0.0/16",
+              "10.3.0.0/16"
+            ],
+            "destinationPortRanges": [
+              "90",
+              "91"
+            ],
+            "direction": "Inbound",
+            "priority": 101,
+            "protocol": "*",
+            "sourceAddressPrefixes": [
+              "10.0.0.0/16",
+              "10.1.0.0/16"
+            ],
+            "sourcePortRanges": [
+              "80",
+              "81"
+            ]
+          }
+        },
+        {
+          "name": "Port_8082",
+          "properties": {
+            "access": "Allow",
+            "description": "Allow inbound access on TCP 8082",
+            "destinationApplicationSecurityGroups": [
+              {
+                "id": "<id>"
+              }
+            ],
+            "destinationPortRange": "8082",
+            "direction": "Inbound",
+            "priority": 102,
+            "protocol": "*",
+            "sourceApplicationSecurityGroups": [
+              {
+                "id": "<id>"
+              }
+            ],
+            "sourcePortRange": "*"
+          }
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module networkSecurityGroup 'br:bicep/modules/network.network-security-group:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nnsgwaf'
+  params: {
+    // Required parameters
+    name: 'nnsgwaf001'
+    // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    securityRules: [
+      {
+        name: 'Specific'
+        properties: {
+          access: 'Allow'
+          description: 'Tests specific IPs and ports'
+          destinationAddressPrefix: '*'
+          destinationPortRange: '8080'
+          direction: 'Inbound'
+          priority: 100
+          protocol: '*'
+          sourceAddressPrefix: '*'
+          sourcePortRange: '*'
+        }
+      }
+      {
+        name: 'Ranges'
+        properties: {
+          access: 'Allow'
+          description: 'Tests Ranges'
+          destinationAddressPrefixes: [
+            '10.2.0.0/16'
+            '10.3.0.0/16'
+          ]
+          destinationPortRanges: [
+            '90'
+            '91'
+          ]
+          direction: 'Inbound'
+          priority: 101
+          protocol: '*'
+          sourceAddressPrefixes: [
+            '10.0.0.0/16'
+            '10.1.0.0/16'
+          ]
+          sourcePortRanges: [
+            '80'
+            '81'
+          ]
+        }
+      }
+      {
+        name: 'Port_8082'
+        properties: {
+          access: 'Allow'
+          description: 'Allow inbound access on TCP 8082'
+          destinationApplicationSecurityGroups: [
+            {
+              id: '<id>'
+            }
+          ]
+          destinationPortRange: '8082'
+          direction: 'Inbound'
+          priority: 102
+          protocol: '*'
+          sourceApplicationSecurityGroups: [
+            {
+              id: '<id>'
+            }
+          ]
+          sourcePortRange: '*'
+        }
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nnsgwaf001"
+    },
+    // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
     },
     "securityRules": {
       "value": [
@@ -333,7 +574,7 @@ module networkSecurityGroup 'br:bicep/modules/network.network-security-group:1.0
 | [`flushConnection`](#parameter-flushconnection) | bool | When enabled, flows created from Network Security Group connections will be re-evaluated when rules are updates. Initial enablement will trigger re-evaluation. Network Security Group connection flushing is not available in all regions. |
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`securityRules`](#parameter-securityrules) | array | Array of Security Rules to deploy to the Network Security Group. When not provided, an NSG including only the built-in roles will be deployed. |
 | [`tags`](#parameter-tags) | object | Tags of the NSG resource. |
 
@@ -488,7 +729,7 @@ Name of the Network Security Group.
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -501,7 +742,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -549,7 +790,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string

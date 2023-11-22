@@ -28,6 +28,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -184,7 +185,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -283,7 +284,7 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -302,6 +303,188 @@ module job 'br:bicep/modules/app.job:1.0.0' = {
           "roleDefinitionIdOrName": "ContainerApp Reader"
         }
       ]
+    },
+    "secrets": {
+      "value": {
+        "secureList": [
+          {
+            "name": "customtest",
+            "value": "<value>"
+          }
+        ]
+      }
+    },
+    "tags": {
+      "value": {
+        "Env": "test",
+        "hidden-title": "This is visible in the resource name"
+      }
+    },
+    "workloadProfileName": {
+      "value": "<workloadProfileName>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module job 'br:bicep/modules/app.job:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ajwaf'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+        name: 'simple-hello-world-container'
+        probes: [
+          {
+            httpGet: {
+              httpHeaders: [
+                {
+                  name: 'Custom-Header'
+                  value: 'Awesome'
+                }
+              ]
+              path: '/health'
+              port: 8080
+            }
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            type: 'Liveness'
+          }
+        ]
+        resources: {
+          cpu: '<cpu>'
+          memory: '0.5Gi'
+        }
+      }
+    ]
+    environmentId: '<environmentId>'
+    name: 'ajwaf001'
+    triggerType: 'Manual'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    manualTriggerConfig: {
+      parallelism: 1
+      replicaCompletionCount: 1
+    }
+    secrets: {
+      secureList: [
+        {
+          name: 'customtest'
+          value: '<value>'
+        }
+      ]
+    }
+    tags: {
+      Env: 'test'
+      'hidden-title': 'This is visible in the resource name'
+    }
+    workloadProfileName: '<workloadProfileName>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "image": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest",
+          "name": "simple-hello-world-container",
+          "probes": [
+            {
+              "httpGet": {
+                "httpHeaders": [
+                  {
+                    "name": "Custom-Header",
+                    "value": "Awesome"
+                  }
+                ],
+                "path": "/health",
+                "port": 8080
+              },
+              "initialDelaySeconds": 3,
+              "periodSeconds": 3,
+              "type": "Liveness"
+            }
+          ],
+          "resources": {
+            "cpu": "<cpu>",
+            "memory": "0.5Gi"
+          }
+        }
+      ]
+    },
+    "environmentId": {
+      "value": "<environmentId>"
+    },
+    "name": {
+      "value": "ajwaf001"
+    },
+    "triggerType": {
+      "value": "Manual"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "manualTriggerConfig": {
+      "value": {
+        "parallelism": 1,
+        "replicaCompletionCount": 1
+      }
     },
     "secrets": {
       "value": {
@@ -439,7 +622,7 @@ The managed identity definition for this resource.
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -448,7 +631,7 @@ Optional. Enables system assigned managed identity on the resource.
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
 Optional. The resource ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.
 
@@ -504,7 +687,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -552,7 +735,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string
@@ -615,7 +798,7 @@ The name of the workload profile to use.
 | `name` | string | The name of the Container App Job. |
 | `resourceGroupName` | string | The name of the resource group the Container App Job was deployed into. |
 | `resourceId` | string | The resource ID of the Container App Job. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

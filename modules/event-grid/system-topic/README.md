@@ -30,6 +30,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -269,6 +270,188 @@ module systemTopic 'br:bicep/modules/event-grid.system-topic:1.0.0' = {
 </details>
 <p>
 
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module systemTopic 'br:bicep/modules/event-grid.system-topic:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-egstwaf'
+  params: {
+    // Required parameters
+    name: 'egstwaf001'
+    source: '<source>'
+    topicType: 'Microsoft.Storage.StorageAccounts'
+    // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventSubscriptions: [
+      {
+        destination: {
+          endpointType: 'StorageQueue'
+          properties: {
+            queueMessageTimeToLiveInSeconds: 86400
+            queueName: '<queueName>'
+            resourceId: '<resourceId>'
+          }
+        }
+        enableDefaultTelemetry: '<enableDefaultTelemetry>'
+        eventDeliverySchema: 'CloudEventSchemaV1_0'
+        expirationTimeUtc: '2099-01-01T11:00:21.715Z'
+        filter: {
+          enableAdvancedFilteringOnArrays: true
+          isSubjectCaseSensitive: false
+        }
+        name: 'egstwaf001'
+        retryPolicy: {
+          eventTimeToLive: '120'
+          maxDeliveryAttempts: 10
+        }
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "egstwaf001"
+    },
+    "source": {
+      "value": "<source>"
+    },
+    "topicType": {
+      "value": "Microsoft.Storage.StorageAccounts"
+    },
+    // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "eventSubscriptions": {
+      "value": [
+        {
+          "destination": {
+            "endpointType": "StorageQueue",
+            "properties": {
+              "queueMessageTimeToLiveInSeconds": 86400,
+              "queueName": "<queueName>",
+              "resourceId": "<resourceId>"
+            }
+          },
+          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+          "eventDeliverySchema": "CloudEventSchemaV1_0",
+          "expirationTimeUtc": "2099-01-01T11:00:21.715Z",
+          "filter": {
+            "enableAdvancedFilteringOnArrays": true,
+            "isSubjectCaseSensitive": false
+          },
+          "name": "egstwaf001",
+          "retryPolicy": {
+            "eventTimeToLive": "120",
+            "maxDeliveryAttempts": 10
+          }
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -466,7 +649,7 @@ The managed identity definition for this resource.
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -475,7 +658,7 @@ Optional. Enables system assigned managed identity on the resource.
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
 Optional. The resource ID(s) to assign to the resource.
 

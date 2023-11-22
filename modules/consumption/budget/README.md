@@ -26,6 +26,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -137,6 +138,82 @@ module budget 'br:bicep/modules/consumption.budget:1.0.0' = {
     },
     "name": {
       "value": "cbmax001"
+    },
+    // Non-required parameters
+    "contactEmails": {
+      "value": [
+        "dummy@contoso.com"
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "thresholds": {
+      "value": [
+        50,
+        75,
+        90,
+        100,
+        110
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module budget 'br:bicep/modules/consumption.budget:1.0.0' = {
+  name: '${uniqueString(deployment().name)}-test-cbwaf'
+  params: {
+    // Required parameters
+    amount: 500
+    name: 'cbwaf001'
+    // Non-required parameters
+    contactEmails: [
+      'dummy@contoso.com'
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    thresholds: [
+      50
+      75
+      90
+      100
+      110
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "amount": {
+      "value": 500
+    },
+    "name": {
+      "value": "cbwaf001"
     },
     // Non-required parameters
     "contactEmails": {

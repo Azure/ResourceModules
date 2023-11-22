@@ -32,6 +32,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -165,6 +166,136 @@ module dnsForwardingRuleset 'br:bicep/modules/network.dns-forwarding-ruleset:1.0
     },
     "name": {
       "value": "ndfrsmax001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "forwardingRules": {
+      "value": [
+        {
+          "domainName": "contoso.",
+          "forwardingRuleState": "Enabled",
+          "name": "rule1",
+          "targetDnsServers": [
+            {
+              "ipAddress": "192.168.0.1",
+              "port": "53"
+            }
+          ]
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "vNetLinks": {
+      "value": [
+        "<virtualNetworkResourceId>"
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module dnsForwardingRuleset 'br:bicep/modules/network.dns-forwarding-ruleset:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-ndfrswaf'
+  params: {
+    // Required parameters
+    dnsResolverOutboundEndpointResourceIds: [
+      '<dnsResolverOutboundEndpointsId>'
+    ]
+    name: 'ndfrswaf001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    forwardingRules: [
+      {
+        domainName: 'contoso.'
+        forwardingRuleState: 'Enabled'
+        name: 'rule1'
+        targetDnsServers: [
+          {
+            ipAddress: '192.168.0.1'
+            port: '53'
+          }
+        ]
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    vNetLinks: [
+      '<virtualNetworkResourceId>'
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "dnsResolverOutboundEndpointResourceIds": {
+      "value": [
+        "<dnsResolverOutboundEndpointsId>"
+      ]
+    },
+    "name": {
+      "value": "ndfrswaf001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

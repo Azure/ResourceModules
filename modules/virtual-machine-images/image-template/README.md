@@ -29,6 +29,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -163,7 +164,17 @@ module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     sigImageDefinitionId: '<sigImageDefinitionId>'
@@ -248,7 +259,17 @@ module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -292,6 +313,162 @@ module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0
 </details>
 <p>
 
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-vmiitwaf'
+  params: {
+    // Required parameters
+    customizationSteps: [
+      {
+        restartTimeout: '10m'
+        type: 'WindowsRestart'
+      }
+    ]
+    imageSource: {
+      offer: 'Windows-11'
+      publisher: 'MicrosoftWindowsDesktop'
+      sku: 'win11-22h2-avd'
+      type: 'PlatformImage'
+      version: 'latest'
+    }
+    name: 'vmiitwaf001'
+    userMsiName: '<userMsiName>'
+    // Non-required parameters
+    buildTimeoutInMinutes: 60
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    imageReplicationRegions: []
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedImageName: 'mi-vmiitwaf-001'
+    osDiskSizeGB: 127
+    sigImageDefinitionId: '<sigImageDefinitionId>'
+    sigImageVersion: '<sigImageVersion>'
+    stagingResourceGroup: '<stagingResourceGroup>'
+    subnetId: '<subnetId>'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    unManagedImageName: 'umi-vmiitwaf-001'
+    userAssignedIdentities: [
+      '<managedIdentityResourceId>'
+    ]
+    userMsiResourceGroup: '<userMsiResourceGroup>'
+    vmSize: 'Standard_D2s_v3'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "customizationSteps": {
+      "value": [
+        {
+          "restartTimeout": "10m",
+          "type": "WindowsRestart"
+        }
+      ]
+    },
+    "imageSource": {
+      "value": {
+        "offer": "Windows-11",
+        "publisher": "MicrosoftWindowsDesktop",
+        "sku": "win11-22h2-avd",
+        "type": "PlatformImage",
+        "version": "latest"
+      }
+    },
+    "name": {
+      "value": "vmiitwaf001"
+    },
+    "userMsiName": {
+      "value": "<userMsiName>"
+    },
+    // Non-required parameters
+    "buildTimeoutInMinutes": {
+      "value": 60
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "imageReplicationRegions": {
+      "value": []
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedImageName": {
+      "value": "mi-vmiitwaf-001"
+    },
+    "osDiskSizeGB": {
+      "value": 127
+    },
+    "sigImageDefinitionId": {
+      "value": "<sigImageDefinitionId>"
+    },
+    "sigImageVersion": {
+      "value": "<sigImageVersion>"
+    },
+    "stagingResourceGroup": {
+      "value": "<stagingResourceGroup>"
+    },
+    "subnetId": {
+      "value": "<subnetId>"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "unManagedImageName": {
+      "value": "umi-vmiitwaf-001"
+    },
+    "userAssignedIdentities": {
+      "value": [
+        "<managedIdentityResourceId>"
+      ]
+    },
+    "userMsiResourceGroup": {
+      "value": "<userMsiResourceGroup>"
+    },
+    "vmSize": {
+      "value": "Standard_D2s_v3"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -316,7 +493,7 @@ module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`managedImageName`](#parameter-managedimagename) | string | Name of the managed image that will be created in the AIB resourcegroup. |
 | [`osDiskSizeGB`](#parameter-osdisksizegb) | int | Specifies the size of OS disk. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`sigImageDefinitionId`](#parameter-sigimagedefinitionid) | string | Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>. |
 | [`sigImageVersion`](#parameter-sigimageversion) | string | Version of the Shared Image Gallery Image. Supports the following Version Syntax: Major.Minor.Build (i.e., '1.1.1' or '10.1.2'). |
 | [`stagingResourceGroup`](#parameter-stagingresourcegroup) | string | Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.</p>If this field is empty, a resource group with a random name will be created.</p>If the resource group specified in this field doesn't exist, it will be created with the same name.</p>If the resource group specified exists, it must be empty and in the same region as the image template.</p>The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn't exist,</p>but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain. |
@@ -437,7 +614,7 @@ Specifies the size of OS disk.
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -450,7 +627,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -498,7 +675,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string

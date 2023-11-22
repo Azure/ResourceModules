@@ -63,9 +63,10 @@ module diagnosticDependencies '../../../../../.shared/.templates/diagnostic.depe
 // Test Execution //
 // ============== //
 // For the below test case, please consider the guidelines described here: https://github.com/Azure/ResourceModules/wiki/Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#microsoftwebsites
-module testDeployment '../../../main.bicep' = {
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
@@ -140,6 +141,16 @@ module testDeployment '../../../main.bicep' = {
         runtimeVersion: '~1'
       }
     }
+    basicPublishingCredentialsPolicies: [
+      {
+        name: 'ftp'
+        allow: false
+      }
+      {
+        name: 'scm'
+        allow: false
+      }
+    ]
     diagnosticSettings: [
       {
         name: 'customSetting'
@@ -173,7 +184,17 @@ module testDeployment '../../../main.bicep' = {
     ]
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalType: 'ServicePrincipal'
+      }
+      {
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalType: 'ServicePrincipal'
+      }
+      {
+        roleDefinitionIdOrName: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
         principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }
@@ -187,7 +208,7 @@ module testDeployment '../../../main.bicep' = {
     storageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }
@@ -198,4 +219,4 @@ module testDeployment '../../../main.bicep' = {
       }
     ]
   }
-}
+}]

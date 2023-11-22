@@ -31,6 +31,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -118,6 +119,62 @@ module managementGroup 'br:bicep/modules/management.management-group:1.0.0' = {
     // Required parameters
     "name": {
       "value": "mmgmax001"
+    },
+    // Non-required parameters
+    "displayName": {
+      "value": "Test MG"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "parentId": {
+      "value": "<parentId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managementGroup 'br:bicep/modules/management.management-group:1.0.0' = {
+  name: '${uniqueString(deployment().name)}-test-mmgwaf'
+  params: {
+    // Required parameters
+    name: 'mmgwaf001'
+    // Non-required parameters
+    displayName: 'Test MG'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    parentId: '<parentId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "mmgwaf001"
     },
     // Non-required parameters
     "displayName": {

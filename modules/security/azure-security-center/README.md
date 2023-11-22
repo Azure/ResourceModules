@@ -30,6 +30,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/security.azure-security-center:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -43,6 +44,68 @@ This instance deploys the module with most of its features enabled.
 ```bicep
 module azureSecurityCenter 'br:bicep/modules/security.azure-security-center:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-sascmax'
+  params: {
+    // Required parameters
+    workspaceId: '<workspaceId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    securityContactProperties: {
+      alertNotifications: 'Off'
+      alertsToAdmins: 'Off'
+      email: 'foo@contoso.com'
+      phone: '+12345678'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "workspaceId": {
+      "value": "<workspaceId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "securityContactProperties": {
+      "value": {
+        "alertNotifications": "Off",
+        "alertsToAdmins": "Off",
+        "email": "foo@contoso.com",
+        "phone": "+12345678"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureSecurityCenter 'br:bicep/modules/security.azure-security-center:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sascwaf'
   params: {
     // Required parameters
     workspaceId: '<workspaceId>'

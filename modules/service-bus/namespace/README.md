@@ -41,6 +41,7 @@ The following section provides usage examples for the module, which were used to
 - [Encr](#example-2-encr)
 - [Using large parameter set](#example-3-using-large-parameter-set)
 - [Pe](#example-4-pe)
+- [WAF-aligned](#example-5-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -128,7 +129,7 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managedIdentities: {
       systemAssigned: false
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -156,7 +157,17 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     skuName: 'Premium'
@@ -218,7 +229,7 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     "managedIdentities": {
       "value": {
         "systemAssigned": false,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -250,7 +261,17 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -326,7 +347,7 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -513,7 +534,7 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -754,6 +775,396 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
 </details>
 <p>
 
+### Example 5: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sbnwaf'
+  params: {
+    // Required parameters
+    name: 'sbnwaf001'
+    // Non-required parameters
+    authorizationRules: [
+      {
+        name: 'RootManageSharedAccessKey'
+        rights: [
+          'Listen'
+          'Manage'
+          'Send'
+        ]
+      }
+      {
+        name: 'AnotherKey'
+        rights: [
+          'Listen'
+          'Send'
+        ]
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    disableLocalAuth: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    minimumTlsVersion: '1.2'
+    networkRuleSets: {
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          action: 'Allow'
+          ipMask: '10.0.1.0/32'
+        }
+        {
+          action: 'Allow'
+          ipMask: '10.0.2.0/32'
+        }
+      ]
+      trustedServiceAccessEnabled: true
+      virtualNetworkRules: [
+        {
+          ignoreMissingVnetServiceEndpoint: true
+          subnetResourceId: '<subnetResourceId>'
+        }
+      ]
+    }
+    premiumMessagingPartitions: 1
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          '<privateDNSZoneResourceId>'
+        ]
+        service: 'namespace'
+        subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          'hidden-title': 'This is visible in the resource name'
+          Role: 'DeploymentValidation'
+        }
+      }
+    ]
+    publicNetworkAccess: 'Enabled'
+    queues: [
+      {
+        authorizationRules: [
+          {
+            name: 'RootManageSharedAccessKey'
+            rights: [
+              'Listen'
+              'Manage'
+              'Send'
+            ]
+          }
+          {
+            name: 'AnotherKey'
+            rights: [
+              'Listen'
+              'Send'
+            ]
+          }
+        ]
+        autoDeleteOnIdle: 'PT5M'
+        maxMessageSizeInKilobytes: 2048
+        name: 'sbnwafq001'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+      }
+    ]
+    roleAssignments: [
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    skuCapacity: 2
+    skuName: 'Premium'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    topics: [
+      {
+        authorizationRules: [
+          {
+            name: 'RootManageSharedAccessKey'
+            rights: [
+              'Listen'
+              'Manage'
+              'Send'
+            ]
+          }
+          {
+            name: 'AnotherKey'
+            rights: [
+              'Listen'
+              'Send'
+            ]
+          }
+        ]
+        name: 'sbnwaft001'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+      }
+    ]
+    zoneRedundant: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "sbnwaf001"
+    },
+    // Non-required parameters
+    "authorizationRules": {
+      "value": [
+        {
+          "name": "RootManageSharedAccessKey",
+          "rights": [
+            "Listen",
+            "Manage",
+            "Send"
+          ]
+        },
+        {
+          "name": "AnotherKey",
+          "rights": [
+            "Listen",
+            "Send"
+          ]
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "disableLocalAuth": {
+      "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "minimumTlsVersion": {
+      "value": "1.2"
+    },
+    "networkRuleSets": {
+      "value": {
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "action": "Allow",
+            "ipMask": "10.0.1.0/32"
+          },
+          {
+            "action": "Allow",
+            "ipMask": "10.0.2.0/32"
+          }
+        ],
+        "trustedServiceAccessEnabled": true,
+        "virtualNetworkRules": [
+          {
+            "ignoreMissingVnetServiceEndpoint": true,
+            "subnetResourceId": "<subnetResourceId>"
+          }
+        ]
+      }
+    },
+    "premiumMessagingPartitions": {
+      "value": 1
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneResourceIds": [
+            "<privateDNSZoneResourceId>"
+          ],
+          "service": "namespace",
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "hidden-title": "This is visible in the resource name",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "queues": {
+      "value": [
+        {
+          "authorizationRules": [
+            {
+              "name": "RootManageSharedAccessKey",
+              "rights": [
+                "Listen",
+                "Manage",
+                "Send"
+              ]
+            },
+            {
+              "name": "AnotherKey",
+              "rights": [
+                "Listen",
+                "Send"
+              ]
+            }
+          ],
+          "autoDeleteOnIdle": "PT5M",
+          "maxMessageSizeInKilobytes": 2048,
+          "name": "sbnwafq001",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ]
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "skuCapacity": {
+      "value": 2
+    },
+    "skuName": {
+      "value": "Premium"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "topics": {
+      "value": [
+        {
+          "authorizationRules": [
+            {
+              "name": "RootManageSharedAccessKey",
+              "rights": [
+                "Listen",
+                "Manage",
+                "Send"
+              ]
+            },
+            {
+              "name": "AnotherKey",
+              "rights": [
+                "Listen",
+                "Send"
+              ]
+            }
+          ],
+          "name": "sbnwaft001",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ]
+        }
+      ]
+    },
+    "zoneRedundant": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -785,7 +1196,7 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | [`queues`](#parameter-queues) | array | The queues to create in the service bus namespace. |
 | [`requireInfrastructureEncryption`](#parameter-requireinfrastructureencryption) | bool | Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`skuCapacity`](#parameter-skucapacity) | int | The specified messaging units for the tier. Only used for Premium Sku tier. |
 | [`skuName`](#parameter-skuname) | string | Name of this SKU. - Basic, Standard, Premium. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
@@ -1040,7 +1451,7 @@ The managed identity definition for this resource.
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -1049,7 +1460,7 @@ Optional. Enables system assigned managed identity on the resource.
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
 Optional. The resource ID(s) to assign to the resource.
 
@@ -1118,7 +1529,7 @@ Configuration details for private endpoints. For security reasons, it is recomme
 | [`name`](#parameter-privateendpointsname) | No | string | Optional. The name of the private endpoint. |
 | [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | No | string | Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided. |
 | [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | No | array | Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
-| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignments to create. |
 | [`service`](#parameter-privateendpointsservice) | No | string | Optional. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
 | [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | Yes | string | Required. Resource ID of the subnet where the endpoint needs to be created. |
 | [`tags`](#parameter-privateendpointstags) | No | object | Optional. Tags to be applied on all resources/resource groups in this deployment. |
@@ -1270,7 +1681,7 @@ Optional. The private DNS zone groups to associate the private endpoint with. A 
 
 ### Parameter: `privateEndpoints.roleAssignments`
 
-Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Optional. Array of role assignments to create.
 
 - Required: No
 - Type: array
@@ -1328,7 +1739,7 @@ Enable infrastructure encryption (double encryption). Note, this setting require
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -1341,7 +1752,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -1389,7 +1800,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string

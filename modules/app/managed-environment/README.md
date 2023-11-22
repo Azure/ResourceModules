@@ -28,6 +28,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -179,6 +180,106 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
 </details>
 <p>
 
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-amewaf'
+  params: {
+    // Required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    logAnalyticsWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
+    name: 'amewaf001'
+    // Non-required parameters
+    dockerBridgeCidr: '172.16.0.1/28'
+    infrastructureSubnetId: '<infrastructureSubnetId>'
+    internal: true
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    platformReservedCidr: '172.17.17.0/24'
+    platformReservedDnsIP: '172.17.17.17'
+    skuName: 'Consumption'
+    tags: {
+      Env: 'test'
+      'hidden-title': 'This is visible in the resource name'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "logAnalyticsWorkspaceResourceId": {
+      "value": "<logAnalyticsWorkspaceResourceId>"
+    },
+    "name": {
+      "value": "amewaf001"
+    },
+    // Non-required parameters
+    "dockerBridgeCidr": {
+      "value": "172.16.0.1/28"
+    },
+    "infrastructureSubnetId": {
+      "value": "<infrastructureSubnetId>"
+    },
+    "internal": {
+      "value": true
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "platformReservedCidr": {
+      "value": "172.17.17.0/24"
+    },
+    "platformReservedDnsIP": {
+      "value": "172.17.17.17"
+    },
+    "skuName": {
+      "value": "Consumption"
+    },
+    "tags": {
+      "value": {
+        "Env": "test",
+        "hidden-title": "This is visible in the resource name"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -212,7 +313,7 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
 | [`logsDestination`](#parameter-logsdestination) | string | Logs destination. |
 | [`platformReservedCidr`](#parameter-platformreservedcidr) | string | IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap with any other provided IP ranges and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
 | [`platformReservedDnsIP`](#parameter-platformreserveddnsip) | string | An IP address from the IP range defined by "platformReservedCidr" that will be reserved for the internal DNS server. It must not be the first address in the range and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`skuName`](#parameter-skuname) | string | Managed environment SKU. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`workloadProfiles`](#parameter-workloadprofiles) | array | Workload profiles configured for the Managed Environment. |
@@ -349,7 +450,7 @@ An IP address from the IP range defined by "platformReservedCidr" that will be r
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -362,7 +463,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -410,7 +511,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string

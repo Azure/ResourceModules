@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "9027351090124444562"
+      "version": "0.23.1.45101",
+      "templateHash": "8314710518368415809"
     },
     "name": "DocumentDB Database Account Gremlin Databases",
     "description": "This module deploys a Gremlin Database within a CosmosDB Account.",
@@ -23,7 +23,7 @@
             "description": "Optional. Enables system assigned managed identity on the resource."
           }
         },
-        "userAssignedResourcesIds": {
+        "userAssignedResourceIds": {
           "type": "array",
           "items": {
             "type": "string"
@@ -161,8 +161,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "16432474498986701571"
+              "version": "0.23.1.45101",
+              "templateHash": "4035784770059836359"
             },
             "name": "DocumentDB Database Accounts Gremlin Databases Graphs",
             "description": "This module deploys a DocumentDB Database Accounts Gremlin Database Graph.",

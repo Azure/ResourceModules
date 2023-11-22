@@ -5,14 +5,29 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "2450269560530411916"
+      "version": "0.23.1.45101",
+      "templateHash": "11432454877578684886"
     },
     "name": "Synapse Workspaces",
     "description": "This module deploys a Synapse Workspace.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {
+    "managedIdentitiesType": {
+      "type": "object",
+      "properties": {
+        "userAssignedResourceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "metadata": {
+            "description": "Optional. The resource ID(s) to assign to the resource."
+          }
+        }
+      },
+      "nullable": true
+    },
     "lockType": {
       "type": "object",
       "properties": {
@@ -46,7 +61,7 @@
           "roleDefinitionIdOrName": {
             "type": "string",
             "metadata": {
-              "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+              "description": "Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
             }
           },
           "principalId": {
@@ -250,7 +265,7 @@
           "roleAssignments": {
             "$ref": "#/definitions/roleAssignmentType",
             "metadata": {
-              "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              "description": "Optional. Array of role assignments to create."
             }
           },
           "tags": {
@@ -555,11 +570,10 @@
         "description": "Optional. Git integration settings."
       }
     },
-    "userAssignedIdentities": {
-      "type": "object",
-      "defaultValue": {},
+    "managedIdentities": {
+      "$ref": "#/definitions/managedIdentitiesType",
       "metadata": {
-        "description": "Optional. The ID(s) to assign to the resource."
+        "description": "Optional. The managed identity definition for this resource."
       }
     },
     "lock": {
@@ -571,7 +585,7 @@
     "roleAssignments": {
       "$ref": "#/definitions/roleAssignmentType",
       "metadata": {
-        "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+        "description": "Optional. Array of role assignments to create."
       }
     },
     "privateEndpoints": {
@@ -588,11 +602,12 @@
     }
   },
   "variables": {
-    "userAssignedIdentitiesUnion": "[union(parameters('userAssignedIdentities'), if(not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), createArray()))), createObject(format('{0}', parameters('customerManagedKey').userAssignedIdentityResourceId), createObject()), createObject()))]",
-    "identityType": "[if(not(empty(variables('userAssignedIdentitiesUnion'))), 'SystemAssigned,UserAssigned', 'SystemAssigned')]",
+    "cmkUserAssignedIdentityAsArray": "[if(not(empty(coalesce(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId'), createArray()))), createArray(tryGet(parameters('customerManagedKey'), 'userAssignedIdentityResourceId')), createArray())]",
+    "userAssignedIdentitiesUnion": "[if(not(empty(parameters('managedIdentities'))), union(coalesce(tryGet(parameters('managedIdentities'), 'userAssignedResourceIds'), createArray()), variables('cmkUserAssignedIdentityAsArray')), variables('cmkUserAssignedIdentityAsArray'))]",
+    "formattedUserAssignedIdentities": "[reduce(map(coalesce(variables('userAssignedIdentitiesUnion'), createArray()), lambda('id', createObject(format('{0}', lambdaVariables('id')), createObject()))), createObject(), lambda('cur', 'next', union(lambdaVariables('cur'), lambdaVariables('next'))))]",
     "identity": {
-      "type": "[variables('identityType')]",
-      "userAssignedIdentities": "[if(not(empty(variables('userAssignedIdentitiesUnion'))), variables('userAssignedIdentitiesUnion'), null())]"
+      "type": "[if(not(empty(variables('userAssignedIdentitiesUnion'))), 'SystemAssigned,UserAssigned', 'SystemAssigned')]",
+      "userAssignedIdentities": "[if(not(empty(variables('formattedUserAssignedIdentities'))), variables('formattedUserAssignedIdentities'), null())]"
     },
     "enableReferencedModulesTelemetry": false,
     "builtInRoleNames": {
@@ -704,7 +719,7 @@
       "scope": "[format('Microsoft.Synapse/workspaces/{0}', parameters('name'))]",
       "name": "[guid(resourceId('Microsoft.Synapse/workspaces', parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
       "properties": {
-        "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+        "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], if(contains(coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, '/providers/Microsoft.Authorization/roleDefinitions/'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)))]",
         "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
         "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
         "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
@@ -772,8 +787,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "3121962670071772951"
+              "version": "0.23.1.45101",
+              "templateHash": "15433128731134325120"
             },
             "name": "Synapse Workspace Integration Runtimes",
             "description": "This module deploys a Synapse Workspace Integration Runtime.",
@@ -891,8 +906,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "7188161900918132964"
+              "version": "0.23.1.45101",
+              "templateHash": "1182711601328740781"
             }
           },
           "parameters": {
@@ -979,8 +994,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "5952844918734432483"
+              "version": "0.23.1.45101",
+              "templateHash": "17878422697036938783"
             },
             "name": "Synapse Workspaces Keys",
             "description": "This module deploys a Synapse Workspaces Key.",
@@ -1154,8 +1169,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "12078057657290521609"
+              "version": "0.23.1.45101",
+              "templateHash": "6873008238043407177"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1557,8 +1572,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "16391702514342252839"
+                      "version": "0.23.1.45101",
+                      "templateHash": "17578977753131828304"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -1728,7 +1743,7 @@
       },
       "value": "[reference('workspace').connectivityEndpoints]"
     },
-    "systemAssignedPrincipalId": {
+    "systemAssignedMIPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."

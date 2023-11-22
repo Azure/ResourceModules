@@ -44,6 +44,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -193,7 +194,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -249,7 +250,17 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     subscriptions: [
@@ -380,7 +391,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -446,7 +457,371 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
+        }
+      ]
+    },
+    "subscriptions": {
+      "value": [
+        {
+          "name": "testArmSubscriptionAllApis"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module service 'br:bicep/modules/api-management.service:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-apiswaf'
+  params: {
+    // Required parameters
+    name: 'apiswaf001'
+    publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
+    publisherName: 'az-amorg-x-001'
+    // Non-required parameters
+    apis: [
+      {
+        apiVersionSet: {
+          name: 'echo-version-set'
+          properties: {
+            description: 'echo-version-set'
+            displayName: 'echo-version-set'
+            versioningScheme: 'Segment'
+          }
+        }
+        displayName: 'Echo API'
+        name: 'echo-api'
+        path: 'echo'
+        serviceUrl: 'http://echoapi.cloudapp.net/api'
+      }
+    ]
+    authorizationServers: {
+      secureList: [
+        {
+          authorizationEndpoint: '<authorizationEndpoint>'
+          clientId: 'apimclientid'
+          clientRegistrationEndpoint: 'http://localhost'
+          clientSecret: '<clientSecret>'
+          grantTypes: [
+            'authorizationCode'
+          ]
+          name: 'AuthServer1'
+          tokenEndpoint: '<tokenEndpoint>'
+        }
+      ]
+    }
+    backends: [
+      {
+        name: 'backend'
+        tls: {
+          validateCertificateChain: false
+          validateCertificateName: false
+        }
+        url: 'http://echoapi.cloudapp.net/api'
+      }
+    ]
+    caches: [
+      {
+        connectionString: 'connectionstringtest'
+        name: 'westeurope'
+        useFromLocation: 'westeurope'
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    identityProviders: [
+      {
+        name: 'aadProvider'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    namedValues: [
+      {
+        displayName: 'apimkey'
+        name: 'apimkey'
+        secret: true
+      }
+    ]
+    policies: [
+      {
+        format: 'xml'
+        value: '<policies> <inbound> <rate-limit-by-key calls=\'250\' renewal-period=\'60\' counter-key=\'@(context.Request.IpAddress)\' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
+      }
+    ]
+    portalsettings: [
+      {
+        name: 'signin'
+        properties: {
+          enabled: false
+        }
+      }
+      {
+        name: 'signup'
+        properties: {
+          enabled: false
+          termsOfService: {
+            consentRequired: false
+            enabled: false
+          }
+        }
+      }
+    ]
+    products: [
+      {
+        apis: [
+          {
+            name: 'echo-api'
+          }
+        ]
+        approvalRequired: false
+        groups: [
+          {
+            name: 'developers'
+          }
+        ]
+        name: 'Starter'
+        subscriptionRequired: false
+      }
+    ]
+    subscriptions: [
+      {
+        name: 'testArmSubscriptionAllApis'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "apiswaf001"
+    },
+    "publisherEmail": {
+      "value": "apimgmt-noreply@mail.windowsazure.com"
+    },
+    "publisherName": {
+      "value": "az-amorg-x-001"
+    },
+    // Non-required parameters
+    "apis": {
+      "value": [
+        {
+          "apiVersionSet": {
+            "name": "echo-version-set",
+            "properties": {
+              "description": "echo-version-set",
+              "displayName": "echo-version-set",
+              "versioningScheme": "Segment"
+            }
+          },
+          "displayName": "Echo API",
+          "name": "echo-api",
+          "path": "echo",
+          "serviceUrl": "http://echoapi.cloudapp.net/api"
+        }
+      ]
+    },
+    "authorizationServers": {
+      "value": {
+        "secureList": [
+          {
+            "authorizationEndpoint": "<authorizationEndpoint>",
+            "clientId": "apimclientid",
+            "clientRegistrationEndpoint": "http://localhost",
+            "clientSecret": "<clientSecret>",
+            "grantTypes": [
+              "authorizationCode"
+            ],
+            "name": "AuthServer1",
+            "tokenEndpoint": "<tokenEndpoint>"
+          }
+        ]
+      }
+    },
+    "backends": {
+      "value": [
+        {
+          "name": "backend",
+          "tls": {
+            "validateCertificateChain": false,
+            "validateCertificateName": false
+          },
+          "url": "http://echoapi.cloudapp.net/api"
+        }
+      ]
+    },
+    "caches": {
+      "value": [
+        {
+          "connectionString": "connectionstringtest",
+          "name": "westeurope",
+          "useFromLocation": "westeurope"
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "identityProviders": {
+      "value": [
+        {
+          "name": "aadProvider"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "namedValues": {
+      "value": [
+        {
+          "displayName": "apimkey",
+          "name": "apimkey",
+          "secret": true
+        }
+      ]
+    },
+    "policies": {
+      "value": [
+        {
+          "format": "xml",
+          "value": "<policies> <inbound> <rate-limit-by-key calls=\"250\" renewal-period=\"60\" counter-key=\"@(context.Request.IpAddress)\" /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>"
+        }
+      ]
+    },
+    "portalsettings": {
+      "value": [
+        {
+          "name": "signin",
+          "properties": {
+            "enabled": false
+          }
+        },
+        {
+          "name": "signup",
+          "properties": {
+            "enabled": false,
+            "termsOfService": {
+              "consentRequired": false,
+              "enabled": false
+            }
+          }
+        }
+      ]
+    },
+    "products": {
+      "value": [
+        {
+          "apis": [
+            {
+              "name": "echo-api"
+            }
+          ],
+          "approvalRequired": false,
+          "groups": [
+            {
+              "name": "developers"
+            }
+          ],
+          "name": "Starter",
+          "subscriptionRequired": false
         }
       ]
     },
@@ -511,7 +886,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
 | [`portalsettings`](#parameter-portalsettings) | array | Portal settings. |
 | [`products`](#parameter-products) | array | Products. |
 | [`restore`](#parameter-restore) | bool | Undelete API Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`sku`](#parameter-sku) | string | The pricing tier of this API Management service. |
 | [`skuCount`](#parameter-skucount) | int | The instance size of this API Management service. |
 | [`subnetResourceId`](#parameter-subnetresourceid) | string | The full resource ID of a subnet in a virtual network to deploy the API Management service in. |
@@ -770,7 +1145,7 @@ The managed identity definition for this resource.
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -779,7 +1154,7 @@ Optional. Enables system assigned managed identity on the resource.
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
 Optional. The resource ID(s) to assign to the resource.
 
@@ -862,7 +1237,7 @@ Undelete API Management Service if it was previously soft-deleted. If this flag 
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -875,7 +1250,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -923,7 +1298,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string

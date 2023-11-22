@@ -80,8 +80,9 @@ resource policySetAssignment 'Microsoft.Authorization/policyAssignments@2021-06-
 // Test Execution //
 // ============== //
 
-module testDeployment '../../../management-group/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+@batchSize(1)
+module testDeployment '../../../management-group/main.bicep' = [for iteration in [ 'init', 'idem' ]: {
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
@@ -96,4 +97,4 @@ module testDeployment '../../../management-group/main.bicep' = {
     parallelDeployments: 1
     failureThresholdPercentage: '0.5'
   }
-}
+}]

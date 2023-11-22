@@ -29,6 +29,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/aad.domain-service:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -158,6 +159,134 @@ module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
 </details>
 <p>
 
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-aaddswaf'
+  params: {
+    // Required parameters
+    domainName: 'onmicrosoft.com'
+    // Non-required parameters
+    additionalRecipients: [
+      '@noreply.github.com'
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    name: 'aaddswaf001'
+    pfxCertificate: '<pfxCertificate>'
+    pfxCertificatePassword: '<pfxCertificatePassword>'
+    replicaSets: [
+      {
+        location: 'WestEurope'
+        subnetId: '<subnetId>'
+      }
+    ]
+    sku: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "domainName": {
+      "value": "onmicrosoft.com"
+    },
+    // Non-required parameters
+    "additionalRecipients": {
+      "value": [
+        "@noreply.github.com"
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "name": {
+      "value": "aaddswaf001"
+    },
+    "pfxCertificate": {
+      "value": "<pfxCertificate>"
+    },
+    "pfxCertificatePassword": {
+      "value": "<pfxCertificatePassword>"
+    },
+    "replicaSets": {
+      "value": [
+        {
+          "location": "WestEurope",
+          "subnetId": "<subnetId>"
+        }
+      ]
+    },
+    "sku": {
+      "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -194,7 +323,7 @@ module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
 | [`notifyGlobalAdmins`](#parameter-notifyglobaladmins) | string | The value is to notify the Global Admins. |
 | [`ntlmV1`](#parameter-ntlmv1) | string | The value is to enable clients making request using NTLM v1. |
 | [`replicaSets`](#parameter-replicasets) | array | Additional replica set for the managed domain. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`sku`](#parameter-sku) | string | The name of the SKU specific to Azure ADDS Services. |
 | [`syncNtlmPasswords`](#parameter-syncntlmpasswords) | string | The value is to enable synchronized users to use NTLM authentication. |
 | [`syncOnPremPasswords`](#parameter-synconprempasswords) | string | The value is to enable on-premises users to authenticate against managed domain. |
@@ -499,7 +628,7 @@ Additional replica set for the managed domain.
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -512,7 +641,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -560,7 +689,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string

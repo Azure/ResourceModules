@@ -34,6 +34,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -150,7 +151,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
       name: 'myCustomLockName'
     }
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -246,7 +247,17 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     schedules: [
@@ -425,7 +436,7 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
     },
     "managedIdentities": {
       "value": {
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -531,7 +542,17 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -576,6 +597,532 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
       "value": {
         "hidden-title": "This is visible in the resource name",
         "labName": "dtllmax001",
+        "resourceType": "DevTest Lab"
+      }
+    },
+    "virtualnetworks": {
+      "value": [
+        {
+          "allowedSubnets": [
+            {
+              "allowPublicIp": "Allow",
+              "labSubnetName": "<labSubnetName>",
+              "resourceId": "<resourceId>"
+            }
+          ],
+          "description": "lab virtual network description",
+          "externalProviderResourceId": "<externalProviderResourceId>",
+          "name": "<name>",
+          "subnetOverrides": [
+            {
+              "labSubnetName": "<labSubnetName>",
+              "resourceId": "<resourceId>",
+              "sharedPublicIpAddressConfiguration": {
+                "allowedPorts": [
+                  {
+                    "backendPort": 3389,
+                    "transportProtocol": "Tcp"
+                  },
+                  {
+                    "backendPort": 22,
+                    "transportProtocol": "Tcp"
+                  }
+                ]
+              },
+              "useInVmCreationPermission": "Allow",
+              "usePublicIpAddressPermission": "Allow"
+            }
+          ]
+        }
+      ]
+    },
+    "vmCreationResourceGroupId": {
+      "value": "<vmCreationResourceGroupId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-dtllwaf'
+  params: {
+    // Required parameters
+    name: 'dtllwaf001'
+    // Non-required parameters
+    announcement: {
+      enabled: 'Enabled'
+      expirationDate: '2025-12-30T13:00:00Z'
+      markdown: 'DevTest Lab announcement text. <br> New line. It also supports Markdown'
+      title: 'DevTest announcement title'
+    }
+    artifactsources: [
+      {
+        branchRef: 'master'
+        displayName: 'Public Artifact Repo'
+        folderPath: '/Artifacts'
+        name: 'Public Repo'
+        sourceType: 'GitHub'
+        status: 'Disabled'
+        uri: 'https://github.com/Azure/azure-devtestlab.git'
+      }
+      {
+        armTemplateFolderPath: '/Environments'
+        branchRef: 'master'
+        displayName: 'Public Environment Repo'
+        name: 'Public Environment Repo'
+        sourceType: 'GitHub'
+        status: 'Disabled'
+        uri: 'https://github.com/Azure/azure-devtestlab.git'
+      }
+    ]
+    artifactsStorageAccount: '<artifactsStorageAccount>'
+    browserConnect: 'Enabled'
+    costs: {
+      cycleType: 'CalendarMonth'
+      status: 'Enabled'
+      target: 450
+      thresholdValue100DisplayOnChart: 'Enabled'
+      thresholdValue100SendNotificationWhenExceeded: 'Enabled'
+    }
+    disableAutoUpgradeCseMinorVersion: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    encryptionDiskEncryptionSetId: '<encryptionDiskEncryptionSetId>'
+    encryptionType: 'EncryptionAtRestWithCustomerKey'
+    environmentPermission: 'Contributor'
+    extendedProperties: {
+      RdpConnectionType: '7'
+    }
+    isolateLabResources: 'Enabled'
+    labStorageType: 'Premium'
+    location: '<location>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    managementIdentitiesResourceIds: [
+      '<managedIdentityResourceId>'
+    ]
+    notificationchannels: [
+      {
+        description: 'Integration configured for auto-shutdown'
+        emailRecipient: 'mail@contosodtlmail.com'
+        events: [
+          {
+            eventName: 'AutoShutdown'
+          }
+        ]
+        name: 'autoShutdown'
+        notificationLocale: 'en'
+        webHookUrl: 'https://webhook.contosotest.com'
+      }
+      {
+        events: [
+          {
+            eventName: 'Cost'
+          }
+        ]
+        name: 'costThreshold'
+        webHookUrl: 'https://webhook.contosotest.com'
+      }
+    ]
+    policies: [
+      {
+        evaluatorType: 'MaxValuePolicy'
+        factData: '<factData>'
+        factName: 'UserOwnedLabVmCountInSubnet'
+        name: '<name>'
+        threshold: '1'
+      }
+      {
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'UserOwnedLabVmCount'
+        name: 'MaxVmsAllowedPerUser'
+        threshold: '2'
+      }
+      {
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'UserOwnedLabPremiumVmCount'
+        name: 'MaxPremiumVmsAllowedPerUser'
+        status: 'Disabled'
+        threshold: '1'
+      }
+      {
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'LabVmCount'
+        name: 'MaxVmsAllowedPerLab'
+        threshold: '3'
+      }
+      {
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'LabPremiumVmCount'
+        name: 'MaxPremiumVmsAllowedPerLab'
+        threshold: '2'
+      }
+      {
+        evaluatorType: 'AllowedValuesPolicy'
+        factData: ''
+        factName: 'LabVmSize'
+        name: 'AllowedVmSizesInLab'
+        status: 'Enabled'
+        threshold: '<threshold>'
+      }
+      {
+        evaluatorType: 'AllowedValuesPolicy'
+        factName: 'ScheduleEditPermission'
+        name: 'ScheduleEditPermission'
+        threshold: '<threshold>'
+      }
+      {
+        evaluatorType: 'AllowedValuesPolicy'
+        factName: 'GalleryImage'
+        name: 'GalleryImage'
+        threshold: '<threshold>'
+      }
+      {
+        description: 'Public Environment Policy'
+        evaluatorType: 'AllowedValuesPolicy'
+        factName: 'EnvironmentTemplate'
+        name: 'EnvironmentTemplate'
+        threshold: '<threshold>'
+      }
+    ]
+    premiumDataDisks: 'Enabled'
+    schedules: [
+      {
+        dailyRecurrence: {
+          time: '0000'
+        }
+        name: 'LabVmsShutdown'
+        notificationSettingsStatus: 'Enabled'
+        notificationSettingsTimeInMinutes: 30
+        status: 'Enabled'
+        taskType: 'LabVmsShutdownTask'
+        timeZoneId: 'AUS Eastern Standard Time'
+      }
+      {
+        name: 'LabVmAutoStart'
+        status: 'Enabled'
+        taskType: 'LabVmsStartupTask'
+        timeZoneId: 'AUS Eastern Standard Time'
+        weeklyRecurrence: {
+          time: '0700'
+          weekdays: [
+            'Friday'
+            'Monday'
+            'Thursday'
+            'Tuesday'
+            'Wednesday'
+          ]
+        }
+      }
+    ]
+    support: {
+      enabled: 'Enabled'
+      markdown: 'DevTest Lab support text. <br> New line. It also supports Markdown'
+    }
+    tags: {
+      'hidden-title': 'This is visible in the resource name'
+      labName: 'dtllwaf001'
+      resourceType: 'DevTest Lab'
+    }
+    virtualnetworks: [
+      {
+        allowedSubnets: [
+          {
+            allowPublicIp: 'Allow'
+            labSubnetName: '<labSubnetName>'
+            resourceId: '<resourceId>'
+          }
+        ]
+        description: 'lab virtual network description'
+        externalProviderResourceId: '<externalProviderResourceId>'
+        name: '<name>'
+        subnetOverrides: [
+          {
+            labSubnetName: '<labSubnetName>'
+            resourceId: '<resourceId>'
+            sharedPublicIpAddressConfiguration: {
+              allowedPorts: [
+                {
+                  backendPort: 3389
+                  transportProtocol: 'Tcp'
+                }
+                {
+                  backendPort: 22
+                  transportProtocol: 'Tcp'
+                }
+              ]
+            }
+            useInVmCreationPermission: 'Allow'
+            usePublicIpAddressPermission: 'Allow'
+          }
+        ]
+      }
+    ]
+    vmCreationResourceGroupId: '<vmCreationResourceGroupId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "dtllwaf001"
+    },
+    // Non-required parameters
+    "announcement": {
+      "value": {
+        "enabled": "Enabled",
+        "expirationDate": "2025-12-30T13:00:00Z",
+        "markdown": "DevTest Lab announcement text. <br> New line. It also supports Markdown",
+        "title": "DevTest announcement title"
+      }
+    },
+    "artifactsources": {
+      "value": [
+        {
+          "branchRef": "master",
+          "displayName": "Public Artifact Repo",
+          "folderPath": "/Artifacts",
+          "name": "Public Repo",
+          "sourceType": "GitHub",
+          "status": "Disabled",
+          "uri": "https://github.com/Azure/azure-devtestlab.git"
+        },
+        {
+          "armTemplateFolderPath": "/Environments",
+          "branchRef": "master",
+          "displayName": "Public Environment Repo",
+          "name": "Public Environment Repo",
+          "sourceType": "GitHub",
+          "status": "Disabled",
+          "uri": "https://github.com/Azure/azure-devtestlab.git"
+        }
+      ]
+    },
+    "artifactsStorageAccount": {
+      "value": "<artifactsStorageAccount>"
+    },
+    "browserConnect": {
+      "value": "Enabled"
+    },
+    "costs": {
+      "value": {
+        "cycleType": "CalendarMonth",
+        "status": "Enabled",
+        "target": 450,
+        "thresholdValue100DisplayOnChart": "Enabled",
+        "thresholdValue100SendNotificationWhenExceeded": "Enabled"
+      }
+    },
+    "disableAutoUpgradeCseMinorVersion": {
+      "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "encryptionDiskEncryptionSetId": {
+      "value": "<encryptionDiskEncryptionSetId>"
+    },
+    "encryptionType": {
+      "value": "EncryptionAtRestWithCustomerKey"
+    },
+    "environmentPermission": {
+      "value": "Contributor"
+    },
+    "extendedProperties": {
+      "value": {
+        "RdpConnectionType": "7"
+      }
+    },
+    "isolateLabResources": {
+      "value": "Enabled"
+    },
+    "labStorageType": {
+      "value": "Premium"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "managementIdentitiesResourceIds": {
+      "value": [
+        "<managedIdentityResourceId>"
+      ]
+    },
+    "notificationchannels": {
+      "value": [
+        {
+          "description": "Integration configured for auto-shutdown",
+          "emailRecipient": "mail@contosodtlmail.com",
+          "events": [
+            {
+              "eventName": "AutoShutdown"
+            }
+          ],
+          "name": "autoShutdown",
+          "notificationLocale": "en",
+          "webHookUrl": "https://webhook.contosotest.com"
+        },
+        {
+          "events": [
+            {
+              "eventName": "Cost"
+            }
+          ],
+          "name": "costThreshold",
+          "webHookUrl": "https://webhook.contosotest.com"
+        }
+      ]
+    },
+    "policies": {
+      "value": [
+        {
+          "evaluatorType": "MaxValuePolicy",
+          "factData": "<factData>",
+          "factName": "UserOwnedLabVmCountInSubnet",
+          "name": "<name>",
+          "threshold": "1"
+        },
+        {
+          "evaluatorType": "MaxValuePolicy",
+          "factName": "UserOwnedLabVmCount",
+          "name": "MaxVmsAllowedPerUser",
+          "threshold": "2"
+        },
+        {
+          "evaluatorType": "MaxValuePolicy",
+          "factName": "UserOwnedLabPremiumVmCount",
+          "name": "MaxPremiumVmsAllowedPerUser",
+          "status": "Disabled",
+          "threshold": "1"
+        },
+        {
+          "evaluatorType": "MaxValuePolicy",
+          "factName": "LabVmCount",
+          "name": "MaxVmsAllowedPerLab",
+          "threshold": "3"
+        },
+        {
+          "evaluatorType": "MaxValuePolicy",
+          "factName": "LabPremiumVmCount",
+          "name": "MaxPremiumVmsAllowedPerLab",
+          "threshold": "2"
+        },
+        {
+          "evaluatorType": "AllowedValuesPolicy",
+          "factData": "",
+          "factName": "LabVmSize",
+          "name": "AllowedVmSizesInLab",
+          "status": "Enabled",
+          "threshold": "<threshold>"
+        },
+        {
+          "evaluatorType": "AllowedValuesPolicy",
+          "factName": "ScheduleEditPermission",
+          "name": "ScheduleEditPermission",
+          "threshold": "<threshold>"
+        },
+        {
+          "evaluatorType": "AllowedValuesPolicy",
+          "factName": "GalleryImage",
+          "name": "GalleryImage",
+          "threshold": "<threshold>"
+        },
+        {
+          "description": "Public Environment Policy",
+          "evaluatorType": "AllowedValuesPolicy",
+          "factName": "EnvironmentTemplate",
+          "name": "EnvironmentTemplate",
+          "threshold": "<threshold>"
+        }
+      ]
+    },
+    "premiumDataDisks": {
+      "value": "Enabled"
+    },
+    "schedules": {
+      "value": [
+        {
+          "dailyRecurrence": {
+            "time": "0000"
+          },
+          "name": "LabVmsShutdown",
+          "notificationSettingsStatus": "Enabled",
+          "notificationSettingsTimeInMinutes": 30,
+          "status": "Enabled",
+          "taskType": "LabVmsShutdownTask",
+          "timeZoneId": "AUS Eastern Standard Time"
+        },
+        {
+          "name": "LabVmAutoStart",
+          "status": "Enabled",
+          "taskType": "LabVmsStartupTask",
+          "timeZoneId": "AUS Eastern Standard Time",
+          "weeklyRecurrence": {
+            "time": "0700",
+            "weekdays": [
+              "Friday",
+              "Monday",
+              "Thursday",
+              "Tuesday",
+              "Wednesday"
+            ]
+          }
+        }
+      ]
+    },
+    "support": {
+      "value": {
+        "enabled": "Enabled",
+        "markdown": "DevTest Lab support text. <br> New line. It also supports Markdown"
+      }
+    },
+    "tags": {
+      "value": {
+        "hidden-title": "This is visible in the resource name",
+        "labName": "dtllwaf001",
         "resourceType": "DevTest Lab"
       }
     },
@@ -842,9 +1389,9 @@ The managed identity definition for this resource.
 
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
 Optional. The resource ID(s) to assign to the resource.
 
@@ -921,7 +1468,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -969,7 +1516,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string
@@ -1018,7 +1565,6 @@ Resource Group allocation for virtual machines. If left empty, virtual machines 
 | `resourceGroupName` | string | The resource group the lab was deployed into. |
 | `resourceId` | string | The resource ID of the lab. |
 | `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 | `uniqueIdentifier` | string | The unique identifier for the lab. Used to track tags that the lab applies to each resource that it creates. |
 
 ## Cross-referenced modules

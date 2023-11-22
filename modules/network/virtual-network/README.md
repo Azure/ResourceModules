@@ -33,6 +33,7 @@ The following section provides usage examples for the module, which were used to
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
 - [Vnetpeering](#example-3-vnetpeering)
+- [WAF-aligned](#example-4-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -137,7 +138,17 @@ module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     subnets: [
@@ -255,7 +266,17 @@ module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -427,6 +448,220 @@ module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
 </details>
 <p>
 
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nvnwaf'
+  params: {
+    // Required parameters
+    addressPrefixes: [
+      '<addressPrefix>'
+    ]
+    name: 'nvnwaf001'
+    // Non-required parameters
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    dnsServers: [
+      '10.0.1.4'
+      '10.0.1.5'
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    flowTimeoutInMinutes: 20
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    subnets: [
+      {
+        addressPrefix: '<addressPrefix>'
+        name: 'GatewaySubnet'
+      }
+      {
+        addressPrefix: '<addressPrefix>'
+        name: 'az-subnet-x-001'
+        networkSecurityGroupId: '<networkSecurityGroupId>'
+        roleAssignments: [
+          {
+            principalId: '<principalId>'
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        routeTableId: '<routeTableId>'
+        serviceEndpoints: [
+          {
+            service: 'Microsoft.Storage'
+          }
+          {
+            service: 'Microsoft.Sql'
+          }
+        ]
+      }
+      {
+        addressPrefix: '<addressPrefix>'
+        delegations: [
+          {
+            name: 'netappDel'
+            properties: {
+              serviceName: 'Microsoft.Netapp/volumes'
+            }
+          }
+        ]
+        name: 'az-subnet-x-002'
+      }
+      {
+        addressPrefix: '<addressPrefix>'
+        name: 'az-subnet-x-003'
+        privateEndpointNetworkPolicies: 'Disabled'
+        privateLinkServiceNetworkPolicies: 'Enabled'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "addressPrefixes": {
+      "value": [
+        "<addressPrefix>"
+      ]
+    },
+    "name": {
+      "value": "nvnwaf001"
+    },
+    // Non-required parameters
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "dnsServers": {
+      "value": [
+        "10.0.1.4",
+        "10.0.1.5"
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "flowTimeoutInMinutes": {
+      "value": 20
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "subnets": {
+      "value": [
+        {
+          "addressPrefix": "<addressPrefix>",
+          "name": "GatewaySubnet"
+        },
+        {
+          "addressPrefix": "<addressPrefix>",
+          "name": "az-subnet-x-001",
+          "networkSecurityGroupId": "<networkSecurityGroupId>",
+          "roleAssignments": [
+            {
+              "principalId": "<principalId>",
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "routeTableId": "<routeTableId>",
+          "serviceEndpoints": [
+            {
+              "service": "Microsoft.Storage"
+            },
+            {
+              "service": "Microsoft.Sql"
+            }
+          ]
+        },
+        {
+          "addressPrefix": "<addressPrefix>",
+          "delegations": [
+            {
+              "name": "netappDel",
+              "properties": {
+                "serviceName": "Microsoft.Netapp/volumes"
+              }
+            }
+          ],
+          "name": "az-subnet-x-002"
+        },
+        {
+          "addressPrefix": "<addressPrefix>",
+          "name": "az-subnet-x-003",
+          "privateEndpointNetworkPolicies": "Disabled",
+          "privateLinkServiceNetworkPolicies": "Enabled"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -449,7 +684,7 @@ module virtualNetwork 'br:bicep/modules/network.virtual-network:1.0.0' = {
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`peerings`](#parameter-peerings) | array | Virtual Network Peerings configurations. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`subnets`](#parameter-subnets) | array | An Array of subnets to deploy to the Virtual Network. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`vnetEncryption`](#parameter-vnetencryption) | bool | Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet. Requires the EnableVNetEncryption feature to be registered for the subscription and a supported region to use this property. |
@@ -653,7 +888,7 @@ Virtual Network Peerings configurations.
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -666,7 +901,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -714,7 +949,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string

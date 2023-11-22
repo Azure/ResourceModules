@@ -39,6 +39,7 @@ The following section provides usage examples for the module, which were used to
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
 - [Vulnassm](#example-3-vulnassm)
+- [WAF-aligned](#example-4-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -175,7 +176,7 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -186,7 +187,17 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     securityAlertPoliciesObj: {
@@ -320,7 +331,7 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -339,7 +350,17 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -505,6 +526,282 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
 </details>
 <p>
 
+### Example 4: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sqlmiwaf'
+  params: {
+    // Required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    name: 'sqlmiwaf'
+    subnetId: '<subnetId>'
+    // Non-required parameters
+    collation: 'SQL_Latin1_General_CP1_CI_AS'
+    databases: [
+      {
+        backupLongTermRetentionPolicies: {
+          name: 'default'
+        }
+        backupShortTermRetentionPolicies: {
+          name: 'default'
+        }
+        diagnosticSettings: [
+          {
+            eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+            eventHubName: '<eventHubName>'
+            name: 'customSetting'
+            storageAccountResourceId: '<storageAccountResourceId>'
+            workspaceResourceId: '<workspaceResourceId>'
+          }
+        ]
+        name: 'sqlmiwaf-db-001'
+      }
+    ]
+    diagnosticSettings: [
+      {
+        eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
+        eventHubName: '<eventHubName>'
+        metricCategories: [
+          {
+            category: 'AllMetrics'
+          }
+        ]
+        name: 'customSetting'
+        storageAccountResourceId: '<storageAccountResourceId>'
+        workspaceResourceId: '<workspaceResourceId>'
+      }
+    ]
+    dnsZonePartner: ''
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    encryptionProtectorObj: {
+      serverKeyName: '<serverKeyName>'
+      serverKeyType: 'AzureKeyVault'
+    }
+    hardwareFamily: 'Gen5'
+    keys: [
+      {
+        name: '<name>'
+        serverKeyType: 'AzureKeyVault'
+        uri: '<uri>'
+      }
+    ]
+    licenseType: 'LicenseIncluded'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
+    proxyOverride: 'Proxy'
+    publicDataEndpointEnabled: false
+    securityAlertPoliciesObj: {
+      emailAccountAdmins: true
+      name: 'default'
+      state: 'Enabled'
+    }
+    servicePrincipal: 'SystemAssigned'
+    skuName: 'GP_Gen5'
+    skuTier: 'GeneralPurpose'
+    storageSizeInGB: 32
+    timezoneId: 'UTC'
+    vCores: 4
+    vulnerabilityAssessmentsObj: {
+      emailSubscriptionAdmins: true
+      name: 'default'
+      recurringScansEmails: [
+        'test1@contoso.com'
+        'test2@contoso.com'
+      ]
+      recurringScansIsEnabled: true
+      storageAccountResourceId: '<storageAccountResourceId>'
+      tags: {
+        Environment: 'Non-Prod'
+        'hidden-title': 'This is visible in the resource name'
+        Role: 'DeploymentValidation'
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
+    "name": {
+      "value": "sqlmiwaf"
+    },
+    "subnetId": {
+      "value": "<subnetId>"
+    },
+    "collation": {
+      "value": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "databases": {
+      "value": [
+        {
+          "backupLongTermRetentionPolicies": {
+            "name": "default"
+          },
+          "backupShortTermRetentionPolicies": {
+            "name": "default"
+          },
+          "diagnosticSettings": [
+            {
+              "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+              "eventHubName": "<eventHubName>",
+              "name": "customSetting",
+              "storageAccountResourceId": "<storageAccountResourceId>",
+              "workspaceResourceId": "<workspaceResourceId>"
+            }
+          ],
+          "name": "sqlmiwaf-db-001"
+        }
+      ]
+    },
+    "diagnosticSettings": {
+      "value": [
+        {
+          "eventHubAuthorizationRuleResourceId": "<eventHubAuthorizationRuleResourceId>",
+          "eventHubName": "<eventHubName>",
+          "metricCategories": [
+            {
+              "category": "AllMetrics"
+            }
+          ],
+          "name": "customSetting",
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "workspaceResourceId": "<workspaceResourceId>"
+        }
+      ]
+    },
+    "dnsZonePartner": {
+      "value": ""
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "encryptionProtectorObj": {
+      "value": {
+        "serverKeyName": "<serverKeyName>",
+        "serverKeyType": "AzureKeyVault"
+      }
+    },
+    "hardwareFamily": {
+      "value": "Gen5"
+    },
+    "keys": {
+      "value": [
+        {
+          "name": "<name>",
+          "serverKeyType": "AzureKeyVault",
+          "uri": "<uri>"
+        }
+      ]
+    },
+    "licenseType": {
+      "value": "LicenseIncluded"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "primaryUserAssignedIdentityId": {
+      "value": "<primaryUserAssignedIdentityId>"
+    },
+    "proxyOverride": {
+      "value": "Proxy"
+    },
+    "publicDataEndpointEnabled": {
+      "value": false
+    },
+    "securityAlertPoliciesObj": {
+      "value": {
+        "emailAccountAdmins": true,
+        "name": "default",
+        "state": "Enabled"
+      }
+    },
+    "servicePrincipal": {
+      "value": "SystemAssigned"
+    },
+    "skuName": {
+      "value": "GP_Gen5"
+    },
+    "skuTier": {
+      "value": "GeneralPurpose"
+    },
+    "storageSizeInGB": {
+      "value": 32
+    },
+    "timezoneId": {
+      "value": "UTC"
+    },
+    "vCores": {
+      "value": 4
+    },
+    "vulnerabilityAssessmentsObj": {
+      "value": {
+        "emailSubscriptionAdmins": true,
+        "name": "default",
+        "recurringScansEmails": [
+          "test1@contoso.com",
+          "test2@contoso.com"
+        ],
+        "recurringScansIsEnabled": true,
+        "storageAccountResourceId": "<storageAccountResourceId>",
+        "tags": {
+          "Environment": "Non-Prod",
+          "hidden-title": "This is visible in the resource name",
+          "Role": "DeploymentValidation"
+        }
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -547,7 +844,7 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
 | [`publicDataEndpointEnabled`](#parameter-publicdataendpointenabled) | bool | Whether or not the public data endpoint is enabled. |
 | [`requestedBackupStorageRedundancy`](#parameter-requestedbackupstorageredundancy) | string | The storage account type used to store backups for this database. |
 | [`restorePointInTime`](#parameter-restorepointintime) | string | Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`securityAlertPoliciesObj`](#parameter-securityalertpoliciesobj) | object | The security alert policy configuration. |
 | [`servicePrincipal`](#parameter-serviceprincipal) | string | Service principal type. If using AD Authentication and applying Admin, must be set to `SystemAssigned`. Then Global Admin must allow Reader access to Azure AD for the Service Principal. |
 | [`skuName`](#parameter-skuname) | string | The name of the SKU, typically, a letter + Number code, e.g. P3. |
@@ -808,7 +1105,7 @@ The managed identity definition for this resource.
 | Name | Required | Type | Description |
 | :-- | :-- | :--| :-- |
 | [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | No | array | Optional. The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -817,7 +1114,7 @@ Optional. Enables system assigned managed identity on the resource.
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
 Optional. The resource ID(s) to assign to the resource.
 
@@ -914,7 +1211,7 @@ Specifies the point in time (ISO8601 format) of the source database that will be
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
 - Required: No
 - Type: array
 
@@ -927,7 +1224,7 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 | [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
 | [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 ### Parameter: `roleAssignments.condition`
 
@@ -975,7 +1272,7 @@ Optional. The principal type of the assigned principal ID.
 
 ### Parameter: `roleAssignments.roleDefinitionIdOrName`
 
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
+Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
 
 - Required: Yes
 - Type: string
