@@ -117,19 +117,28 @@ jobs:
 
       # [Agent] Replace tokens
       #-----------------------
-      - task: AzurePowerShell@5
+      - task: AzureCLI@2
         displayName: 'Replace tokens in template file via connection [${{ parameters.serviceConnection }}]'
         inputs:
+          addSpnToEnvironment: true
           azureSubscription: ${{ parameters.serviceConnection }}
-          azurePowerShellVersion: 'latestVersion'
-          preferredAzurePowerShellVersion: ''
-          ScriptType: InlineScript
-          pwsh: true
-          inline: |
+          scriptType: pscore
+          scriptLocation: inlineScript
+          inlineScript: |
+            # Load PS-Profile configuration
+            if (Test-Path $profile) {
+                . $profile
+            } else {
+                Write-Warning "No profile loaded from location [$profile]"
+            }
+            # Log into Az-PowerShell context
+            $SecuredPassword = ConvertTo-SecureString -AsPlainText -String $env:servicePrincipalKey
+            $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $env:servicePrincipalId, $SecuredPassword
+            $null = Connect-AzAccount -ServicePrincipal -TenantId $env:tenantId -Credential $Credential
+
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Get-LocallyReferencedFileList.ps1')
-
 
             # Get target files
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
@@ -186,15 +195,25 @@ jobs:
 
       # [Validation] task(s)
       #---------------------
-      - task: AzurePowerShell@5
+      - task: AzureCLI@2
         displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
         inputs:
+          addSpnToEnvironment: true
           azureSubscription: ${{ parameters.serviceConnection }}
-          azurePowerShellVersion: 'latestVersion'
-          preferredAzurePowerShellVersion: ''
-          ScriptType: InlineScript
-          pwsh: true
-          inline: |
+          scriptType: pscore
+          scriptLocation: inlineScript
+          inlineScript: |
+            # Load PS-Profile configuration
+            if (Test-Path $profile) {
+                . $profile
+            } else {
+                Write-Warning "No profile loaded from location [$profile]"
+            }
+            # Log into Az-PowerShell context
+            $SecuredPassword = ConvertTo-SecureString -AsPlainText -String $env:servicePrincipalKey
+            $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $env:servicePrincipalId, $SecuredPassword
+            $null = Connect-AzAccount -ServicePrincipal -TenantId $env:tenantId -Credential $Credential
+
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
@@ -240,16 +259,25 @@ jobs:
 
       # [Deployment] task(s)
       #---------------------
-      - task: AzurePowerShell@5
-        name: deployModule
+      - task: AzureCLI@2
         displayName: 'Deploy template file via connection [${{ parameters.serviceConnection }}]'
         inputs:
+          addSpnToEnvironment: true
           azureSubscription: ${{ parameters.serviceConnection }}
-          azurePowerShellVersion: 'latestVersion'
-          preferredAzurePowerShellVersion: ''
-          pwsh: true
-          ScriptType: InlineScript
-          inline: |
+          scriptType: pscore
+          scriptLocation: inlineScript
+          inlineScript: |
+            # Load PS-Profile configuration
+            if (Test-Path $profile) {
+                . $profile
+            } else {
+                Write-Warning "No profile loaded from location [$profile]"
+            }
+            # Log into Az-PowerShell context
+            $SecuredPassword = ConvertTo-SecureString -AsPlainText -String $env:servicePrincipalKey
+            $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $env:servicePrincipalId, $SecuredPassword
+            $null = Connect-AzAccount -ServicePrincipal -TenantId $env:tenantId -Credential $Credential
+
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
@@ -320,17 +348,26 @@ jobs:
 
       # [Removal] task(s)
       #------------------
-      - task: AzurePowerShell@5
+      - task: AzureCLI@2
         displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
         condition: and(succeededOrFailed(), eq('${{ parameters.removeDeployment }}', 'True'), not(eq(variables['deploymentNames'],'')), not(startsWith(variables['deploymentNames'], 'variables[' )))
         inputs:
+          addSpnToEnvironment: true
           azureSubscription: ${{ parameters.serviceConnection }}
-          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-          ScriptType: InlineScript
-          failOnStandardError: false
-          pwsh: true
-          inline: |
+          scriptType: pscore
+          scriptLocation: inlineScript
+          inlineScript: |
+            # Load PS-Profile configuration
+            if (Test-Path $profile) {
+                . $profile
+            } else {
+                Write-Warning "No profile loaded from location [$profile]"
+            }
+            # Log into Az-PowerShell context
+            $SecuredPassword = ConvertTo-SecureString -AsPlainText -String $env:servicePrincipalKey
+            $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $env:servicePrincipalId, $SecuredPassword
+            $null = Connect-AzAccount -ServicePrincipal -TenantId $env:tenantId -Credential $Credential
+
             # Load used function
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
