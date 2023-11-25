@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "7312689804634982287"
+      "templateHash": "995975405658769372"
     },
     "name": "Recovery Services Vaults",
     "description": "This module deploys a Recovery Services Vault.",
@@ -69,7 +69,7 @@
           "roleDefinitionIdOrName": {
             "type": "string",
             "metadata": {
-              "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+              "description": "Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
             }
           },
           "principalId": {
@@ -274,7 +274,7 @@
           "roleAssignments": {
             "$ref": "#/definitions/roleAssignmentType",
             "metadata": {
-              "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              "description": "Optional. Array of role assignments to create."
             }
           },
           "tags": {
@@ -491,7 +491,7 @@
     "roleAssignments": {
       "$ref": "#/definitions/roleAssignmentType",
       "metadata": {
-        "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+        "description": "Optional. Array of role assignments to create."
       }
     },
     "lock": {
@@ -642,7 +642,7 @@
       "scope": "[format('Microsoft.RecoveryServices/vaults/{0}', parameters('name'))]",
       "name": "[guid(resourceId('Microsoft.RecoveryServices/vaults', parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
       "properties": {
-        "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+        "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], if(contains(coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, '/providers/Microsoft.Authorization/roleDefinitions/'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)))]",
         "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
         "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
         "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
@@ -687,10 +687,10 @@
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-              "templateHash": "18045555589113818401"
+              "templateHash": "141571686653146888"
             },
             "name": "Recovery Services Vault Replication Fabrics",
-            "description": "This module deploys a Replication Fabric for Azure to Azure disaster recovery scenario of Azure Site Recovery.\r\n\r\n> Note: this module currently support only the `instanceType: 'Azure'` scenario.",
+            "description": "This module deploys a Replication Fabric for Azure to Azure disaster recovery scenario of Azure Site Recovery.\n\n> Note: this module currently support only the `instanceType: 'Azure'` scenario.",
             "owner": "Azure/module-maintainers"
           },
           "parameters": {
@@ -793,10 +793,10 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.23.1.45101",
-                      "templateHash": "3783488076539662325"
+                      "templateHash": "10595314903369272974"
                     },
                     "name": "Recovery Services Vault Replication Fabric Replication Protection Containers",
-                    "description": "This module deploys a Recovery Services Vault Replication Protection Container.\r\n\r\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
+                    "description": "This module deploys a Recovery Services Vault Replication Protection Container.\n\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
                     "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
@@ -903,10 +903,10 @@
                             "_generator": {
                               "name": "bicep",
                               "version": "0.23.1.45101",
-                              "templateHash": "14373191902278145406"
+                              "templateHash": "13334445778984042102"
                             },
                             "name": "Recovery Services Vault Replication Fabric Replication Protection Container Replication Protection Container Mappings",
-                            "description": "This module deploys a Recovery Services Vault (RSV) Replication Protection Container Mapping.\r\n\r\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
+                            "description": "This module deploys a Recovery Services Vault (RSV) Replication Protection Container Mapping.\n\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
                             "owner": "Azure/module-maintainers"
                           },
                           "parameters": {
@@ -1136,10 +1136,10 @@
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-              "templateHash": "5176653698082479064"
+              "templateHash": "7511225868129156252"
             },
             "name": "Recovery Services Vault Replication Policies",
-            "description": "This module deploys a Recovery Services Vault Replication Policy for Disaster Recovery scenario.\r\n\r\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
+            "description": "This module deploys a Recovery Services Vault Replication Policy for Disaster Recovery scenario.\n\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
             "owner": "Azure/module-maintainers"
           },
           "parameters": {

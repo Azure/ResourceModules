@@ -83,13 +83,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
       ]
       enablePowerBIService: true
     }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     diagnosticSettings: [
       {
         name: 'customSetting'

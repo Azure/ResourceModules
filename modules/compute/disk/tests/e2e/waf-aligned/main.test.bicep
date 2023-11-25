@@ -63,13 +63,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     logicalSectorSize: 512
     osType: 'Windows'
     publicNetworkAccess: 'Enabled'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'

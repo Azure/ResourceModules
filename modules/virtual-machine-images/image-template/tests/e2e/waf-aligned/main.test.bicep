@@ -92,13 +92,6 @@ module testDeployment '../../../main.bicep' = {
     }
     managedImageName: '${namePrefix}-mi-${serviceShort}-001'
     osDiskSizeGB: 127
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     sigImageDefinitionId: nestedDependencies.outputs.sigImageDefinitionId
     sigImageVersion: sigImageVersion
     subnetId: nestedDependencies.outputs.subnetId

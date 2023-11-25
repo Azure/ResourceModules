@@ -69,13 +69,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
       nestedDependencies.outputs.actionGroupResourceId
     ]
     alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     targetResourceRegion: 'westeurope'
     targetResourceType: 'microsoft.compute/virtualmachines'
     windowSize: 'PT15M'

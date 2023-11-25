@@ -94,13 +94,6 @@ module testDeployment '../../../main.bicep' = {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     flowTimeoutInMinutes: 20
     subnets: [
       {

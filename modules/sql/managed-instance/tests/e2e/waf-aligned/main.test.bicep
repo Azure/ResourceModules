@@ -139,13 +139,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     primaryUserAssignedIdentityId: nestedDependencies.outputs.managedIdentityResourceId
     proxyOverride: 'Proxy'
     publicDataEndpointEnabled: false
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     securityAlertPoliciesObj: {
       emailAccountAdmins: true
       name: 'default'

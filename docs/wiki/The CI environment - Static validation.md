@@ -20,13 +20,12 @@ The following activities are performed by the [`utilities/pipelines/staticValida
 
 - **File/folder tests**
   - **General module folder tests**
-    1. Module should contain a [` main.json ` / ` main.bicep `] file.
+    1. Module should contain a [` main.json ` & ` main.bicep `] file.
     1. Module should contain a [` README.md `] file.
     1. Module should contain a [` .test `] folder.
     1. Module should contain a [` version.json `] file.
   - **.test folder**
     1. Folder should contain one or more test files.
-    1. JSON test files in the `.test` folder should be valid json.
 - **Pipeline tests**
     1. Module should have a GitHub workflow.
     1. Module workflow should have trigger for cross-module references, if any.
@@ -54,8 +53,6 @@ The following activities are performed by the [`utilities/pipelines/staticValida
     1. Resource Group output should exist for resources that are deployed into a resource group scope.
     1. Resource name output should exist.
     1. Resource ID output should exist.
-    1. All parameters in parameters files exist in template file (`main.json`).
-    1. All required parameters in template file (`main.json`) should exist in parameters files.
     1. All non-required parameters in template file should not have description that start with "Required.".
   - **Metadata content tests**
     1. template file should have a module name specified.
@@ -64,8 +61,6 @@ The following activities are performed by the [`utilities/pipelines/staticValida
   - **General test file**
     1. Bicep test deployment name should contain [`-test-`].
     1. Bicep test deployment should have parameter [`serviceShort`].
-    1. JSON test deployment name should contain [`-test-`].
-    1. JSON test deployment should have parameter [`serviceShort`].
   - **Token usage**
     1. [Tokens] Test file should not contain the plain value for token guid.
 - **API version tests**

@@ -60,13 +60,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     type: 'Basic'
     tags: {
       'hidden-title': 'This is visible in the resource name'

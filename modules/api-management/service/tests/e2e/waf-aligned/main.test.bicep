@@ -192,13 +192,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
         subscriptionRequired: false
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     subscriptions: [
       {
         name: 'testArmSubscriptionAllApis'

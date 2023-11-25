@@ -122,13 +122,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
         name: nestedDependencies.outputs.pairedRegionName
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     managedIdentities: {
       systemAssigned: true
       userAssignedResourceIds: [

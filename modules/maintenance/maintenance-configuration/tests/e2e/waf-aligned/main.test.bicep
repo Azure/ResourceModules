@@ -65,13 +65,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     maintenanceScope: 'InGuestPatch'
     maintenanceWindow: {
       duration: '03:00'

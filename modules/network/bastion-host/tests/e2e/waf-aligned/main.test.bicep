@@ -88,13 +88,6 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     scaleUnits: 4
     skuName: 'Standard'
     tags: {
