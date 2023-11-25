@@ -36,28 +36,32 @@ This module deploys an Event Hub Namespace Disaster Recovery Config.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`partnerNamespaceId`](#parameter-partnernamespaceid) | string | Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing. |
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `name`
 
 The name of the disaster recovery config.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `namespaceName`
 
 The name of the parent event hub namespace. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 ### Parameter: `partnerNamespaceId`
 
 Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing.
+
 - Required: No
 - Type: string
 - Default: `''`

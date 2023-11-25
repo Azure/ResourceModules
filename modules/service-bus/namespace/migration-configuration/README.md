@@ -36,30 +36,34 @@ This module deploys a Service Bus Namespace Migration Configuration.
 | :-- | :-- | :-- |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
-### Parameter: `namespaceName`
-
-The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `postMigrationName`
 
 Name to access Standard Namespace after migration.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `targetNamespaceResourceId`
 
 Existing premium Namespace resource ID which has no entities, will be used for migration.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `namespaceName`
+
+The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 
 ## Outputs

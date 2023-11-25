@@ -40,21 +40,38 @@ This template deploys Forwarding Rule in a Dns Forwarding Ruleset.
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`metadata`](#parameter-metadata) | object | Metadata attached to the forwarding rule. |
 
-### Parameter: `dnsForwardingRulesetName`
-
-Name of the parent DNS Forwarding Ruleset. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `domainName`
 
 The domain name for the forwarding rule.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+Name of the Forwarding Rule.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `targetDnsServers`
+
+DNS servers to forward the DNS query to.
+
+- Required: Yes
+- Type: array
+
+### Parameter: `dnsForwardingRulesetName`
+
+Name of the parent DNS Forwarding Ruleset. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -62,6 +79,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `forwardingRuleState`
 
 The state of forwarding rule.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -76,6 +94,7 @@ The state of forwarding rule.
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -83,21 +102,10 @@ Location for all resources.
 ### Parameter: `metadata`
 
 Metadata attached to the forwarding rule.
+
 - Required: No
 - Type: object
 - Default: `{}`
-
-### Parameter: `name`
-
-Name of the Forwarding Rule.
-- Required: Yes
-- Type: string
-
-### Parameter: `targetDnsServers`
-
-DNS servers to forward the DNS query to.
-- Required: Yes
-- Type: array
 
 
 ## Outputs

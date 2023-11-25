@@ -33,9 +33,24 @@ Cache for Azure Container Registry (Preview) feature allows users to cache conta
 | [`name`](#parameter-name) | string | The name of the cache rule. Will be dereived from the source repository name if not defined. |
 | [`targetRepository`](#parameter-targetrepository) | string | Target repository specified in docker pull command. E.g.: docker pull myregistry.azurecr.io/{targetRepository}:{tag}. |
 
+### Parameter: `registryName`
+
+The name of the parent registry. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `sourceRepository`
+
+Source repository pulled from upstream.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `credentialSetResourceId`
 
 The resource ID of the credential store which is associated with the cache rule.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -43,6 +58,7 @@ The resource ID of the credential store which is associated with the cache rule.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -50,25 +66,15 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `name`
 
 The name of the cache rule. Will be dereived from the source repository name if not defined.
+
 - Required: No
 - Type: string
 - Default: `[replace(replace(parameters('sourceRepository'), '/', '-'), '.', '-')]`
 
-### Parameter: `registryName`
-
-The name of the parent registry. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `sourceRepository`
-
-Source repository pulled from upstream.
-- Required: Yes
-- Type: string
-
 ### Parameter: `targetRepository`
 
 Target repository specified in docker pull command. E.g.: docker pull myregistry.azurecr.io/{targetRepository}:{tag}.
+
 - Required: No
 - Type: string
 - Default: `[parameters('sourceRepository')]`

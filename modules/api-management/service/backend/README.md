@@ -45,15 +45,31 @@ This module deploys an API Management Service Backend.
 | [`title`](#parameter-title) | string | Backend Title. |
 | [`tls`](#parameter-tls) | object | Backend TLS Properties. |
 
+### Parameter: `name`
+
+Backend Name.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `url`
+
+Runtime URL of the Backend.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `apiManagementServiceName`
 
 The name of the parent API Management service. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `credentials`
 
 Backend Credentials Contract Properties.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -61,6 +77,7 @@ Backend Credentials Contract Properties.
 ### Parameter: `description`
 
 Backend Description.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -68,19 +85,15 @@ Backend Description.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `name`
-
-Backend Name.
-- Required: Yes
-- Type: string
-
 ### Parameter: `protocol`
 
 Backend communication protocol. - http or soap.
+
 - Required: No
 - Type: string
 - Default: `'http'`
@@ -88,6 +101,7 @@ Backend communication protocol. - http or soap.
 ### Parameter: `proxy`
 
 Backend Proxy Contract Properties.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -95,6 +109,7 @@ Backend Proxy Contract Properties.
 ### Parameter: `resourceId`
 
 Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -102,6 +117,7 @@ Management Uri of the Resource in External System. This URL can be the Arm Resou
 ### Parameter: `serviceFabricCluster`
 
 Backend Service Fabric Cluster Properties.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -109,6 +125,7 @@ Backend Service Fabric Cluster Properties.
 ### Parameter: `title`
 
 Backend Title.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -116,6 +133,7 @@ Backend Title.
 ### Parameter: `tls`
 
 Backend TLS Properties.
+
 - Required: No
 - Type: object
 - Default:
@@ -125,12 +143,6 @@ Backend TLS Properties.
       validateCertificateName: false
   }
   ```
-
-### Parameter: `url`
-
-Runtime URL of the Backend.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

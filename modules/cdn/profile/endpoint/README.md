@@ -39,9 +39,31 @@ This module deploys a CDN Profile Endpoint.
 | [`location`](#parameter-location) | string | Resource location. |
 | [`tags`](#parameter-tags) | object | Endpoint tags. |
 
+### Parameter: `name`
+
+Name of the endpoint under the profile which is unique globally.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `properties`
+
+Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details).
+
+- Required: Yes
+- Type: object
+
+### Parameter: `profileName`
+
+The name of the parent CDN profile. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -49,31 +71,15 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `location`
 
 Resource location.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
 
-### Parameter: `name`
-
-Name of the endpoint under the profile which is unique globally.
-- Required: Yes
-- Type: string
-
-### Parameter: `profileName`
-
-The name of the parent CDN profile. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `properties`
-
-Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details).
-- Required: Yes
-- Type: object
-
 ### Parameter: `tags`
 
 Endpoint tags.
+
 - Required: No
 - Type: object
 

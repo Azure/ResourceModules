@@ -1115,9 +1115,48 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
 | [`vmssZonalUpgradeMode`](#parameter-vmsszonalupgrademode) | string | This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability Zones is added. |
 | [`waveUpgradePaused`](#parameter-waveupgradepaused) | bool | Boolean to pause automatic runtime version upgrades to the cluster. |
 
+### Parameter: `managementEndpoint`
+
+The http management endpoint of the cluster.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+Name of the Service Fabric cluster.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `nodeTypes`
+
+The list of node types in the cluster.
+
+- Required: Yes
+- Type: array
+
+### Parameter: `reliabilityLevel`
+
+The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://learn.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9.
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Bronze'
+    'Gold'
+    'None'
+    'Platinum'
+    'Silver'
+  ]
+  ```
+
 ### Parameter: `addOnFeatures`
 
 The list of add-on features to enable in the cluster.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1134,6 +1173,7 @@ The list of add-on features to enable in the cluster.
 ### Parameter: `applicationTypes`
 
 Array of Service Fabric cluster application types.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1141,6 +1181,7 @@ Array of Service Fabric cluster application types.
 ### Parameter: `azureActiveDirectory`
 
 The settings to enable AAD authentication on the cluster.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -1148,6 +1189,7 @@ The settings to enable AAD authentication on the cluster.
 ### Parameter: `certificate`
 
 Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -1155,6 +1197,7 @@ Describes the certificate details like thumbprint of the primary certificate, th
 ### Parameter: `certificateCommonNames`
 
 Describes a list of server certificates referenced by common name that are used to secure the cluster.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -1162,6 +1205,7 @@ Describes a list of server certificates referenced by common name that are used 
 ### Parameter: `clientCertificateCommonNames`
 
 The list of client certificates referenced by common name that are allowed to manage the cluster.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1169,6 +1213,7 @@ The list of client certificates referenced by common name that are allowed to ma
 ### Parameter: `clientCertificateThumbprints`
 
 The list of client certificates referenced by thumbprint that are allowed to manage the cluster.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1176,6 +1221,7 @@ The list of client certificates referenced by thumbprint that are allowed to man
 ### Parameter: `clusterCodeVersion`
 
 The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to "Manual". To get list of available Service Fabric versions for new clusters use ClusterVersion API. To get the list of available version for existing clusters use availableClusterVersions.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -1183,6 +1229,7 @@ The Service Fabric runtime version of the cluster. This property can only by set
 ### Parameter: `diagnosticsStorageAccountConfig`
 
 The storage account information for storing Service Fabric diagnostic logs.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -1190,6 +1237,7 @@ The storage account information for storing Service Fabric diagnostic logs.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -1197,6 +1245,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `eventStoreServiceEnabled`
 
 Indicates if the event store service is enabled.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -1204,6 +1253,7 @@ Indicates if the event store service is enabled.
 ### Parameter: `fabricSettings`
 
 The list of custom fabric settings to configure the cluster.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1211,6 +1261,7 @@ The list of custom fabric settings to configure the cluster.
 ### Parameter: `infrastructureServiceManager`
 
 Indicates if infrastructure service manager is enabled.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -1218,6 +1269,7 @@ Indicates if infrastructure service manager is enabled.
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -1225,81 +1277,59 @@ Location for all resources.
 ### Parameter: `lock`
 
 The lock settings of the service.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
-| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
 ### Parameter: `lock.kind`
 
-Optional. Specify the type of lock.
+Specify the type of lock.
 
 - Required: No
 - Type: string
-- Allowed: `[CanNotDelete, None, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `lock.name`
 
-Optional. Specify the name of lock.
+Specify the name of lock.
 
 - Required: No
-- Type: string
-
-### Parameter: `managementEndpoint`
-
-The http management endpoint of the cluster.
-- Required: Yes
 - Type: string
 
 ### Parameter: `maxUnusedVersionsToKeep`
 
 Number of unused versions per application type to keep.
+
 - Required: No
 - Type: int
 - Default: `3`
 
-### Parameter: `name`
-
-Name of the Service Fabric cluster.
-- Required: Yes
-- Type: string
-
-### Parameter: `nodeTypes`
-
-The list of node types in the cluster.
-- Required: Yes
-- Type: array
-
 ### Parameter: `notifications`
 
 Indicates a list of notification channels for cluster events.
+
 - Required: No
 - Type: array
 - Default: `[]`
 
-### Parameter: `reliabilityLevel`
-
-The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://learn.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9.
-- Required: Yes
-- Type: string
-- Allowed:
-  ```Bicep
-  [
-    'Bronze'
-    'Gold'
-    'None'
-    'Platinum'
-    'Silver'
-  ]
-  ```
-
 ### Parameter: `reverseProxyCertificate`
 
 Describes the certificate details.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -1307,6 +1337,7 @@ Describes the certificate details.
 ### Parameter: `reverseProxyCertificateCommonNames`
 
 Describes a list of server certificates referenced by common name that are used to secure the cluster.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -1314,74 +1345,96 @@ Describes a list of server certificates referenced by common name that are used 
 ### Parameter: `roleAssignments`
 
 Array of role assignments to create.
+
 - Required: No
 - Type: array
 
+**Required parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+
+### Parameter: `roleAssignments.principalId`
+
+The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `roleAssignments.condition`
 
-Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.conditionVersion`
 
-Optional. Version of the condition.
+Version of the condition.
 
 - Required: No
 - Type: string
-- Allowed: `[2.0]`
+- Allowed:
+  ```Bicep
+  [
+    '2.0'
+  ]
+  ```
 
 ### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
 
-Optional. The Resource Id of the delegated managed identity resource.
+The Resource Id of the delegated managed identity resource.
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.description`
 
-Optional. The description of the role assignment.
+The description of the role assignment.
 
 - Required: No
-- Type: string
-
-### Parameter: `roleAssignments.principalId`
-
-Required. The principal ID of the principal (user/group/identity) to assign the role to.
-
-- Required: Yes
 - Type: string
 
 ### Parameter: `roleAssignments.principalType`
 
-Optional. The principal type of the assigned principal ID.
+The principal type of the assigned principal ID.
 
 - Required: No
 - Type: string
-- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
-
-### Parameter: `roleAssignments.roleDefinitionIdOrName`
-
-Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
-
-- Required: Yes
-- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Device'
+    'ForeignGroup'
+    'Group'
+    'ServicePrincipal'
+    'User'
+  ]
+  ```
 
 ### Parameter: `sfZonalUpgradeMode`
 
 This property controls the logical grouping of VMs in upgrade domains (UDs). This property cannot be modified if a node type with multiple Availability Zones is already present in the cluster.
+
 - Required: No
 - Type: string
 - Default: `'Hierarchical'`
@@ -1396,12 +1449,14 @@ This property controls the logical grouping of VMs in upgrade domains (UDs). Thi
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 
 ### Parameter: `upgradeDescription`
 
 Describes the policy used when upgrading the cluster.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -1409,6 +1464,7 @@ Describes the policy used when upgrading the cluster.
 ### Parameter: `upgradeMode`
 
 The upgrade mode of the cluster when new Service Fabric runtime version is available.
+
 - Required: No
 - Type: string
 - Default: `'Automatic'`
@@ -1423,6 +1479,7 @@ The upgrade mode of the cluster when new Service Fabric runtime version is avail
 ### Parameter: `upgradePauseEndTimestampUtc`
 
 Indicates the end date and time to pause automatic runtime version upgrades on the cluster for an specific period of time on the cluster (UTC).
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -1430,6 +1487,7 @@ Indicates the end date and time to pause automatic runtime version upgrades on t
 ### Parameter: `upgradePauseStartTimestampUtc`
 
 Indicates the start date and time to pause automatic runtime version upgrades on the cluster for an specific period of time on the cluster (UTC).
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -1437,6 +1495,7 @@ Indicates the start date and time to pause automatic runtime version upgrades on
 ### Parameter: `upgradeWave`
 
 Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0.
+
 - Required: No
 - Type: string
 - Default: `'Wave0'`
@@ -1452,6 +1511,7 @@ Indicates when new cluster runtime version upgrades will be applied after they a
 ### Parameter: `vmImage`
 
 The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -1459,6 +1519,7 @@ The VM image VMSS has been configured with. Generic names such as Windows or Lin
 ### Parameter: `vmssZonalUpgradeMode`
 
 This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability Zones is added.
+
 - Required: No
 - Type: string
 - Default: `'Hierarchical'`
@@ -1473,6 +1534,7 @@ This property defines the upgrade mode for the virtual machine scale set, it is 
 ### Parameter: `waveUpgradePaused`
 
 Boolean to pause automatic runtime version upgrades to the cluster.
+
 - Required: No
 - Type: bool
 - Default: `False`

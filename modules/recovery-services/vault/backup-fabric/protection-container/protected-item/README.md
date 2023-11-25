@@ -40,35 +40,24 @@ This module deploys a Recovery Services Vault Protection Container Protected Ite
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | Location for all resources. |
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
-### Parameter: `location`
-
-Location for all resources.
-- Required: No
-- Type: string
-- Default: `[resourceGroup().location]`
-
 ### Parameter: `name`
 
 Name of the resource.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `policyId`
 
 ID of the backup policy with which this item is backed up.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `protectedItemType`
 
 The backup item type.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -87,23 +76,42 @@ The backup item type.
   ]
   ```
 
+### Parameter: `sourceResourceId`
+
+Resource ID of the resource to back up.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `protectionContainerName`
 
 Name of the Azure Recovery Service Vault Protection Container. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `recoveryVaultName`
 
 The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `sourceResourceId`
+### Parameter: `enableDefaultTelemetry`
 
-Resource ID of the resource to back up.
-- Required: Yes
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all resources.
+
+- Required: No
 - Type: string
+- Default: `[resourceGroup().location]`
 
 
 ## Outputs

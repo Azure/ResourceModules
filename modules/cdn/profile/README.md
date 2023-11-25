@@ -610,180 +610,17 @@ module profile 'br:bicep/modules/cdn.profile:1.0.0' = {
 | [`secrets`](#parameter-secrets) | array | Array of secret objects. |
 | [`tags`](#parameter-tags) | object | Endpoint tags. |
 
-### Parameter: `afdEndpoints`
-
-Array of AFD endpoint objects.
-- Required: No
-- Type: array
-- Default: `[]`
-
-### Parameter: `customDomains`
-
-Array of custom domain objects.
-- Required: No
-- Type: array
-- Default: `[]`
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
-### Parameter: `endpointName`
-
-Name of the endpoint under the profile which is unique globally.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `endpointProperties`
-
-Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details).
-- Required: No
-- Type: object
-- Default: `{}`
-
-### Parameter: `location`
-
-Location for all Resources.
-- Required: No
-- Type: string
-- Default: `[resourceGroup().location]`
-
-### Parameter: `lock`
-
-The lock settings of the service.
-- Required: No
-- Type: object
-
-
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
-| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
-
-### Parameter: `lock.kind`
-
-Optional. Specify the type of lock.
-
-- Required: No
-- Type: string
-- Allowed: `[CanNotDelete, None, ReadOnly]`
-
-### Parameter: `lock.name`
-
-Optional. Specify the name of lock.
-
-- Required: No
-- Type: string
-
 ### Parameter: `name`
 
 Name of the CDN profile.
-- Required: Yes
-- Type: string
-
-### Parameter: `originResponseTimeoutSeconds`
-
-Send and receive timeout on forwarding request to the origin.
-- Required: No
-- Type: int
-- Default: `60`
-
-### Parameter: `origionGroups`
-
-Array of origin group objects. Required if the afdEndpoints is specified.
-- Required: No
-- Type: array
-- Default: `[]`
-
-### Parameter: `roleAssignments`
-
-Array of role assignments to create.
-- Required: No
-- Type: array
-
-
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-
-### Parameter: `roleAssignments.condition`
-
-Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
-
-- Required: No
-- Type: string
-
-### Parameter: `roleAssignments.conditionVersion`
-
-Optional. Version of the condition.
-
-- Required: No
-- Type: string
-- Allowed: `[2.0]`
-
-### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
-
-Optional. The Resource Id of the delegated managed identity resource.
-
-- Required: No
-- Type: string
-
-### Parameter: `roleAssignments.description`
-
-Optional. The description of the role assignment.
-
-- Required: No
-- Type: string
-
-### Parameter: `roleAssignments.principalId`
-
-Required. The principal ID of the principal (user/group/identity) to assign the role to.
 
 - Required: Yes
 - Type: string
-
-### Parameter: `roleAssignments.principalType`
-
-Optional. The principal type of the assigned principal ID.
-
-- Required: No
-- Type: string
-- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
-
-### Parameter: `roleAssignments.roleDefinitionIdOrName`
-
-Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
-
-- Required: Yes
-- Type: string
-
-### Parameter: `ruleSets`
-
-Array of rule set objects.
-- Required: No
-- Type: array
-- Default: `[]`
-
-### Parameter: `secrets`
-
-Array of secret objects.
-- Required: No
-- Type: array
-- Default: `[]`
 
 ### Parameter: `sku`
 
 The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -805,9 +642,215 @@ The pricing tier (defines a CDN provider, feature list and rate) of the CDN prof
   ]
   ```
 
+### Parameter: `origionGroups`
+
+Array of origin group objects. Required if the afdEndpoints is specified.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `afdEndpoints`
+
+Array of AFD endpoint objects.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `customDomains`
+
+Array of custom domain objects.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `endpointName`
+
+Name of the endpoint under the profile which is unique globally.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `endpointProperties`
+
+Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details).
+
+- Required: No
+- Type: object
+- Default: `{}`
+
+### Parameter: `location`
+
+Location for all Resources.
+
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `lock`
+
+The lock settings of the service.
+
+- Required: No
+- Type: object
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-lockname) | string | Specify the name of lock. |
+
+### Parameter: `lock.kind`
+
+Specify the type of lock.
+
+- Required: No
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
+
+### Parameter: `lock.name`
+
+Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `originResponseTimeoutSeconds`
+
+Send and receive timeout on forwarding request to the origin.
+
+- Required: No
+- Type: int
+- Default: `60`
+
+### Parameter: `roleAssignments`
+
+Array of role assignments to create.
+
+- Required: No
+- Type: array
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+
+### Parameter: `roleAssignments.principalId`
+
+The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.condition`
+
+The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.conditionVersion`
+
+Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    '2.0'
+  ]
+  ```
+
+### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
+
+The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.description`
+
+The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `roleAssignments.principalType`
+
+The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Device'
+    'ForeignGroup'
+    'Group'
+    'ServicePrincipal'
+    'User'
+  ]
+  ```
+
+### Parameter: `ruleSets`
+
+Array of rule set objects.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `secrets`
+
+Array of secret objects.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
 ### Parameter: `tags`
 
 Endpoint tags.
+
 - Required: No
 - Type: object
 

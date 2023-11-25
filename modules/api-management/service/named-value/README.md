@@ -41,21 +41,31 @@ This module deploys an API Management Service Named Value.
 | [`tags`](#parameter-tags) | array | Tags that when provided can be used to filter the NamedValue list. - string. |
 | [`value`](#parameter-value) | string | Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
 
-### Parameter: `apiManagementServiceName`
-
-The name of the parent API Management service. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `displayName`
 
 Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+Named value Name.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `apiManagementServiceName`
+
+The name of the parent API Management service. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -63,19 +73,15 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `keyVault`
 
 KeyVault location details of the namedValue.
+
 - Required: No
 - Type: object
 - Default: `{}`
 
-### Parameter: `name`
-
-Named value Name.
-- Required: Yes
-- Type: string
-
 ### Parameter: `secret`
 
 Determines whether the value is a secret and should be encrypted or not. Default value is false.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -83,12 +89,14 @@ Determines whether the value is a secret and should be encrypted or not. Default
 ### Parameter: `tags`
 
 Tags that when provided can be used to filter the NamedValue list. - string.
+
 - Required: No
 - Type: array
 
 ### Parameter: `value`
 
 Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+
 - Required: No
 - Type: string
 - Default: `[newGuid()]`

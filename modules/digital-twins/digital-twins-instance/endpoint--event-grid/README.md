@@ -39,9 +39,31 @@ This module deploys a Digital Twins Instance Event Grid Endpoint.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | [`name`](#parameter-name) | string | The name of the Digital Twin Endpoint. |
 
+### Parameter: `eventGridDomainResourceId`
+
+The resource ID of the Event Grid to get access keys from.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `topicEndpoint`
+
+EventGrid Topic Endpoint.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `digitalTwinInstanceName`
+
+The name of the parent Digital Twin Instance resource. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `deadLetterSecret`
 
 Dead letter storage secret for key-based authentication. Will be obfuscated during read.
+
 - Required: No
 - Type: securestring
 - Default: `''`
@@ -49,41 +71,26 @@ Dead letter storage secret for key-based authentication. Will be obfuscated duri
 ### Parameter: `deadLetterUri`
 
 Dead letter storage URL for identity-based authentication.
+
 - Required: No
 - Type: string
 - Default: `''`
 
-### Parameter: `digitalTwinInstanceName`
-
-The name of the parent Digital Twin Instance resource. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via the Customer Usage Attribution ID (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `eventGridDomainResourceId`
-
-The resource ID of the Event Grid to get access keys from.
-- Required: Yes
-- Type: string
-
 ### Parameter: `name`
 
 The name of the Digital Twin Endpoint.
+
 - Required: No
 - Type: string
 - Default: `'EventGridEndpoint'`
-
-### Parameter: `topicEndpoint`
-
-EventGrid Topic Endpoint.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

@@ -41,9 +41,45 @@ This module deploys a Storage Account Local User, which is used for SFTP authent
 | [`homeDirectory`](#parameter-homedirectory) | string | The local user home directory. |
 | [`sshAuthorizedKeys`](#parameter-sshauthorizedkeys) | array | The local user SSH authorized keys for SFTP. |
 
+### Parameter: `hasSshKey`
+
+Indicates whether SSH key exists. Set it to false to remove existing SSH key.
+
+- Required: Yes
+- Type: bool
+
+### Parameter: `hasSshPassword`
+
+Indicates whether SSH password exists. Set it to false to remove existing SSH password.
+
+- Required: Yes
+- Type: bool
+
+### Parameter: `name`
+
+The name of the local user used for SFTP Authentication.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `permissionScopes`
+
+The permission scopes of the local user.
+
+- Required: Yes
+- Type: array
+
+### Parameter: `storageAccountName`
+
+The name of the parent Storage Account. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -51,53 +87,26 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `hasSharedKey`
 
 Indicates whether shared key exists. Set it to false to remove existing shared key.
+
 - Required: No
 - Type: bool
 - Default: `False`
 
-### Parameter: `hasSshKey`
-
-Indicates whether SSH key exists. Set it to false to remove existing SSH key.
-- Required: Yes
-- Type: bool
-
-### Parameter: `hasSshPassword`
-
-Indicates whether SSH password exists. Set it to false to remove existing SSH password.
-- Required: Yes
-- Type: bool
-
 ### Parameter: `homeDirectory`
 
 The local user home directory.
+
 - Required: No
 - Type: string
 - Default: `''`
 
-### Parameter: `name`
-
-The name of the local user used for SFTP Authentication.
-- Required: Yes
-- Type: string
-
-### Parameter: `permissionScopes`
-
-The permission scopes of the local user.
-- Required: Yes
-- Type: array
-
 ### Parameter: `sshAuthorizedKeys`
 
 The local user SSH authorized keys for SFTP.
+
 - Required: No
 - Type: array
 - Default: `[]`
-
-### Parameter: `storageAccountName`
-
-The name of the parent Storage Account. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

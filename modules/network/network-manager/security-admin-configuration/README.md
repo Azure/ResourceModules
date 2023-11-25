@@ -44,6 +44,7 @@ A security admin configuration contains a set of rule collections. Each rule col
 ### Parameter: `applyOnNetworkIntentPolicyBasedServices`
 
 Enum list of network intent policy based services.
+
 - Required: No
 - Type: array
 - Default:
@@ -61,9 +62,24 @@ Enum list of network intent policy based services.
   ]
   ```
 
+### Parameter: `name`
+
+The name of the security admin configuration.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `networkManagerName`
+
+The name of the parent network manager. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `description`
 
 A description of the security admin configuration.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -71,25 +87,15 @@ A description of the security admin configuration.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `name`
-
-The name of the security admin configuration.
-- Required: Yes
-- Type: string
-
-### Parameter: `networkManagerName`
-
-The name of the parent network manager. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `ruleCollections`
 
 A security admin configuration contains a set of rule collections that are applied to network groups. Each rule collection contains one or more security admin rules.
+
 - Required: No
 - Type: array
 - Default: `[]`

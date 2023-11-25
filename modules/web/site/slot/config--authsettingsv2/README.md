@@ -37,28 +37,17 @@ This module deploys a Site Auth Settings V2 Configuration.
 | :-- | :-- | :-- |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
-### Parameter: `appName`
-
-The name of the parent site resource. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `authSettingV2Configuration`
 
 The auth settings V2 configuration.
+
 - Required: Yes
 - Type: object
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via the Customer Usage Attribution ID (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
 
 ### Parameter: `kind`
 
 Type of slot to deploy.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -75,8 +64,24 @@ Type of slot to deploy.
 ### Parameter: `slotName`
 
 Slot name to be configured.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `appName`
+
+The name of the parent site resource. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via the Customer Usage Attribution ID (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 
 ## Outputs

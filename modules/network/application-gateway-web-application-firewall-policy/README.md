@@ -251,9 +251,17 @@ module applicationGatewayWebApplicationFirewallPolicy 'br:bicep/modules/network.
 | [`policySettings`](#parameter-policysettings) | object | The PolicySettings for policy. |
 | [`tags`](#parameter-tags) | object | Resource tags. |
 
+### Parameter: `name`
+
+Name of the Application Gateway WAF policy.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `customRules`
 
 The custom rules inside the policy.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -261,6 +269,7 @@ The custom rules inside the policy.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -268,6 +277,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -275,19 +285,15 @@ Location for all resources.
 ### Parameter: `managedRules`
 
 Describes the managedRules structure.
+
 - Required: No
 - Type: object
 - Default: `{}`
 
-### Parameter: `name`
-
-Name of the Application Gateway WAF policy.
-- Required: Yes
-- Type: string
-
 ### Parameter: `policySettings`
 
 The PolicySettings for policy.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -295,6 +301,7 @@ The PolicySettings for policy.
 ### Parameter: `tags`
 
 Resource tags.
+
 - Required: No
 - Type: object
 

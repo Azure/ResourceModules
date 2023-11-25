@@ -37,15 +37,24 @@ This module deploys an API Management Service Policy.
 | [`format`](#parameter-format) | string | Format of the policyContent. |
 | [`name`](#parameter-name) | string | The name of the policy. |
 
+### Parameter: `value`
+
+Contents of the Policy as defined by the format.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `apiManagementServiceName`
 
 The name of the parent API Management service. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -53,6 +62,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `format`
 
 Format of the policyContent.
+
 - Required: No
 - Type: string
 - Default: `'xml'`
@@ -69,15 +79,10 @@ Format of the policyContent.
 ### Parameter: `name`
 
 The name of the policy.
+
 - Required: No
 - Type: string
 - Default: `'policy'`
-
-### Parameter: `value`
-
-Contents of the Policy as defined by the format.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

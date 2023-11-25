@@ -158,16 +158,10 @@ module lock 'br:bicep/modules/authorization.lock:1.0.0' = {
 | [`resourceGroupName`](#parameter-resourcegroupname) | string | Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group. |
 | [`subscriptionId`](#parameter-subscriptionid) | string | Subscription ID of the subscription to assign the lock to. If not provided, will use the current scope for deployment. If no resource group name is provided, the module deploys at subscription level, therefore assigns the provided locks to the subscription. |
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `level`
 
 Set lock level.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -178,9 +172,18 @@ Set lock level.
   ]
   ```
 
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[deployment().location]`
@@ -188,6 +191,7 @@ Location for all resources.
 ### Parameter: `notes`
 
 The decription attached to the lock.
+
 - Required: No
 - Type: string
 - Default: `[if(equals(parameters('level'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]`
@@ -195,6 +199,7 @@ The decription attached to the lock.
 ### Parameter: `resourceGroupName`
 
 Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -202,6 +207,7 @@ Name of the Resource Group to assign the lock to. If Resource Group name is prov
 ### Parameter: `subscriptionId`
 
 Subscription ID of the subscription to assign the lock to. If not provided, will use the current scope for deployment. If no resource group name is provided, the module deploys at subscription level, therefore assigns the provided locks to the subscription.
+
 - Required: No
 - Type: string
 - Default: `[subscription().id]`

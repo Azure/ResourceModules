@@ -33,9 +33,17 @@ This module deploys a Hosting Environment Network Configuration.
 | [`inboundIpAddressOverride`](#parameter-inboundipaddressoverride) | string | Customer provided Inbound IP Address. Only able to be set on Ase create. |
 | [`remoteDebugEnabled`](#parameter-remotedebugenabled) | bool | Property to enable and disable Remote Debug on ASEv3. |
 
+### Parameter: `hostingEnvironmentName`
+
+The name of the parent Hosting Environment. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `allowNewPrivateEndpointConnections`
 
 Property to enable and disable new private endpoint connection creation on ASE.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -43,6 +51,7 @@ Property to enable and disable new private endpoint connection creation on ASE.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -50,19 +59,15 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `ftpEnabled`
 
 Property to enable and disable FTP on ASEV3.
+
 - Required: No
 - Type: bool
 - Default: `False`
 
-### Parameter: `hostingEnvironmentName`
-
-The name of the parent Hosting Environment. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `inboundIpAddressOverride`
 
 Customer provided Inbound IP Address. Only able to be set on Ase create.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -70,6 +75,7 @@ Customer provided Inbound IP Address. Only able to be set on Ase create.
 ### Parameter: `remoteDebugEnabled`
 
 Property to enable and disable Remote Debug on ASEv3.
+
 - Required: No
 - Type: bool
 - Default: `False`

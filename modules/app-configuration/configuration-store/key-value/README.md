@@ -38,15 +38,31 @@ This module deploys an App Configuration Store Key Value.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 
+### Parameter: `name`
+
+Name of the key.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `value`
+
+Name of the value.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `appConfigurationName`
 
 The name of the parent app configuration store. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `contentType`
 
 The content type of the key-values value. Providing a proper content-type can enable transformations of values when they are retrieved by applications.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -54,27 +70,17 @@ The content type of the key-values value. Providing a proper content-type can en
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `name`
-
-Name of the key.
-- Required: Yes
-- Type: string
-
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
-
-### Parameter: `value`
-
-Name of the value.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

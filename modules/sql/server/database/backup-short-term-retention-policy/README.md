@@ -35,12 +35,21 @@ This module deploys an Azure SQL Server Database Short-Term Backup Retention Pol
 ### Parameter: `databaseName`
 
 The name of the parent database.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `serverName`
+
+The name of the parent SQL Server.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `diffBackupIntervalInHours`
 
 Differential backup interval in hours.
+
 - Required: No
 - Type: int
 - Default: `24`
@@ -48,6 +57,7 @@ Differential backup interval in hours.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -55,15 +65,10 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `retentionDays`
 
 Poin-in-time retention in days.
+
 - Required: No
 - Type: int
 - Default: `7`
-
-### Parameter: `serverName`
-
-The name of the parent SQL Server.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

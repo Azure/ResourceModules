@@ -48,29 +48,32 @@ This module deploys an Azure Automation Account Schedule.
 | :-- | :-- | :-- |
 | [`baseTime`](#parameter-basetime) | string | Time used as a basis for e.g. the schedule start date. |
 
-### Parameter: `advancedSchedule`
+### Parameter: `name`
 
-The properties of the create Advanced Schedule.
-- Required: No
-- Type: object
-- Default: `{}`
+Name of the Automation Account schedule.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `automationAccountName`
 
 The name of the parent Automation Account. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `baseTime`
+### Parameter: `advancedSchedule`
 
-Time used as a basis for e.g. the schedule start date.
+The properties of the create Advanced Schedule.
+
 - Required: No
-- Type: string
-- Default: `[utcNow('u')]`
+- Type: object
+- Default: `{}`
 
 ### Parameter: `description`
 
 The description of the schedule.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -78,6 +81,7 @@ The description of the schedule.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -85,6 +89,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `expiryTime`
 
 The end time of the schedule.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -92,6 +97,7 @@ The end time of the schedule.
 ### Parameter: `frequency`
 
 The frequency of the schedule.
+
 - Required: No
 - Type: string
 - Default: `'OneTime'`
@@ -110,19 +116,15 @@ The frequency of the schedule.
 ### Parameter: `interval`
 
 Anything.
+
 - Required: No
 - Type: int
 - Default: `0`
 
-### Parameter: `name`
-
-Name of the Automation Account schedule.
-- Required: Yes
-- Type: string
-
 ### Parameter: `startTime`
 
 The start time of the schedule.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -130,9 +132,18 @@ The start time of the schedule.
 ### Parameter: `timeZone`
 
 The time zone of the schedule.
+
 - Required: No
 - Type: string
 - Default: `''`
+
+### Parameter: `baseTime`
+
+Time used as a basis for e.g. the schedule start date.
+
+- Required: No
+- Type: string
+- Default: `[utcNow('u')]`
 
 
 ## Outputs

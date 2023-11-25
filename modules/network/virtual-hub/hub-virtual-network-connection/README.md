@@ -38,9 +38,31 @@ This module deploys a Virtual Hub Virtual Network Connection.
 | [`enableInternetSecurity`](#parameter-enableinternetsecurity) | bool | Enable internet security. |
 | [`routingConfiguration`](#parameter-routingconfiguration) | object | Routing Configuration indicating the associated and propagated route tables for this connection. |
 
+### Parameter: `name`
+
+The connection name.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `remoteVirtualNetworkId`
+
+Resource ID of the virtual network to link to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `virtualHubName`
+
+The name of the parent virtual hub. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -48,34 +70,18 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `enableInternetSecurity`
 
 Enable internet security.
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `name`
-
-The connection name.
-- Required: Yes
-- Type: string
-
-### Parameter: `remoteVirtualNetworkId`
-
-Resource ID of the virtual network to link to.
-- Required: Yes
-- Type: string
-
 ### Parameter: `routingConfiguration`
 
 Routing Configuration indicating the associated and propagated route tables for this connection.
+
 - Required: No
 - Type: object
 - Default: `{}`
-
-### Parameter: `virtualHubName`
-
-The name of the parent virtual hub. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

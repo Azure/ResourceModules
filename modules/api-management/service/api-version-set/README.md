@@ -34,12 +34,14 @@ This module deploys an API Management Service API Version Set.
 ### Parameter: `apiManagementServiceName`
 
 The name of the parent API Management service. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -47,6 +49,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `name`
 
 API Version set name.
+
 - Required: No
 - Type: string
 - Default: `'default'`
@@ -54,6 +57,7 @@ API Version set name.
 ### Parameter: `properties`
 
 API Version set properties.
+
 - Required: No
 - Type: object
 - Default: `{}`

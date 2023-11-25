@@ -72,57 +72,10 @@ This module deploys an Azure Automation Account Software Update Configuration.
 | :-- | :-- | :-- |
 | [`baseTime`](#parameter-basetime) | string | Do not touch. Is used to provide the base time for time comparison for startTime. If startTime is specified in HH:MM format, baseTime is used to check if the provided startTime has passed, adding one day before setting the deployment schedule. |
 
-### Parameter: `automationAccountName`
-
-The name of the parent Automation Account. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `azureVirtualMachines`
-
-List of azure resource IDs for azure virtual machines in scope for the deployment schedule.
-- Required: No
-- Type: array
-- Default: `[]`
-
-### Parameter: `baseTime`
-
-Do not touch. Is used to provide the base time for time comparison for startTime. If startTime is specified in HH:MM format, baseTime is used to check if the provided startTime has passed, adding one day before setting the deployment schedule.
-- Required: No
-- Type: string
-- Default: `[utcNow('u')]`
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
-### Parameter: `excludeUpdates`
-
-KB numbers or Linux packages excluded in the deployment schedule.
-- Required: No
-- Type: array
-- Default: `[]`
-
-### Parameter: `expiryTime`
-
-The end time of the deployment schedule in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `expiryTimeOffsetMinutes`
-
-The expiry time's offset in minutes.
-- Required: No
-- Type: int
-- Default: `0`
-
 ### Parameter: `frequency`
 
 The frequency of the deployment schedule. When using 'Hour', 'Day', 'Week' or 'Month', an interval needs to be provided.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -136,9 +89,94 @@ The frequency of the deployment schedule. When using 'Hour', 'Day', 'Week' or 'M
   ]
   ```
 
+### Parameter: `name`
+
+The name of the Deployment schedule.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `operatingSystem`
+
+The operating system to be configured by the deployment schedule.
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Linux'
+    'Windows'
+  ]
+  ```
+
+### Parameter: `rebootSetting`
+
+Reboot setting for the deployment schedule.
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Always'
+    'IfRequired'
+    'Never'
+    'RebootOnly'
+  ]
+  ```
+
+### Parameter: `automationAccountName`
+
+The name of the parent Automation Account. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `azureVirtualMachines`
+
+List of azure resource IDs for azure virtual machines in scope for the deployment schedule.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `excludeUpdates`
+
+KB numbers or Linux packages excluded in the deployment schedule.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `expiryTime`
+
+The end time of the deployment schedule in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `expiryTimeOffsetMinutes`
+
+The expiry time's offset in minutes.
+
+- Required: No
+- Type: int
+- Default: `0`
+
 ### Parameter: `includeUpdates`
 
 KB numbers or Linux packages included in the deployment schedule.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -146,6 +184,7 @@ KB numbers or Linux packages included in the deployment schedule.
 ### Parameter: `interval`
 
 The interval of the frequency for the deployment schedule. 1 Hour is every hour, 2 Day is every second day, etc.
+
 - Required: No
 - Type: int
 - Default: `1`
@@ -153,6 +192,7 @@ The interval of the frequency for the deployment schedule. 1 Hour is every hour,
 ### Parameter: `isEnabled`
 
 Enables the deployment schedule.
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -160,6 +200,7 @@ Enables the deployment schedule.
 ### Parameter: `maintenanceWindow`
 
 Maximum time allowed for the deployment schedule to run. Duration needs to be specified using the format PT[n]H[n]M[n]S as per ISO8601.
+
 - Required: No
 - Type: string
 - Default: `'PT2H'`
@@ -167,6 +208,7 @@ Maximum time allowed for the deployment schedule to run. Duration needs to be sp
 ### Parameter: `monthDays`
 
 Can be used with frequency 'Month'. Provides the specific days of the month to run the deployment schedule.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -210,19 +252,15 @@ Can be used with frequency 'Month'. Provides the specific days of the month to r
 ### Parameter: `monthlyOccurrences`
 
 Can be used with frequency 'Month'. Provides the pattern/cadence for running the deployment schedule in a month. Takes objects formed like this {occurance(int),day(string)}. Day is the name of the day to run the deployment schedule, the occurance specifies which occurance of that day to run the deployment schedule.
+
 - Required: No
 - Type: array
 - Default: `[]`
 
-### Parameter: `name`
-
-The name of the Deployment schedule.
-- Required: Yes
-- Type: string
-
 ### Parameter: `nextRun`
 
 The next time the deployment schedule runs in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -230,6 +268,7 @@ The next time the deployment schedule runs in ISO 8601 format. YYYY-MM-DDTHH:MM:
 ### Parameter: `nextRunOffsetMinutes`
 
 The next run's offset in minutes.
+
 - Required: No
 - Type: int
 - Default: `0`
@@ -237,6 +276,7 @@ The next run's offset in minutes.
 ### Parameter: `nonAzureComputerNames`
 
 List of names of non-azure machines in scope for the deployment schedule.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -244,26 +284,15 @@ List of names of non-azure machines in scope for the deployment schedule.
 ### Parameter: `nonAzureQueries`
 
 Array of functions from a Log Analytics workspace, used to scope the deployment schedule.
+
 - Required: No
 - Type: array
 - Default: `[]`
 
-### Parameter: `operatingSystem`
-
-The operating system to be configured by the deployment schedule.
-- Required: Yes
-- Type: string
-- Allowed:
-  ```Bicep
-  [
-    'Linux'
-    'Windows'
-  ]
-  ```
-
 ### Parameter: `postTaskParameters`
 
 Parameters provided to the task running after the deployment schedule.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -271,6 +300,7 @@ Parameters provided to the task running after the deployment schedule.
 ### Parameter: `postTaskSource`
 
 The source of the task running after the deployment schedule.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -278,6 +308,7 @@ The source of the task running after the deployment schedule.
 ### Parameter: `preTaskParameters`
 
 Parameters provided to the task running before the deployment schedule.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -285,28 +316,15 @@ Parameters provided to the task running before the deployment schedule.
 ### Parameter: `preTaskSource`
 
 The source of the task running before the deployment schedule.
+
 - Required: No
 - Type: string
 - Default: `''`
 
-### Parameter: `rebootSetting`
-
-Reboot setting for the deployment schedule.
-- Required: Yes
-- Type: string
-- Allowed:
-  ```Bicep
-  [
-    'Always'
-    'IfRequired'
-    'Never'
-    'RebootOnly'
-  ]
-  ```
-
 ### Parameter: `scheduleDescription`
 
 The schedules description.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -314,6 +332,7 @@ The schedules description.
 ### Parameter: `scopeByLocations`
 
 Specify locations to which to scope the deployment schedule to.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -321,6 +340,7 @@ Specify locations to which to scope the deployment schedule to.
 ### Parameter: `scopeByResources`
 
 Specify the resources to scope the deployment schedule to.
+
 - Required: No
 - Type: array
 - Default:
@@ -333,6 +353,7 @@ Specify the resources to scope the deployment schedule to.
 ### Parameter: `scopeByTags`
 
 Specify tags to which to scope the deployment schedule to.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -340,6 +361,7 @@ Specify tags to which to scope the deployment schedule to.
 ### Parameter: `scopeByTagsOperation`
 
 Enables the scopeByTags to require All (Tag A and Tag B) or Any (Tag A or Tag B).
+
 - Required: No
 - Type: string
 - Default: `'All'`
@@ -354,6 +376,7 @@ Enables the scopeByTags to require All (Tag A and Tag B) or Any (Tag A or Tag B)
 ### Parameter: `startTime`
 
 The start time of the deployment schedule in ISO 8601 format. To specify a specific time use YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00. For schedules where we want to start the deployment as soon as possible, specify the time segment only in 24 hour format, HH:MM, 22:00.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -361,6 +384,7 @@ The start time of the deployment schedule in ISO 8601 format. To specify a speci
 ### Parameter: `timeZone`
 
 Time zone for the deployment schedule. IANA ID or a Windows Time Zone ID.
+
 - Required: No
 - Type: string
 - Default: `'UTC'`
@@ -368,6 +392,7 @@ Time zone for the deployment schedule. IANA ID or a Windows Time Zone ID.
 ### Parameter: `updateClassifications`
 
 Update classification included in the deployment schedule.
+
 - Required: No
 - Type: array
 - Default:
@@ -395,6 +420,7 @@ Update classification included in the deployment schedule.
 ### Parameter: `weekDays`
 
 Required when used with frequency 'Week'. Specified the day of the week to run the deployment schedule.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -410,6 +436,14 @@ Required when used with frequency 'Week'. Specified the day of the week to run t
     'Wednesday'
   ]
   ```
+
+### Parameter: `baseTime`
+
+Do not touch. Is used to provide the base time for time comparison for startTime. If startTime is specified in HH:MM format, baseTime is used to check if the provided startTime has passed, adding one day before setting the deployment schedule.
+
+- Required: No
+- Type: string
+- Default: `[utcNow('u')]`
 
 
 ## Outputs

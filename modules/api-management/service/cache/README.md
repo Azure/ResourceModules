@@ -39,21 +39,38 @@ This module deploys an API Management Service Cache.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`resourceId`](#parameter-resourceid) | string | Original uri of entity in external system cache points to. |
 
-### Parameter: `apiManagementServiceName`
-
-The name of the parent API Management service. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `connectionString`
 
 Runtime connection string to cache. Can be referenced by a named value like so, {{<named-value>}}.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region identifier).
+
+- Required: Yes
+- Type: string
+
+### Parameter: `useFromLocation`
+
+Location identifier to use cache from (should be either 'default' or valid Azure region identifier).
+
+- Required: Yes
+- Type: string
+
+### Parameter: `apiManagementServiceName`
+
+The name of the parent API Management service. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `description`
 
 Cache description.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -61,28 +78,18 @@ Cache description.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `name`
-
-Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region identifier).
-- Required: Yes
-- Type: string
-
 ### Parameter: `resourceId`
 
 Original uri of entity in external system cache points to.
+
 - Required: No
 - Type: string
 - Default: `''`
-
-### Parameter: `useFromLocation`
-
-Location identifier to use cache from (should be either 'default' or valid Azure region identifier).
-- Required: Yes
-- Type: string
 
 
 ## Outputs

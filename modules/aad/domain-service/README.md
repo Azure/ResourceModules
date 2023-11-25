@@ -330,9 +330,33 @@ module domainService 'br:bicep/modules/aad.domain-service:1.0.0' = {
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`tlsV1`](#parameter-tlsv1) | string | The value is to enable clients making request using TLSv1. |
 
+### Parameter: `domainName`
+
+The domain name specific to the Azure ADDS service.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `pfxCertificate`
+
+The certificate required to configure Secure LDAP. Should be a base64encoded representation of the certificate PFX file. Required if secure LDAP is enabled and must be valid more than 30 days.
+
+- Required: No
+- Type: securestring
+- Default: `''`
+
+### Parameter: `pfxCertificatePassword`
+
+The password to decrypt the provided Secure LDAP certificate PFX file. Required if secure LDAP is enabled.
+
+- Required: No
+- Type: securestring
+- Default: `''`
+
 ### Parameter: `additionalRecipients`
 
 The email recipient value to receive alerts.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -340,94 +364,82 @@ The email recipient value to receive alerts.
 ### Parameter: `diagnosticSettings`
 
 The diagnostic settings of the service.
+
 - Required: No
 - Type: array
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
-| [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
-| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | No | string | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | No | string | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
+| [`name`](#parameter-diagnosticsettingsname) | string | The name of diagnostic setting. |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
-Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.eventHubName`
 
-Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.logAnalyticsDestinationType`
 
-Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
+A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
 
 - Required: No
 - Type: string
-- Allowed: `[AzureDiagnostics, Dedicated]`
+- Allowed:
+  ```Bicep
+  [
+    'AzureDiagnostics'
+    'Dedicated'
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings.logCategoriesAndGroups`
 
-Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
 
 - Required: No
 - Type: array
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`category`](#parameter-diagnosticsettingslogcategoriesandgroupscategory) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
-| [`categoryGroup`](#parameter-diagnosticsettingslogcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs. |
-
-### Parameter: `diagnosticSettings.logCategoriesAndGroups.category`
-
-Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.
-
-- Required: No
-- Type: string
-
-### Parameter: `diagnosticSettings.logCategoriesAndGroups.categoryGroup`
-
-Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs.
-
-- Required: No
-- Type: string
-
-
 ### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
 
-Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.name`
 
-Optional. The name of diagnostic setting.
+The name of diagnostic setting.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.storageAccountResourceId`
 
-Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.workspaceResourceId`
 
-Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
 
 - Required: No
 - Type: string
@@ -435,6 +447,7 @@ Optional. Resource ID of the diagnostic log analytics workspace. For security re
 ### Parameter: `domainConfigurationType`
 
 The value is to provide domain configuration type.
+
 - Required: No
 - Type: string
 - Default: `'FullySynced'`
@@ -446,15 +459,10 @@ The value is to provide domain configuration type.
   ]
   ```
 
-### Parameter: `domainName`
-
-The domain name specific to the Azure ADDS service.
-- Required: Yes
-- Type: string
-
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -462,6 +470,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `externalAccess`
 
 The value is to enable the Secure LDAP for external services of Azure ADDS Services.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -476,6 +485,7 @@ The value is to enable the Secure LDAP for external services of Azure ADDS Servi
 ### Parameter: `filteredSync`
 
 The value is to synchronize scoped users and groups.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -483,6 +493,7 @@ The value is to synchronize scoped users and groups.
 ### Parameter: `kerberosArmoring`
 
 The value is to enable to provide a protected channel between the Kerberos client and the KDC.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -497,6 +508,7 @@ The value is to enable to provide a protected channel between the Kerberos clien
 ### Parameter: `kerberosRc4Encryption`
 
 The value is to enable Kerberos requests that use RC4 encryption.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -511,6 +523,7 @@ The value is to enable Kerberos requests that use RC4 encryption.
 ### Parameter: `ldaps`
 
 A flag to determine whether or not Secure LDAP is enabled or disabled.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -525,6 +538,7 @@ A flag to determine whether or not Secure LDAP is enabled or disabled.
 ### Parameter: `location`
 
 The location to deploy the Azure ADDS Services.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -532,26 +546,35 @@ The location to deploy the Azure ADDS Services.
 ### Parameter: `lock`
 
 The lock settings of the service.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
-| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
 ### Parameter: `lock.kind`
 
-Optional. Specify the type of lock.
+Specify the type of lock.
 
 - Required: No
 - Type: string
-- Allowed: `[CanNotDelete, None, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `lock.name`
 
-Optional. Specify the name of lock.
+Specify the name of lock.
 
 - Required: No
 - Type: string
@@ -559,6 +582,7 @@ Optional. Specify the name of lock.
 ### Parameter: `name`
 
 The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service.
+
 - Required: No
 - Type: string
 - Default: `[parameters('domainName')]`
@@ -566,6 +590,7 @@ The name of the AADDS resource. Defaults to the domain name specific to the Azur
 ### Parameter: `notifyDcAdmins`
 
 The value is to notify the DC Admins.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -580,6 +605,7 @@ The value is to notify the DC Admins.
 ### Parameter: `notifyGlobalAdmins`
 
 The value is to notify the Global Admins.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -594,6 +620,7 @@ The value is to notify the Global Admins.
 ### Parameter: `ntlmV1`
 
 The value is to enable clients making request using NTLM v1.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -605,23 +632,10 @@ The value is to enable clients making request using NTLM v1.
   ]
   ```
 
-### Parameter: `pfxCertificate`
-
-The certificate required to configure Secure LDAP. Should be a base64encoded representation of the certificate PFX file. Required if secure LDAP is enabled and must be valid more than 30 days.
-- Required: No
-- Type: securestring
-- Default: `''`
-
-### Parameter: `pfxCertificatePassword`
-
-The password to decrypt the provided Secure LDAP certificate PFX file. Required if secure LDAP is enabled.
-- Required: No
-- Type: securestring
-- Default: `''`
-
 ### Parameter: `replicaSets`
 
 Additional replica set for the managed domain.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -629,74 +643,96 @@ Additional replica set for the managed domain.
 ### Parameter: `roleAssignments`
 
 Array of role assignments to create.
+
 - Required: No
 - Type: array
 
+**Required parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+
+### Parameter: `roleAssignments.principalId`
+
+The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `roleAssignments.condition`
 
-Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.conditionVersion`
 
-Optional. Version of the condition.
+Version of the condition.
 
 - Required: No
 - Type: string
-- Allowed: `[2.0]`
+- Allowed:
+  ```Bicep
+  [
+    '2.0'
+  ]
+  ```
 
 ### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
 
-Optional. The Resource Id of the delegated managed identity resource.
+The Resource Id of the delegated managed identity resource.
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.description`
 
-Optional. The description of the role assignment.
+The description of the role assignment.
 
 - Required: No
-- Type: string
-
-### Parameter: `roleAssignments.principalId`
-
-Required. The principal ID of the principal (user/group/identity) to assign the role to.
-
-- Required: Yes
 - Type: string
 
 ### Parameter: `roleAssignments.principalType`
 
-Optional. The principal type of the assigned principal ID.
+The principal type of the assigned principal ID.
 
 - Required: No
 - Type: string
-- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
-
-### Parameter: `roleAssignments.roleDefinitionIdOrName`
-
-Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
-
-- Required: Yes
-- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Device'
+    'ForeignGroup'
+    'Group'
+    'ServicePrincipal'
+    'User'
+  ]
+  ```
 
 ### Parameter: `sku`
 
 The name of the SKU specific to Azure ADDS Services.
+
 - Required: No
 - Type: string
 - Default: `'Standard'`
@@ -712,6 +748,7 @@ The name of the SKU specific to Azure ADDS Services.
 ### Parameter: `syncNtlmPasswords`
 
 The value is to enable synchronized users to use NTLM authentication.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -726,6 +763,7 @@ The value is to enable synchronized users to use NTLM authentication.
 ### Parameter: `syncOnPremPasswords`
 
 The value is to enable on-premises users to authenticate against managed domain.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -740,12 +778,14 @@ The value is to enable on-premises users to authenticate against managed domain.
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 
 ### Parameter: `tlsV1`
 
 The value is to enable clients making request using TLSv1.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`

@@ -37,9 +37,24 @@ This module deploys a SQL Managed Instance Encryption Protector.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`serverKeyType`](#parameter-serverkeytype) | string | The encryption protector type like "ServiceManaged", "AzureKeyVault". |
 
+### Parameter: `serverKeyName`
+
+The name of the SQL managed instance key.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `managedInstanceName`
+
+The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `autoRotationEnabled`
 
 Key auto rotation opt-in flag.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -47,25 +62,15 @@ Key auto rotation opt-in flag.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `managedInstanceName`
-
-The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `serverKeyName`
-
-The name of the SQL managed instance key.
-- Required: Yes
-- Type: string
-
 ### Parameter: `serverKeyType`
 
 The encryption protector type like "ServiceManaged", "AzureKeyVault".
+
 - Required: No
 - Type: string
 - Default: `'ServiceManaged'`

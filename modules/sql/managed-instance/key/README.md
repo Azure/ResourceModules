@@ -37,28 +37,32 @@ This module deploys a SQL Managed Instance Key.
 | [`serverKeyType`](#parameter-serverkeytype) | string | The encryption protector type like "ServiceManaged", "AzureKeyVault". |
 | [`uri`](#parameter-uri) | string | The URI of the key. If the ServerKeyType is AzureKeyVault, then either the URI or the keyVaultName/keyName combination is required. |
 
-### Parameter: `enableDefaultTelemetry`
+### Parameter: `name`
 
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
+The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `managedInstanceName`
 
 The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `name`
+### Parameter: `enableDefaultTelemetry`
 
-The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern.
-- Required: Yes
-- Type: string
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 ### Parameter: `serverKeyType`
 
 The encryption protector type like "ServiceManaged", "AzureKeyVault".
+
 - Required: No
 - Type: string
 - Default: `'ServiceManaged'`
@@ -73,6 +77,7 @@ The encryption protector type like "ServiceManaged", "AzureKeyVault".
 ### Parameter: `uri`
 
 The URI of the key. If the ServerKeyType is AzureKeyVault, then either the URI or the keyVaultName/keyName combination is required.
+
 - Required: No
 - Type: string
 - Default: `''`
