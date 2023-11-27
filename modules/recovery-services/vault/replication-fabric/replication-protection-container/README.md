@@ -40,37 +40,42 @@ This module deploys a Recovery Services Vault Replication Protection Container.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`replicationContainerMappings`](#parameter-replicationcontainermappings) | array | Replication containers mappings to create. |
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `name`
 
 The name of the replication container.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `recoveryVaultName`
 
 The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
-
-### Parameter: `replicationContainerMappings`
-
-Replication containers mappings to create.
-- Required: No
-- Type: array
-- Default: `[]`
 
 ### Parameter: `replicationFabricName`
 
 The name of the parent Replication Fabric. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `replicationContainerMappings`
+
+Replication containers mappings to create.
+
+- Required: No
+- Type: array
+- Default: `[]`
 
 
 ## Outputs

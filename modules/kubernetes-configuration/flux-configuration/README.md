@@ -374,68 +374,38 @@ module fluxConfiguration 'br:bicep/modules/kubernetes-configuration.flux-configu
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`suspend`](#parameter-suspend) | bool | Whether this configuration should suspend its reconciliation of its kustomizations and sources. |
 
-### Parameter: `bucket`
-
-Parameters to reconcile to the GitRepository source kind type.
-- Required: No
-- Type: object
-- Default: `{}`
-
 ### Parameter: `clusterName`
 
 The name of the AKS cluster that should be configured.
+
 - Required: Yes
 - Type: string
-
-### Parameter: `configurationProtectedSettings`
-
-Key-value pairs of protected configuration settings for the configuration.
-- Required: No
-- Type: secureObject
-- Default: `{}`
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
-### Parameter: `gitRepository`
-
-Parameters to reconcile to the GitRepository source kind type.
-- Required: No
-- Type: object
-- Default: `{}`
 
 ### Parameter: `kustomizations`
 
 Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster.
+
 - Required: Yes
 - Type: object
-
-### Parameter: `location`
-
-Location for all resources.
-- Required: No
-- Type: string
-- Default: `[resourceGroup().location]`
 
 ### Parameter: `name`
 
 The name of the Flux Configuration.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `namespace`
 
 The namespace to which this configuration is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and period only.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `scope`
 
 Scope at which the configuration will be installed.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -449,6 +419,7 @@ Scope at which the configuration will be installed.
 ### Parameter: `sourceKind`
 
 Source Kind to pull the configuration data from.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -459,9 +430,50 @@ Source Kind to pull the configuration data from.
   ]
   ```
 
+### Parameter: `bucket`
+
+Parameters to reconcile to the GitRepository source kind type.
+
+- Required: No
+- Type: object
+- Default: `{}`
+
+### Parameter: `configurationProtectedSettings`
+
+Key-value pairs of protected configuration settings for the configuration.
+
+- Required: No
+- Type: secureObject
+- Default: `{}`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `gitRepository`
+
+Parameters to reconcile to the GitRepository source kind type.
+
+- Required: No
+- Type: object
+- Default: `{}`
+
+### Parameter: `location`
+
+Location for all resources.
+
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
 ### Parameter: `suspend`
 
 Whether this configuration should suspend its reconciliation of its kustomizations and sources.
+
 - Required: No
 - Type: bool
 - Default: `False`

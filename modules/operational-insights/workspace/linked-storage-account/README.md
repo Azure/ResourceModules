@@ -36,22 +36,10 @@ This module deploys a Log Analytics Workspace Linked Storage Account.
 | :-- | :-- | :-- |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
-### Parameter: `logAnalyticsWorkspaceName`
-
-The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `name`
 
 Name of the link.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -67,8 +55,24 @@ Name of the link.
 ### Parameter: `resourceId`
 
 The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require read access.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `logAnalyticsWorkspaceName`
+
+The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 
 ## Outputs

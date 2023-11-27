@@ -42,9 +42,24 @@ This module deploys an Azure Container Registry (ACR) Webhook.
 | [`status`](#parameter-status) | string | The status of the webhook at the time the operation was called. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 
+### Parameter: `serviceUri`
+
+The service URI for the webhook to post notifications.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `registryName`
+
+The name of the parent registry. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `action`
 
 The list of actions that trigger the webhook to post notifications.
+
 - Required: No
 - Type: array
 - Default:
@@ -61,6 +76,7 @@ The list of actions that trigger the webhook to post notifications.
 ### Parameter: `customHeaders`
 
 Custom headers that will be added to the webhook notifications.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -68,6 +84,7 @@ Custom headers that will be added to the webhook notifications.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -75,6 +92,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -82,32 +100,23 @@ Location for all resources.
 ### Parameter: `name`
 
 The name of the registry webhook.
+
 - Required: No
 - Type: string
 - Default: `[format('{0}webhook', parameters('registryName'))]`
 
-### Parameter: `registryName`
-
-The name of the parent registry. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `scope`
 
 The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events.
+
 - Required: No
 - Type: string
 - Default: `''`
 
-### Parameter: `serviceUri`
-
-The service URI for the webhook to post notifications.
-- Required: Yes
-- Type: string
-
 ### Parameter: `status`
 
 The status of the webhook at the time the operation was called.
+
 - Required: No
 - Type: string
 - Default: `'enabled'`
@@ -122,6 +131,7 @@ The status of the webhook at the time the operation was called.
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 

@@ -49,18 +49,56 @@ This module deploys a Virtual Machine Extension.
 ### Parameter: `autoUpgradeMinorVersion`
 
 Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true.
+
 - Required: Yes
 - Type: bool
 
 ### Parameter: `enableAutomaticUpgrade`
 
 Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available.
+
 - Required: Yes
 - Type: bool
+
+### Parameter: `name`
+
+The name of the virtual machine extension.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `publisher`
+
+The name of the extension handler publisher.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `type`
+
+Specifies the type of the extension; an example is "CustomScriptExtension".
+
+- Required: Yes
+- Type: string
+
+### Parameter: `typeHandlerVersion`
+
+Specifies the version of the script handler.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `virtualMachineName`
+
+The name of the parent virtual machine that extension is provisioned for. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -68,6 +106,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `forceUpdateTag`
 
 How the extension handler should be forced to update even if the extension configuration has not changed.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -75,32 +114,23 @@ How the extension handler should be forced to update even if the extension confi
 ### Parameter: `location`
 
 The location the extension is deployed to.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
 
-### Parameter: `name`
-
-The name of the virtual machine extension.
-- Required: Yes
-- Type: string
-
 ### Parameter: `protectedSettings`
 
 Any object that contains the extension specific protected settings.
+
 - Required: No
 - Type: secureObject
 - Default: `{}`
 
-### Parameter: `publisher`
-
-The name of the extension handler publisher.
-- Required: Yes
-- Type: string
-
 ### Parameter: `settings`
 
 Any object that contains the extension specific settings.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -108,6 +138,7 @@ Any object that contains the extension specific settings.
 ### Parameter: `supressFailures`
 
 Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -115,26 +146,9 @@ Indicates whether failures stemming from the extension will be suppressed (Opera
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
-
-### Parameter: `type`
-
-Specifies the type of the extension; an example is "CustomScriptExtension".
-- Required: Yes
-- Type: string
-
-### Parameter: `typeHandlerVersion`
-
-Specifies the version of the script handler.
-- Required: Yes
-- Type: string
-
-### Parameter: `virtualMachineName`
-
-The name of the parent virtual machine that extension is provisioned for. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

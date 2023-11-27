@@ -38,28 +38,39 @@ This module deploys a Site Slot Hybrid Connection Namespace Relay.
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`sendKeyName`](#parameter-sendkeyname) | string | Name of the authorization rule send key to use. |
 
+### Parameter: `hybridConnectionResourceId`
+
+The resource ID of the relay namespace hybrid connection.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `appName`
 
 The name of the parent web site. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `slotName`
+
+The name of the site slot. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `hybridConnectionResourceId`
-
-The resource ID of the relay namespace hybrid connection.
-- Required: Yes
-- Type: string
-
 ### Parameter: `location`
 
 Location for all Resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -67,15 +78,10 @@ Location for all Resources.
 ### Parameter: `sendKeyName`
 
 Name of the authorization rule send key to use.
+
 - Required: No
 - Type: string
 - Default: `'defaultSender'`
-
-### Parameter: `slotName`
-
-The name of the site slot. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

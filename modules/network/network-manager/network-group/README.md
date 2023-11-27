@@ -39,9 +39,24 @@ A network group is a collection of same-type network resources that you can asso
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`staticMembers`](#parameter-staticmembers) | array | Static Members to create for the network group. Contains virtual networks to add to the network group. |
 
+### Parameter: `name`
+
+The name of the network group.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `networkManagerName`
+
+The name of the parent network manager. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `description`
 
 A description of the network group.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -49,25 +64,15 @@ A description of the network group.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `name`
-
-The name of the network group.
-- Required: Yes
-- Type: string
-
-### Parameter: `networkManagerName`
-
-The name of the parent network manager. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `staticMembers`
 
 Static Members to create for the network group. Contains virtual networks to add to the network group.
+
 - Required: No
 - Type: array
 - Default: `[]`

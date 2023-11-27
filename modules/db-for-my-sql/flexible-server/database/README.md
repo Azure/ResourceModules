@@ -38,9 +38,24 @@ This module deploys a DBforMySQL Flexible Server Database.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | Location for all resources. |
 
+### Parameter: `name`
+
+The name of the database.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `flexibleServerName`
+
+The name of the parent MySQL flexible server. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `charset`
 
 The charset of the database.
+
 - Required: No
 - Type: string
 - Default: `'utf8_general_ci'`
@@ -48,6 +63,7 @@ The charset of the database.
 ### Parameter: `collation`
 
 The collation of the database.
+
 - Required: No
 - Type: string
 - Default: `'utf8'`
@@ -55,28 +71,18 @@ The collation of the database.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `flexibleServerName`
-
-The name of the parent MySQL flexible server. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
-
-### Parameter: `name`
-
-The name of the database.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

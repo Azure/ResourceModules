@@ -36,9 +36,17 @@ This module deploys a Network Watcher Connection Monitor.
 | [`testGroups`](#parameter-testgroups) | array | List of connection monitor test groups. |
 | [`workspaceResourceId`](#parameter-workspaceresourceid) | string | Specify the Log Analytics Workspace Resource ID. |
 
+### Parameter: `name`
+
+Name of the resource.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -46,6 +54,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `endpoints`
 
 List of connection monitor endpoints.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -53,19 +62,15 @@ List of connection monitor endpoints.
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
 
-### Parameter: `name`
-
-Name of the resource.
-- Required: Yes
-- Type: string
-
 ### Parameter: `networkWatcherName`
 
 Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG.
+
 - Required: No
 - Type: string
 - Default: `[format('NetworkWatcher_{0}', resourceGroup().location)]`
@@ -73,12 +78,14 @@ Name of the network watcher resource. Must be in the resource group where the Fl
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 
 ### Parameter: `testConfigurations`
 
 List of connection monitor test configurations.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -86,6 +93,7 @@ List of connection monitor test configurations.
 ### Parameter: `testGroups`
 
 List of connection monitor test groups.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -93,6 +101,7 @@ List of connection monitor test groups.
 ### Parameter: `workspaceResourceId`
 
 Specify the Log Analytics Workspace Resource ID.
+
 - Required: No
 - Type: string
 - Default: `''`

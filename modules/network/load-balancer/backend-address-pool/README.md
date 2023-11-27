@@ -39,9 +39,24 @@ This module deploys a Load Balancer Backend Address Pools.
 | [`syncMode`](#parameter-syncmode) | string | Backend address synchronous mode for the backend pool. |
 | [`tunnelInterfaces`](#parameter-tunnelinterfaces) | array | An array of gateway load balancer tunnel interfaces. |
 
+### Parameter: `name`
+
+The name of the backend address pool.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `loadBalancerName`
+
+The name of the parent load balancer. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `drainPeriodInSeconds`
 
 Amount of seconds Load Balancer waits for before sending RESET to client and backend address. if value is 0 then this property will be set to null. Subscription must register the feature Microsoft.Network/SLBAllowConnectionDraining before using this property.
+
 - Required: No
 - Type: int
 - Default: `0`
@@ -49,6 +64,7 @@ Amount of seconds Load Balancer waits for before sending RESET to client and bac
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -56,25 +72,15 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `loadBalancerBackendAddresses`
 
 An array of backend addresses.
+
 - Required: No
 - Type: array
 - Default: `[]`
 
-### Parameter: `loadBalancerName`
-
-The name of the parent load balancer. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `name`
-
-The name of the backend address pool.
-- Required: Yes
-- Type: string
-
 ### Parameter: `syncMode`
 
 Backend address synchronous mode for the backend pool.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -90,6 +96,7 @@ Backend address synchronous mode for the backend pool.
 ### Parameter: `tunnelInterfaces`
 
 An array of gateway load balancer tunnel interfaces.
+
 - Required: No
 - Type: array
 - Default: `[]`

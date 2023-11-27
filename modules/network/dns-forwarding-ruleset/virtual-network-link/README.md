@@ -37,15 +37,24 @@ This template deploys Virtual Network Link in a Dns Forwarding Ruleset.
 | [`location`](#parameter-location) | string | The location of the PrivateDNSZone. Should be global. |
 | [`name`](#parameter-name) | string | The name of the virtual network link. |
 
+### Parameter: `virtualNetworkResourceId`
+
+Link to another virtual network resource ID.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `dnsForwardingRulesetName`
 
 The name of the parent DNS Fowarding Rule Set. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -53,6 +62,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `location`
 
 The location of the PrivateDNSZone. Should be global.
+
 - Required: No
 - Type: string
 - Default: `'global'`
@@ -60,15 +70,10 @@ The location of the PrivateDNSZone. Should be global.
 ### Parameter: `name`
 
 The name of the virtual network link.
+
 - Required: No
 - Type: string
 - Default: `[format('{0}-vnetlink', last(split(parameters('virtualNetworkResourceId'), '/')))]`
-
-### Parameter: `virtualNetworkResourceId`
-
-Link to another virtual network resource ID.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

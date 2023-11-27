@@ -41,9 +41,24 @@ This module deploys a Recovery Services Vault Replication Policy for Disaster Re
 | [`multiVmSyncStatus`](#parameter-multivmsyncstatus) | string | A value indicating whether multi-VM sync has to be enabled. |
 | [`recoveryPointHistory`](#parameter-recoverypointhistory) | int | The duration in minutes until which the recovery points need to be stored. |
 
+### Parameter: `name`
+
+The name of the replication policy.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `recoveryVaultName`
+
+The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `appConsistentFrequencyInMinutes`
 
 The app consistent snapshot frequency (in minutes).
+
 - Required: No
 - Type: int
 - Default: `60`
@@ -51,6 +66,7 @@ The app consistent snapshot frequency (in minutes).
 ### Parameter: `crashConsistentFrequencyInMinutes`
 
 The crash consistent snapshot frequency (in minutes).
+
 - Required: No
 - Type: int
 - Default: `5`
@@ -58,6 +74,7 @@ The crash consistent snapshot frequency (in minutes).
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -65,6 +82,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `multiVmSyncStatus`
 
 A value indicating whether multi-VM sync has to be enabled.
+
 - Required: No
 - Type: string
 - Default: `'Enable'`
@@ -76,24 +94,13 @@ A value indicating whether multi-VM sync has to be enabled.
   ]
   ```
 
-### Parameter: `name`
-
-The name of the replication policy.
-- Required: Yes
-- Type: string
-
 ### Parameter: `recoveryPointHistory`
 
 The duration in minutes until which the recovery points need to be stored.
+
 - Required: No
 - Type: int
 - Default: `1440`
-
-### Parameter: `recoveryVaultName`
-
-The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

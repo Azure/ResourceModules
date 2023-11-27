@@ -37,30 +37,10 @@ This module deploys a Web Site Basic Publishing Credentials Policy.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 
-### Parameter: `allow`
-
-Set to true to enable or false to disable a publishing method.
-- Required: No
-- Type: bool
-- Default: `True`
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
-### Parameter: `location`
-
-Location for all Resources.
-- Required: No
-- Type: string
-- Default: `[resourceGroup().location]`
-
 ### Parameter: `name`
 
 The name of the resource.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -74,8 +54,33 @@ The name of the resource.
 ### Parameter: `webAppName`
 
 The name of the parent web site. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `allow`
+
+Set to true to enable or false to disable a publishing method.
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all Resources.
+
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
 
 
 ## Outputs

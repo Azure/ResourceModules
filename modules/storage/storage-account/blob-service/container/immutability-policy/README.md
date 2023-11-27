@@ -33,9 +33,24 @@ This module deploys a Storage Account Blob Container Immutability Policy.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`immutabilityPeriodSinceCreationInDays`](#parameter-immutabilityperiodsincecreationindays) | int | The immutability period for the blobs in the container since the policy creation, in days. |
 
+### Parameter: `containerName`
+
+The name of the parent container to apply the policy to. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `storageAccountName`
+
+The name of the parent Storage Account. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `allowProtectedAppendWrites`
 
 This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API.
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -43,19 +58,15 @@ This property can only be changed for unlocked time-based retention policies. Wh
 ### Parameter: `allowProtectedAppendWritesAll`
 
 This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to both "Append and Block Blobs" while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The "allowProtectedAppendWrites" and "allowProtectedAppendWritesAll" properties are mutually exclusive.
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `containerName`
-
-The name of the parent container to apply the policy to. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -63,15 +74,10 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `immutabilityPeriodSinceCreationInDays`
 
 The immutability period for the blobs in the container since the policy creation, in days.
+
 - Required: No
 - Type: int
 - Default: `365`
-
-### Parameter: `storageAccountName`
-
-The name of the parent Storage Account. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

@@ -36,35 +36,24 @@ This module deploys a CDN Profile Origin Group.
 | [`sessionAffinityState`](#parameter-sessionaffinitystate) | string | Whether to allow session affinity on this host. |
 | [`trafficRestorationTimeToHealedOrNewEndpointsInMinutes`](#parameter-trafficrestorationtimetohealedornewendpointsinminutes) | int | Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins. |
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
-### Parameter: `healthProbeSettings`
-
-Health probe settings to the origin that is used to determine the health of the origin.
-- Required: No
-- Type: object
-- Default: `{}`
-
 ### Parameter: `loadBalancingSettings`
 
 Load balancing settings for a backend pool.
+
 - Required: Yes
 - Type: object
 
 ### Parameter: `name`
 
 The name of the origin group.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `origins`
 
 The list of origins within the origin group.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -72,12 +61,30 @@ The list of origins within the origin group.
 ### Parameter: `profileName`
 
 The name of the CDN profile.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `healthProbeSettings`
+
+Health probe settings to the origin that is used to determine the health of the origin.
+
+- Required: No
+- Type: object
+- Default: `{}`
 
 ### Parameter: `sessionAffinityState`
 
 Whether to allow session affinity on this host.
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`
@@ -92,6 +99,7 @@ Whether to allow session affinity on this host.
 ### Parameter: `trafficRestorationTimeToHealedOrNewEndpointsInMinutes`
 
 Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
+
 - Required: No
 - Type: int
 - Default: `10`

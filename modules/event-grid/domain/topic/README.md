@@ -36,15 +36,24 @@ This module deploys an Event Grid Domain Topic.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 
+### Parameter: `name`
+
+The name of the Event Grid Domain Topic.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `domainName`
 
 The name of the parent Event Grid Domain. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -52,15 +61,10 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `location`
 
 Location for all Resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
-
-### Parameter: `name`
-
-The name of the Event Grid Domain Topic.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

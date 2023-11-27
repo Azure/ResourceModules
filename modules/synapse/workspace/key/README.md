@@ -38,43 +38,49 @@ This module deploys a Synapse Workspaces Key.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | The geo-location where the resource lives. |
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `isActiveCMK`
 
 Used to activate the workspace after a customer managed key is provided.
+
 - Required: Yes
 - Type: bool
 
 ### Parameter: `keyVaultResourceId`
 
 The resource ID of a key vault to reference a customer managed key for encryption from.
+
 - Required: Yes
 - Type: string
-
-### Parameter: `location`
-
-The geo-location where the resource lives.
-- Required: No
-- Type: string
-- Default: `[resourceGroup().location]`
 
 ### Parameter: `name`
 
 Encryption key name.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `workspaceName`
 
 The name of the parent Synapse Workspace. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+The geo-location where the resource lives.
+
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
 
 
 ## Outputs

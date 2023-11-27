@@ -36,28 +36,17 @@ This module deploys a Site Auth Settings V2 Configuration.
 | :-- | :-- | :-- |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 
-### Parameter: `appName`
-
-The name of the parent site resource. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `authSettingV2Configuration`
 
 The auth settings V2 configuration.
+
 - Required: Yes
 - Type: object
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
 
 ### Parameter: `kind`
 
 Type of site to deploy.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -70,6 +59,21 @@ Type of site to deploy.
     'functionappworkflowapplinux'
   ]
   ```
+
+### Parameter: `appName`
+
+The name of the parent site resource. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 
 ## Outputs

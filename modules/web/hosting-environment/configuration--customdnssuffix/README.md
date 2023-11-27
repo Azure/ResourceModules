@@ -40,33 +40,38 @@ This module deploys a Hosting Environment Custom DNS Suffix Configuration.
 ### Parameter: `certificateUrl`
 
 The URL referencing the Azure Key Vault certificate secret that should be used as the default SSL/TLS certificate for sites with the custom domain suffix.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `dnsSuffix`
 
 Enable the default custom domain suffix to use for all sites deployed on the ASE.
-- Required: Yes
-- Type: string
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
-### Parameter: `hostingEnvironmentName`
-
-The name of the parent Hosting Environment. Required if the template is used in a standalone deployment.
 - Required: Yes
 - Type: string
 
 ### Parameter: `keyVaultReferenceIdentity`
 
 The user-assigned identity to use for resolving the key vault certificate reference. If not specified, the system-assigned ASE identity will be used if available.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `hostingEnvironmentName`
+
+The name of the parent Hosting Environment. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 
 ## Outputs

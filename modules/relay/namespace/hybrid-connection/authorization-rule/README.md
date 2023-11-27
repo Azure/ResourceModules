@@ -37,34 +37,39 @@ This module deploys a Hybrid Connection Authorization Rule.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`rights`](#parameter-rights) | array | The rights associated with the rule. |
 
-### Parameter: `enableDefaultTelemetry`
+### Parameter: `name`
 
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
+The name of the authorization rule.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `hybridConnectionName`
 
 The name of the parent Relay Namespace Hybrid Connection. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
 
-### Parameter: `name`
-
-The name of the authorization rule.
 - Required: Yes
 - Type: string
 
 ### Parameter: `namespaceName`
 
 The name of the parent Relay Namespace. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 ### Parameter: `rights`
 
 The rights associated with the rule.
+
 - Required: No
 - Type: array
 - Default: `[]`

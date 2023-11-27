@@ -37,9 +37,17 @@ This module deploys a Role Definition at a Resource Group scope.
 | [`resourceGroupName`](#parameter-resourcegroupname) | string | The name of the Resource Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 | [`subscriptionId`](#parameter-subscriptionid) | string | The subscription ID where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 
+### Parameter: `roleName`
+
+Name of the custom RBAC role to be created.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `actions`
 
 List of allowed actions.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -47,6 +55,7 @@ List of allowed actions.
 ### Parameter: `assignableScopes`
 
 Role definition assignable scopes. If not provided, will use the current scope provided.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -54,6 +63,7 @@ Role definition assignable scopes. If not provided, will use the current scope p
 ### Parameter: `dataActions`
 
 List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -61,6 +71,7 @@ List of allowed data actions. This is not supported if the assignableScopes cont
 ### Parameter: `description`
 
 Description of the custom RBAC role to be created.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -68,6 +79,7 @@ Description of the custom RBAC role to be created.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -75,6 +87,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `notActions`
 
 List of denied actions.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -82,6 +95,7 @@ List of denied actions.
 ### Parameter: `notDataActions`
 
 List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -89,19 +103,15 @@ List of denied data actions. This is not supported if the assignableScopes conta
 ### Parameter: `resourceGroupName`
 
 The name of the Resource Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().name]`
 
-### Parameter: `roleName`
-
-Name of the custom RBAC role to be created.
-- Required: Yes
-- Type: string
-
 ### Parameter: `subscriptionId`
 
 The subscription ID where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment.
+
 - Required: No
 - Type: string
 - Default: `[subscription().subscriptionId]`

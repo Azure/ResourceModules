@@ -39,48 +39,55 @@ This module deploys a Data Factory Managed Virtual Network Managed Private Endpo
 | :-- | :-- | :-- |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 
-### Parameter: `dataFactoryName`
-
-The name of the parent data factory. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `fqdns`
 
 Fully qualified domain names.
+
 - Required: Yes
 - Type: array
 
 ### Parameter: `groupId`
 
 The groupId to which the managed private endpoint is created.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `managedVirtualNetworkName`
 
 The name of the parent managed virtual network.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `name`
 
 The managed private endpoint resource name.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `privateLinkResourceId`
 
 The ARM resource ID of the resource to which the managed private endpoint is created.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `dataFactoryName`
+
+The name of the parent data factory. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 
 ## Outputs

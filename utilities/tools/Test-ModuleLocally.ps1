@@ -34,7 +34,7 @@ Optional. A hashtable parameter that contains custom tokens to be replaced in th
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\network\route-table\main.bicep'
-    ModuleTestFilePath          = 'C:\network\route-table\.test\parameters.json'
+    ModuleTestFilePath         = 'C:\network\route-table\.test\parameters.json'
     PesterTest                 = $false
     DeploymentTest             = $false
     ValidationTest             = $true

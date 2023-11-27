@@ -409,9 +409,24 @@ module vpnGateway 'br:bicep/modules/network.vpn-gateway:1.0.0' = {
 | [`vpnConnections`](#parameter-vpnconnections) | array | The VPN connections to create in the VPN gateway. |
 | [`vpnGatewayScaleUnit`](#parameter-vpngatewayscaleunit) | int | The scale unit for this VPN gateway. |
 
+### Parameter: `name`
+
+Name of the VPN gateway.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `virtualHubResourceId`
+
+The resource ID of a virtual Hub to connect to. Note: The virtual Hub and Gateway must be deployed into the same location.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `bgpSettings`
 
 BGP settings details.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -419,6 +434,7 @@ BGP settings details.
 ### Parameter: `enableBgpRouteTranslationForNat`
 
 Enable BGP routes translation for NAT on this VPN gateway.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -426,6 +442,7 @@ Enable BGP routes translation for NAT on this VPN gateway.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -433,6 +450,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `isRoutingPreferenceInternet`
 
 Enable routing preference property for the public IP interface of the VPN gateway.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -440,6 +458,7 @@ Enable routing preference property for the public IP interface of the VPN gatewa
 ### Parameter: `location`
 
 Location where all resources will be created.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -447,39 +466,43 @@ Location where all resources will be created.
 ### Parameter: `lock`
 
 The lock settings of the service.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
-| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
 ### Parameter: `lock.kind`
 
-Optional. Specify the type of lock.
+Specify the type of lock.
 
 - Required: No
 - Type: string
-- Allowed: `[CanNotDelete, None, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `lock.name`
 
-Optional. Specify the name of lock.
+Specify the name of lock.
 
 - Required: No
-- Type: string
-
-### Parameter: `name`
-
-Name of the VPN gateway.
-- Required: Yes
 - Type: string
 
 ### Parameter: `natRules`
 
 List of all the NAT Rules to associate with the gateway.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -487,18 +510,14 @@ List of all the NAT Rules to associate with the gateway.
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
-
-### Parameter: `virtualHubResourceId`
-
-The resource ID of a virtual Hub to connect to. Note: The virtual Hub and Gateway must be deployed into the same location.
-- Required: Yes
-- Type: string
 
 ### Parameter: `vpnConnections`
 
 The VPN connections to create in the VPN gateway.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -506,6 +525,7 @@ The VPN connections to create in the VPN gateway.
 ### Parameter: `vpnGatewayScaleUnit`
 
 The scale unit for this VPN gateway.
+
 - Required: No
 - Type: int
 - Default: `2`

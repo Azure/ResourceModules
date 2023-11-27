@@ -482,9 +482,24 @@ module policySetDefinition 'br:bicep/modules/authorization.policy-set-definition
 | [`policyDefinitionGroups`](#parameter-policydefinitiongroups) | array | The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
 | [`subscriptionId`](#parameter-subscriptionid) | string | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId. |
 
+### Parameter: `name`
+
+Specifies the name of the policy Set Definition (Initiative).
+
+- Required: Yes
+- Type: string
+
+### Parameter: `policyDefinitions`
+
+The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters.
+
+- Required: Yes
+- Type: array
+
 ### Parameter: `description`
 
 The description name of the Set Definition (Initiative).
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -492,6 +507,7 @@ The description name of the Set Definition (Initiative).
 ### Parameter: `displayName`
 
 The display name of the Set Definition (Initiative). Maximum length is 128 characters.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -499,6 +515,7 @@ The display name of the Set Definition (Initiative). Maximum length is 128 chara
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -506,6 +523,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `location`
 
 Location deployment metadata.
+
 - Required: No
 - Type: string
 - Default: `[deployment().location]`
@@ -513,6 +531,7 @@ Location deployment metadata.
 ### Parameter: `managementGroupId`
 
 The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment.
+
 - Required: No
 - Type: string
 - Default: `[managementGroup().name]`
@@ -520,19 +539,15 @@ The group ID of the Management Group (Scope). If not provided, will use the curr
 ### Parameter: `metadata`
 
 The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs.
+
 - Required: No
 - Type: object
 - Default: `{}`
 
-### Parameter: `name`
-
-Specifies the name of the policy Set Definition (Initiative).
-- Required: Yes
-- Type: string
-
 ### Parameter: `parameters`
 
 The Set Definition (Initiative) parameters that can be used in policy definition references.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -540,19 +555,15 @@ The Set Definition (Initiative) parameters that can be used in policy definition
 ### Parameter: `policyDefinitionGroups`
 
 The metadata describing groups of policy definition references within the Policy Set Definition (Initiative).
+
 - Required: No
 - Type: array
 - Default: `[]`
 
-### Parameter: `policyDefinitions`
-
-The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters.
-- Required: Yes
-- Type: array
-
 ### Parameter: `subscriptionId`
 
 The subscription ID of the subscription (Scope). Cannot be used with managementGroupId.
+
 - Required: No
 - Type: string
 - Default: `''`

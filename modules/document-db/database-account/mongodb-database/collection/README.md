@@ -40,46 +40,53 @@ This module deploys a MongoDB Database Collection.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`throughput`](#parameter-throughput) | int | Name of the mongodb database. |
 
-### Parameter: `databaseAccountName`
-
-The name of the parent Cosmos DB database account. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `indexes`
 
 Indexes for the collection.
+
 - Required: Yes
 - Type: array
-
-### Parameter: `mongodbDatabaseName`
-
-The name of the parent mongodb database. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
 
 ### Parameter: `name`
 
 Name of the collection.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `shardKey`
 
 ShardKey for the collection.
+
 - Required: Yes
 - Type: object
+
+### Parameter: `databaseAccountName`
+
+The name of the parent Cosmos DB database account. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `mongodbDatabaseName`
+
+The name of the parent mongodb database. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 ### Parameter: `throughput`
 
 Name of the mongodb database.
+
 - Required: No
 - Type: int
 - Default: `400`
