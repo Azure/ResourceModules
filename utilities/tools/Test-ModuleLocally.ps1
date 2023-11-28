@@ -224,7 +224,7 @@ function Test-ModuleLocally {
         # Load Modules Validation / Deployment Scripts
         . (Join-Path $utilitiesFolderPath 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
         . (Join-Path $utilitiesFolderPath 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
-        . (Join-Path $utilitiesFolderPath 'pipelines' 'resourceDeployment' 'Get-TemplateDeploymenWhatIf.ps1')
+        . (Join-Path $utilitiesFolderPath 'pipelines' 'resourceDeployment' 'Get-TemplateDeploymentWhatIf.ps1')
     }
     process {
 
@@ -342,10 +342,10 @@ function Test-ModuleLocally {
                     foreach ($moduleTestFile in $moduleTestFiles) {
                         Write-Verbose ('Get Deployment What-If result for module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
                         if ((Split-Path $moduleTestFile -Extension) -eq '.json') {
-                            Get-TemplateDeploymenWhatIf @functionInput -ParameterFilePath $moduleTestFile
+                            Get-TemplateDeploymentWhatIf @functionInput -ParameterFilePath $moduleTestFile
                         } else {
                             $functionInput['TemplateFilePath'] = $moduleTestFile
-                            Get-TemplateDeploymenWhatIf @functionInput
+                            Get-TemplateDeploymentWhatIf @functionInput
                         }
                     }
                 }
