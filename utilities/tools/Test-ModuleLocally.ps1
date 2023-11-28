@@ -224,7 +224,7 @@ function Test-ModuleLocally {
         # Load Modules Validation / Deployment Scripts
         . (Join-Path $utilitiesFolderPath 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
         . (Join-Path $utilitiesFolderPath 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
-        . (Join-Path $utilitiesFolderPath 'pipelines' 'resourceDeployment' 'Get-TemplateDeploymentWhatIf.ps1')
+        . (Join-Path $PSScriptRoot 'helper' 'Get-TemplateDeploymentWhatIf.ps1')
     }
     process {
 
