@@ -108,7 +108,8 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     }
     platformReservedCidr: '172.17.17.0/24'
     platformReservedDnsIP: '172.17.17.17'
-    skuName: 'Consumption'
+    infrastructureResourceGroupName: '<infrastructureResourceGroupName>'
+    workloadProfiles: '<workloadProfiles>'
     tags: {
       Env: 'test'
       'hidden-title': 'This is visible in the resource name'
@@ -164,8 +165,8 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     "platformReservedDnsIP": {
       "value": "172.17.17.17"
     },
-    "skuName": {
-      "value": "Consumption"
+    "infrastructureResourceGroupName": {
+      "value": "<infrastructureResourceGroupName>"
     },
     "tags": {
       "value": {
@@ -208,7 +209,8 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     }
     platformReservedCidr: '172.17.17.0/24'
     platformReservedDnsIP: '172.17.17.17'
-    skuName: 'Consumption'
+    infrastructureResourceGroupName: '<infrastructureResourceGroupName>'
+    workloadProfiles: '<workloadProfiles>'
     tags: {
       Env: 'test'
       'hidden-title': 'This is visible in the resource name'
@@ -264,8 +266,8 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     "platformReservedDnsIP": {
       "value": "172.17.17.17"
     },
-    "skuName": {
-      "value": "Consumption"
+    "infrastructureResourceGroupName": {
+      "value": "<infrastructureResourceGroupName>"
     },
     "tags": {
       "value": {
@@ -314,7 +316,7 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
 | [`platformReservedCidr`](#parameter-platformreservedcidr) | string | IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap with any other provided IP ranges and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
 | [`platformReservedDnsIP`](#parameter-platformreserveddnsip) | string | An IP address from the IP range defined by "platformReservedCidr" that will be reserved for the internal DNS server. It must not be the first address in the range and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`skuName`](#parameter-skuname) | string | Managed environment SKU. |
+| [`infrastructureResourceGroupName`](#parameter-infrastructureResourceGroupName) | string | Custom Resource group name for infrastrcuture components. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`workloadProfiles`](#parameter-workloadprofiles) | array | Workload profiles configured for the Managed Environment. |
 | [`zoneRedundant`](#parameter-zoneredundant) | bool | Whether or not this Managed Environment is zone-redundant. |
@@ -561,20 +563,13 @@ The principal type of the assigned principal ID.
   ]
   ```
 
-### Parameter: `skuName`
+### Parameter: `infrastructureResourceGroupName`
 
-Managed environment SKU.
+Customer Resource Group name for additional infrastructure components.
 
 - Required: No
 - Type: string
-- Default: `'Consumption'`
-- Allowed:
-  ```Bicep
-  [
-    'Consumption'
-    'Premium'
-  ]
-  ```
+- Default: `'ME_ManagedEnvironmentName'`
 
 ### Parameter: `tags`
 

@@ -17,12 +17,6 @@ param tags object?
 @description('Optional. Array of role assignments to create.')
 param roleAssignments roleAssignmentType
 
-@allowed([
-  'Consumption'
-  'Premium'
-])
-@description('Optional. Managed environment SKU.')
-param skuName string = 'Consumption'
 
 @description('Optional. Logs destination.')
 param logsDestination string = 'log-analytics'
@@ -73,6 +67,9 @@ param lock lockType
 @description('Optional. Workload profiles configured for the Managed Environment.')
 param workloadProfiles array = []
 
+@description('Optional. Name of the infrastructure resource group. If not provided, it will be set with a default value.')
+param infrastructureResourceGroupName string = take('ME_${name}', 63)
+
 var builtInRoleNames = {
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
   Owner: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
@@ -98,13 +95,10 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06
   scope: resourceGroup(split(logAnalyticsWorkspaceResourceId, '/')[2], split(logAnalyticsWorkspaceResourceId, '/')[4])
 }
 
-resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
+resource managedEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: name
   location: location
   tags: tags
-  sku: {
-    name: skuName
-  }
   properties: {
     appLogsConfiguration: {
       destination: logsDestination
@@ -129,6 +123,7 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
     }
     workloadProfiles: !empty(workloadProfiles) ? workloadProfiles : null
     zoneRedundant: zoneRedundant
+    infrastructureResourceGroup: infrastructureResourceGroupName
   }
 }
 
