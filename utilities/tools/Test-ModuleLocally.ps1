@@ -166,7 +166,7 @@ function Test-ModuleLocally {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $ModuleTestFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
+        [string] $ModuleTestFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) 'tests'),
 
         [Parameter(Mandatory = $false)]
         [string] $PesterTestFilePath = 'utilities/pipelines/staticValidation/module.tests.ps1',
