@@ -37,7 +37,7 @@ Optional. A hashtable parameter that contains custom tokens to be replaced in th
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\network\route-table\main.bicep'
-    ModuleTestFilePath          = 'C:\network\route-table\.test\common\main.test.bicep'
+    ModuleTestFilePath         = 'C:\network\route-table\.test\common\main.test.bicep'
     PesterTest                 = $false
     DeploymentTest             = $false
     WhatIfTest                 = $false
@@ -60,7 +60,7 @@ Run a Test-Az*Deployment using a test file with the provided tokens
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\network\route-table\main.bicep'
-    ModuleTestFilePath          = 'C:\network\route-table\tests\e2e\defaults\main.test.bicep'
+    ModuleTestFilePath         = 'C:\network\route-table\tests\e2e\defaults\main.test.bicep'
     PesterTest                 = $false
     DeploymentTest             = $false
     WhatIfTest                 = $true
@@ -84,7 +84,7 @@ Get What-If deployment result using a specific test-template combination with th
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\network\route-table\main.bicep'
-    ModuleTestFilePath          = 'C:\network\route-table\.test\common\main.test.bicep'
+    ModuleTestFilePath         = 'C:\network\route-table\.test\common\main.test.bicep'
     PesterTest                 = $false
     DeploymentTest             = $false
     WhatIfTest                 = $true
