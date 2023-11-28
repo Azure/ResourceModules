@@ -17,7 +17,6 @@ param tags object?
 @description('Optional. Array of role assignments to create.')
 param roleAssignments roleAssignmentType
 
-
 @description('Optional. Logs destination.')
 param logsDestination string = 'log-analytics'
 

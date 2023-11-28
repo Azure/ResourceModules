@@ -4,11 +4,11 @@ This module deploys an App Managed Environment (also known as a Container App En
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
-- [Usage examples](#Usage-examples)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Cross-referenced modules](#Cross-referenced-modules)
+- [Resource Types](#resource-types)
+- [Usage examples](#usage-examples)
+- [Parameters](#parameters)
+- [Outputs](#outputs)
+- [Cross-referenced modules](#cross-referenced-modules)
 
 ## Resource Types
 
@@ -33,7 +33,6 @@ The following section provides usage examples for the module, which were used to
 ### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
-
 
 <details>
 
@@ -83,7 +82,6 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
 ### Example 2: _Using large parameter set_
 
 This instance deploys the module with most of its features enabled.
-
 
 <details>
 
@@ -185,7 +183,6 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
 
 This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
 
-
 <details>
 
 <summary>via Bicep module</summary>
@@ -282,7 +279,6 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
 </details>
 <p>
 
-
 ## Parameters
 
 **Required parameters**
@@ -316,7 +312,7 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
 | [`platformReservedCidr`](#parameter-platformreservedcidr) | string | IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap with any other provided IP ranges and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
 | [`platformReservedDnsIP`](#parameter-platformreserveddnsip) | string | An IP address from the IP range defined by "platformReservedCidr" that will be reserved for the internal DNS server. It must not be the first address in the range and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`infrastructureResourceGroupName`](#parameter-infrastructureResourceGroupName) | string | Custom Resource group name for infrastrcuture components. |
+| [`infrastructureResourceGroupName`](#parameter-infrastructureresourcegroupname) | string | Custom Resource group name for infrastrcuture components. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`workloadProfiles`](#parameter-workloadprofiles) | array | Workload profiles configured for the Managed Environment. |
 | [`zoneRedundant`](#parameter-zoneredundant) | bool | Whether or not this Managed Environment is zone-redundant. |
@@ -435,6 +431,7 @@ Specify the type of lock.
 - Required: No
 - Type: string
 - Allowed:
+
   ```Bicep
   [
     'CanNotDelete'
@@ -526,6 +523,7 @@ Version of the condition.
 - Required: No
 - Type: string
 - Allowed:
+
   ```Bicep
   [
     '2.0'
@@ -553,6 +551,7 @@ The principal type of the assigned principal ID.
 - Required: No
 - Type: string
 - Allowed:
+
   ```Bicep
   [
     'Device'
@@ -593,7 +592,6 @@ Whether or not this Managed Environment is zone-redundant.
 - Required: No
 - Type: bool
 - Default: `False`
-
 
 ## Outputs
 

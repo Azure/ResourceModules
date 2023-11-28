@@ -27,13 +27,13 @@ param namePrefix string = '[[namePrefix]]'
 
 @description('Optional. WorkloadProfile')
 param workloadProfiles array = [
-    {
-      workloadProfileType: 'D4'
-      name: 'CAW01'
-      minimumCount: 0
-      maximumCount: 3
-    }
-  ]
+  {
+    workloadProfileType: 'D4'
+    name: 'CAW01'
+    minimumCount: 0
+    maximumCount: 3
+  }
+]
 
 // =========== //
 // Deployments //
