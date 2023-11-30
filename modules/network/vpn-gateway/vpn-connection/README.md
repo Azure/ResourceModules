@@ -35,6 +35,7 @@ This module deploys a VPN Gateway VPN Connection.
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`connectionBandwidth`](#parameter-connectionbandwidth) | int | Expected bandwidth in MBPS. |
+| [`dpdTimeoutSeconds`](#parameter-dpdtimeoutseconds) | int | DPD timeout in seconds for vpn connection. |
 | [`enableBgp`](#parameter-enablebgp) | bool | Enable BGP flag. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`enableInternetSecurity`](#parameter-enableinternetsecurity) | bool | Enable internet security. |
@@ -71,6 +72,13 @@ Expected bandwidth in MBPS.
 - Required: No
 - Type: int
 - Default: `10`
+
+### Parameter: `dpdTimeoutSeconds`
+
+DPD timeout in seconds for vpn connection.
+
+- Required: No
+- Type: int
 
 ### Parameter: `enableBgp`
 

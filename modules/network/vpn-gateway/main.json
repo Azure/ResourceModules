@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "8700890331432111745"
+      "templateHash": "1259873595132419366"
     },
     "name": "VPN Gateways",
     "description": "This module deploys a VPN Gateway.",
@@ -147,6 +147,32 @@
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
       "properties": {
+        "copy": [
+          {
+            "name": "connections",
+            "count": "[length(parameters('vpnConnections'))]",
+            "input": {
+              "name": "[parameters('vpnConnections')[copyIndex('connections')].name]",
+              "properties": {
+                "connectionBandwidth": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'connectionBandwidth')]",
+                "enableBgp": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'enableBgp')]",
+                "enableInternetSecurity": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'enableInternetSecurity')]",
+                "remoteVpnSite": "[if(contains(parameters('vpnConnections')[copyIndex('connections')], 'remoteVpnSiteResourceId'), createObject('id', parameters('vpnConnections')[copyIndex('connections')].remoteVpnSiteResourceId), null())]",
+                "enableRateLimiting": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'enableRateLimiting')]",
+                "routingConfiguration": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'routingConfiguration')]",
+                "routingWeight": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'routingWeight')]",
+                "sharedKey": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'sharedKey')]",
+                "useLocalAzureIpAddress": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'useLocalAzureIpAddress')]",
+                "usePolicyBasedTrafficSelectors": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'usePolicyBasedTrafficSelectors')]",
+                "vpnConnectionProtocolType": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'vpnConnectionProtocolType')]",
+                "ipsecPolicies": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'ipsecPolicies')]",
+                "trafficSelectorPolicies": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'trafficSelectorPolicies')]",
+                "vpnLinkConnections": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'vpnLinkConnections')]",
+                "dpdTimeoutSeconds": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'dpdTimeoutSeconds')]"
+              }
+            }
+          }
+        ],
         "bgpSettings": "[parameters('bgpSettings')]",
         "enableBgpRouteTranslationForNat": "[parameters('enableBgpRouteTranslationForNat')]",
         "isRoutingPreferenceInternet": "[parameters('isRoutingPreferenceInternet')]",
@@ -355,32 +381,61 @@
           "vpnGatewayName": {
             "value": "[parameters('name')]"
           },
-          "connectionBandwidth": "[if(contains(parameters('vpnConnections')[copyIndex()], 'connectionBandwidth'), createObject('value', parameters('vpnConnections')[copyIndex()].connectionBandwidth), createObject('value', 10))]",
-          "enableBgp": "[if(contains(parameters('vpnConnections')[copyIndex()], 'enableBgp'), createObject('value', parameters('vpnConnections')[copyIndex()].enableBgp), createObject('value', false()))]",
-          "enableInternetSecurity": "[if(contains(parameters('vpnConnections')[copyIndex()], 'enableInternetSecurity'), createObject('value', parameters('vpnConnections')[copyIndex()].enableInternetSecurity), createObject('value', false()))]",
-          "remoteVpnSiteResourceId": "[if(contains(parameters('vpnConnections')[copyIndex()], 'remoteVpnSiteResourceId'), createObject('value', parameters('vpnConnections')[copyIndex()].remoteVpnSiteResourceId), createObject('value', ''))]",
-          "enableRateLimiting": "[if(contains(parameters('vpnConnections')[copyIndex()], 'enableRateLimiting'), createObject('value', parameters('vpnConnections')[copyIndex()].enableRateLimiting), createObject('value', false()))]",
-          "routingConfiguration": "[if(contains(parameters('vpnConnections')[copyIndex()], 'routingConfiguration'), createObject('value', parameters('vpnConnections')[copyIndex()].routingConfiguration), createObject('value', createObject()))]",
-          "routingWeight": "[if(contains(parameters('vpnConnections')[copyIndex()], 'routingWeight'), createObject('value', parameters('vpnConnections')[copyIndex()].routingWeight), createObject('value', 0))]",
-          "sharedKey": "[if(contains(parameters('vpnConnections')[copyIndex()], 'sharedKey'), createObject('value', parameters('vpnConnections')[copyIndex()].sharedKey), createObject('value', ''))]",
-          "useLocalAzureIpAddress": "[if(contains(parameters('vpnConnections')[copyIndex()], 'useLocalAzureIpAddress'), createObject('value', parameters('vpnConnections')[copyIndex()].useLocalAzureIpAddress), createObject('value', false()))]",
-          "usePolicyBasedTrafficSelectors": "[if(contains(parameters('vpnConnections')[copyIndex()], 'usePolicyBasedTrafficSelectors'), createObject('value', parameters('vpnConnections')[copyIndex()].usePolicyBasedTrafficSelectors), createObject('value', false()))]",
-          "vpnConnectionProtocolType": "[if(contains(parameters('vpnConnections')[copyIndex()], 'vpnConnectionProtocolType'), createObject('value', parameters('vpnConnections')[copyIndex()].vpnConnectionProtocolType), createObject('value', 'IKEv2'))]",
-          "enableDefaultTelemetry": {
-            "value": "[variables('enableReferencedModulesTelemetry')]"
+          "connectionBandwidth": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'connectionBandwidth')]"
           },
-          "ipsecPolicies": "[if(contains(parameters('vpnConnections')[copyIndex()], 'ipsecPolicies'), createObject('value', parameters('vpnConnections')[copyIndex()].ipsecPolicies), createObject('value', createArray()))]",
-          "trafficSelectorPolicies": "[if(contains(parameters('vpnConnections')[copyIndex()], 'trafficSelectorPolicies'), createObject('value', parameters('vpnConnections')[copyIndex()].trafficSelectorPolicies), createObject('value', createArray()))]",
-          "vpnLinkConnections": "[if(contains(parameters('vpnConnections')[copyIndex()], 'vpnLinkConnections'), createObject('value', parameters('vpnConnections')[copyIndex()].vpnLinkConnections), createObject('value', createArray()))]"
+          "enableBgp": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'enableBgp')]"
+          },
+          "enableInternetSecurity": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'enableInternetSecurity')]"
+          },
+          "remoteVpnSiteResourceId": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'remoteVpnSiteResourceId')]"
+          },
+          "enableRateLimiting": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'enableRateLimiting')]"
+          },
+          "routingConfiguration": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'routingConfiguration')]"
+          },
+          "routingWeight": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'routingWeight')]"
+          },
+          "sharedKey": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'sharedKey')]"
+          },
+          "useLocalAzureIpAddress": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'useLocalAzureIpAddress')]"
+          },
+          "usePolicyBasedTrafficSelectors": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'usePolicyBasedTrafficSelectors')]"
+          },
+          "vpnConnectionProtocolType": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'vpnConnectionProtocolType')]"
+          },
+          "enableDefaultTelemetry": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'ipsecPolicies')]"
+          },
+          "trafficSelectorPolicies": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'trafficSelectorPolicies')]"
+          },
+          "vpnLinkConnections": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'vpnLinkConnections')]"
+          },
+          "dpdTimeoutSeconds": {
+            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'dpdTimeoutSeconds')]"
+          }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-              "templateHash": "6383697389251029881"
+              "templateHash": "14722022986555703365"
             },
             "name": "VPN Gateway VPN Connections",
             "description": "This module deploys a VPN Gateway VPN Connection.",
@@ -501,6 +556,13 @@
                 "description": "Optional. Reference to a VPN site to link to."
               }
             },
+            "dpdTimeoutSeconds": {
+              "type": "int",
+              "nullable": true,
+              "metadata": {
+                "description": "Optional. DPD timeout in seconds for vpn connection."
+              }
+            },
             "enableDefaultTelemetry": {
               "type": "bool",
               "defaultValue": true,
@@ -509,8 +571,8 @@
               }
             }
           },
-          "resources": [
-            {
+          "resources": {
+            "defaultTelemetry": {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -524,7 +586,13 @@
                 }
               }
             },
-            {
+            "vpnGateway": {
+              "existing": true,
+              "type": "Microsoft.Network/vpnGateways",
+              "apiVersion": "2023-04-01",
+              "name": "[parameters('vpnGatewayName')]"
+            },
+            "vpnConnection": {
               "type": "Microsoft.Network/vpnGateways/vpnConnections",
               "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('vpnGatewayName'), parameters('name'))]",
@@ -542,10 +610,14 @@
                 "useLocalAzureIpAddress": "[parameters('useLocalAzureIpAddress')]",
                 "usePolicyBasedTrafficSelectors": "[parameters('usePolicyBasedTrafficSelectors')]",
                 "vpnConnectionProtocolType": "[parameters('vpnConnectionProtocolType')]",
-                "vpnLinkConnections": "[parameters('vpnLinkConnections')]"
-              }
+                "vpnLinkConnections": "[parameters('vpnLinkConnections')]",
+                "dpdTimeoutSeconds": "[parameters('dpdTimeoutSeconds')]"
+              },
+              "dependsOn": [
+                "vpnGateway"
+              ]
             }
-          ],
+          },
           "outputs": {
             "name": {
               "type": "string",

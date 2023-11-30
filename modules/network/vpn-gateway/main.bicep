@@ -131,7 +131,7 @@ module vpnGateway_vpnConnections 'vpn-connection/main.bicep' = [for (connection,
     enableDefaultTelemetry: connection.?ipsecPolicies
     trafficSelectorPolicies: connection.?trafficSelectorPolicies
     vpnLinkConnections: connection.?vpnLinkConnections
-    dpdTimeoutSeconds connection.?dpdTimeoutSeconds
+    dpdTimeoutSeconds: connection.?dpdTimeoutSeconds
   }
 }]
 
