@@ -153,9 +153,6 @@ function New-TemplateDeploymentInner {
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
-
-        # Load helper
-        . (Join-Path (Get-Item -Path $PSScriptRoot).parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
     }
 
     process {
@@ -375,6 +372,9 @@ Optional. Maximum retry limit if the deployment fails. Default is 3.
 .PARAMETER doNotThrow
 Optional. Do not throw an exception if it failed. Still returns the error message though
 
+.PARAMETER RepoRoot
+Optional. The path to the repository's root
+
 .EXAMPLE
 New-TemplateDeployment -templateFilePath 'C:/key-vault/vault/main.bicep' -parameterFilePath 'C:/key-vault/vault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
@@ -422,11 +422,17 @@ function New-TemplateDeployment {
         [switch] $doNotThrow,
 
         [Parameter(Mandatory = $false)]
-        [int]$retryLimit = 3
+        [int]$retryLimit = 3,
+
+        [Parameter(Mandatory = $false)]
+        [string] $RepoRoot = (Get-Item -Path $PSScriptRoot).parent.parent.parent.FullName
     )
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
+
+        # Load helper
+        . (Join-Path $RepoRoot 'utilities' 'pipelines' 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
     }
 
     process {

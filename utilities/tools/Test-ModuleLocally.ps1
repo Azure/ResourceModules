@@ -37,31 +37,7 @@ Optional. A hashtable parameter that contains custom tokens to be replaced in th
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\network\route-table\main.bicep'
-    ModuleTestFilePath         = 'C:\network\route-table\.test\parameters.json'
-    PesterTest                 = $false
-    DeploymentTest             = $false
-    WhatIfTest                 = $false
-    ValidationTest             = $true
-    ValidateOrDeployParameters = @{
-        Location          = 'westeurope'
-        ResourceGroupName = 'validation-rg'
-        SubscriptionId    = '00000000-0000-0000-0000-000000000000'
-        ManagementGroupId = '00000000-0000-0000-0000-000000000000'
-        RemoveDeployment  = $false
-    }
-    AdditionalTokens           = @{
-        tenantId = '00000000-0000-0000-0000-000000000000'
-    }
-}
-Test-ModuleLocally @TestModuleLocallyInput -Verbose
-
-Run a Test-Az*Deployment using a specific parameter-template combination with the provided tokens
-
-.EXAMPLE
-
-$TestModuleLocallyInput = @{
-    TemplateFilePath           = 'C:\network\route-table\main.bicep'
-    ModuleTestFilePath          = 'C:\network\route-table\.test\common\main.test.bicep'
+    ModuleTestFilePath         = 'C:\network\route-table\.test\common\main.test.bicep'
     PesterTest                 = $false
     DeploymentTest             = $false
     WhatIfTest                 = $false
@@ -84,7 +60,7 @@ Run a Test-Az*Deployment using a test file with the provided tokens
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\network\route-table\main.bicep'
-    ModuleTestFilePath          = 'C:\network\route-table\.test\parameters.json'
+    ModuleTestFilePath         = 'C:\network\route-table\tests\e2e\defaults\main.test.bicep'
     PesterTest                 = $false
     DeploymentTest             = $false
     WhatIfTest                 = $true
@@ -102,13 +78,13 @@ $TestModuleLocallyInput = @{
 }
 Test-ModuleLocally @TestModuleLocallyInput -Verbose
 
-Get What-If deployment result using a specific parameter-template combination with the provided tokens
+Get What-If deployment result using a specific test-template combination with the provided tokens
 
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\network\route-table\main.bicep'
-    ModuleTestFilePath          = 'C:\network\route-table\.test\common\main.test.bicep'
+    ModuleTestFilePath         = 'C:\network\route-table\.test\common\main.test.bicep'
     PesterTest                 = $false
     DeploymentTest             = $false
     WhatIfTest                 = $true
@@ -190,7 +166,7 @@ function Test-ModuleLocally {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $ModuleTestFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.test'),
+        [string] $ModuleTestFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) 'tests'),
 
         [Parameter(Mandatory = $false)]
         [string] $PesterTestFilePath = 'utilities/pipelines/staticValidation/module.tests.ps1',
@@ -224,7 +200,7 @@ function Test-ModuleLocally {
         # Load Modules Validation / Deployment Scripts
         . (Join-Path $utilitiesFolderPath 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
         . (Join-Path $utilitiesFolderPath 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
-        . (Join-Path $utilitiesFolderPath 'pipelines' 'resourceDeployment' 'Get-TemplateDeploymenWhatIf.ps1')
+        . (Join-Path $PSScriptRoot 'helper' 'Get-TemplateDeploymentWhatIf.ps1')
     }
     process {
 
@@ -327,12 +303,7 @@ function Test-ModuleLocally {
                     # Loop through test files
                     foreach ($moduleTestFile in $moduleTestFiles) {
                         Write-Verbose ('Validating module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                        if ((Split-Path $moduleTestFile -Extension) -eq '.json') {
-                            Test-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
-                        } else {
-                            $functionInput['TemplateFilePath'] = $moduleTestFile
-                            Test-TemplateDeployment @functionInput
-                        }
+                        Test-TemplateDeployment @functionInput -TemplateFilePath $moduleTestFile
                     }
                 }
                 # What-If validation for template
@@ -341,12 +312,7 @@ function Test-ModuleLocally {
                     # Loop through test files
                     foreach ($moduleTestFile in $moduleTestFiles) {
                         Write-Verbose ('Get Deployment What-If result for module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                        if ((Split-Path $moduleTestFile -Extension) -eq '.json') {
-                            Get-TemplateDeploymenWhatIf @functionInput -ParameterFilePath $moduleTestFile
-                        } else {
-                            $functionInput['TemplateFilePath'] = $moduleTestFile
-                            Get-TemplateDeploymenWhatIf @functionInput
-                        }
+                        Get-TemplateDeploymentWhatIf @functionInput -TemplateFilePath $moduleTestFile
                     }
                 }
                 # Deploy template
@@ -356,15 +322,8 @@ function Test-ModuleLocally {
                     # Loop through test files
                     foreach ($moduleTestFile in $moduleTestFiles) {
                         Write-Verbose ('Deploy Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)) -Verbose
-                        if ((Split-Path $moduleTestFile -Extension) -eq '.json') {
-                            if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
-                                New-TemplateDeployment @functionInput -ParameterFilePath $moduleTestFile
-                            }
-                        } else {
-                            $functionInput['TemplateFilePath'] = $moduleTestFile
-                            if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
-                                New-TemplateDeployment @functionInput
-                            }
+                        if ($PSCmdlet.ShouldProcess(('Module [{0}] with test file [{1}]' -f $ModuleName, (Split-Path $moduleTestFile -Leaf)), 'Deploy')) {
+                            New-TemplateDeployment @functionInput -TemplateFilePath $moduleTestFile
                         }
                     }
                 }
