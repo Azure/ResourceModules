@@ -62,25 +62,21 @@ module diagnosticDependencies '../../../../../.shared/.templates/diagnostic.depe
 // Test Execution //
 // ============== //
 
-module testDeployment '../../../main.bicep' = {
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
     name: '${namePrefix}${serviceShort}001'
     defaultDataLakeStorageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     defaultDataLakeStorageFilesystem: nestedDependencies.outputs.storageContainerName
     sqlAdministratorLogin: 'synwsadmin'
     initialWorkspaceAdminObjectID: nestedDependencies.outputs.managedIdentityPrincipalId
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourceIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     privateEndpoints: [
       {
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
@@ -121,4 +117,4 @@ module testDeployment '../../../main.bicep' = {
     ]
     enableDefaultTelemetry: enableDefaultTelemetry
   }
-}
+}]

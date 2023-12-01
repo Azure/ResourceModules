@@ -39,35 +39,17 @@ This module deploys a Data Factory Managed or Self-Hosted Integration Runtime.
 | [`managedVirtualNetworkName`](#parameter-managedvirtualnetworkname) | string | The name of the Managed Virtual Network if using type "Managed" . |
 | [`typeProperties`](#parameter-typeproperties) | object | Integration Runtime type properties. Required if type is "Managed". |
 
-### Parameter: `dataFactoryName`
-
-The name of the parent Azure Data Factory. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
-### Parameter: `managedVirtualNetworkName`
-
-The name of the Managed Virtual Network if using type "Managed" .
-- Required: No
-- Type: string
-- Default: `''`
-
 ### Parameter: `name`
 
 The name of the Integration Runtime.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `type`
 
 The type of Integration Runtime.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -78,9 +60,33 @@ The type of Integration Runtime.
   ]
   ```
 
+### Parameter: `dataFactoryName`
+
+The name of the parent Azure Data Factory. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `managedVirtualNetworkName`
+
+The name of the Managed Virtual Network if using type "Managed" .
+
+- Required: No
+- Type: string
+- Default: `''`
+
 ### Parameter: `typeProperties`
 
 Integration Runtime type properties. Required if type is "Managed".
+
 - Required: No
 - Type: object
 - Default: `{}`

@@ -31,9 +31,17 @@ This module deploys a Service Fabric Cluster Application Type.
 | [`name`](#parameter-name) | string | Application type name. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 
+### Parameter: `serviceFabricClusterName`
+
+The name of the parent Service Fabric cluster. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -41,19 +49,15 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `name`
 
 Application type name.
+
 - Required: No
 - Type: string
 - Default: `'defaultApplicationType'`
 
-### Parameter: `serviceFabricClusterName`
-
-The name of the parent Service Fabric cluster. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 

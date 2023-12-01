@@ -45,6 +45,7 @@ Connectivity configurations define hub-and-spoke or mesh topologies applied to o
 ### Parameter: `appliesToGroups`
 
 Network Groups for the configuration.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -52,6 +53,7 @@ Network Groups for the configuration.
 ### Parameter: `connectivityTopology`
 
 Connectivity topology type.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -62,9 +64,32 @@ Connectivity topology type.
   ]
   ```
 
+### Parameter: `name`
+
+The name of the connectivity configuration.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `hubs`
+
+List of hub items. This will create peerings between the specified hub and the virtual networks in the network group specified. Required if connectivityTopology is of type "HubAndSpoke".
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `networkManagerName`
+
+The name of the parent network manager. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `deleteExistingPeering`
 
 Flag if need to remove current existing peerings. If set to "True", all peerings on virtual networks in selected network groups will be removed and replaced with the peerings defined by this configuration. Optional when connectivityTopology is of type "HubAndSpoke".
+
 - Required: No
 - Type: string
 - Default: `'False'`
@@ -79,6 +104,7 @@ Flag if need to remove current existing peerings. If set to "True", all peerings
 ### Parameter: `description`
 
 A description of the connectivity configuration.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -86,20 +112,15 @@ A description of the connectivity configuration.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `hubs`
-
-List of hub items. This will create peerings between the specified hub and the virtual networks in the network group specified. Required if connectivityTopology is of type "HubAndSpoke".
-- Required: No
-- Type: array
-- Default: `[]`
-
 ### Parameter: `isGlobal`
 
 Flag if global mesh is supported. By default, mesh connectivity is applied to virtual networks within the same region. If set to "True", a global mesh enables connectivity across regions.
+
 - Required: No
 - Type: string
 - Default: `'False'`
@@ -110,18 +131,6 @@ Flag if global mesh is supported. By default, mesh connectivity is applied to vi
     'True'
   ]
   ```
-
-### Parameter: `name`
-
-The name of the connectivity configuration.
-- Required: Yes
-- Type: string
-
-### Parameter: `networkManagerName`
-
-The name of the parent network manager. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

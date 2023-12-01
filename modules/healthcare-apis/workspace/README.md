@@ -139,7 +139,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         location: '<location>'
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             '<managedIdentityResourceId>'
           ]
         }
@@ -183,7 +183,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         location: '<location>'
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             '<managedIdentityResourceId>'
           ]
         }
@@ -211,7 +211,17 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     tags: {
@@ -272,7 +282,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "location": "<location>",
           "managedIdentities": {
             "systemAssigned": false,
-            "userAssignedResourcesIds": [
+            "userAssignedResourceIds": [
               "<managedIdentityResourceId>"
             ]
           },
@@ -320,7 +330,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "location": "<location>",
           "managedIdentities": {
             "systemAssigned": false,
-            "userAssignedResourcesIds": [
+            "userAssignedResourceIds": [
               "<managedIdentityResourceId>"
             ]
           },
@@ -356,7 +366,17 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -421,7 +441,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         location: '<location>'
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             '<managedIdentityResourceId>'
           ]
         }
@@ -465,7 +485,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
         location: '<location>'
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             '<managedIdentityResourceId>'
           ]
         }
@@ -489,13 +509,6 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
       name: 'myCustomLockName'
     }
     publicNetworkAccess: 'Enabled'
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -554,7 +567,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "location": "<location>",
           "managedIdentities": {
             "systemAssigned": false,
-            "userAssignedResourcesIds": [
+            "userAssignedResourceIds": [
               "<managedIdentityResourceId>"
             ]
           },
@@ -602,7 +615,7 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
           "location": "<location>",
           "managedIdentities": {
             "systemAssigned": false,
-            "userAssignedResourcesIds": [
+            "userAssignedResourceIds": [
               "<managedIdentityResourceId>"
             ]
           },
@@ -632,15 +645,6 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
     },
     "publicNetworkAccess": {
       "value": "Enabled"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
     },
     "tags": {
       "value": {
@@ -676,12 +680,20 @@ module workspace 'br:bicep/modules/healthcare-apis.workspace:1.0.0' = {
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
+
+### Parameter: `name`
+
+The name of the Health Data Services Workspace service.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `dicomservices`
 
 Deploy DICOM services.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -689,6 +701,7 @@ Deploy DICOM services.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via the Customer Usage Attribution ID (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -696,6 +709,7 @@ Enable telemetry via the Customer Usage Attribution ID (GUID).
 ### Parameter: `fhirservices`
 
 Deploy FHIR services.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -703,6 +717,7 @@ Deploy FHIR services.
 ### Parameter: `iotconnectors`
 
 Deploy IOT connectors.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -710,6 +725,7 @@ Deploy IOT connectors.
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -717,39 +733,43 @@ Location for all resources.
 ### Parameter: `lock`
 
 The lock settings of the service.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
-| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
 ### Parameter: `lock.kind`
 
-Optional. Specify the type of lock.
+Specify the type of lock.
 
 - Required: No
 - Type: string
-- Allowed: `[CanNotDelete, None, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `lock.name`
 
-Optional. Specify the name of lock.
+Specify the name of lock.
 
 - Required: No
-- Type: string
-
-### Parameter: `name`
-
-The name of the Health Data Services Workspace service.
-- Required: Yes
 - Type: string
 
 ### Parameter: `publicNetworkAccess`
 
 Control permission for data plane traffic coming from public networks while private endpoint is enabled.
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`
@@ -763,75 +783,97 @@ Control permission for data plane traffic coming from public networks while priv
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
+
 - Required: No
 - Type: array
 
+**Required parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+
+### Parameter: `roleAssignments.principalId`
+
+The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `roleAssignments.condition`
 
-Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.conditionVersion`
 
-Optional. Version of the condition.
+Version of the condition.
 
 - Required: No
 - Type: string
-- Allowed: `[2.0]`
+- Allowed:
+  ```Bicep
+  [
+    '2.0'
+  ]
+  ```
 
 ### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
 
-Optional. The Resource Id of the delegated managed identity resource.
+The Resource Id of the delegated managed identity resource.
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.description`
 
-Optional. The description of the role assignment.
+The description of the role assignment.
 
 - Required: No
-- Type: string
-
-### Parameter: `roleAssignments.principalId`
-
-Required. The principal ID of the principal (user/group/identity) to assign the role to.
-
-- Required: Yes
 - Type: string
 
 ### Parameter: `roleAssignments.principalType`
 
-Optional. The principal type of the assigned principal ID.
+The principal type of the assigned principal ID.
 
 - Required: No
 - Type: string
-- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
-
-### Parameter: `roleAssignments.roleDefinitionIdOrName`
-
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
-
-- Required: Yes
-- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Device'
+    'ForeignGroup'
+    'Group'
+    'ServicePrincipal'
+    'User'
+  ]
+  ```
 
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 

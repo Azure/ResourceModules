@@ -109,7 +109,17 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     tags: {
@@ -155,7 +165,17 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -193,7 +213,17 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     sourceUri: '<sourceUri>'
@@ -238,7 +268,17 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -294,7 +334,17 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     tags: {
@@ -358,7 +408,17 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -404,13 +464,6 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
     logicalSectorSize: 512
     osType: 'Windows'
     publicNetworkAccess: 'Enabled'
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
     tags: {
       Environment: 'Non-Prod'
       'hidden-title': 'This is visible in the resource name'
@@ -467,15 +520,6 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
     "publicNetworkAccess": {
       "value": "Enabled"
     },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
@@ -529,16 +573,59 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
 | [`optimizedForFrequentAttach`](#parameter-optimizedforfrequentattach) | bool | Setting this property to true improves reliability and performance of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to another. This property should not be set for disks that are not detached and attached frequently as it causes the disks to not align with the fault domain of the virtual machine. |
 | [`osType`](#parameter-ostype) | string | Sources of a disk creation. |
 | [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Policy for controlling export on the disk. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`securityDataUri`](#parameter-securitydatauri) | string | If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state. |
 | [`sourceResourceId`](#parameter-sourceresourceid) | string | If create option is Copy, this is the ARM ID of the source snapshot or disk. |
 | [`sourceUri`](#parameter-sourceuri) | string | If create option is Import, this is the URI of a blob to be imported into a managed disk. |
 | [`tags`](#parameter-tags) | object | Tags of the availability set resource. |
 | [`uploadSizeBytes`](#parameter-uploadsizebytes) | int | If create option is Upload, this is the size of the contents of the upload including the VHD footer. |
 
+### Parameter: `name`
+
+The name of the disk that is being created.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `sku`
+
+The disks sku name. Can be .
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Premium_LRS'
+    'Premium_ZRS'
+    'Premium_ZRS'
+    'PremiumV2_LRS'
+    'Standard_LRS'
+    'StandardSSD_LRS'
+    'UltraSSD_LRS'
+  ]
+  ```
+
+### Parameter: `diskSizeGB`
+
+The size of the disk to create. Required if create option is Empty.
+
+- Required: No
+- Type: int
+- Default: `0`
+
+### Parameter: `storageAccountId`
+
+The resource ID of the storage account containing the blob to import as a disk. Required if create option is Import.
+
+- Required: No
+- Type: string
+- Default: `''`
+
 ### Parameter: `acceleratedNetwork`
 
 True if the image from which the OS disk is created supports accelerated networking.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -546,6 +633,7 @@ True if the image from which the OS disk is created supports accelerated network
 ### Parameter: `architecture`
 
 CPU architecture supported by an OS disk.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -561,6 +649,7 @@ CPU architecture supported by an OS disk.
 ### Parameter: `burstingEnabled`
 
 Set to true to enable bursting beyond the provisioned performance target of the disk.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -568,6 +657,7 @@ Set to true to enable bursting beyond the provisioned performance target of the 
 ### Parameter: `completionPercent`
 
 Percentage complete for the background copy when a resource is created via the CopyStart operation.
+
 - Required: No
 - Type: int
 - Default: `100`
@@ -575,6 +665,7 @@ Percentage complete for the background copy when a resource is created via the C
 ### Parameter: `createOption`
 
 Sources of a disk creation.
+
 - Required: No
 - Type: string
 - Default: `'Empty'`
@@ -597,6 +688,7 @@ Sources of a disk creation.
 ### Parameter: `diskIOPSReadWrite`
 
 The number of IOPS allowed for this disk; only settable for UltraSSD disks.
+
 - Required: No
 - Type: int
 - Default: `0`
@@ -604,13 +696,7 @@ The number of IOPS allowed for this disk; only settable for UltraSSD disks.
 ### Parameter: `diskMBpsReadWrite`
 
 The bandwidth allowed for this disk; only settable for UltraSSD disks.
-- Required: No
-- Type: int
-- Default: `0`
 
-### Parameter: `diskSizeGB`
-
-The size of the disk to create. Required if create option is Empty.
 - Required: No
 - Type: int
 - Default: `0`
@@ -618,6 +704,7 @@ The size of the disk to create. Required if create option is Empty.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -625,6 +712,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `hyperVGeneration`
 
 The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
+
 - Required: No
 - Type: string
 - Default: `'V2'`
@@ -639,6 +727,7 @@ The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
 ### Parameter: `imageReferenceId`
 
 A relative uri containing either a Platform Image Repository or user image reference.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -646,6 +735,7 @@ A relative uri containing either a Platform Image Repository or user image refer
 ### Parameter: `location`
 
 Resource location.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -653,26 +743,35 @@ Resource location.
 ### Parameter: `lock`
 
 The lock settings of the service.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
-| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
 ### Parameter: `lock.kind`
 
-Optional. Specify the type of lock.
+Specify the type of lock.
 
 - Required: No
 - Type: string
-- Allowed: `[CanNotDelete, None, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `lock.name`
 
-Optional. Specify the name of lock.
+Specify the name of lock.
 
 - Required: No
 - Type: string
@@ -680,6 +779,7 @@ Optional. Specify the name of lock.
 ### Parameter: `logicalSectorSize`
 
 Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096.
+
 - Required: No
 - Type: int
 - Default: `4096`
@@ -687,19 +787,15 @@ Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096.
 ### Parameter: `maxShares`
 
 The maximum number of VMs that can attach to the disk at the same time. Default value is 0.
+
 - Required: No
 - Type: int
 - Default: `1`
 
-### Parameter: `name`
-
-The name of the disk that is being created.
-- Required: Yes
-- Type: string
-
 ### Parameter: `networkAccessPolicy`
 
 Policy for accessing the disk via network.
+
 - Required: No
 - Type: string
 - Default: `'DenyAll'`
@@ -715,6 +811,7 @@ Policy for accessing the disk via network.
 ### Parameter: `optimizedForFrequentAttach`
 
 Setting this property to true improves reliability and performance of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to another. This property should not be set for disks that are not detached and attached frequently as it causes the disks to not align with the fault domain of the virtual machine.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -722,6 +819,7 @@ Setting this property to true improves reliability and performance of data disks
 ### Parameter: `osType`
 
 Sources of a disk creation.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -737,6 +835,7 @@ Sources of a disk creation.
 ### Parameter: `publicNetworkAccess`
 
 Policy for controlling export on the disk.
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`
@@ -750,100 +849,105 @@ Policy for controlling export on the disk.
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
+
 - Required: No
 - Type: array
 
+**Required parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+
+### Parameter: `roleAssignments.principalId`
+
+The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `roleAssignments.condition`
 
-Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.conditionVersion`
 
-Optional. Version of the condition.
+Version of the condition.
 
 - Required: No
 - Type: string
-- Allowed: `[2.0]`
+- Allowed:
+  ```Bicep
+  [
+    '2.0'
+  ]
+  ```
 
 ### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
 
-Optional. The Resource Id of the delegated managed identity resource.
+The Resource Id of the delegated managed identity resource.
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.description`
 
-Optional. The description of the role assignment.
+The description of the role assignment.
 
 - Required: No
-- Type: string
-
-### Parameter: `roleAssignments.principalId`
-
-Required. The principal ID of the principal (user/group/identity) to assign the role to.
-
-- Required: Yes
 - Type: string
 
 ### Parameter: `roleAssignments.principalType`
 
-Optional. The principal type of the assigned principal ID.
+The principal type of the assigned principal ID.
 
 - Required: No
-- Type: string
-- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
-
-### Parameter: `roleAssignments.roleDefinitionIdOrName`
-
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
-
-- Required: Yes
-- Type: string
-
-### Parameter: `securityDataUri`
-
-If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `sku`
-
-The disks sku name. Can be .
-- Required: Yes
 - Type: string
 - Allowed:
   ```Bicep
   [
-    'Premium_LRS'
-    'Premium_ZRS'
-    'Premium_ZRS'
-    'PremiumV2_LRS'
-    'Standard_LRS'
-    'StandardSSD_LRS'
-    'UltraSSD_LRS'
+    'Device'
+    'ForeignGroup'
+    'Group'
+    'ServicePrincipal'
+    'User'
   ]
   ```
+
+### Parameter: `securityDataUri`
+
+If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state.
+
+- Required: No
+- Type: string
+- Default: `''`
 
 ### Parameter: `sourceResourceId`
 
 If create option is Copy, this is the ARM ID of the source snapshot or disk.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -851,13 +955,7 @@ If create option is Copy, this is the ARM ID of the source snapshot or disk.
 ### Parameter: `sourceUri`
 
 If create option is Import, this is the URI of a blob to be imported into a managed disk.
-- Required: No
-- Type: string
-- Default: `''`
 
-### Parameter: `storageAccountId`
-
-The resource ID of the storage account containing the blob to import as a disk. Required if create option is Import.
 - Required: No
 - Type: string
 - Default: `''`
@@ -865,12 +963,14 @@ The resource ID of the storage account containing the blob to import as a disk. 
 ### Parameter: `tags`
 
 Tags of the availability set resource.
+
 - Required: No
 - Type: object
 
 ### Parameter: `uploadSizeBytes`
 
 If create option is Upload, this is the size of the contents of the upload including the VHD footer.
+
 - Required: No
 - Type: int
 - Default: `20972032`

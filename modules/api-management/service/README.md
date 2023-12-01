@@ -194,7 +194,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -250,7 +250,17 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     subscriptions: [
@@ -381,7 +391,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -447,7 +457,17 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -564,7 +584,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -614,13 +634,6 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
         ]
         name: 'Starter'
         subscriptionRequired: false
-      }
-    ]
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
     subscriptions: [
@@ -751,7 +764,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -809,15 +822,6 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
           ],
           "name": "Starter",
           "subscriptionRequired": false
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
@@ -882,7 +886,7 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
 | [`portalsettings`](#parameter-portalsettings) | array | Portal settings. |
 | [`products`](#parameter-products) | array | Products. |
 | [`restore`](#parameter-restore) | bool | Undelete API Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`sku`](#parameter-sku) | string | The pricing tier of this API Management service. |
 | [`skuCount`](#parameter-skucount) | int | The instance size of this API Management service. |
 | [`subnetResourceId`](#parameter-subnetresourceid) | string | The full resource ID of a subnet in a virtual network to deploy the API Management service in. |
@@ -891,9 +895,31 @@ module service 'br:bicep/modules/api-management.service:1.0.0' = {
 | [`virtualNetworkType`](#parameter-virtualnetworktype) | string | The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. |
 | [`zones`](#parameter-zones) | array | A list of availability zones denoting where the resource needs to come from. |
 
+### Parameter: `name`
+
+The name of the API Management service.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `publisherEmail`
+
+The email address of the owner of the service.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `publisherName`
+
+The name of the owner of the service.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `additionalLocations`
 
 Additional datacenter locations of the API Management service.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -901,6 +927,7 @@ Additional datacenter locations of the API Management service.
 ### Parameter: `apis`
 
 APIs.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -908,6 +935,7 @@ APIs.
 ### Parameter: `apiVersionSets`
 
 API Version Sets.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -915,6 +943,7 @@ API Version Sets.
 ### Parameter: `authorizationServers`
 
 Authorization servers.
+
 - Required: No
 - Type: secureObject
 - Default: `{}`
@@ -922,6 +951,7 @@ Authorization servers.
 ### Parameter: `backends`
 
 Backends.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -929,6 +959,7 @@ Backends.
 ### Parameter: `caches`
 
 Caches.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -936,6 +967,7 @@ Caches.
 ### Parameter: `certificates`
 
 List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -943,6 +975,7 @@ List of Certificates that need to be installed in the API Management service. Ma
 ### Parameter: `customProperties`
 
 Custom properties of the API Management service.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -950,114 +983,90 @@ Custom properties of the API Management service.
 ### Parameter: `diagnosticSettings`
 
 The diagnostic settings of the service.
+
 - Required: No
 - Type: array
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
-| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
-| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | No | string | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | No | string | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`name`](#parameter-diagnosticsettingsname) | string | The name of diagnostic setting. |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
-Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.eventHubName`
 
-Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.logAnalyticsDestinationType`
 
-Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
+A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
 
 - Required: No
 - Type: string
-- Allowed: `[AzureDiagnostics, Dedicated]`
+- Allowed:
+  ```Bicep
+  [
+    'AzureDiagnostics'
+    'Dedicated'
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings.logCategoriesAndGroups`
 
-Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
 
 - Required: No
 - Type: array
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`category`](#parameter-diagnosticsettingslogcategoriesandgroupscategory) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
-| [`categoryGroup`](#parameter-diagnosticsettingslogcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs. |
-
-### Parameter: `diagnosticSettings.logCategoriesAndGroups.category`
-
-Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.
-
-- Required: No
-- Type: string
-
-### Parameter: `diagnosticSettings.logCategoriesAndGroups.categoryGroup`
-
-Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs.
-
-- Required: No
-- Type: string
-
-
 ### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
 
-Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.metricCategories`
 
-Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
 
 - Required: No
 - Type: array
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`category`](#parameter-diagnosticsettingsmetriccategoriescategory) | Yes | string | Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics. |
-
-### Parameter: `diagnosticSettings.metricCategories.category`
-
-Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics.
-
-- Required: Yes
-- Type: string
-
-
 ### Parameter: `diagnosticSettings.name`
 
-Optional. The name of diagnostic setting.
+The name of diagnostic setting.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.storageAccountResourceId`
 
-Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.workspaceResourceId`
 
-Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
 
 - Required: No
 - Type: string
@@ -1065,6 +1074,7 @@ Optional. Resource ID of the diagnostic log analytics workspace. For security re
 ### Parameter: `disableGateway`
 
 Property only valid for an API Management service deployed in multiple locations. This can be used to disable the gateway in master region.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -1072,6 +1082,7 @@ Property only valid for an API Management service deployed in multiple locations
 ### Parameter: `enableClientCertificate`
 
 Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the gateway.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -1079,6 +1090,7 @@ Property only meant to be used for Consumption SKU Service. This enforces a clie
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -1086,6 +1098,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `hostnameConfigurations`
 
 Custom hostname configuration of the API Management service.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1093,6 +1106,7 @@ Custom hostname configuration of the API Management service.
 ### Parameter: `identityProviders`
 
 Identity providers.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1100,6 +1114,7 @@ Identity providers.
 ### Parameter: `location`
 
 Location for all Resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -1107,26 +1122,35 @@ Location for all Resources.
 ### Parameter: `lock`
 
 The lock settings of the service.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
-| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
 ### Parameter: `lock.kind`
 
-Optional. Specify the type of lock.
+Specify the type of lock.
 
 - Required: No
 - Type: string
-- Allowed: `[CanNotDelete, None, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `lock.name`
 
-Optional. Specify the name of lock.
+Specify the name of lock.
 
 - Required: No
 - Type: string
@@ -1134,25 +1158,27 @@ Optional. Specify the name of lock.
 ### Parameter: `managedIdentities`
 
 The managed identity definition for this resource.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | bool | Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
-Optional. Enables system assigned managed identity on the resource.
+Enables system assigned managed identity on the resource.
 
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
-Optional. The resource ID(s) to assign to the resource.
+The resource ID(s) to assign to the resource.
 
 - Required: No
 - Type: array
@@ -1160,19 +1186,15 @@ Optional. The resource ID(s) to assign to the resource.
 ### Parameter: `minApiVersion`
 
 Limit control plane API calls to API Management service with version equal to or newer than this value.
+
 - Required: No
 - Type: string
 - Default: `''`
 
-### Parameter: `name`
-
-The name of the API Management service.
-- Required: Yes
-- Type: string
-
 ### Parameter: `namedValues`
 
 Named values.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1180,6 +1202,7 @@ Named values.
 ### Parameter: `newGuidValue`
 
 Necessary to create a new GUID.
+
 - Required: No
 - Type: string
 - Default: `[newGuid()]`
@@ -1187,6 +1210,7 @@ Necessary to create a new GUID.
 ### Parameter: `notificationSenderEmail`
 
 The notification sender email address for the service.
+
 - Required: No
 - Type: string
 - Default: `'apimgmt-noreply@mail.windowsazure.com'`
@@ -1194,6 +1218,7 @@ The notification sender email address for the service.
 ### Parameter: `policies`
 
 Policies.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1201,6 +1226,7 @@ Policies.
 ### Parameter: `portalsettings`
 
 Portal settings.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1208,100 +1234,112 @@ Portal settings.
 ### Parameter: `products`
 
 Products.
+
 - Required: No
 - Type: array
 - Default: `[]`
 
-### Parameter: `publisherEmail`
-
-The email address of the owner of the service.
-- Required: Yes
-- Type: string
-
-### Parameter: `publisherName`
-
-The name of the owner of the service.
-- Required: Yes
-- Type: string
-
 ### Parameter: `restore`
 
 Undelete API Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored.
+
 - Required: No
 - Type: bool
 - Default: `False`
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
+
 - Required: No
 - Type: array
 
+**Required parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+
+### Parameter: `roleAssignments.principalId`
+
+The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `roleAssignments.condition`
 
-Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.conditionVersion`
 
-Optional. Version of the condition.
+Version of the condition.
 
 - Required: No
 - Type: string
-- Allowed: `[2.0]`
+- Allowed:
+  ```Bicep
+  [
+    '2.0'
+  ]
+  ```
 
 ### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
 
-Optional. The Resource Id of the delegated managed identity resource.
+The Resource Id of the delegated managed identity resource.
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.description`
 
-Optional. The description of the role assignment.
+The description of the role assignment.
 
 - Required: No
-- Type: string
-
-### Parameter: `roleAssignments.principalId`
-
-Required. The principal ID of the principal (user/group/identity) to assign the role to.
-
-- Required: Yes
 - Type: string
 
 ### Parameter: `roleAssignments.principalType`
 
-Optional. The principal type of the assigned principal ID.
+The principal type of the assigned principal ID.
 
 - Required: No
 - Type: string
-- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
-
-### Parameter: `roleAssignments.roleDefinitionIdOrName`
-
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
-
-- Required: Yes
-- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Device'
+    'ForeignGroup'
+    'Group'
+    'ServicePrincipal'
+    'User'
+  ]
+  ```
 
 ### Parameter: `sku`
 
 The pricing tier of this API Management service.
+
 - Required: No
 - Type: string
 - Default: `'Developer'`
@@ -1319,6 +1357,7 @@ The pricing tier of this API Management service.
 ### Parameter: `skuCount`
 
 The instance size of this API Management service.
+
 - Required: No
 - Type: int
 - Default: `1`
@@ -1333,6 +1372,7 @@ The instance size of this API Management service.
 ### Parameter: `subnetResourceId`
 
 The full resource ID of a subnet in a virtual network to deploy the API Management service in.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -1340,6 +1380,7 @@ The full resource ID of a subnet in a virtual network to deploy the API Manageme
 ### Parameter: `subscriptions`
 
 Subscriptions.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1347,12 +1388,14 @@ Subscriptions.
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 
 ### Parameter: `virtualNetworkType`
 
 The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only.
+
 - Required: No
 - Type: string
 - Default: `'None'`
@@ -1368,6 +1411,7 @@ The type of VPN in which API Management service needs to be configured in. None 
 ### Parameter: `zones`
 
 A list of availability zones denoting where the resource needs to come from.
+
 - Required: No
 - Type: array
 - Default: `[]`

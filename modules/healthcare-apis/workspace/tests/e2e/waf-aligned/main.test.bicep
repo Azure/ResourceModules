@@ -105,7 +105,7 @@ module testDeployment '../../../main.bicep' = {
         enableDefaultTelemetry: enableDefaultTelemetry
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             nestedDependencies.outputs.managedIdentityResourceId
           ]
         }
@@ -148,17 +148,10 @@ module testDeployment '../../../main.bicep' = {
         enableDefaultTelemetry: enableDefaultTelemetry
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             nestedDependencies.outputs.managedIdentityResourceId
           ]
         } }
-    ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
     ]
     tags: {
       'hidden-title': 'This is visible in the resource name'

@@ -211,9 +211,17 @@ module managementGroup 'br:bicep/modules/management.management-group:1.0.0' = {
 | [`location`](#parameter-location) | string | Location deployment metadata. |
 | [`parentId`](#parameter-parentid) | string | The management group parent ID. Defaults to current scope. |
 
+### Parameter: `name`
+
+The group ID of the Management group.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `displayName`
 
 The friendly name of the management group. If no value is passed then this field will be set to the group ID.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -221,6 +229,7 @@ The friendly name of the management group. If no value is passed then this field
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -228,19 +237,15 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `location`
 
 Location deployment metadata.
+
 - Required: No
 - Type: string
 - Default: `[deployment().location]`
 
-### Parameter: `name`
-
-The group ID of the Management group.
-- Required: Yes
-- Type: string
-
 ### Parameter: `parentId`
 
 The management group parent ID. Defaults to current scope.
+
 - Required: No
 - Type: string
 - Default: `[last(split(managementGroup().id, '/'))]`

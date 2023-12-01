@@ -92,7 +92,7 @@ module testDeployment '../../../main.bicep' = {
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[0]
+        vnetSubnetID: nestedDependencies.outputs.systemPoolSubnetResourceId
       }
     ]
     agentPools: [
@@ -119,7 +119,7 @@ module testDeployment '../../../main.bicep' = {
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[1]
+        vnetSubnetID: nestedDependencies.outputs.agentPool1SubnetResourceId
         proximityPlacementGroupResourceId: nestedDependencies.outputs.proximityPlacementGroupResourceId
       }
       {
@@ -145,7 +145,7 @@ module testDeployment '../../../main.bicep' = {
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[2]
+        vnetSubnetID: nestedDependencies.outputs.agentPool2SubnetResourceId
       }
     ]
     autoUpgradeProfileUpgradeChannel: 'stable'
@@ -175,7 +175,7 @@ module testDeployment '../../../main.bicep' = {
     enableStorageProfileFileCSIDriver: true
     enableStorageProfileSnapshotController: true
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }
@@ -189,13 +189,28 @@ module testDeployment '../../../main.bicep' = {
     enableAzureDefender: true
     enableKeyvaultSecretsProvider: true
     enablePodSecurityPolicy: false
+    customerManagedKey: {
+      keyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
+      keyVaultNetworkAccess: 'Public'
+      keyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    }
     lock: {
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalType: 'ServicePrincipal'
+      }
+      {
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
+        principalType: 'ServicePrincipal'
+      }
+      {
+        roleDefinitionIdOrName: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
         principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         principalType: 'ServicePrincipal'
       }

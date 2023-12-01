@@ -99,7 +99,7 @@ module testDeployment '../../../main.bicep' = {
         // Must be false if `primaryUserAssignedIdentity` is provided
         managedIdentities: {
           systemAssigned: false
-          userAssignedResourcesIds: [
+          userAssignedResourceIds: [
             nestedDependencies.outputs.managedIdentityResourceId
           ]
         }
@@ -140,16 +140,9 @@ module testDeployment '../../../main.bicep' = {
         }
       }
     ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     managedIdentities: {
       systemAssigned: false
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }

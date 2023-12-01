@@ -164,7 +164,17 @@ module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     sigImageDefinitionId: '<sigImageDefinitionId>'
@@ -249,7 +259,17 @@ module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -332,13 +352,6 @@ module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0
     }
     managedImageName: 'mi-vmiitwaf-001'
     osDiskSizeGB: 127
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
     sigImageDefinitionId: '<sigImageDefinitionId>'
     sigImageVersion: '<sigImageVersion>'
     stagingResourceGroup: '<stagingResourceGroup>'
@@ -416,15 +429,6 @@ module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0
     "osDiskSizeGB": {
       "value": 127
     },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
     "sigImageDefinitionId": {
       "value": "<sigImageDefinitionId>"
     },
@@ -489,7 +493,7 @@ module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`managedImageName`](#parameter-managedimagename) | string | Name of the managed image that will be created in the AIB resourcegroup. |
 | [`osDiskSizeGB`](#parameter-osdisksizegb) | int | Specifies the size of OS disk. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`sigImageDefinitionId`](#parameter-sigimagedefinitionid) | string | Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>. |
 | [`sigImageVersion`](#parameter-sigimageversion) | string | Version of the Shared Image Gallery Image. Supports the following Version Syntax: Major.Minor.Build (i.e., '1.1.1' or '10.1.2'). |
 | [`stagingResourceGroup`](#parameter-stagingresourcegroup) | string | Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.</p>If this field is empty, a resource group with a random name will be created.</p>If the resource group specified in this field doesn't exist, it will be created with the same name.</p>If the resource group specified exists, it must be empty and in the same region as the image template.</p>The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn't exist,</p>but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain. |
@@ -507,29 +511,46 @@ module imageTemplate 'br:bicep/modules/virtual-machine-images.image-template:1.0
 | :-- | :-- | :-- |
 | [`baseTime`](#parameter-basetime) | string | Do not provide a value! This date value is used to generate a unique image template name. |
 
-### Parameter: `baseTime`
+### Parameter: `customizationSteps`
 
-Do not provide a value! This date value is used to generate a unique image template name.
-- Required: No
+Customization steps to be run when building the VM image.
+
+- Required: Yes
+- Type: array
+
+### Parameter: `imageSource`
+
+Image source definition in object format.
+
+- Required: Yes
+- Type: object
+
+### Parameter: `name`
+
+Name prefix of the Image Template to be built by the Azure Image Builder service.
+
+- Required: Yes
 - Type: string
-- Default: `[utcNow('yyyy-MM-dd-HH-mm-ss')]`
+
+### Parameter: `userMsiName`
+
+Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `buildTimeoutInMinutes`
 
 Image build timeout in minutes. Allowed values: 0-960. 0 means the default 240 minutes.
+
 - Required: No
 - Type: int
 - Default: `0`
 
-### Parameter: `customizationSteps`
-
-Customization steps to be run when building the VM image.
-- Required: Yes
-- Type: array
-
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -537,6 +558,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `excludeFromLatest`
 
 Exclude the created Azure Compute Gallery image version from the latest.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -544,19 +566,15 @@ Exclude the created Azure Compute Gallery image version from the latest.
 ### Parameter: `imageReplicationRegions`
 
 List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment's location will be taken as a default value.
+
 - Required: No
 - Type: array
 - Default: `[]`
 
-### Parameter: `imageSource`
-
-Image source definition in object format.
-- Required: Yes
-- Type: object
-
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -564,26 +582,35 @@ Location for all resources.
 ### Parameter: `lock`
 
 The lock settings of the service.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
-| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
 ### Parameter: `lock.kind`
 
-Optional. Specify the type of lock.
+Specify the type of lock.
 
 - Required: No
 - Type: string
-- Allowed: `[CanNotDelete, None, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `lock.name`
 
-Optional. Specify the name of lock.
+Specify the name of lock.
 
 - Required: No
 - Type: string
@@ -591,94 +618,112 @@ Optional. Specify the name of lock.
 ### Parameter: `managedImageName`
 
 Name of the managed image that will be created in the AIB resourcegroup.
+
 - Required: No
 - Type: string
 - Default: `''`
 
-### Parameter: `name`
-
-Name prefix of the Image Template to be built by the Azure Image Builder service.
-- Required: Yes
-- Type: string
-
 ### Parameter: `osDiskSizeGB`
 
 Specifies the size of OS disk.
+
 - Required: No
 - Type: int
 - Default: `128`
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
+
 - Required: No
 - Type: array
 
+**Required parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+
+### Parameter: `roleAssignments.principalId`
+
+The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `roleAssignments.condition`
 
-Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.conditionVersion`
 
-Optional. Version of the condition.
+Version of the condition.
 
 - Required: No
 - Type: string
-- Allowed: `[2.0]`
+- Allowed:
+  ```Bicep
+  [
+    '2.0'
+  ]
+  ```
 
 ### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
 
-Optional. The Resource Id of the delegated managed identity resource.
+The Resource Id of the delegated managed identity resource.
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.description`
 
-Optional. The description of the role assignment.
+The description of the role assignment.
 
 - Required: No
-- Type: string
-
-### Parameter: `roleAssignments.principalId`
-
-Required. The principal ID of the principal (user/group/identity) to assign the role to.
-
-- Required: Yes
 - Type: string
 
 ### Parameter: `roleAssignments.principalType`
 
-Optional. The principal type of the assigned principal ID.
+The principal type of the assigned principal ID.
 
 - Required: No
 - Type: string
-- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
-
-### Parameter: `roleAssignments.roleDefinitionIdOrName`
-
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
-
-- Required: Yes
-- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Device'
+    'ForeignGroup'
+    'Group'
+    'ServicePrincipal'
+    'User'
+  ]
+  ```
 
 ### Parameter: `sigImageDefinitionId`
 
 Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -686,6 +731,7 @@ Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions
 ### Parameter: `sigImageVersion`
 
 Version of the Shared Image Gallery Image. Supports the following Version Syntax: Major.Minor.Build (i.e., '1.1.1' or '10.1.2').
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -693,6 +739,7 @@ Version of the Shared Image Gallery Image. Supports the following Version Syntax
 ### Parameter: `stagingResourceGroup`
 
 Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.</p>If this field is empty, a resource group with a random name will be created.</p>If the resource group specified in this field doesn't exist, it will be created with the same name.</p>If the resource group specified exists, it must be empty and in the same region as the image template.</p>The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn't exist,</p>but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -700,6 +747,7 @@ Resource ID of the staging resource group in the same subscription and location 
 ### Parameter: `storageAccountType`
 
 Storage account type to be used to store the image in the Azure Compute Gallery.
+
 - Required: No
 - Type: string
 - Default: `'Standard_LRS'`
@@ -714,6 +762,7 @@ Storage account type to be used to store the image in the Azure Compute Gallery.
 ### Parameter: `subnetId`
 
 Resource ID of an already existing subnet, e.g.: /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>.</p>If no value is provided, a new temporary VNET and subnet will be created in the staging resource group and will be deleted along with the remaining temporary resources.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -721,12 +770,14 @@ Resource ID of an already existing subnet, e.g.: /subscriptions/<subscriptionId>
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 
 ### Parameter: `unManagedImageName`
 
 Name of the unmanaged image that will be created in the AIB resourcegroup.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -734,19 +785,15 @@ Name of the unmanaged image that will be created in the AIB resourcegroup.
 ### Parameter: `userAssignedIdentities`
 
 List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.</p>Be aware, the user assigned identity specified in the 'userMsiName' parameter must have the 'Managed Identity Operator' role assignment on all the user assigned identities specified in this parameter for Azure Image Builder to be able to associate them to the build VM.
+
 - Required: No
 - Type: array
 - Default: `[]`
 
-### Parameter: `userMsiName`
-
-Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder.
-- Required: Yes
-- Type: string
-
 ### Parameter: `userMsiResourceGroup`
 
 Resource group of the user assigned identity.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().name]`
@@ -754,9 +801,18 @@ Resource group of the user assigned identity.
 ### Parameter: `vmSize`
 
 Specifies the size for the VM.
+
 - Required: No
 - Type: string
 - Default: `'Standard_D2s_v3'`
+
+### Parameter: `baseTime`
+
+Do not provide a value! This date value is used to generate a unique image template name.
+
+- Required: No
+- Type: string
+- Default: `[utcNow('yyyy-MM-dd-HH-mm-ss')]`
 
 
 ## Outputs

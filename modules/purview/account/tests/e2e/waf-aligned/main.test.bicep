@@ -61,9 +61,10 @@ module diagnosticDependencies '../../../../../.shared/.templates/diagnostic.depe
 // Test Execution //
 // ============== //
 
-module testDeployment '../../../main.bicep' = {
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '${namePrefix}${serviceShort}001'
     location: location
@@ -73,7 +74,7 @@ module testDeployment '../../../main.bicep' = {
       Role: 'DeploymentValidation'
     }
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }
@@ -91,13 +92,6 @@ module testDeployment '../../../main.bicep' = {
         eventHubAuthorizationRuleResourceId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
         storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
         workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-      }
-    ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
       }
     ]
     accountPrivateEndpoints: [
@@ -176,4 +170,4 @@ module testDeployment '../../../main.bicep' = {
       name: 'myCustomLockName'
     }
   }
-}
+}]

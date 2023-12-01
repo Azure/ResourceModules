@@ -65,21 +65,26 @@ module diagnosticDependencies '../../../../../.shared/.templates/diagnostic.depe
 // Test Execution //
 // ============== //
 
-module testDeployment '../../../main.bicep' = {
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
     eventHubEndpoint: {
       authenticationType: 'IdentityBased'
       endpointUri: 'sb://${nestedDependencies.outputs.eventhubNamespaceName}.servicebus.windows.net/'
       entityPath: nestedDependencies.outputs.eventhubName
-      userAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
+      managedIdentities: {
+        userAssignedResourceId: nestedDependencies.outputs.managedIdentityResourceId
+      }
     }
     serviceBusEndpoint: {
       authenticationType: 'IdentityBased'
       endpointUri: 'sb://${nestedDependencies.outputs.serviceBusName}.servicebus.windows.net/'
       entityPath: nestedDependencies.outputs.serviceBusTopicName
-      userAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
+      managedIdentities: {
+        userAssignedResourceId: nestedDependencies.outputs.managedIdentityResourceId
+      }
     }
     eventGridEndpoint: {
       eventGridDomainId: nestedDependencies.outputs.eventGridDomainResourceId
@@ -87,8 +92,10 @@ module testDeployment '../../../main.bicep' = {
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-    userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    managedIdentities: {
+      userAssignedResourceIds: [
+        nestedDependencies.outputs.managedIdentityResourceId
+      ]
     }
     diagnosticSettings: [
       {
@@ -129,4 +136,4 @@ module testDeployment '../../../main.bicep' = {
       Role: 'DeploymentValidation'
     }
   }
-}
+}]

@@ -37,9 +37,24 @@ This module deploys a SQL Managed Instance Security Alert Policy.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`state`](#parameter-state) | string | Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided. |
 
+### Parameter: `name`
+
+The name of the security alert policy.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `managedInstanceName`
+
+The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `emailAccountAdmins`
 
 Specifies that the schedule scan notification will be is sent to the subscription administrators.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -47,25 +62,15 @@ Specifies that the schedule scan notification will be is sent to the subscriptio
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `managedInstanceName`
-
-The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `name`
-
-The name of the security alert policy.
-- Required: Yes
-- Type: string
-
 ### Parameter: `state`
 
 Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided.
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`

@@ -36,9 +36,24 @@ This module deploys a Private Endpoint Private DNS Zone Group.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable/Disable usage telemetry for module. |
 | [`name`](#parameter-name) | string | The name of the private DNS zone group. |
 
+### Parameter: `privateDNSResourceIds`
+
+Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones.
+
+- Required: Yes
+- Type: array
+
+### Parameter: `privateEndpointName`
+
+The name of the parent private endpoint. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `enableDefaultTelemetry`
 
 Enable/Disable usage telemetry for module.
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -46,21 +61,10 @@ Enable/Disable usage telemetry for module.
 ### Parameter: `name`
 
 The name of the private DNS zone group.
+
 - Required: No
 - Type: string
 - Default: `'default'`
-
-### Parameter: `privateDNSResourceIds`
-
-Array of private DNS zone resource IDs. A DNS zone group can support up to 5 DNS zones.
-- Required: Yes
-- Type: array
-
-### Parameter: `privateEndpointName`
-
-The name of the parent private endpoint. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

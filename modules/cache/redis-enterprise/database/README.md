@@ -41,9 +41,50 @@ This module deploys a Redis Cache Enterprise Database.
 | [`persistenceRdbEnabled`](#parameter-persistencerdbenabled) | bool | Sets whether RDB is enabled. RDB and AOF persistence cannot be enabled at the same time. |
 | [`port`](#parameter-port) | int | TCP port of the database endpoint. Specified at create time. Default is (-1) meaning value is not set and defaults to an available port. Current supported port is 10000. |
 
+### Parameter: `persistenceAofFrequency`
+
+Sets the frequency at which data is written to disk. Required if AOF persistence is enabled.
+
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    '1s'
+    'always'
+  ]
+  ```
+
+### Parameter: `persistenceRdbFrequency`
+
+Sets the frequency at which a snapshot of the database is created. Required if RDB persistence is enabled.
+
+- Required: No
+- Type: string
+- Default: `''`
+- Allowed:
+  ```Bicep
+  [
+    ''
+    '12h'
+    '1h'
+    '6h'
+  ]
+  ```
+
+### Parameter: `redisCacheEnterpriseName`
+
+The name of the parent Redis Cache Enterprise Cluster. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `clientProtocol`
 
 Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is TLS-encrypted.
+
 - Required: No
 - Type: string
 - Default: `'Encrypted'`
@@ -58,6 +99,7 @@ Specifies whether redis clients can connect using TLS-encrypted or plaintext red
 ### Parameter: `clusteringPolicy`
 
 Specifies the clustering policy to enable at creation time of the Redis Cache Enterprise Cluster.
+
 - Required: No
 - Type: string
 - Default: `'OSSCluster'`
@@ -72,6 +114,7 @@ Specifies the clustering policy to enable at creation time of the Redis Cache En
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -79,6 +122,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `evictionPolicy`
 
 Redis eviction policy - default is VolatileLRU.
+
 - Required: No
 - Type: string
 - Default: `'VolatileLRU'`
@@ -99,6 +143,7 @@ Redis eviction policy - default is VolatileLRU.
 ### Parameter: `geoReplication`
 
 Optional set of properties to configure geo replication for this database. Geo replication prerequisites must be met. See "https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-active-geo-replication#active-geo-replication-prerequisites" for more information.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -106,6 +151,7 @@ Optional set of properties to configure geo replication for this database. Geo r
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -113,6 +159,7 @@ Location for all resources.
 ### Parameter: `modules`
 
 Optional set of redis modules to enable in this database - modules can only be added at creation time.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -120,60 +167,26 @@ Optional set of redis modules to enable in this database - modules can only be a
 ### Parameter: `persistenceAofEnabled`
 
 Sets whether AOF is enabled. Required if setting AOF frequency. AOF and RDB persistence cannot be enabled at the same time.
+
 - Required: No
 - Type: bool
 - Default: `False`
-
-### Parameter: `persistenceAofFrequency`
-
-Sets the frequency at which data is written to disk. Required if AOF persistence is enabled.
-- Required: No
-- Type: string
-- Default: `''`
-- Allowed:
-  ```Bicep
-  [
-    ''
-    '1s'
-    'always'
-  ]
-  ```
 
 ### Parameter: `persistenceRdbEnabled`
 
 Sets whether RDB is enabled. RDB and AOF persistence cannot be enabled at the same time.
+
 - Required: No
 - Type: bool
 - Default: `False`
 
-### Parameter: `persistenceRdbFrequency`
-
-Sets the frequency at which a snapshot of the database is created. Required if RDB persistence is enabled.
-- Required: No
-- Type: string
-- Default: `''`
-- Allowed:
-  ```Bicep
-  [
-    ''
-    '12h'
-    '1h'
-    '6h'
-  ]
-  ```
-
 ### Parameter: `port`
 
 TCP port of the database endpoint. Specified at create time. Default is (-1) meaning value is not set and defaults to an available port. Current supported port is 10000.
+
 - Required: No
 - Type: int
 - Default: `-1`
-
-### Parameter: `redisCacheEnterpriseName`
-
-The name of the parent Redis Cache Enterprise Cluster. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

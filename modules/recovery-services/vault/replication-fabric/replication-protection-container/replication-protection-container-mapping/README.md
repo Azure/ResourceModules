@@ -39,9 +39,31 @@ This module deploys a Recovery Services Vault (RSV) Replication Protection Conta
 | [`targetContainerName`](#parameter-targetcontainername) | string | Name of the target container. Must be specified if targetProtectionContainerId is not. If targetProtectionContainerId is specified, this parameter will be ignored. |
 | [`targetProtectionContainerId`](#parameter-targetprotectioncontainerid) | string | Resource ID of the target Replication container. Must be specified if targetContainerName is not. If specified, targetContainerFabricName and targetContainerName will be ignored. |
 
+### Parameter: `recoveryVaultName`
+
+The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `replicationFabricName`
+
+The name of the parent Replication Fabric. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `sourceProtectionContainerName`
+
+The name of the parent source Replication container. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -49,6 +71,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `name`
 
 The name of the replication container mapping. If not provided, it will be automatically generated as `<source_container_name>-<target_container_name>`.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -56,6 +79,7 @@ The name of the replication container mapping. If not provided, it will be autom
 ### Parameter: `policyId`
 
 Resource ID of the replication policy. If defined, policyName will be ignored.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -63,31 +87,15 @@ Resource ID of the replication policy. If defined, policyName will be ignored.
 ### Parameter: `policyName`
 
 Name of the replication policy. Will be ignored if policyId is also specified.
+
 - Required: No
 - Type: string
 - Default: `''`
 
-### Parameter: `recoveryVaultName`
-
-The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `replicationFabricName`
-
-The name of the parent Replication Fabric. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `sourceProtectionContainerName`
-
-The name of the parent source Replication container. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `targetContainerFabricName`
 
 Name of the fabric containing the target container. If targetProtectionContainerId is specified, this parameter will be ignored.
+
 - Required: No
 - Type: string
 - Default: `[parameters('replicationFabricName')]`
@@ -95,6 +103,7 @@ Name of the fabric containing the target container. If targetProtectionContainer
 ### Parameter: `targetContainerName`
 
 Name of the target container. Must be specified if targetProtectionContainerId is not. If targetProtectionContainerId is specified, this parameter will be ignored.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -102,6 +111,7 @@ Name of the target container. Must be specified if targetProtectionContainerId i
 ### Parameter: `targetProtectionContainerId`
 
 Resource ID of the target Replication container. Must be specified if targetContainerName is not. If specified, targetContainerFabricName and targetContainerName will be ignored.
+
 - Required: No
 - Type: string
 - Default: `''`

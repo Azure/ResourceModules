@@ -46,9 +46,10 @@ module nestedDependencies 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 var resourceName = '${namePrefix}${serviceShort}001'
-module testDeployment '../../../main.bicep' = {
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: resourceName
@@ -145,17 +146,10 @@ module testDeployment '../../../main.bicep' = {
       }
     ]
     sendRecvTimeoutSeconds: 10
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     tags: {
       'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
   }
-}
+}]

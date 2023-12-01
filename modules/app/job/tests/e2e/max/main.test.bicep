@@ -68,7 +68,7 @@ module testDeployment '../../../main.bicep' = {
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }
@@ -115,7 +115,7 @@ module testDeployment '../../../main.bicep' = {
     ]
     roleAssignments: [
       {
-        principalId: nestedDependencies.outputs.managedIdentityResourceId
+        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
         roleDefinitionIdOrName: 'ContainerApp Reader'
         principalType: 'ServicePrincipal'
       }

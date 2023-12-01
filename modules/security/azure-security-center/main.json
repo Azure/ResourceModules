@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "6628258573559470770"
+      "version": "0.23.1.45101",
+      "templateHash": "9701989179534275854"
     },
     "name": "Azure Security Center (Defender for Cloud)",
     "description": "This module deploys an Azure Security Center (Defender for Cloud) Configuration.",
@@ -366,8 +366,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "15519935694361963633"
+              "version": "0.23.1.45101",
+              "templateHash": "17940871522867244658"
             }
           },
           "parameters": {

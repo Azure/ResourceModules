@@ -73,9 +73,10 @@ module diagnosticDependencies '../../../../../.shared/.templates/diagnostic.depe
 // Test Execution //
 // ============== //
 
-module testDeployment '../../../main.bicep' = {
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}-${serviceShort}'
@@ -138,13 +139,6 @@ module testDeployment '../../../main.bicep' = {
     primaryUserAssignedIdentityId: nestedDependencies.outputs.managedIdentityResourceId
     proxyOverride: 'Proxy'
     publicDataEndpointEnabled: false
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalId: nestedDependencies.outputs.managedIdentityPrincipalId
-        principalType: 'ServicePrincipal'
-      }
-    ]
     securityAlertPoliciesObj: {
       emailAccountAdmins: true
       name: 'default'
@@ -156,7 +150,7 @@ module testDeployment '../../../main.bicep' = {
     storageSizeInGB: 32
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         nestedDependencies.outputs.managedIdentityResourceId
       ]
     }
@@ -178,4 +172,4 @@ module testDeployment '../../../main.bicep' = {
       }
     }
   }
-}
+}]

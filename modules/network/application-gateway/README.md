@@ -240,7 +240,7 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
       name: 'myCustomLockName'
     }
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -427,7 +427,17 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
       {
         principalId: '<principalId>'
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '<principalId>'
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
       }
     ]
     sku: 'WAF_v2'
@@ -705,7 +715,7 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
     },
     "managedIdentities": {
       "value": {
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -906,7 +916,17 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
         {
           "principalId": "<principalId>",
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+        },
+        {
+          "principalId": "<principalId>",
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
         }
       ]
     },
@@ -1174,7 +1194,7 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
       name: 'myCustomLockName'
     }
     managedIdentities: {
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -1355,13 +1375,6 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
             }
           ]
         }
-      }
-    ]
-    roleAssignments: [
-      {
-        principalId: '<principalId>'
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
     sku: 'WAF_v2'
@@ -1639,7 +1652,7 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
     },
     "managedIdentities": {
       "value": {
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -1835,15 +1848,6 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
         }
       ]
     },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalId": "<principalId>",
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
     "sku": {
       "value": "WAF_v2"
     },
@@ -1943,7 +1947,7 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
 | [`redirectConfigurations`](#parameter-redirectconfigurations) | array | Redirect configurations of the application gateway resource. |
 | [`requestRoutingRules`](#parameter-requestroutingrules) | array | Request routing rules of the application gateway resource. |
 | [`rewriteRuleSets`](#parameter-rewriterulesets) | array | Rewrite rules for the application gateway resource. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`routingRules`](#parameter-routingrules) | array | Routing rules of the application gateway resource. |
 | [`sku`](#parameter-sku) | string | The name of the SKU for the Application Gateway. |
 | [`sslCertificates`](#parameter-sslcertificates) | array | SSL certificates of the application gateway resource. |
@@ -1959,9 +1963,17 @@ module applicationGateway 'br:bicep/modules/network.application-gateway:1.0.0' =
 | [`webApplicationFirewallConfiguration`](#parameter-webapplicationfirewallconfiguration) | object | Application gateway web application firewall configuration. Should be configured for security reasons. |
 | [`zones`](#parameter-zones) | array | A list of availability zones denoting where the resource needs to come from. |
 
+### Parameter: `name`
+
+Name of the Application Gateway.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `authenticationCertificates`
 
 Authentication certificates of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1969,6 +1981,7 @@ Authentication certificates of the application gateway resource.
 ### Parameter: `autoscaleMaxCapacity`
 
 Upper bound on number of Application Gateway capacity.
+
 - Required: No
 - Type: int
 - Default: `-1`
@@ -1976,6 +1989,7 @@ Upper bound on number of Application Gateway capacity.
 ### Parameter: `autoscaleMinCapacity`
 
 Lower bound on number of Application Gateway capacity.
+
 - Required: No
 - Type: int
 - Default: `-1`
@@ -1983,6 +1997,7 @@ Lower bound on number of Application Gateway capacity.
 ### Parameter: `backendAddressPools`
 
 Backend address pool of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1990,6 +2005,7 @@ Backend address pool of the application gateway resource.
 ### Parameter: `backendHttpSettingsCollection`
 
 Backend http settings of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1997,6 +2013,7 @@ Backend http settings of the application gateway resource.
 ### Parameter: `backendSettingsCollection`
 
 Backend settings of the application gateway resource. For default limits, see [Application Gateway limits](https://learn.microsoft.com/en-us/azure/azure-subscription-service-limits#application-gateway-limits).
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2004,6 +2021,7 @@ Backend settings of the application gateway resource. For default limits, see [A
 ### Parameter: `capacity`
 
 The number of Application instances to be configured.
+
 - Required: No
 - Type: int
 - Default: `2`
@@ -2011,6 +2029,7 @@ The number of Application instances to be configured.
 ### Parameter: `customErrorConfigurations`
 
 Custom error configurations of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2018,114 +2037,90 @@ Custom error configurations of the application gateway resource.
 ### Parameter: `diagnosticSettings`
 
 The diagnostic settings of the service.
+
 - Required: No
 - Type: array
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
-| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
-| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | No | string | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | No | string | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`name`](#parameter-diagnosticsettingsname) | string | The name of diagnostic setting. |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
-Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.eventHubName`
 
-Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.logAnalyticsDestinationType`
 
-Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
+A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
 
 - Required: No
 - Type: string
-- Allowed: `[AzureDiagnostics, Dedicated]`
+- Allowed:
+  ```Bicep
+  [
+    'AzureDiagnostics'
+    'Dedicated'
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings.logCategoriesAndGroups`
 
-Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
 
 - Required: No
 - Type: array
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`category`](#parameter-diagnosticsettingslogcategoriesandgroupscategory) | No | string | Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here. |
-| [`categoryGroup`](#parameter-diagnosticsettingslogcategoriesandgroupscategorygroup) | No | string | Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs. |
-
-### Parameter: `diagnosticSettings.logCategoriesAndGroups.category`
-
-Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.
-
-- Required: No
-- Type: string
-
-### Parameter: `diagnosticSettings.logCategoriesAndGroups.categoryGroup`
-
-Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to 'AllLogs' to collect all logs.
-
-- Required: No
-- Type: string
-
-
 ### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
 
-Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.metricCategories`
 
-Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
 
 - Required: No
 - Type: array
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`category`](#parameter-diagnosticsettingsmetriccategoriescategory) | Yes | string | Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics. |
-
-### Parameter: `diagnosticSettings.metricCategories.category`
-
-Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics.
-
-- Required: Yes
-- Type: string
-
-
 ### Parameter: `diagnosticSettings.name`
 
-Optional. The name of diagnostic setting.
+The name of diagnostic setting.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.storageAccountResourceId`
 
-Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.workspaceResourceId`
 
-Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
 
 - Required: No
 - Type: string
@@ -2133,6 +2128,7 @@ Optional. Resource ID of the diagnostic log analytics workspace. For security re
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -2140,6 +2136,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `enableFips`
 
 Whether FIPS is enabled on the application gateway resource.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -2147,6 +2144,7 @@ Whether FIPS is enabled on the application gateway resource.
 ### Parameter: `enableHttp2`
 
 Whether HTTP2 is enabled on the application gateway resource.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -2154,6 +2152,7 @@ Whether HTTP2 is enabled on the application gateway resource.
 ### Parameter: `enableRequestBuffering`
 
 Enable request buffering.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -2161,6 +2160,7 @@ Enable request buffering.
 ### Parameter: `enableResponseBuffering`
 
 Enable response buffering.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -2168,6 +2168,7 @@ Enable response buffering.
 ### Parameter: `firewallPolicyId`
 
 The resource ID of an associated firewall policy. Should be configured for security reasons.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -2175,6 +2176,7 @@ The resource ID of an associated firewall policy. Should be configured for secur
 ### Parameter: `frontendIPConfigurations`
 
 Frontend IP addresses of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2182,6 +2184,7 @@ Frontend IP addresses of the application gateway resource.
 ### Parameter: `frontendPorts`
 
 Frontend ports of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2189,6 +2192,7 @@ Frontend ports of the application gateway resource.
 ### Parameter: `gatewayIPConfigurations`
 
 Subnets of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2196,6 +2200,7 @@ Subnets of the application gateway resource.
 ### Parameter: `httpListeners`
 
 Http listeners of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2203,6 +2208,7 @@ Http listeners of the application gateway resource.
 ### Parameter: `listeners`
 
 Listeners of the application gateway resource. For default limits, see [Application Gateway limits](https://learn.microsoft.com/en-us/azure/azure-subscription-service-limits#application-gateway-limits).
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2210,6 +2216,7 @@ Listeners of the application gateway resource. For default limits, see [Applicat
 ### Parameter: `loadDistributionPolicies`
 
 Load distribution policies of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2217,6 +2224,7 @@ Load distribution policies of the application gateway resource.
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -2224,26 +2232,35 @@ Location for all resources.
 ### Parameter: `lock`
 
 The lock settings of the service.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
-| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
 ### Parameter: `lock.kind`
 
-Optional. Specify the type of lock.
+Specify the type of lock.
 
 - Required: No
 - Type: string
-- Allowed: `[CanNotDelete, None, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `lock.name`
 
-Optional. Specify the name of lock.
+Specify the name of lock.
 
 - Required: No
 - Type: string
@@ -2251,221 +2268,267 @@ Optional. Specify the name of lock.
 ### Parameter: `managedIdentities`
 
 The managed identity definition for this resource.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | Yes | array | Optional. The resource ID(s) to assign to the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
-Optional. The resource ID(s) to assign to the resource.
+The resource ID(s) to assign to the resource.
 
 - Required: Yes
 - Type: array
-
-### Parameter: `name`
-
-Name of the Application Gateway.
-- Required: Yes
-- Type: string
 
 ### Parameter: `privateEndpoints`
 
 Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.
-- Required: No
-- Type: array
-
-
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`applicationSecurityGroupResourceIds`](#parameter-privateendpointsapplicationsecuritygroupresourceids) | No | array | Optional. Application security groups in which the private endpoint IP configuration is included. |
-| [`customDnsConfigs`](#parameter-privateendpointscustomdnsconfigs) | No | array | Optional. Custom DNS configurations. |
-| [`customNetworkInterfaceName`](#parameter-privateendpointscustomnetworkinterfacename) | No | string | Optional. The custom name of the network interface attached to the private endpoint. |
-| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry) | No | bool | Optional. Enable/Disable usage telemetry for module. |
-| [`ipConfigurations`](#parameter-privateendpointsipconfigurations) | No | array | Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
-| [`location`](#parameter-privateendpointslocation) | No | string | Optional. The location to deploy the private endpoint to. |
-| [`lock`](#parameter-privateendpointslock) | No | object | Optional. Specify the type of lock. |
-| [`manualPrivateLinkServiceConnections`](#parameter-privateendpointsmanualprivatelinkserviceconnections) | No | array | Optional. Manual PrivateLink Service Connections. |
-| [`name`](#parameter-privateendpointsname) | No | string | Optional. The name of the private endpoint. |
-| [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | No | string | Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided. |
-| [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | No | array | Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
-| [`roleAssignments`](#parameter-privateendpointsroleassignments) | No | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| [`service`](#parameter-privateendpointsservice) | Yes | string | Required. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
-| [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | Yes | string | Required. Resource ID of the subnet where the endpoint needs to be created. |
-| [`tags`](#parameter-privateendpointstags) | No | object | Optional. Tags to be applied on all resources/resource groups in this deployment. |
-
-### Parameter: `privateEndpoints.applicationSecurityGroupResourceIds`
-
-Optional. Application security groups in which the private endpoint IP configuration is included.
 
 - Required: No
 - Type: array
 
-### Parameter: `privateEndpoints.customDnsConfigs`
+**Required parameters**
 
-Optional. Custom DNS configurations.
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`service`](#parameter-privateendpointsservice) | string | The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
+| [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | string | Resource ID of the subnet where the endpoint needs to be created. |
 
-- Required: No
-- Type: array
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`fqdn`](#parameter-privateendpointscustomdnsconfigsfqdn) | No | string | Required. Fqdn that resolves to private endpoint ip address. |
-| [`ipAddresses`](#parameter-privateendpointscustomdnsconfigsipaddresses) | Yes | array | Required. A list of private ip addresses of the private endpoint. |
-
-### Parameter: `privateEndpoints.customDnsConfigs.fqdn`
-
-Required. Fqdn that resolves to private endpoint ip address.
-
-- Required: No
-- Type: string
-
-### Parameter: `privateEndpoints.customDnsConfigs.ipAddresses`
-
-Required. A list of private ip addresses of the private endpoint.
-
-- Required: Yes
-- Type: array
-
-
-### Parameter: `privateEndpoints.customNetworkInterfaceName`
-
-Optional. The custom name of the network interface attached to the private endpoint.
-
-- Required: No
-- Type: string
-
-### Parameter: `privateEndpoints.enableTelemetry`
-
-Optional. Enable/Disable usage telemetry for module.
-
-- Required: No
-- Type: bool
-
-### Parameter: `privateEndpoints.ipConfigurations`
-
-Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.
-
-- Required: No
-- Type: array
-
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`name`](#parameter-privateendpointsipconfigurationsname) | Yes | string | Required. The name of the resource that is unique within a resource group. |
-| [`properties`](#parameter-privateendpointsipconfigurationsproperties) | Yes | object | Required. Properties of private endpoint IP configurations. |
-
-### Parameter: `privateEndpoints.ipConfigurations.name`
-
-Required. The name of the resource that is unique within a resource group.
-
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.properties`
-
-Required. Properties of private endpoint IP configurations.
-
-- Required: Yes
-- Type: object
-
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`groupId`](#parameter-privateendpointsipconfigurationspropertiesgroupid) | Yes | string | Required. The ID of a group obtained from the remote resource that this private endpoint should connect to. |
-| [`memberName`](#parameter-privateendpointsipconfigurationspropertiesmembername) | Yes | string | Required. The member name of a group obtained from the remote resource that this private endpoint should connect to. |
-| [`privateIPAddress`](#parameter-privateendpointsipconfigurationspropertiesprivateipaddress) | Yes | string | Required. A private ip address obtained from the private endpoint's subnet. |
-
-### Parameter: `privateEndpoints.ipConfigurations.properties.groupId`
-
-Required. The ID of a group obtained from the remote resource that this private endpoint should connect to.
-
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.properties.memberName`
-
-Required. The member name of a group obtained from the remote resource that this private endpoint should connect to.
-
-- Required: Yes
-- Type: string
-
-### Parameter: `privateEndpoints.ipConfigurations.properties.privateIPAddress`
-
-Required. A private ip address obtained from the private endpoint's subnet.
-
-- Required: Yes
-- Type: string
-
-
-
-### Parameter: `privateEndpoints.location`
-
-Optional. The location to deploy the private endpoint to.
-
-- Required: No
-- Type: string
-
-### Parameter: `privateEndpoints.lock`
-
-Optional. Specify the type of lock.
-
-- Required: No
-- Type: object
-
-### Parameter: `privateEndpoints.manualPrivateLinkServiceConnections`
-
-Optional. Manual PrivateLink Service Connections.
-
-- Required: No
-- Type: array
-
-### Parameter: `privateEndpoints.name`
-
-Optional. The name of the private endpoint.
-
-- Required: No
-- Type: string
-
-### Parameter: `privateEndpoints.privateDnsZoneGroupName`
-
-Optional. The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided.
-
-- Required: No
-- Type: string
-
-### Parameter: `privateEndpoints.privateDnsZoneResourceIds`
-
-Optional. The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones.
-
-- Required: No
-- Type: array
-
-### Parameter: `privateEndpoints.roleAssignments`
-
-Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
-
-- Required: No
-- Type: array
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`applicationSecurityGroupResourceIds`](#parameter-privateendpointsapplicationsecuritygroupresourceids) | array | Application security groups in which the private endpoint IP configuration is included. |
+| [`customDnsConfigs`](#parameter-privateendpointscustomdnsconfigs) | array | Custom DNS configurations. |
+| [`customNetworkInterfaceName`](#parameter-privateendpointscustomnetworkinterfacename) | string | The custom name of the network interface attached to the private endpoint. |
+| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
+| [`ipConfigurations`](#parameter-privateendpointsipconfigurations) | array | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
+| [`location`](#parameter-privateendpointslocation) | string | The location to deploy the private endpoint to. |
+| [`lock`](#parameter-privateendpointslock) | object | Specify the type of lock. |
+| [`manualPrivateLinkServiceConnections`](#parameter-privateendpointsmanualprivatelinkserviceconnections) | array | Manual PrivateLink Service Connections. |
+| [`name`](#parameter-privateendpointsname) | string | The name of the private endpoint. |
+| [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | string | The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided. |
+| [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | array | The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
+| [`roleAssignments`](#parameter-privateendpointsroleassignments) | array | Array of role assignments to create. |
+| [`tags`](#parameter-privateendpointstags) | object | Tags to be applied on all resources/resource groups in this deployment. |
 
 ### Parameter: `privateEndpoints.service`
 
-Required. The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob".
+The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob".
 
 - Required: Yes
 - Type: string
 
 ### Parameter: `privateEndpoints.subnetResourceId`
 
-Required. Resource ID of the subnet where the endpoint needs to be created.
+Resource ID of the subnet where the endpoint needs to be created.
 
 - Required: Yes
 - Type: string
 
+### Parameter: `privateEndpoints.applicationSecurityGroupResourceIds`
+
+Application security groups in which the private endpoint IP configuration is included.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.customDnsConfigs`
+
+Custom DNS configurations.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.customNetworkInterfaceName`
+
+The custom name of the network interface attached to the private endpoint.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.enableTelemetry`
+
+Enable/Disable usage telemetry for module.
+
+- Required: No
+- Type: bool
+
+### Parameter: `privateEndpoints.ipConfigurations`
+
+A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.location`
+
+The location to deploy the private endpoint to.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.lock`
+
+Specify the type of lock.
+
+- Required: No
+- Type: object
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-privateendpointslockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-privateendpointslockname) | string | Specify the name of lock. |
+
+### Parameter: `privateEndpoints.lock.kind`
+
+Specify the type of lock.
+
+- Required: No
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
+
+### Parameter: `privateEndpoints.lock.name`
+
+Specify the name of lock.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.manualPrivateLinkServiceConnections`
+
+Manual PrivateLink Service Connections.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.name`
+
+The name of the private endpoint.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.privateDnsZoneGroupName`
+
+The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.privateDnsZoneResourceIds`
+
+The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones.
+
+- Required: No
+- Type: array
+
+### Parameter: `privateEndpoints.roleAssignments`
+
+Array of role assignments to create.
+
+- Required: No
+- Type: array
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`principalId`](#parameter-privateendpointsroleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`roleDefinitionIdOrName`](#parameter-privateendpointsroleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`condition`](#parameter-privateendpointsroleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-privateendpointsroleassignmentsconditionversion) | string | Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-privateendpointsroleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-privateendpointsroleassignmentsdescription) | string | The description of the role assignment. |
+| [`principalType`](#parameter-privateendpointsroleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+
+### Parameter: `privateEndpoints.roleAssignments.principalId`
+
+The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.roleAssignments.roleDefinitionIdOrName`
+
+The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateEndpoints.roleAssignments.condition`
+
+The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.roleAssignments.conditionVersion`
+
+Version of the condition.
+
+- Required: No
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    '2.0'
+  ]
+  ```
+
+### Parameter: `privateEndpoints.roleAssignments.delegatedManagedIdentityResourceId`
+
+The Resource Id of the delegated managed identity resource.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.roleAssignments.description`
+
+The description of the role assignment.
+
+- Required: No
+- Type: string
+
+### Parameter: `privateEndpoints.roleAssignments.principalType`
+
+The principal type of the assigned principal ID.
+
+- Required: No
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Device'
+    'ForeignGroup'
+    'Group'
+    'ServicePrincipal'
+    'User'
+  ]
+  ```
+
 ### Parameter: `privateEndpoints.tags`
 
-Optional. Tags to be applied on all resources/resource groups in this deployment.
+Tags to be applied on all resources/resource groups in this deployment.
 
 - Required: No
 - Type: object
@@ -2473,6 +2536,7 @@ Optional. Tags to be applied on all resources/resource groups in this deployment
 ### Parameter: `privateLinkConfigurations`
 
 PrivateLink configurations on application gateway.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2480,6 +2544,7 @@ PrivateLink configurations on application gateway.
 ### Parameter: `probes`
 
 Probes of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2487,6 +2552,7 @@ Probes of the application gateway resource.
 ### Parameter: `redirectConfigurations`
 
 Redirect configurations of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2494,6 +2560,7 @@ Redirect configurations of the application gateway resource.
 ### Parameter: `requestRoutingRules`
 
 Request routing rules of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2501,81 +2568,104 @@ Request routing rules of the application gateway resource.
 ### Parameter: `rewriteRuleSets`
 
 Rewrite rules for the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
+
 - Required: No
 - Type: array
 
+**Required parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+
+### Parameter: `roleAssignments.principalId`
+
+The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `roleAssignments.condition`
 
-Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.conditionVersion`
 
-Optional. Version of the condition.
+Version of the condition.
 
 - Required: No
 - Type: string
-- Allowed: `[2.0]`
+- Allowed:
+  ```Bicep
+  [
+    '2.0'
+  ]
+  ```
 
 ### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
 
-Optional. The Resource Id of the delegated managed identity resource.
+The Resource Id of the delegated managed identity resource.
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.description`
 
-Optional. The description of the role assignment.
+The description of the role assignment.
 
 - Required: No
-- Type: string
-
-### Parameter: `roleAssignments.principalId`
-
-Required. The principal ID of the principal (user/group/identity) to assign the role to.
-
-- Required: Yes
 - Type: string
 
 ### Parameter: `roleAssignments.principalType`
 
-Optional. The principal type of the assigned principal ID.
+The principal type of the assigned principal ID.
 
 - Required: No
 - Type: string
-- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
-
-### Parameter: `roleAssignments.roleDefinitionIdOrName`
-
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
-
-- Required: Yes
-- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Device'
+    'ForeignGroup'
+    'Group'
+    'ServicePrincipal'
+    'User'
+  ]
+  ```
 
 ### Parameter: `routingRules`
 
 Routing rules of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2583,6 +2673,7 @@ Routing rules of the application gateway resource.
 ### Parameter: `sku`
 
 The name of the SKU for the Application Gateway.
+
 - Required: No
 - Type: string
 - Default: `'WAF_Medium'`
@@ -2602,6 +2693,7 @@ The name of the SKU for the Application Gateway.
 ### Parameter: `sslCertificates`
 
 SSL certificates of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2609,6 +2701,7 @@ SSL certificates of the application gateway resource.
 ### Parameter: `sslPolicyCipherSuites`
 
 Ssl cipher suites to be enabled in the specified order to application gateway.
+
 - Required: No
 - Type: array
 - Default:
@@ -2655,6 +2748,7 @@ Ssl cipher suites to be enabled in the specified order to application gateway.
 ### Parameter: `sslPolicyMinProtocolVersion`
 
 Ssl protocol enums.
+
 - Required: No
 - Type: string
 - Default: `'TLSv1_2'`
@@ -2671,6 +2765,7 @@ Ssl protocol enums.
 ### Parameter: `sslPolicyName`
 
 Ssl predefined policy name enums.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -2689,6 +2784,7 @@ Ssl predefined policy name enums.
 ### Parameter: `sslPolicyType`
 
 Type of Ssl Policy.
+
 - Required: No
 - Type: string
 - Default: `'Custom'`
@@ -2704,6 +2800,7 @@ Type of Ssl Policy.
 ### Parameter: `sslProfiles`
 
 SSL profiles of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2711,12 +2808,14 @@ SSL profiles of the application gateway resource.
 ### Parameter: `tags`
 
 Resource tags.
+
 - Required: No
 - Type: object
 
 ### Parameter: `trustedClientCertificates`
 
 Trusted client certificates of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2724,6 +2823,7 @@ Trusted client certificates of the application gateway resource.
 ### Parameter: `trustedRootCertificates`
 
 Trusted Root certificates of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2731,6 +2831,7 @@ Trusted Root certificates of the application gateway resource.
 ### Parameter: `urlPathMaps`
 
 URL path map of the application gateway resource.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -2738,6 +2839,7 @@ URL path map of the application gateway resource.
 ### Parameter: `webApplicationFirewallConfiguration`
 
 Application gateway web application firewall configuration. Should be configured for security reasons.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -2745,6 +2847,7 @@ Application gateway web application firewall configuration. Should be configured
 ### Parameter: `zones`
 
 A list of availability zones denoting where the resource needs to come from.
+
 - Required: No
 - Type: array
 - Default: `[]`

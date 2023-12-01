@@ -36,30 +36,34 @@ This module deploys a Private Link Scope Scoped Resource.
 | :-- | :-- | :-- |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `linkedResourceId`
 
 The resource ID of the scoped Azure monitor resource.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `name`
 
 Name of the private link scoped resource.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `privateLinkScopeName`
 
 The name of the parent private link scope. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 
 ## Outputs

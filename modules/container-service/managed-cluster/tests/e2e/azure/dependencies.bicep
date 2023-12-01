@@ -79,6 +79,13 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-11-01' = {
       kty: 'RSA'
     }
   }
+
+  resource kmskey 'keys@2022-07-01' = {
+    name: 'kmsEncryptionKey'
+    properties: {
+      kty: 'RSA'
+    }
+  }
 }
 
 resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2022-07-02' = {
@@ -98,6 +105,16 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2022-07-02' = {
   }
 }
 
+resource keyPermissionsKeyVaultCryptoUser 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-KeyVault-Crypto-User-RoleAssignment')
+  scope: keyVault
+  properties: {
+    principalId: managedIdentity.properties.principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424') // KeyVault-Crypto-User
+    principalType: 'ServicePrincipal'
+  }
+}
+
 resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-KeyVault-Key-Read-RoleAssignment')
   scope: keyVault
@@ -112,13 +129,6 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
   name: proximityPlacementGroupName
   location: location
 }
-
-@description('The resource ID of the created Virtual Network Subnet.')
-output subnetResourceIds array = [
-  virtualNetwork.properties.subnets[0].id
-  virtualNetwork.properties.subnets[1].id
-  virtualNetwork.properties.subnets[2].id
-]
 
 resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' = {
   name: dnsZoneName
@@ -160,3 +170,18 @@ output dnsZoneResourceId string = dnsZone.id
 
 @description('The resource ID of the created Log Analytics Workspace.')
 output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace.id
+
+@description('The resource ID of the created Key Vault.')
+output keyVaultResourceId string = keyVault.id
+
+@description('The name of the Key Vault Encryption Key.')
+output keyVaultEncryptionKeyName string = keyVault::key.name
+
+@description('The resource ID of the created Virtual Network System Agent Pool Subnet.')
+output systemPoolSubnetResourceId string = virtualNetwork.properties.subnets[0].id
+
+@description('The resource ID of the created Virtual Network Agent Pool 1 Subnet.')
+output agentPool1SubnetResourceId string = virtualNetwork.properties.subnets[1].id
+
+@description('The resource ID of the created Virtual Network Agent Pool 2 Subnet.')
+output agentPool2SubnetResourceId string = virtualNetwork.properties.subnets[2].id
