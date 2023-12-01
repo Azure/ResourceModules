@@ -37,28 +37,32 @@ This module deploys a CDN Profile rule set.
 | :-- | :-- | :-- |
 | [`rules`](#parameter-rules) | array | The rules to apply to the rule set. |
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `name`
 
 The name of the rule set.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `profileName`
 
 The name of the CDN profile.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 ### Parameter: `rules`
 
 The rules to apply to the rule set.
+
 - Required: No
 - Type: array
 - Default: `[]`

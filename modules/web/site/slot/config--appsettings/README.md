@@ -41,36 +41,10 @@ This module deploys a Site Slot App Setting.
 | [`setAzureWebJobsDashboard`](#parameter-setazurewebjobsdashboard) | bool | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
 | [`storageAccountResourceId`](#parameter-storageaccountresourceid) | string | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
 
-### Parameter: `appInsightResourceId`
-
-Resource ID of the app insight to leverage for this resource.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `appName`
-
-The name of the parent site resource. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `appSettingsKeyValuePairs`
-
-The app settings key-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING.
-- Required: No
-- Type: object
-- Default: `{}`
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via the Customer Usage Attribution ID (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `kind`
 
 Type of slot to deploy.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -84,22 +58,56 @@ Type of slot to deploy.
   ]
   ```
 
+### Parameter: `slotName`
+
+Slot name to be configured.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `appName`
+
+The name of the parent site resource. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `appInsightResourceId`
+
+Resource ID of the app insight to leverage for this resource.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `appSettingsKeyValuePairs`
+
+The app settings key-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING.
+
+- Required: No
+- Type: object
+- Default: `{}`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via the Customer Usage Attribution ID (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
 ### Parameter: `setAzureWebJobsDashboard`
 
 For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons.
+
 - Required: No
 - Type: bool
 - Default: `[if(contains(parameters('kind'), 'functionapp'), true(), false())]`
 
-### Parameter: `slotName`
-
-Slot name to be configured.
-- Required: Yes
-- Type: string
-
 ### Parameter: `storageAccountResourceId`
 
 Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions.
+
 - Required: No
 - Type: string
 - Default: `''`

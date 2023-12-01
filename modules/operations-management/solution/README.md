@@ -215,9 +215,24 @@ module solution 'br:bicep/modules/operations-management.solution:1.0.0' = {
 | [`product`](#parameter-product) | string | The product of the deployed solution. For Microsoft published gallery solution it should be `OMSGallery` and the target solution resource product will be composed as `OMSGallery/{name}`. For third party solution, it can be anything. This is case sensitive. |
 | [`publisher`](#parameter-publisher) | string | The publisher name of the deployed solution. For Microsoft published gallery solution, it is `Microsoft`. |
 
+### Parameter: `logAnalyticsWorkspaceName`
+
+Name of the Log Analytics workspace where the solution will be deployed/enabled.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+Name of the solution. For Microsoft published gallery solution the target solution resource name will be composed as `{name}({logAnalyticsWorkspaceName})`.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -225,25 +240,15 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
 
-### Parameter: `logAnalyticsWorkspaceName`
-
-Name of the Log Analytics workspace where the solution will be deployed/enabled.
-- Required: Yes
-- Type: string
-
-### Parameter: `name`
-
-Name of the solution. For Microsoft published gallery solution the target solution resource name will be composed as `{name}({logAnalyticsWorkspaceName})`.
-- Required: Yes
-- Type: string
-
 ### Parameter: `product`
 
 The product of the deployed solution. For Microsoft published gallery solution it should be `OMSGallery` and the target solution resource product will be composed as `OMSGallery/{name}`. For third party solution, it can be anything. This is case sensitive.
+
 - Required: No
 - Type: string
 - Default: `'OMSGallery'`
@@ -251,6 +256,7 @@ The product of the deployed solution. For Microsoft published gallery solution i
 ### Parameter: `publisher`
 
 The publisher name of the deployed solution. For Microsoft published gallery solution, it is `Microsoft`.
+
 - Required: No
 - Type: string
 - Default: `'Microsoft'`

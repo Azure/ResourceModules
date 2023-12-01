@@ -37,9 +37,17 @@ This module deploys a Recovery Services Vault Backup Config.
 | [`storageType`](#parameter-storagetype) | string | Storage type. |
 | [`storageTypeState`](#parameter-storagetypestate) | string | Once a machine is registered against a resource, the storageTypeState is always Locked. |
 
+### Parameter: `recoveryVaultName`
+
+The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -47,6 +55,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `enhancedSecurityState`
 
 Enable this setting to protect hybrid backups against accidental deletes and add additional layer of authentication for critical operations.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -61,6 +70,7 @@ Enable this setting to protect hybrid backups against accidental deletes and add
 ### Parameter: `isSoftDeleteFeatureStateEditable`
 
 Is soft delete feature state editable.
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -68,19 +78,15 @@ Is soft delete feature state editable.
 ### Parameter: `name`
 
 Name of the Azure Recovery Service Vault Backup Policy.
+
 - Required: No
 - Type: string
 - Default: `'vaultconfig'`
 
-### Parameter: `recoveryVaultName`
-
-The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `resourceGuardOperationRequests`
 
 ResourceGuard Operation Requests.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -88,6 +94,7 @@ ResourceGuard Operation Requests.
 ### Parameter: `softDeleteFeatureState`
 
 Enable this setting to protect backup data for Azure VM, SQL Server in Azure VM and SAP HANA in Azure VM from accidental deletes.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -102,6 +109,7 @@ Enable this setting to protect backup data for Azure VM, SQL Server in Azure VM 
 ### Parameter: `storageModelType`
 
 Storage type.
+
 - Required: No
 - Type: string
 - Default: `'GeoRedundant'`
@@ -118,6 +126,7 @@ Storage type.
 ### Parameter: `storageType`
 
 Storage type.
+
 - Required: No
 - Type: string
 - Default: `'GeoRedundant'`
@@ -134,6 +143,7 @@ Storage type.
 ### Parameter: `storageTypeState`
 
 Once a machine is registered against a resource, the storageTypeState is always Locked.
+
 - Required: No
 - Type: string
 - Default: `'Locked'`

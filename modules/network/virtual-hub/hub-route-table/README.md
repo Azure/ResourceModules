@@ -37,9 +37,24 @@ This module deploys a Virtual Hub Route Table.
 | [`labels`](#parameter-labels) | array | List of labels associated with this route table. |
 | [`routes`](#parameter-routes) | array | List of all routes. |
 
+### Parameter: `name`
+
+The route table name.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `virtualHubName`
+
+The name of the parent virtual hub. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -47,28 +62,18 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `labels`
 
 List of labels associated with this route table.
+
 - Required: No
 - Type: array
 - Default: `[]`
-
-### Parameter: `name`
-
-The route table name.
-- Required: Yes
-- Type: string
 
 ### Parameter: `routes`
 
 List of all routes.
+
 - Required: No
 - Type: array
 - Default: `[]`
-
-### Parameter: `virtualHubName`
-
-The name of the parent virtual hub. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

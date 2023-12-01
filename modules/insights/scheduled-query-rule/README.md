@@ -392,9 +392,31 @@ module scheduledQueryRule 'br:bicep/modules/insights.scheduled-query-rule:1.0.0'
 | [`targetResourceTypes`](#parameter-targetresourcetypes) | array | List of resource type of the target resource(s) on which the alert is created/updated. For example if the scope is a resource group and targetResourceTypes is Microsoft.Compute/virtualMachines, then a different alert will be fired for each virtual machine in the resource group which meet the alert criteria. Relevant only for rules of the kind LogAlert. |
 | [`windowSize`](#parameter-windowsize) | string | The period of time (in ISO 8601 duration format) on which the Alert query will be executed (bin size). Relevant and required only for rules of the kind LogAlert. |
 
+### Parameter: `criterias`
+
+The rule criteria that defines the conditions of the scheduled query rule.
+
+- Required: Yes
+- Type: object
+
+### Parameter: `name`
+
+The name of the Alert.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `scopes`
+
+The list of resource IDs that this scheduled query rule is scoped to.
+
+- Required: Yes
+- Type: array
+
 ### Parameter: `actions`
 
 Actions to invoke when the alert fires.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -402,6 +424,7 @@ Actions to invoke when the alert fires.
 ### Parameter: `alertDescription`
 
 The description of the scheduled query rule.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -409,19 +432,15 @@ The description of the scheduled query rule.
 ### Parameter: `autoMitigate`
 
 The flag that indicates whether the alert should be automatically resolved or not. Relevant only for rules of the kind LogAlert.
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `criterias`
-
-The rule criteria that defines the conditions of the scheduled query rule.
-- Required: Yes
-- Type: object
-
 ### Parameter: `enabled`
 
 The flag which indicates whether this scheduled query rule is enabled.
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -429,6 +448,7 @@ The flag which indicates whether this scheduled query rule is enabled.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -436,6 +456,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `evaluationFrequency`
 
 How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for rules of the kind LogAlert.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -443,6 +464,7 @@ How often the scheduled query rule is evaluated represented in ISO 8601 duration
 ### Parameter: `kind`
 
 Indicates the type of scheduled query rule.
+
 - Required: No
 - Type: string
 - Default: `'LogAlert'`
@@ -457,19 +479,15 @@ Indicates the type of scheduled query rule.
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
 
-### Parameter: `name`
-
-The name of the Alert.
-- Required: Yes
-- Type: string
-
 ### Parameter: `queryTimeRange`
 
 If specified (in ISO 8601 duration format) then overrides the query time range. Relevant only for rules of the kind LogAlert.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -477,80 +495,96 @@ If specified (in ISO 8601 duration format) then overrides the query time range. 
 ### Parameter: `roleAssignments`
 
 Array of role assignments to create.
+
 - Required: No
 - Type: array
 
+**Required parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+
+### Parameter: `roleAssignments.principalId`
+
+The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `roleAssignments.condition`
 
-Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.conditionVersion`
 
-Optional. Version of the condition.
+Version of the condition.
 
 - Required: No
 - Type: string
-- Allowed: `[2.0]`
+- Allowed:
+  ```Bicep
+  [
+    '2.0'
+  ]
+  ```
 
 ### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
 
-Optional. The Resource Id of the delegated managed identity resource.
+The Resource Id of the delegated managed identity resource.
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.description`
 
-Optional. The description of the role assignment.
+The description of the role assignment.
 
 - Required: No
-- Type: string
-
-### Parameter: `roleAssignments.principalId`
-
-Required. The principal ID of the principal (user/group/identity) to assign the role to.
-
-- Required: Yes
 - Type: string
 
 ### Parameter: `roleAssignments.principalType`
 
-Optional. The principal type of the assigned principal ID.
+The principal type of the assigned principal ID.
 
 - Required: No
 - Type: string
-- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
-
-### Parameter: `roleAssignments.roleDefinitionIdOrName`
-
-Required. The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
-
-- Required: Yes
-- Type: string
-
-### Parameter: `scopes`
-
-The list of resource IDs that this scheduled query rule is scoped to.
-- Required: Yes
-- Type: array
+- Allowed:
+  ```Bicep
+  [
+    'Device'
+    'ForeignGroup'
+    'Group'
+    'ServicePrincipal'
+    'User'
+  ]
+  ```
 
 ### Parameter: `severity`
 
 Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest. Relevant and required only for rules of the kind LogAlert.
+
 - Required: No
 - Type: int
 - Default: `3`
@@ -568,6 +602,7 @@ Severity of the alert. Should be an integer between [0-4]. Value of 0 is severes
 ### Parameter: `skipQueryValidation`
 
 The flag which indicates whether the provided query should be validated or not. Relevant only for rules of the kind LogAlert.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -575,6 +610,7 @@ The flag which indicates whether the provided query should be validated or not. 
 ### Parameter: `suppressForMinutes`
 
 Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. If set, autoMitigate must be disabled.Relevant only for rules of the kind LogAlert.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -582,12 +618,14 @@ Mute actions for the chosen period of time (in ISO 8601 duration format) after t
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 
 ### Parameter: `targetResourceTypes`
 
 List of resource type of the target resource(s) on which the alert is created/updated. For example if the scope is a resource group and targetResourceTypes is Microsoft.Compute/virtualMachines, then a different alert will be fired for each virtual machine in the resource group which meet the alert criteria. Relevant only for rules of the kind LogAlert.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -595,6 +633,7 @@ List of resource type of the target resource(s) on which the alert is created/up
 ### Parameter: `windowSize`
 
 The period of time (in ISO 8601 duration format) on which the Alert query will be executed (bin size). Relevant and required only for rules of the kind LogAlert.
+
 - Required: No
 - Type: string
 - Default: `''`

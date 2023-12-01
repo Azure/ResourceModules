@@ -48,51 +48,10 @@ This module deploys a Log Analytics Workspace Data Source.
 | [`syslogSeverities`](#parameter-syslogseverities) | array | Severities to configure when kind is LinuxSyslog. |
 | [`tags`](#parameter-tags) | object | Tags to configure in the resource. |
 
-### Parameter: `counterName`
-
-Counter name to configure when kind is WindowsPerformanceCounter.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
-### Parameter: `eventLogName`
-
-Windows event log name to configure when kind is WindowsEvent.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `eventTypes`
-
-Windows event types to configure when kind is WindowsEvent.
-- Required: No
-- Type: array
-- Default: `[]`
-
-### Parameter: `instanceName`
-
-Name of the instance to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject.
-- Required: No
-- Type: string
-- Default: `'*'`
-
-### Parameter: `intervalSeconds`
-
-Interval in seconds to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject.
-- Required: No
-- Type: int
-- Default: `60`
-
 ### Parameter: `kind`
 
 The kind of the DataSource.
+
 - Required: No
 - Type: string
 - Default: `'AzureActivityLog'`
@@ -110,28 +69,80 @@ The kind of the DataSource.
   ]
   ```
 
-### Parameter: `linkedResourceId`
+### Parameter: `name`
 
-Resource ID of the resource to be linked.
-- Required: No
+Name of the solution.
+
+- Required: Yes
 - Type: string
-- Default: `''`
 
 ### Parameter: `logAnalyticsWorkspaceName`
 
 The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `name`
+### Parameter: `counterName`
 
-Name of the solution.
-- Required: Yes
+Counter name to configure when kind is WindowsPerformanceCounter.
+
+- Required: No
 - Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `eventLogName`
+
+Windows event log name to configure when kind is WindowsEvent.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `eventTypes`
+
+Windows event types to configure when kind is WindowsEvent.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `instanceName`
+
+Name of the instance to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject.
+
+- Required: No
+- Type: string
+- Default: `'*'`
+
+### Parameter: `intervalSeconds`
+
+Interval in seconds to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject.
+
+- Required: No
+- Type: int
+- Default: `60`
+
+### Parameter: `linkedResourceId`
+
+Resource ID of the resource to be linked.
+
+- Required: No
+- Type: string
+- Default: `''`
 
 ### Parameter: `objectName`
 
 Name of the object to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -139,6 +150,7 @@ Name of the object to configure when kind is WindowsPerformanceCounter or LinuxP
 ### Parameter: `performanceCounters`
 
 List of counters to configure when the kind is LinuxPerformanceObject.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -146,6 +158,7 @@ List of counters to configure when the kind is LinuxPerformanceObject.
 ### Parameter: `state`
 
 State to configure when kind is IISLogs or LinuxSyslogCollection or LinuxPerformanceCollection.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -153,6 +166,7 @@ State to configure when kind is IISLogs or LinuxSyslogCollection or LinuxPerform
 ### Parameter: `syslogName`
 
 System log to configure when kind is LinuxSyslog.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -160,6 +174,7 @@ System log to configure when kind is LinuxSyslog.
 ### Parameter: `syslogSeverities`
 
 Severities to configure when kind is LinuxSyslog.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -167,6 +182,7 @@ Severities to configure when kind is LinuxSyslog.
 ### Parameter: `tags`
 
 Tags to configure in the resource.
+
 - Required: No
 - Type: object
 

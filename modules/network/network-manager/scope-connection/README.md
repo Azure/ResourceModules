@@ -39,9 +39,38 @@ Create a cross-tenant connection to manage a resource from another tenant.
 | [`description`](#parameter-description) | string | A description of the scope connection. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 
+### Parameter: `name`
+
+The name of the scope connection.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `resourceId`
+
+Enter the subscription or management group resource ID that you want to add to this network manager's scope.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `tenantId`
+
+Tenant ID of the subscription or management group that you want to manage.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `networkManagerName`
+
+The name of the parent network manager. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `description`
 
 A description of the scope connection.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -49,33 +78,10 @@ A description of the scope connection.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
-
-### Parameter: `name`
-
-The name of the scope connection.
-- Required: Yes
-- Type: string
-
-### Parameter: `networkManagerName`
-
-The name of the parent network manager. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `resourceId`
-
-Enter the subscription or management group resource ID that you want to add to this network manager's scope.
-- Required: Yes
-- Type: string
-
-### Parameter: `tenantId`
-
-Tenant ID of the subscription or management group that you want to manage.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

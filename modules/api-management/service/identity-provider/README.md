@@ -46,29 +46,24 @@ This module deploys an API Management Service Identity Provider.
 | [`signUpPolicyName`](#parameter-signuppolicyname) | string | Signup Policy Name. Only applies to AAD B2C Identity Provider. |
 | [`type`](#parameter-type) | string | Identity Provider Type identifier. |
 
-### Parameter: `allowedTenants`
+### Parameter: `name`
 
-List of Allowed Tenants when configuring Azure Active Directory login. - string.
-- Required: No
-- Type: array
-- Default: `[]`
+Identity provider name.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `apiManagementServiceName`
 
 The name of the parent API Management service. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
-
-### Parameter: `authority`
-
-OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
-- Required: No
-- Type: string
-- Default: `''`
 
 ### Parameter: `clientId`
 
 Client ID of the Application in the external Identity Provider. Required if identity provider is used.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -76,13 +71,31 @@ Client ID of the Application in the external Identity Provider. Required if iden
 ### Parameter: `clientSecret`
 
 Client secret of the Application in external Identity Provider, used to authenticate login request. Required if identity provider is used.
+
 - Required: No
 - Type: securestring
+- Default: `''`
+
+### Parameter: `allowedTenants`
+
+List of Allowed Tenants when configuring Azure Active Directory login. - string.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `authority`
+
+OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
+
+- Required: No
+- Type: string
 - Default: `''`
 
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -90,19 +103,15 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `enableIdentityProviders`
 
 Used to enable the deployment of the identityProviders child resource.
+
 - Required: No
 - Type: bool
 - Default: `False`
 
-### Parameter: `name`
-
-Identity provider name.
-- Required: Yes
-- Type: string
-
 ### Parameter: `passwordResetPolicyName`
 
 Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -110,6 +119,7 @@ Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
 ### Parameter: `profileEditingPolicyName`
 
 Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -117,6 +127,7 @@ Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.
 ### Parameter: `signInPolicyName`
 
 Signin Policy Name. Only applies to AAD B2C Identity Provider.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -124,6 +135,7 @@ Signin Policy Name. Only applies to AAD B2C Identity Provider.
 ### Parameter: `signInTenant`
 
 The TenantId to use instead of Common when logging into Active Directory.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -131,6 +143,7 @@ The TenantId to use instead of Common when logging into Active Directory.
 ### Parameter: `signUpPolicyName`
 
 Signup Policy Name. Only applies to AAD B2C Identity Provider.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -138,6 +151,7 @@ Signup Policy Name. Only applies to AAD B2C Identity Provider.
 ### Parameter: `type`
 
 Identity Provider Type identifier.
+
 - Required: No
 - Type: string
 - Default: `'aad'`

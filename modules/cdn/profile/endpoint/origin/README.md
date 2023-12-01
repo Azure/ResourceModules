@@ -46,61 +46,31 @@ This module deploys a CDN Profile Endpoint Origin.
 | [`privateLinkResourceId`](#parameter-privatelinkresourceid) | string | The private link resource ID of the origin. |
 | [`profileName`](#parameter-profilename) | string | The name of the CDN profile. Default to "default". |
 
-### Parameter: `enabled`
-
-Whether the origin is enabled for load balancing.
-- Required: No
-- Type: bool
-- Default: `True`
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `endpointName`
 
 The name of the CDN Endpoint.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `hostName`
 
 The hostname of the origin.
+
 - Required: Yes
 - Type: string
-
-### Parameter: `httpPort`
-
-The HTTP port of the origin.
-- Required: No
-- Type: int
-- Default: `80`
-
-### Parameter: `httpsPort`
-
-The HTTPS port of the origin.
-- Required: No
-- Type: int
-- Default: `443`
 
 ### Parameter: `name`
 
 The name of the origin.
-- Required: Yes
-- Type: string
 
-### Parameter: `originHostHeader`
-
-The host header value sent to the origin.
 - Required: Yes
 - Type: string
 
 ### Parameter: `priority`
 
 The priority of origin in given origin group for load balancing. Required if `weight` is provided.
+
 - Required: No
 - Type: int
 - Default: `-1`
@@ -108,34 +78,78 @@ The priority of origin in given origin group for load balancing. Required if `we
 ### Parameter: `privateLinkAlias`
 
 The private link alias of the origin. Required if privateLinkLocation is provided.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `privateLinkLocation`
 
 The private link location of the origin. Required if privateLinkAlias is provided.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `weight`
+
+The weight of the origin used for load balancing. Required if `priority` is provided.
+
+- Required: No
+- Type: int
+- Default: `-1`
+
+### Parameter: `enabled`
+
+Whether the origin is enabled for load balancing.
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `httpPort`
+
+The HTTP port of the origin.
+
+- Required: No
+- Type: int
+- Default: `80`
+
+### Parameter: `httpsPort`
+
+The HTTPS port of the origin.
+
+- Required: No
+- Type: int
+- Default: `443`
+
+### Parameter: `originHostHeader`
+
+The host header value sent to the origin.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `privateLinkResourceId`
 
 The private link resource ID of the origin.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `profileName`
 
 The name of the CDN profile. Default to "default".
+
 - Required: No
 - Type: string
 - Default: `'default'`
-
-### Parameter: `weight`
-
-The weight of the origin used for load balancing. Required if `priority` is provided.
-- Required: No
-- Type: int
-- Default: `-1`
 
 
 ## Outputs

@@ -30,9 +30,17 @@ This module deploys a Key Vault Access Policy.
 | [`accessPolicies`](#parameter-accesspolicies) | array | An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 
+### Parameter: `keyVaultName`
+
+The name of the parent key vault. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `accessPolicies`
 
 An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -40,15 +48,10 @@ An array of 0 to 16 identities that have access to the key vault. All identities
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
-
-### Parameter: `keyVaultName`
-
-The name of the parent key vault. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

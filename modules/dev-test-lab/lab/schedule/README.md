@@ -47,36 +47,10 @@ Lab schedules are used to modify the settings for auto-shutdown, auto-start for 
 | [`timeZoneId`](#parameter-timezoneid) | string | The time zone ID (e.g. Pacific Standard time). |
 | [`weeklyRecurrence`](#parameter-weeklyrecurrence) | object | If the schedule will occur only some days of the week, specify the weekly recurrence. |
 
-### Parameter: `dailyRecurrence`
-
-If the schedule will occur once each day of the week, specify the daily recurrence.
-- Required: No
-- Type: object
-- Default: `{}`
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
-### Parameter: `hourlyRecurrence`
-
-If the schedule will occur multiple times a day, specify the hourly recurrence.
-- Required: No
-- Type: object
-- Default: `{}`
-
-### Parameter: `labName`
-
-The name of the parent lab. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `name`
 
 The name of the schedule.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -87,9 +61,55 @@ The name of the schedule.
   ]
   ```
 
+### Parameter: `taskType`
+
+The task type of the schedule (e.g. LabVmsShutdownTask, LabVmsStartupTask).
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'LabVmsShutdownTask'
+    'LabVmsStartupTask'
+  ]
+  ```
+
+### Parameter: `labName`
+
+The name of the parent lab. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `dailyRecurrence`
+
+If the schedule will occur once each day of the week, specify the daily recurrence.
+
+- Required: No
+- Type: object
+- Default: `{}`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `hourlyRecurrence`
+
+If the schedule will occur multiple times a day, specify the hourly recurrence.
+
+- Required: No
+- Type: object
+- Default: `{}`
+
 ### Parameter: `notificationSettingsStatus`
 
 If notifications are enabled for this schedule (i.e. Enabled, Disabled).
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`
@@ -104,6 +124,7 @@ If notifications are enabled for this schedule (i.e. Enabled, Disabled).
 ### Parameter: `notificationSettingsTimeInMinutes`
 
 Time in minutes before event at which notification will be sent. Optional if "notificationSettingsStatus" is set to "Enabled". Default is 30 minutes.
+
 - Required: No
 - Type: int
 - Default: `30`
@@ -111,6 +132,7 @@ Time in minutes before event at which notification will be sent. Optional if "no
 ### Parameter: `status`
 
 The status of the schedule (i.e. Enabled, Disabled).
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -125,32 +147,22 @@ The status of the schedule (i.e. Enabled, Disabled).
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 
 ### Parameter: `targetResourceId`
 
 The resource ID to which the schedule belongs.
+
 - Required: No
 - Type: string
 - Default: `''`
 
-### Parameter: `taskType`
-
-The task type of the schedule (e.g. LabVmsShutdownTask, LabVmsStartupTask).
-- Required: Yes
-- Type: string
-- Allowed:
-  ```Bicep
-  [
-    'LabVmsShutdownTask'
-    'LabVmsStartupTask'
-  ]
-  ```
-
 ### Parameter: `timeZoneId`
 
 The time zone ID (e.g. Pacific Standard time).
+
 - Required: No
 - Type: string
 - Default: `'Pacific Standard time'`
@@ -158,6 +170,7 @@ The time zone ID (e.g. Pacific Standard time).
 ### Parameter: `weeklyRecurrence`
 
 If the schedule will occur only some days of the week, specify the weekly recurrence.
+
 - Required: No
 - Type: object
 - Default: `{}`

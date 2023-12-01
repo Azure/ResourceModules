@@ -46,37 +46,32 @@ An artifact source allows you to create custom artifacts for the VMs in the lab,
 | [`status`](#parameter-status) | string | Indicates if the artifact source is enabled (values: Enabled, Disabled). Default is "Enabled". |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 
+### Parameter: `name`
+
+The name of the artifact source.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `uri`
+
+The artifact source's URI.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `armTemplateFolderPath`
 
 The folder containing Azure Resource Manager templates. Required if "folderPath" is empty.
+
 - Required: No
 - Type: string
 - Default: `''`
-
-### Parameter: `branchRef`
-
-The artifact source's branch reference (e.g. main or master).
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `displayName`
-
-The artifact source's display name. Default is the name of the artifact source.
-- Required: No
-- Type: string
-- Default: `[parameters('name')]`
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
 
 ### Parameter: `folderPath`
 
 The folder containing artifacts. At least one folder path is required. Required if "armTemplateFolderPath" is empty.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -84,18 +79,38 @@ The folder containing artifacts. At least one folder path is required. Required 
 ### Parameter: `labName`
 
 The name of the parent lab. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
-### Parameter: `name`
+### Parameter: `branchRef`
 
-The name of the artifact source.
-- Required: Yes
+The artifact source's branch reference (e.g. main or master).
+
+- Required: No
 - Type: string
+- Default: `''`
+
+### Parameter: `displayName`
+
+The artifact source's display name. Default is the name of the artifact source.
+
+- Required: No
+- Type: string
+- Default: `[parameters('name')]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 ### Parameter: `securityToken`
 
 The security token to authenticate to the artifact source.
+
 - Required: No
 - Type: securestring
 - Default: `''`
@@ -103,6 +118,7 @@ The security token to authenticate to the artifact source.
 ### Parameter: `sourceType`
 
 The artifact source's type.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -119,6 +135,7 @@ The artifact source's type.
 ### Parameter: `status`
 
 Indicates if the artifact source is enabled (values: Enabled, Disabled). Default is "Enabled".
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -133,14 +150,9 @@ Indicates if the artifact source is enabled (values: Enabled, Disabled). Default
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
-
-### Parameter: `uri`
-
-The artifact source's URI.
-- Required: Yes
-- Type: string
 
 
 ## Outputs
