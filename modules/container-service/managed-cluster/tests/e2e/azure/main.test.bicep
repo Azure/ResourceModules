@@ -21,7 +21,7 @@ param baseTime string = utcNow('u')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '[[namePrefix]]'
+param namePrefix string = 'aa'
 
 // ============ //
 // Dependencies //
@@ -189,6 +189,7 @@ module testDeployment '../../../main.bicep' = {
     enableAzureDefender: true
     enableKeyvaultSecretsProvider: true
     enablePodSecurityPolicy: false
+    enableAzureMonitorProfileMetrics: true
     customerManagedKey: {
       keyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
       keyVaultNetworkAccess: 'Public'
