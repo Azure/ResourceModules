@@ -55,9 +55,6 @@ param sharedKey string = ''
 @description('Optional. Reference to a VPN site to link to.')
 param remoteVpnSiteResourceId string = ''
 
-@description('Optional. DPD timeout in seconds for vpn connection.')
-param dpdTimeoutSeconds int?
-
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -97,7 +94,6 @@ resource vpnConnection 'Microsoft.Network/vpnGateways/vpnConnections@2023-04-01'
     usePolicyBasedTrafficSelectors: usePolicyBasedTrafficSelectors
     vpnConnectionProtocolType: vpnConnectionProtocolType
     vpnLinkConnections: vpnLinkConnections
-    dpdTimeoutSeconds: dpdTimeoutSeconds
   }
 }
 

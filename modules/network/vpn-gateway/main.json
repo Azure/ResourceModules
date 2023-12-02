@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "1259873595132419366"
+      "templateHash": "12893789800987585694"
     },
     "name": "VPN Gateways",
     "description": "This module deploys a VPN Gateway.",
@@ -167,8 +167,7 @@
                 "vpnConnectionProtocolType": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'vpnConnectionProtocolType')]",
                 "ipsecPolicies": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'ipsecPolicies')]",
                 "trafficSelectorPolicies": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'trafficSelectorPolicies')]",
-                "vpnLinkConnections": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'vpnLinkConnections')]",
-                "dpdTimeoutSeconds": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'dpdTimeoutSeconds')]"
+                "vpnLinkConnections": "[tryGet(parameters('vpnConnections')[copyIndex('connections')], 'vpnLinkConnections')]"
               }
             }
           }
@@ -422,20 +421,16 @@
           },
           "vpnLinkConnections": {
             "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'vpnLinkConnections')]"
-          },
-          "dpdTimeoutSeconds": {
-            "value": "[tryGet(parameters('vpnConnections')[copyIndex()], 'dpdTimeoutSeconds')]"
           }
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "languageVersion": "2.0",
           "contentVersion": "1.0.0.0",
           "metadata": {
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-              "templateHash": "14722022986555703365"
+              "templateHash": "6383697389251029881"
             },
             "name": "VPN Gateway VPN Connections",
             "description": "This module deploys a VPN Gateway VPN Connection.",
@@ -556,13 +551,6 @@
                 "description": "Optional. Reference to a VPN site to link to."
               }
             },
-            "dpdTimeoutSeconds": {
-              "type": "int",
-              "nullable": true,
-              "metadata": {
-                "description": "Optional. DPD timeout in seconds for vpn connection."
-              }
-            },
             "enableDefaultTelemetry": {
               "type": "bool",
               "defaultValue": true,
@@ -571,8 +559,8 @@
               }
             }
           },
-          "resources": {
-            "defaultTelemetry": {
+          "resources": [
+            {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2021-04-01",
@@ -586,13 +574,7 @@
                 }
               }
             },
-            "vpnGateway": {
-              "existing": true,
-              "type": "Microsoft.Network/vpnGateways",
-              "apiVersion": "2023-04-01",
-              "name": "[parameters('vpnGatewayName')]"
-            },
-            "vpnConnection": {
+            {
               "type": "Microsoft.Network/vpnGateways/vpnConnections",
               "apiVersion": "2023-04-01",
               "name": "[format('{0}/{1}', parameters('vpnGatewayName'), parameters('name'))]",
@@ -610,14 +592,10 @@
                 "useLocalAzureIpAddress": "[parameters('useLocalAzureIpAddress')]",
                 "usePolicyBasedTrafficSelectors": "[parameters('usePolicyBasedTrafficSelectors')]",
                 "vpnConnectionProtocolType": "[parameters('vpnConnectionProtocolType')]",
-                "vpnLinkConnections": "[parameters('vpnLinkConnections')]",
-                "dpdTimeoutSeconds": "[parameters('dpdTimeoutSeconds')]"
-              },
-              "dependsOn": [
-                "vpnGateway"
-              ]
+                "vpnLinkConnections": "[parameters('vpnLinkConnections')]"
+              }
             }
-          },
+          ],
           "outputs": {
             "name": {
               "type": "string",

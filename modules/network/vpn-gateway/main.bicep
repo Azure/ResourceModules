@@ -80,7 +80,6 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2023-04-01' = {
         ipsecPolicies: connection.?ipsecPolicies
         trafficSelectorPolicies: connection.?trafficSelectorPolicies
         vpnLinkConnections: connection.?vpnLinkConnections
-        dpdTimeoutSeconds: connection.?dpdTimeoutSeconds
       }
     }]
     virtualHub: {
@@ -131,7 +130,6 @@ module vpnGateway_vpnConnections 'vpn-connection/main.bicep' = [for (connection,
     enableDefaultTelemetry: connection.?ipsecPolicies
     trafficSelectorPolicies: connection.?trafficSelectorPolicies
     vpnLinkConnections: connection.?vpnLinkConnections
-    dpdTimeoutSeconds: connection.?dpdTimeoutSeconds
   }
 }]
 
