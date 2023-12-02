@@ -120,7 +120,7 @@ This section provides an overview of the library's feature set.
 | 105 | network<p>virtual-network | [![Network - VirtualNetworks](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VirtualNetworks/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualnetworks.yml) |  |  |  |  |  |  | [L1:3, L2:1, L3:4] | 276 |
 | 106 | network<p>virtual-network-gateway | [![Network - VirtualNetworkGateways](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VirtualNetworkGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualnetworkgateways.yml) |  |  |  |  |  |  | [L1:2, L2:1, L3:3] | 403 |
 | 107 | network<p>virtual-wan | [![Network - VirtualWans](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VirtualWans/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualwans.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:3] | 112 |
-| 108 | network<p>vpn-gateway | [![Network - VPNGateways](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VPNGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.vpngateways.yml) |  |  |  |  |  |  | [L1:3, L2:1, L3:3] | 114 |
+| 108 | network<p>vpn-gateway | [![Network - VPNGateways](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VPNGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.vpngateways.yml) |  |  |  |  |  |  | [L1:3, L2:1, L3:3] | 134 |
 | 109 | network<p>vpn-site | [![Network - VPN Sites](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VPN%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.vpnsites.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:3] | 124 |
 | 110 | operational-insights<p>workspace | [![OperationalInsights - Workspaces](https://github.com/Azure/ResourceModules/workflows/OperationalInsights%20-%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.operationalinsights.workspaces.yml) |  |  |  |  |  |  | [L1:8, L2:1, L3:4] | 348 |
 | 111 | operations-management<p>solution | [![OperationsManagement - Solutions](https://github.com/Azure/ResourceModules/workflows/OperationsManagement%20-%20Solutions/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.operationsmanagement.solutions.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:3] | 53 |
@@ -150,7 +150,7 @@ This section provides an overview of the library's feature set.
 | 135 | web<p>serverfarm | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:2] | 184 |
 | 136 | web<p>site | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |  |  |  |  |  |  | [L1:6, L2:6, L3:5] | 455 |
 | 137 | web<p>static-site | [![Web - StaticSites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) |  |  |  |  |  |  | [L1:4, L2:1, L3:3] | 284 |
-| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 981 | 29874 |
+| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 981 | 29894 |
 
 ## Legend
 
