@@ -56,7 +56,4 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     name: '${namePrefix}${serviceShort}001'
     virtualHubResourceId: nestedDependencies.outputs.virtualHubResourceId
   }
-  dependsOn: [
-    nestedDependencies
-  ]
 }]
