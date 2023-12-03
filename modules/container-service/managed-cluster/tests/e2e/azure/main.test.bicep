@@ -189,6 +189,7 @@ module testDeployment '../../../main.bicep' = {
     enableAzureDefender: true
     enableKeyvaultSecretsProvider: true
     enablePodSecurityPolicy: false
+    enableAzureMonitorProfileMetrics: true
     customerManagedKey: {
       keyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
       keyVaultNetworkAccess: 'Public'
