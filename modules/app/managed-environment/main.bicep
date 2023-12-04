@@ -115,10 +115,10 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' = {
     }
     vnetConfiguration: {
       internal: internal
-      infrastructureSubnetId: !empty(infrastructureSubnetId) && internal == true ? infrastructureSubnetId : null
-      dockerBridgeCidr: !empty(infrastructureSubnetId) && internal == true ? dockerBridgeCidr : null
-      platformReservedCidr: !empty(infrastructureSubnetId) && internal == true ? platformReservedCidr : null
-      platformReservedDnsIP: !empty(infrastructureSubnetId) && internal == true ? platformReservedDnsIP : null
+      infrastructureSubnetId: !empty(infrastructureSubnetId) ? infrastructureSubnetId : null
+      dockerBridgeCidr: !empty(infrastructureSubnetId) ? dockerBridgeCidr : null
+      platformReservedCidr: !empty(infrastructureSubnetId) ? platformReservedCidr : null
+      platformReservedDnsIP: !empty(infrastructureSubnetId) ? platformReservedDnsIP : null
     }
     workloadProfiles: !empty(workloadProfiles) ? workloadProfiles : null
     zoneRedundant: zoneRedundant
