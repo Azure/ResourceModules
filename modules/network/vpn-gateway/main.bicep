@@ -61,6 +61,27 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2023-04-01' = {
     enableBgpRouteTranslationForNat: enableBgpRouteTranslationForNat
     isRoutingPreferenceInternet: isRoutingPreferenceInternet
     vpnGatewayScaleUnit: vpnGatewayScaleUnit
+    connections: [for (connection, index) in vpnConnections: {
+      name: connection.name
+      properties: {
+        connectionBandwidth: connection.?connectionBandwidth
+        enableBgp: connection.?enableBgp
+        enableInternetSecurity: connection.?enableInternetSecurity
+        remoteVpnSite: contains(connection, 'remoteVpnSiteResourceId') ? {
+          id: connection.remoteVpnSiteResourceId
+        } : null
+        enableRateLimiting: connection.?enableRateLimiting
+        routingConfiguration: connection.?routingConfiguration
+        routingWeight: connection.?routingWeight
+        sharedKey: connection.?sharedKey
+        useLocalAzureIpAddress: connection.?useLocalAzureIpAddress
+        usePolicyBasedTrafficSelectors: connection.?usePolicyBasedTrafficSelectors
+        vpnConnectionProtocolType: connection.?vpnConnectionProtocolType
+        ipsecPolicies: connection.?ipsecPolicies
+        trafficSelectorPolicies: connection.?trafficSelectorPolicies
+        vpnLinkConnections: connection.?vpnLinkConnections
+      }
+    }]
     virtualHub: {
       id: virtualHubResourceId
     }
@@ -95,21 +116,20 @@ module vpnGateway_vpnConnections 'vpn-connection/main.bicep' = [for (connection,
   params: {
     name: connection.name
     vpnGatewayName: vpnGateway.name
-    connectionBandwidth: contains(connection, 'connectionBandwidth') ? connection.connectionBandwidth : 10
-    enableBgp: contains(connection, 'enableBgp') ? connection.enableBgp : false
-    enableInternetSecurity: contains(connection, 'enableInternetSecurity') ? connection.enableInternetSecurity : false
-    remoteVpnSiteResourceId: contains(connection, 'remoteVpnSiteResourceId') ? connection.remoteVpnSiteResourceId : ''
-    enableRateLimiting: contains(connection, 'enableRateLimiting') ? connection.enableRateLimiting : false
-    routingConfiguration: contains(connection, 'routingConfiguration') ? connection.routingConfiguration : {}
-    routingWeight: contains(connection, 'routingWeight') ? connection.routingWeight : 0
-    sharedKey: contains(connection, 'sharedKey') ? connection.sharedKey : ''
-    useLocalAzureIpAddress: contains(connection, 'useLocalAzureIpAddress') ? connection.useLocalAzureIpAddress : false
-    usePolicyBasedTrafficSelectors: contains(connection, 'usePolicyBasedTrafficSelectors') ? connection.usePolicyBasedTrafficSelectors : false
-    vpnConnectionProtocolType: contains(connection, 'vpnConnectionProtocolType') ? connection.vpnConnectionProtocolType : 'IKEv2'
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-    ipsecPolicies: contains(connection, 'ipsecPolicies') ? connection.ipsecPolicies : []
-    trafficSelectorPolicies: contains(connection, 'trafficSelectorPolicies') ? connection.trafficSelectorPolicies : []
-    vpnLinkConnections: contains(connection, 'vpnLinkConnections') ? connection.vpnLinkConnections : []
+    connectionBandwidth: connection.?connectionBandwidth
+    enableBgp: connection.?enableBgp
+    enableInternetSecurity: connection.?enableInternetSecurity
+    remoteVpnSiteResourceId: connection.?remoteVpnSiteResourceId
+    enableRateLimiting: connection.?enableRateLimiting
+    routingConfiguration: connection.?routingConfiguration
+    routingWeight: connection.?routingWeight
+    sharedKey: connection.?sharedKey
+    useLocalAzureIpAddress: connection.?useLocalAzureIpAddress
+    usePolicyBasedTrafficSelectors: connection.?usePolicyBasedTrafficSelectors
+    vpnConnectionProtocolType: connection.?vpnConnectionProtocolType
+    enableDefaultTelemetry: connection.?ipsecPolicies
+    trafficSelectorPolicies: connection.?trafficSelectorPolicies
+    vpnLinkConnections: connection.?vpnLinkConnections
   }
 }]
 

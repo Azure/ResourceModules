@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "13660788048333105050"
+      "version": "0.23.1.45101",
+      "templateHash": "6383697389251029881"
     },
     "name": "VPN Gateway VPN Connections",
     "description": "This module deploys a VPN Gateway VPN Connection.",
