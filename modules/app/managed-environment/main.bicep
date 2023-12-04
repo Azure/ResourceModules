@@ -161,6 +161,9 @@ output name string = managedEnvironment.name
 @description('The resource ID of the Managed Environment.')
 output resourceId string = managedEnvironment.id
 
+@description('The Default domain of the Managed Environment.')
+output defaultDomain string = managedEnvironment.properties.defaultDomain
+
 // =============== //
 //   Definitions   //
 // =============== //

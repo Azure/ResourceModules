@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "2542503992713932852"
+      "templateHash": "5457009656345678407"
     },
     "name": "App ManagedEnvironments",
     "description": "This module deploys an App Managed Environment (also known as a Container App Environment).",
@@ -136,17 +136,6 @@
       "$ref": "#/definitions/roleAssignmentType",
       "metadata": {
         "description": "Optional. Array of role assignments to create."
-      }
-    },
-    "skuName": {
-      "type": "string",
-      "defaultValue": "Consumption",
-      "allowedValues": [
-        "Consumption",
-        "Premium"
-      ],
-      "metadata": {
-        "description": "Optional. Managed environment SKU."
       }
     },
     "logsDestination": {
@@ -316,10 +305,10 @@
         },
         "vnetConfiguration": {
           "internal": "[parameters('internal')]",
-          "infrastructureSubnetId": "[if(and(not(empty(parameters('infrastructureSubnetId'))), equals(parameters('internal'), true())), parameters('infrastructureSubnetId'), null())]",
-          "dockerBridgeCidr": "[if(and(not(empty(parameters('infrastructureSubnetId'))), equals(parameters('internal'), true())), parameters('dockerBridgeCidr'), null())]",
-          "platformReservedCidr": "[if(and(not(empty(parameters('infrastructureSubnetId'))), equals(parameters('internal'), true())), parameters('platformReservedCidr'), null())]",
-          "platformReservedDnsIP": "[if(and(not(empty(parameters('infrastructureSubnetId'))), equals(parameters('internal'), true())), parameters('platformReservedDnsIP'), null())]"
+          "infrastructureSubnetId": "[if(not(empty(parameters('infrastructureSubnetId'))), parameters('infrastructureSubnetId'), null())]",
+          "dockerBridgeCidr": "[if(not(empty(parameters('infrastructureSubnetId'))), parameters('dockerBridgeCidr'), null())]",
+          "platformReservedCidr": "[if(not(empty(parameters('infrastructureSubnetId'))), parameters('platformReservedCidr'), null())]",
+          "platformReservedDnsIP": "[if(not(empty(parameters('infrastructureSubnetId'))), parameters('platformReservedDnsIP'), null())]"
         },
         "workloadProfiles": "[if(not(empty(parameters('workloadProfiles'))), parameters('workloadProfiles'), null())]",
         "zoneRedundant": "[parameters('zoneRedundant')]",
@@ -394,6 +383,13 @@
         "description": "The resource ID of the Managed Environment."
       },
       "value": "[resourceId('Microsoft.App/managedEnvironments', parameters('name'))]"
+    },
+    "defaultDomain": {
+      "type": "string",
+      "metadata": {
+        "description": "The Default domain of the Managed Environment."
+      },
+      "value": "[reference('managedEnvironment').defaultDomain]"
     }
   }
 }
