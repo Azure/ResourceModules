@@ -42,9 +42,10 @@ This instance deploys the module with the minimum set of required parameters.
 
 ```bicep
 module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-identity:1.0.0' = {
- scope: resourceGroup
- name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
- params: {}
+  name: '${uniqueString(deployment().name, location)}-test-miuaimin'
+  params: {
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
 }
 ```
 
@@ -59,7 +60,11 @@ module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-ide
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {}
+  "parameters": {
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
 }
 ```
 
@@ -77,24 +82,24 @@ This instance deploys the module with most of its features enabled.
 
 ```bicep
 module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-identity:1.0.0' = {
-name: '${uniqueString(deployment().name, location)}-test-miauimax'
+  name: '${uniqueString(deployment().name, location)}-test-miuaimax'
   params: {
-    name: 'miuaimax001'
-    enableTelemetry: '<enableTelemetry>'
-    lock: {
-      kind: 'CanNotDelete'
-      name: 'myCustomLockName'
-    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     federatedIdentityCredentials: [
       {
-        name: 'test-fed-cred-miuaimax-001'
         audiences: [
           'api://AzureADTokenExchange'
         ]
         issuer: '<issuer>'
+        name: 'test-fed-cred-miuaimax-001'
         subject: 'system:serviceaccount:default:workload-identity-sa'
       }
     ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    name: 'miuaimax001'
     roleAssignments: [
       {
         principalId: '<principalId>'
@@ -113,8 +118,8 @@ name: '${uniqueString(deployment().name, location)}-test-miauimax'
       }
     ]
     tags: {
-      'hidden-title': 'This is visible in the resource name'
       Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
   }
@@ -133,7 +138,7 @@ name: '${uniqueString(deployment().name, location)}-test-miauimax'
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "enableTelemetry": {
+    "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
     "federatedIdentityCredentials": {
@@ -193,6 +198,7 @@ name: '${uniqueString(deployment().name, location)}-test-miauimax'
 ### Example 3: _WAF-aligned_
 
 This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
 
 <details>
 

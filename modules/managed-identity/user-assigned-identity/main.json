@@ -6,11 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-<<<<<<< HEAD
-      "templateHash": "17564684040391369711"
-=======
       "templateHash": "13454855788862691467"
->>>>>>> 3d827c3621e7d83ad5b9d9266e593f0afc6b7683
     },
     "name": "User Assigned Identities",
     "description": "This module deploys a User Assigned Identity.",
@@ -150,15 +146,16 @@
         "description": "Optional. Tags of the resource."
       }
     },
-    "enableTelemetry": {
+    "enableDefaultTelemetry": {
       "type": "bool",
       "defaultValue": true,
       "metadata": {
-        "description": "Optional. Enable/Disable usage telemetry for module."
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
       }
     }
   },
   "variables": {
+    "enableReferencedModulesTelemetry": false,
     "builtInRoleNames": {
       "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
       "Managed Identity Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e40ec5ca-96e0-45a2-b4ff-59039f2c2b59')]",
@@ -170,23 +167,17 @@
     }
   },
   "resources": {
-    "avmTelemetry": {
-      "condition": "[parameters('enableTelemetry')]",
+    "defaultTelemetry": {
+      "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2023-07-01",
-      "name": "[format('46d3xbcp.res.managedidentity-userassignedidentity.{0}.{1}', replace('-..--..-', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
+      "apiVersion": "2021-04-01",
+      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
       "properties": {
         "mode": "Incremental",
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
           "contentVersion": "1.0.0.0",
-          "resources": [],
-          "outputs": {
-            "telemetry": {
-              "type": "String",
-              "value": "For more information, see https://aka.ms/avm/TelemetryInfo"
-            }
-          }
+          "resources": []
         }
       }
     },
@@ -261,6 +252,9 @@
           },
           "subject": {
             "value": "[parameters('federatedIdentityCredentials')[copyIndex()].subject]"
+          },
+          "enableDefaultTelemetry": {
+            "value": "[variables('enableReferencedModulesTelemetry')]"
           }
         },
         "template": {
@@ -270,11 +264,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.23.1.45101",
-<<<<<<< HEAD
-              "templateHash": "4906524580099045986"
-=======
               "templateHash": "16507829721467583096"
->>>>>>> 3d827c3621e7d83ad5b9d9266e593f0afc6b7683
             },
             "name": "User Assigned Identity Federated Identity Credential",
             "description": "This module deploys a User Assigned Identity Federated Identity Credential.",
@@ -310,9 +300,30 @@
               "metadata": {
                 "description": "Required. The identifier of the external software workload within the external identity provider. Like the audience value, it has no fixed format, as each IdP uses their own - sometimes a GUID, sometimes a colon delimited identifier, sometimes arbitrary strings. The value here must match the sub claim within the token presented to Azure AD."
               }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
             }
           },
           "resources": [
+            {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
             {
               "type": "Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials",
               "apiVersion": "2023-01-31",
