@@ -491,7 +491,7 @@ Array of role assignments to create.
 | :-- | :-- | :-- |
 | [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
 | [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource ID of the delegated managed identity resource. |
 | [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
 
@@ -532,7 +532,7 @@ Version of the condition.
 
 ### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
 
-The Resource Id of the delegated managed identity resource.
+The Resource ID of the delegated managed identity resource.
 
 - Required: No
 - Type: string
