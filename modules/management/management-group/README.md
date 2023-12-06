@@ -31,6 +31,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -136,6 +137,62 @@ module managementGroup 'br:bicep/modules/management.management-group:1.0.0' = {
 </details>
 <p>
 
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managementGroup 'br:bicep/modules/management.management-group:1.0.0' = {
+  name: '${uniqueString(deployment().name)}-test-mmgwaf'
+  params: {
+    // Required parameters
+    name: 'mmgwaf001'
+    // Non-required parameters
+    displayName: 'Test MG'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    parentId: '<parentId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "mmgwaf001"
+    },
+    // Non-required parameters
+    "displayName": {
+      "value": "Test MG"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "parentId": {
+      "value": "<parentId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -154,9 +211,17 @@ module managementGroup 'br:bicep/modules/management.management-group:1.0.0' = {
 | [`location`](#parameter-location) | string | Location deployment metadata. |
 | [`parentId`](#parameter-parentid) | string | The management group parent ID. Defaults to current scope. |
 
+### Parameter: `name`
+
+The group ID of the Management group.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `displayName`
 
 The friendly name of the management group. If no value is passed then this field will be set to the group ID.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -164,6 +229,7 @@ The friendly name of the management group. If no value is passed then this field
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -171,19 +237,15 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `location`
 
 Location deployment metadata.
+
 - Required: No
 - Type: string
 - Default: `[deployment().location]`
 
-### Parameter: `name`
-
-The group ID of the Management group.
-- Required: Yes
-- Type: string
-
 ### Parameter: `parentId`
 
 The management group parent ID. Defaults to current scope.
+
 - Required: No
 - Type: string
 - Default: `[last(split(managementGroup().id, '/'))]`

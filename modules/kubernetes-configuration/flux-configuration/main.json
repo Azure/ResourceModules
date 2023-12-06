@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "6686104224333946371"
+      "version": "0.23.1.45101",
+      "templateHash": "10031296768791737313"
     },
     "name": "Kubernetes Configuration Flux Configurations",
     "description": "This module deploys a Kubernetes Configuration Flux Configuration.",
@@ -61,9 +61,8 @@
     },
     "kustomizations": {
       "type": "object",
-      "defaultValue": {},
       "metadata": {
-        "description": "Optional. Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster."
+        "description": "Required. Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster."
       }
     },
     "namespace": {
@@ -117,14 +116,14 @@
     },
     {
       "type": "Microsoft.KubernetesConfiguration/fluxConfigurations",
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-05-01",
       "scope": "[format('Microsoft.ContainerService/managedClusters/{0}', parameters('clusterName'))]",
       "name": "[parameters('name')]",
       "properties": {
         "bucket": "[if(not(empty(parameters('bucket'))), parameters('bucket'), null())]",
         "configurationProtectedSettings": "[if(not(empty(parameters('configurationProtectedSettings'))), parameters('configurationProtectedSettings'), createObject())]",
         "gitRepository": "[if(not(empty(parameters('gitRepository'))), parameters('gitRepository'), null())]",
-        "kustomizations": "[if(not(empty(parameters('kustomizations'))), parameters('kustomizations'), createObject())]",
+        "kustomizations": "[parameters('kustomizations')]",
         "namespace": "[parameters('namespace')]",
         "scope": "[parameters('scope')]",
         "sourceKind": "[parameters('sourceKind')]",

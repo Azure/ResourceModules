@@ -30,6 +30,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/security.azure-security-center:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -43,6 +44,68 @@ This instance deploys the module with most of its features enabled.
 ```bicep
 module azureSecurityCenter 'br:bicep/modules/security.azure-security-center:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-sascmax'
+  params: {
+    // Required parameters
+    workspaceId: '<workspaceId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    securityContactProperties: {
+      alertNotifications: 'Off'
+      alertsToAdmins: 'Off'
+      email: 'foo@contoso.com'
+      phone: '+12345678'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "workspaceId": {
+      "value": "<workspaceId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "securityContactProperties": {
+      "value": {
+        "alertNotifications": "Off",
+        "alertsToAdmins": "Off",
+        "email": "foo@contoso.com",
+        "phone": "+12345678"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureSecurityCenter 'br:bicep/modules/security.azure-security-center:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-sascwaf'
   params: {
     // Required parameters
     workspaceId: '<workspaceId>'
@@ -127,9 +190,24 @@ module azureSecurityCenter 'br:bicep/modules/security.azure-security-center:1.0.
 | [`storageAccountsPricingTier`](#parameter-storageaccountspricingtier) | string | The pricing tier value for StorageAccounts. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard. |
 | [`virtualMachinesPricingTier`](#parameter-virtualmachinespricingtier) | string | The pricing tier value for VMs. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard. |
 
+### Parameter: `scope`
+
+All the VMs in this scope will send their security data to the mentioned workspace unless overridden by a setting with more specific scope.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `workspaceId`
+
+The full Azure ID of the workspace to save the data in.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `appServicesPricingTier`
 
 The pricing tier value for AppServices. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard.
+
 - Required: No
 - Type: string
 - Default: `'Free'`
@@ -144,6 +222,7 @@ The pricing tier value for AppServices. Azure Security Center is provided in two
 ### Parameter: `armPricingTier`
 
 The pricing tier value for ARM. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard.
+
 - Required: No
 - Type: string
 - Default: `'Free'`
@@ -158,6 +237,7 @@ The pricing tier value for ARM. Azure Security Center is provided in two pricing
 ### Parameter: `autoProvision`
 
 Describes what kind of security agent provisioning action to take. - On or Off.
+
 - Required: No
 - Type: string
 - Default: `'On'`
@@ -172,6 +252,7 @@ Describes what kind of security agent provisioning action to take. - On or Off.
 ### Parameter: `containerRegistryPricingTier`
 
 The pricing tier value for ContainerRegistry. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard.
+
 - Required: No
 - Type: string
 - Default: `'Free'`
@@ -186,6 +267,7 @@ The pricing tier value for ContainerRegistry. Azure Security Center is provided 
 ### Parameter: `containersTier`
 
 The pricing tier value for containers. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard.
+
 - Required: No
 - Type: string
 - Default: `'Free'`
@@ -200,6 +282,7 @@ The pricing tier value for containers. Azure Security Center is provided in two 
 ### Parameter: `cosmosDbsTier`
 
 The pricing tier value for CosmosDbs. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard.
+
 - Required: No
 - Type: string
 - Default: `'Free'`
@@ -214,6 +297,7 @@ The pricing tier value for CosmosDbs. Azure Security Center is provided in two p
 ### Parameter: `deviceSecurityGroupProperties`
 
 Device Security group data.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -221,6 +305,7 @@ Device Security group data.
 ### Parameter: `dnsPricingTier`
 
 The pricing tier value for DNS. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard.
+
 - Required: No
 - Type: string
 - Default: `'Free'`
@@ -235,6 +320,7 @@ The pricing tier value for DNS. Azure Security Center is provided in two pricing
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -242,6 +328,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `ioTSecuritySolutionProperties`
 
 Security Solution data.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -249,6 +336,7 @@ Security Solution data.
 ### Parameter: `keyVaultsPricingTier`
 
 The pricing tier value for KeyVaults. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard.
+
 - Required: No
 - Type: string
 - Default: `'Free'`
@@ -263,6 +351,7 @@ The pricing tier value for KeyVaults. Azure Security Center is provided in two p
 ### Parameter: `kubernetesServicePricingTier`
 
 The pricing tier value for KubernetesService. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard.
+
 - Required: No
 - Type: string
 - Default: `'Free'`
@@ -277,6 +366,7 @@ The pricing tier value for KubernetesService. Azure Security Center is provided 
 ### Parameter: `location`
 
 Location deployment metadata.
+
 - Required: No
 - Type: string
 - Default: `[deployment().location]`
@@ -284,6 +374,7 @@ Location deployment metadata.
 ### Parameter: `openSourceRelationalDatabasesTier`
 
 The pricing tier value for OpenSourceRelationalDatabases. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard.
+
 - Required: No
 - Type: string
 - Default: `'Free'`
@@ -295,15 +386,10 @@ The pricing tier value for OpenSourceRelationalDatabases. Azure Security Center 
   ]
   ```
 
-### Parameter: `scope`
-
-All the VMs in this scope will send their security data to the mentioned workspace unless overridden by a setting with more specific scope.
-- Required: Yes
-- Type: string
-
 ### Parameter: `securityContactProperties`
 
 Security contact data.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -311,6 +397,7 @@ Security contact data.
 ### Parameter: `sqlServersPricingTier`
 
 The pricing tier value for SqlServers. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard.
+
 - Required: No
 - Type: string
 - Default: `'Free'`
@@ -325,6 +412,7 @@ The pricing tier value for SqlServers. Azure Security Center is provided in two 
 ### Parameter: `sqlServerVirtualMachinesPricingTier`
 
 The pricing tier value for SqlServerVirtualMachines. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard.
+
 - Required: No
 - Type: string
 - Default: `'Free'`
@@ -339,6 +427,7 @@ The pricing tier value for SqlServerVirtualMachines. Azure Security Center is pr
 ### Parameter: `storageAccountsPricingTier`
 
 The pricing tier value for StorageAccounts. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard.
+
 - Required: No
 - Type: string
 - Default: `'Free'`
@@ -353,6 +442,7 @@ The pricing tier value for StorageAccounts. Azure Security Center is provided in
 ### Parameter: `virtualMachinesPricingTier`
 
 The pricing tier value for VMs. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard.
+
 - Required: No
 - Type: string
 - Default: `'Free'`
@@ -363,12 +453,6 @@ The pricing tier value for VMs. Azure Security Center is provided in two pricing
     'Standard'
   ]
   ```
-
-### Parameter: `workspaceId`
-
-The full Azure ID of the workspace to save the data in.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

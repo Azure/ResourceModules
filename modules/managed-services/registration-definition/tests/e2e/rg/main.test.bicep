@@ -35,8 +35,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 // Test Execution //
 // ============== //
 
-module testDeployment '../../../main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: 'Component Validation - ${namePrefix}${serviceShort} Resource group assignment'
@@ -61,4 +62,4 @@ module testDeployment '../../../main.bicep' = {
     registrationDescription: 'Managed by Lighthouse'
     resourceGroupName: resourceGroup.name
   }
-}
+}]

@@ -38,36 +38,41 @@ Static membership allows you to explicitly add virtual networks to a group by ma
 | :-- | :-- | :-- |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `name`
 
 The name of the static member.
-- Required: Yes
-- Type: string
 
-### Parameter: `networkGroupName`
-
-The name of the parent network group. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `networkManagerName`
-
-The name of the parent network manager. Required if the template is used in a standalone deployment.
 - Required: Yes
 - Type: string
 
 ### Parameter: `resourceId`
 
 Resource ID of the virtual network.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `networkGroupName`
+
+The name of the parent network group. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `networkManagerName`
+
+The name of the parent network manager. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 
 ## Outputs

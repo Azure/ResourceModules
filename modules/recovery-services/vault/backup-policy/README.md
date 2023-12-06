@@ -36,30 +36,34 @@ This module deploys a Recovery Services Vault Backup Policy.
 | :-- | :-- | :-- |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `name`
 
 Name of the Azure Recovery Service Vault Backup Policy.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `properties`
 
 Configuration of the Azure Recovery Service Vault Backup Policy.
+
 - Required: Yes
 - Type: object
 
 ### Parameter: `recoveryVaultName`
 
 The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 
 ## Outputs

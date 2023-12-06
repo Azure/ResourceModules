@@ -29,13 +29,337 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/compute.virtual-machine-scale-set:1.0.0`.
 
-- [Linux](#example-1-linux)
-- [Linux.Min](#example-2-linuxmin)
-- [Linux.Ssecmk](#example-3-linuxssecmk)
-- [Windows](#example-4-windows)
-- [Windows.Min](#example-5-windowsmin)
+- [Linux.Min](#example-1-linuxmin)
+- [Linux.Ssecmk](#example-2-linuxssecmk)
+- [Linux](#example-3-linux)
+- [Windows.Min](#example-4-windowsmin)
+- [Windows](#example-5-windows)
 
-### Example 1: _Linux_
+### Example 1: _Linux.Min_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-set:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cvmsslinmin'
+  params: {
+    // Required parameters
+    adminUsername: 'scaleSetAdmin'
+    imageReference: {
+      offer: '0001-com-ubuntu-server-jammy'
+      publisher: 'Canonical'
+      sku: '22_04-lts-gen2'
+      version: 'latest'
+    }
+    name: 'cvmsslinmin001'
+    osDisk: {
+      createOption: 'fromImage'
+      diskSizeGB: '128'
+      managedDisk: {
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    osType: 'Linux'
+    skuName: 'Standard_B12ms'
+    // Non-required parameters
+    disablePasswordAuthentication: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    nicConfigurations: [
+      {
+        ipConfigurations: [
+          {
+            name: 'ipconfig1'
+            properties: {
+              subnet: {
+                id: '<id>'
+              }
+            }
+          }
+        ]
+        nicSuffix: '-nic01'
+      }
+    ]
+    publicKeys: [
+      {
+        keyData: '<keyData>'
+        path: '/home/scaleSetAdmin/.ssh/authorized_keys'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "adminUsername": {
+      "value": "scaleSetAdmin"
+    },
+    "imageReference": {
+      "value": {
+        "offer": "0001-com-ubuntu-server-jammy",
+        "publisher": "Canonical",
+        "sku": "22_04-lts-gen2",
+        "version": "latest"
+      }
+    },
+    "name": {
+      "value": "cvmsslinmin001"
+    },
+    "osDisk": {
+      "value": {
+        "createOption": "fromImage",
+        "diskSizeGB": "128",
+        "managedDisk": {
+          "storageAccountType": "Premium_LRS"
+        }
+      }
+    },
+    "osType": {
+      "value": "Linux"
+    },
+    "skuName": {
+      "value": "Standard_B12ms"
+    },
+    // Non-required parameters
+    "disablePasswordAuthentication": {
+      "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "nicConfigurations": {
+      "value": [
+        {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "<id>"
+                }
+              }
+            }
+          ],
+          "nicSuffix": "-nic01"
+        }
+      ]
+    },
+    "publicKeys": {
+      "value": [
+        {
+          "keyData": "<keyData>",
+          "path": "/home/scaleSetAdmin/.ssh/authorized_keys"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _Linux.Ssecmk_
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-set:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cvmsslcmk'
+  params: {
+    // Required parameters
+    adminUsername: 'scaleSetAdmin'
+    imageReference: {
+      offer: '0001-com-ubuntu-server-jammy'
+      publisher: 'Canonical'
+      sku: '22_04-lts-gen2'
+      version: 'latest'
+    }
+    name: 'cvmsslcmk001'
+    osDisk: {
+      createOption: 'fromImage'
+      diskSizeGB: '128'
+      managedDisk: {
+        diskEncryptionSet: {
+          id: '<id>'
+        }
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    osType: 'Linux'
+    skuName: 'Standard_B12ms'
+    // Non-required parameters
+    dataDisks: [
+      {
+        caching: 'ReadOnly'
+        createOption: 'Empty'
+        diskSizeGB: '128'
+        managedDisk: {
+          diskEncryptionSet: {
+            id: '<id>'
+          }
+          storageAccountType: 'Premium_LRS'
+        }
+      }
+    ]
+    disablePasswordAuthentication: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    location: '<location>'
+    nicConfigurations: [
+      {
+        ipConfigurations: [
+          {
+            name: 'ipconfig1'
+            properties: {
+              subnet: {
+                id: '<id>'
+              }
+            }
+          }
+        ]
+        nicSuffix: '-nic01'
+      }
+    ]
+    publicKeys: [
+      {
+        keyData: '<keyData>'
+        path: '/home/scaleSetAdmin/.ssh/authorized_keys'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "adminUsername": {
+      "value": "scaleSetAdmin"
+    },
+    "imageReference": {
+      "value": {
+        "offer": "0001-com-ubuntu-server-jammy",
+        "publisher": "Canonical",
+        "sku": "22_04-lts-gen2",
+        "version": "latest"
+      }
+    },
+    "name": {
+      "value": "cvmsslcmk001"
+    },
+    "osDisk": {
+      "value": {
+        "createOption": "fromImage",
+        "diskSizeGB": "128",
+        "managedDisk": {
+          "diskEncryptionSet": {
+            "id": "<id>"
+          },
+          "storageAccountType": "Premium_LRS"
+        }
+      }
+    },
+    "osType": {
+      "value": "Linux"
+    },
+    "skuName": {
+      "value": "Standard_B12ms"
+    },
+    // Non-required parameters
+    "dataDisks": {
+      "value": [
+        {
+          "caching": "ReadOnly",
+          "createOption": "Empty",
+          "diskSizeGB": "128",
+          "managedDisk": {
+            "diskEncryptionSet": {
+              "id": "<id>"
+            },
+            "storageAccountType": "Premium_LRS"
+          }
+        }
+      ]
+    },
+    "disablePasswordAuthentication": {
+      "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "nicConfigurations": {
+      "value": [
+        {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "<id>"
+                }
+              }
+            }
+          ],
+          "nicSuffix": "-nic01"
+        }
+      ]
+    },
+    "publicKeys": {
+      "value": [
+        {
+          "keyData": "<keyData>",
+          "path": "/home/scaleSetAdmin/.ssh/authorized_keys"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _Linux_
 
 <details>
 
@@ -143,7 +467,7 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -338,7 +662,7 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -406,7 +730,7 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
 </details>
 <p>
 
-### Example 2: _Linux.Min_
+### Example 4: _Windows.Min_
 
 <details>
 
@@ -414,17 +738,17 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
 
 ```bicep
 module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-set:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cvmsslinmin'
+  name: '${uniqueString(deployment().name, location)}-test-cvmsswinmin'
   params: {
     // Required parameters
-    adminUsername: 'scaleSetAdmin'
+    adminUsername: 'localAdminUser'
     imageReference: {
-      offer: '0001-com-ubuntu-server-jammy'
-      publisher: 'Canonical'
-      sku: '22_04-lts-gen2'
+      offer: 'WindowsServer'
+      publisher: 'MicrosoftWindowsServer'
+      sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
-    name: 'cvmsslinmin001'
+    name: 'cvmsswinmin001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -432,10 +756,10 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
         storageAccountType: 'Premium_LRS'
       }
     }
-    osType: 'Linux'
+    osType: 'Windows'
     skuName: 'Standard_B12ms'
     // Non-required parameters
-    disablePasswordAuthentication: true
+    adminPassword: '<adminPassword>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     nicConfigurations: [
       {
@@ -450,12 +774,6 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
           }
         ]
         nicSuffix: '-nic01'
-      }
-    ]
-    publicKeys: [
-      {
-        keyData: '<keyData>'
-        path: '/home/scaleSetAdmin/.ssh/authorized_keys'
       }
     ]
   }
@@ -476,18 +794,18 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
   "parameters": {
     // Required parameters
     "adminUsername": {
-      "value": "scaleSetAdmin"
+      "value": "localAdminUser"
     },
     "imageReference": {
       "value": {
-        "offer": "0001-com-ubuntu-server-jammy",
-        "publisher": "Canonical",
-        "sku": "22_04-lts-gen2",
+        "offer": "WindowsServer",
+        "publisher": "MicrosoftWindowsServer",
+        "sku": "2022-datacenter-azure-edition",
         "version": "latest"
       }
     },
     "name": {
-      "value": "cvmsslinmin001"
+      "value": "cvmsswinmin001"
     },
     "osDisk": {
       "value": {
@@ -499,14 +817,14 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
       }
     },
     "osType": {
-      "value": "Linux"
+      "value": "Windows"
     },
     "skuName": {
       "value": "Standard_B12ms"
     },
     // Non-required parameters
-    "disablePasswordAuthentication": {
-      "value": true
+    "adminPassword": {
+      "value": "<adminPassword>"
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -527,14 +845,6 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
           "nicSuffix": "-nic01"
         }
       ]
-    },
-    "publicKeys": {
-      "value": [
-        {
-          "keyData": "<keyData>",
-          "path": "/home/scaleSetAdmin/.ssh/authorized_keys"
-        }
-      ]
     }
   }
 }
@@ -543,194 +853,7 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
 </details>
 <p>
 
-### Example 3: _Linux.Ssecmk_
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-set:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cvmsslcmk'
-  params: {
-    // Required parameters
-    adminUsername: 'scaleSetAdmin'
-    imageReference: {
-      offer: '0001-com-ubuntu-server-jammy'
-      publisher: 'Canonical'
-      sku: '22_04-lts-gen2'
-      version: 'latest'
-    }
-    name: 'cvmsslcmk001'
-    osDisk: {
-      createOption: 'fromImage'
-      diskSizeGB: '128'
-      managedDisk: {
-        diskEncryptionSet: {
-          id: '<id>'
-        }
-        storageAccountType: 'Premium_LRS'
-      }
-    }
-    osType: 'Linux'
-    skuName: 'Standard_B12ms'
-    // Non-required parameters
-    dataDisks: [
-      {
-        caching: 'ReadOnly'
-        createOption: 'Empty'
-        diskSizeGB: '128'
-        managedDisk: {
-          diskEncryptionSet: {
-            id: '<id>'
-          }
-          storageAccountType: 'Premium_LRS'
-        }
-      }
-    ]
-    disablePasswordAuthentication: true
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    location: '<location>'
-    nicConfigurations: [
-      {
-        ipConfigurations: [
-          {
-            name: 'ipconfig1'
-            properties: {
-              subnet: {
-                id: '<id>'
-              }
-            }
-          }
-        ]
-        nicSuffix: '-nic01'
-      }
-    ]
-    publicKeys: [
-      {
-        keyData: '<keyData>'
-        path: '/home/scaleSetAdmin/.ssh/authorized_keys'
-      }
-    ]
-    tags: {
-      Environment: 'Non-Prod'
-      'hidden-title': 'This is visible in the resource name'
-      Role: 'DeploymentValidation'
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "adminUsername": {
-      "value": "scaleSetAdmin"
-    },
-    "imageReference": {
-      "value": {
-        "offer": "0001-com-ubuntu-server-jammy",
-        "publisher": "Canonical",
-        "sku": "22_04-lts-gen2",
-        "version": "latest"
-      }
-    },
-    "name": {
-      "value": "cvmsslcmk001"
-    },
-    "osDisk": {
-      "value": {
-        "createOption": "fromImage",
-        "diskSizeGB": "128",
-        "managedDisk": {
-          "diskEncryptionSet": {
-            "id": "<id>"
-          },
-          "storageAccountType": "Premium_LRS"
-        }
-      }
-    },
-    "osType": {
-      "value": "Linux"
-    },
-    "skuName": {
-      "value": "Standard_B12ms"
-    },
-    // Non-required parameters
-    "dataDisks": {
-      "value": [
-        {
-          "caching": "ReadOnly",
-          "createOption": "Empty",
-          "diskSizeGB": "128",
-          "managedDisk": {
-            "diskEncryptionSet": {
-              "id": "<id>"
-            },
-            "storageAccountType": "Premium_LRS"
-          }
-        }
-      ]
-    },
-    "disablePasswordAuthentication": {
-      "value": true
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "location": {
-      "value": "<location>"
-    },
-    "nicConfigurations": {
-      "value": [
-        {
-          "ipConfigurations": [
-            {
-              "name": "ipconfig1",
-              "properties": {
-                "subnet": {
-                  "id": "<id>"
-                }
-              }
-            }
-          ],
-          "nicSuffix": "-nic01"
-        }
-      ]
-    },
-    "publicKeys": {
-      "value": [
-        {
-          "keyData": "<keyData>",
-          "path": "/home/scaleSetAdmin/.ssh/authorized_keys"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "hidden-title": "This is visible in the resource name",
-        "Role": "DeploymentValidation"
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 4: _Windows_
+### Example 5: _Windows_
 
 <details>
 
@@ -837,7 +960,7 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -1023,7 +1146,7 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -1075,129 +1198,6 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
     },
     "vmPriority": {
       "value": "Regular"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-### Example 5: _Windows.Min_
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-set:1.0.0' = {
-  name: '${uniqueString(deployment().name, location)}-test-cvmsswinmin'
-  params: {
-    // Required parameters
-    adminUsername: 'localAdminUser'
-    imageReference: {
-      offer: 'WindowsServer'
-      publisher: 'MicrosoftWindowsServer'
-      sku: '2022-datacenter-azure-edition'
-      version: 'latest'
-    }
-    name: 'cvmsswinmin001'
-    osDisk: {
-      createOption: 'fromImage'
-      diskSizeGB: '128'
-      managedDisk: {
-        storageAccountType: 'Premium_LRS'
-      }
-    }
-    osType: 'Windows'
-    skuName: 'Standard_B12ms'
-    // Non-required parameters
-    adminPassword: '<adminPassword>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    nicConfigurations: [
-      {
-        ipConfigurations: [
-          {
-            name: 'ipconfig1'
-            properties: {
-              subnet: {
-                id: '<id>'
-              }
-            }
-          }
-        ]
-        nicSuffix: '-nic01'
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "adminUsername": {
-      "value": "localAdminUser"
-    },
-    "imageReference": {
-      "value": {
-        "offer": "WindowsServer",
-        "publisher": "MicrosoftWindowsServer",
-        "sku": "2022-datacenter-azure-edition",
-        "version": "latest"
-      }
-    },
-    "name": {
-      "value": "cvmsswinmin001"
-    },
-    "osDisk": {
-      "value": {
-        "createOption": "fromImage",
-        "diskSizeGB": "128",
-        "managedDisk": {
-          "storageAccountType": "Premium_LRS"
-        }
-      }
-    },
-    "osType": {
-      "value": "Windows"
-    },
-    "skuName": {
-      "value": "Standard_B12ms"
-    },
-    // Non-required parameters
-    "adminPassword": {
-      "value": "<adminPassword>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "nicConfigurations": {
-      "value": [
-        {
-          "ipConfigurations": [
-            {
-              "name": "ipconfig1",
-              "properties": {
-                "subnet": {
-                  "id": "<id>"
-                }
-              }
-            }
-          ],
-          "nicSuffix": "-nic01"
-        }
-      ]
     }
   }
 }
@@ -1267,7 +1267,7 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
 | [`provisionVMAgent`](#parameter-provisionvmagent) | bool | Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later. |
 | [`proximityPlacementGroupResourceId`](#parameter-proximityplacementgroupresourceid) | string | Resource ID of a proximity placement group. |
 | [`publicKeys`](#parameter-publickeys) | array | The list of SSH public keys used to authenticate with linux based VMs. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`sasTokenValidityLength`](#parameter-sastokenvaliditylength) | string | SAS token validity length to use to download files from storage accounts. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
 | [`scaleInPolicy`](#parameter-scaleinpolicy) | object | Specifies the scale-in policy that decides which virtual machines are chosen for removal when a Virtual Machine Scale Set is scaled-in. |
 | [`scaleSetFaultDomain`](#parameter-scalesetfaultdomain) | int | Fault Domain count for each placement group. |
@@ -1293,9 +1293,67 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
 | :-- | :-- | :-- |
 | [`baseTime`](#parameter-basetime) | string | Do not provide a value! This date value is used to generate a registration token. |
 
+### Parameter: `adminUsername`
+
+Administrator username.
+
+- Required: Yes
+- Type: securestring
+
+### Parameter: `imageReference`
+
+OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image.
+
+- Required: Yes
+- Type: object
+
+### Parameter: `name`
+
+Name of the VMSS.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `nicConfigurations`
+
+Configures NICs and PIPs.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `osDisk`
+
+Specifies the OS disk. For security reasons, it is recommended to specify DiskEncryptionSet into the osDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VM Scale sets.
+
+- Required: Yes
+- Type: object
+
+### Parameter: `osType`
+
+The chosen OS type.
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Linux'
+    'Windows'
+  ]
+  ```
+
+### Parameter: `skuName`
+
+The SKU size of the VMs.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `additionalUnattendContent`
 
 Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1303,19 +1361,15 @@ Specifies additional base-64 encoded XML formatted information that can be inclu
 ### Parameter: `adminPassword`
 
 When specifying a Windows Virtual Machine, this value should be passed.
+
 - Required: No
 - Type: securestring
 - Default: `''`
 
-### Parameter: `adminUsername`
-
-Administrator username.
-- Required: Yes
-- Type: securestring
-
 ### Parameter: `automaticRepairsPolicyEnabled`
 
 Specifies whether automatic repairs should be enabled on the virtual machine scale set.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -1323,20 +1377,15 @@ Specifies whether automatic repairs should be enabled on the virtual machine sca
 ### Parameter: `availabilityZones`
 
 The virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set.
+
 - Required: No
 - Type: array
 - Default: `[]`
 
-### Parameter: `baseTime`
-
-Do not provide a value! This date value is used to generate a registration token.
-- Required: No
-- Type: string
-- Default: `[utcNow('u')]`
-
 ### Parameter: `bootDiagnosticStorageAccountName`
 
 Storage account used to store boot diagnostic information. Boot diagnostics will be disabled if no value is provided.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -1344,6 +1393,7 @@ Storage account used to store boot diagnostic information. Boot diagnostics will
 ### Parameter: `bootDiagnosticStorageAccountUri`
 
 Storage account boot diagnostic base URI.
+
 - Required: No
 - Type: string
 - Default: `[format('.blob.{0}/', environment().suffixes.storage)]`
@@ -1351,6 +1401,7 @@ Storage account boot diagnostic base URI.
 ### Parameter: `customData`
 
 Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -1358,6 +1409,7 @@ Custom data associated to the VM, this value will be automatically converted int
 ### Parameter: `dataDisks`
 
 Specifies the data disks. For security reasons, it is recommended to specify DiskEncryptionSet into the dataDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VM Scale sets.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1365,86 +1417,82 @@ Specifies the data disks. For security reasons, it is recommended to specify Dis
 ### Parameter: `diagnosticSettings`
 
 The diagnostic settings of the service.
+
 - Required: No
 - Type: array
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | No | string | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | No | string | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | No | string | Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | No | string | Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
-| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | No | array | Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`name`](#parameter-diagnosticsettingsname) | No | string | Optional. The name of diagnostic setting. |
-| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | No | string | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | No | string | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
+| [`name`](#parameter-diagnosticsettingsname) | string | The name of diagnostic setting. |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
-Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
+Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.eventHubName`
 
-Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.logAnalyticsDestinationType`
 
-Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
+A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.
 
 - Required: No
 - Type: string
-- Allowed: `[AzureDiagnostics, Dedicated]`
+- Allowed:
+  ```Bicep
+  [
+    'AzureDiagnostics'
+    'Dedicated'
+  ]
+  ```
 
 ### Parameter: `diagnosticSettings.marketplacePartnerResourceId`
 
-Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.metricCategories`
 
-Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
+The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.
 
 - Required: No
 - Type: array
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`category`](#parameter-diagnosticsettingsmetriccategoriescategory) | Yes | string | Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics. |
-
-### Parameter: `diagnosticSettings.metricCategories.category`
-
-Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to 'AllMetrics' to collect all metrics.
-
-- Required: Yes
-- Type: string
-
-
 ### Parameter: `diagnosticSettings.name`
 
-Optional. The name of diagnostic setting.
+The name of diagnostic setting.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.storageAccountResourceId`
 
-Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
 
 - Required: No
 - Type: string
 
 ### Parameter: `diagnosticSettings.workspaceResourceId`
 
-Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
+Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.
 
 - Required: No
 - Type: string
@@ -1452,6 +1500,7 @@ Optional. Resource ID of the diagnostic log analytics workspace. For security re
 ### Parameter: `disableAutomaticRollback`
 
 Whether OS image rollback feature should be disabled.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -1459,6 +1508,7 @@ Whether OS image rollback feature should be disabled.
 ### Parameter: `disablePasswordAuthentication`
 
 Specifies whether password authentication should be disabled.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -1466,6 +1516,7 @@ Specifies whether password authentication should be disabled.
 ### Parameter: `doNotRunExtensionsOnOverprovisionedVMs`
 
 When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally kept. This property will hence ensure that the extensions do not run on the extra overprovisioned VMs.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -1473,6 +1524,7 @@ When Overprovision is enabled, extensions are launched only on the requested num
 ### Parameter: `enableAutomaticOSUpgrade`
 
 Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the OS image becomes available. Default value is false. If this is set to true for Windows based scale sets, enableAutomaticUpdates is automatically set to false and cannot be set to true.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -1480,6 +1532,7 @@ Indicates whether OS upgrades should automatically be applied to scale set insta
 ### Parameter: `enableAutomaticUpdates`
 
 Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -1487,6 +1540,7 @@ Indicates whether Automatic Updates is enabled for the Windows virtual machine. 
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -1494,6 +1548,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `enableEvictionPolicy`
 
 Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -1501,6 +1556,7 @@ Specifies the eviction policy for the low priority virtual machine. Will result 
 ### Parameter: `encryptionAtHost`
 
 This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your virtual machine scale sets.
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -1508,6 +1564,7 @@ This property can be used by user in the request to enable or disable the Host E
 ### Parameter: `extensionAntiMalwareConfig`
 
 The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed.
+
 - Required: No
 - Type: object
 - Default:
@@ -1520,6 +1577,7 @@ The configuration for the [Anti Malware] extension. Must at least contain the ["
 ### Parameter: `extensionAzureDiskEncryptionConfig`
 
 The configuration for the [Azure Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys.
+
 - Required: No
 - Type: object
 - Default:
@@ -1532,6 +1590,7 @@ The configuration for the [Azure Disk Encryption] extension. Must at least conta
 ### Parameter: `extensionCustomScriptConfig`
 
 The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed.
+
 - Required: No
 - Type: object
 - Default:
@@ -1545,6 +1604,7 @@ The configuration for the [Custom Script] extension. Must at least contain the [
 ### Parameter: `extensionDependencyAgentConfig`
 
 The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed.
+
 - Required: No
 - Type: object
 - Default:
@@ -1557,6 +1617,7 @@ The configuration for the [Dependency Agent] extension. Must at least contain th
 ### Parameter: `extensionDomainJoinConfig`
 
 The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed.
+
 - Required: No
 - Type: object
 - Default:
@@ -1569,6 +1630,7 @@ The configuration for the [Domain Join] extension. Must at least contain the ["e
 ### Parameter: `extensionDomainJoinPassword`
 
 Required if name is specified. Password of the user specified in user parameter.
+
 - Required: No
 - Type: securestring
 - Default: `''`
@@ -1576,6 +1638,7 @@ Required if name is specified. Password of the user specified in user parameter.
 ### Parameter: `extensionDSCConfig`
 
 The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed.
+
 - Required: No
 - Type: object
 - Default:
@@ -1588,6 +1651,7 @@ The configuration for the [Desired State Configuration] extension. Must at least
 ### Parameter: `extensionMonitoringAgentConfig`
 
 The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed.
+
 - Required: No
 - Type: object
 - Default:
@@ -1600,6 +1664,7 @@ The configuration for the [Monitoring Agent] extension. Must at least contain th
 ### Parameter: `extensionNetworkWatcherAgentConfig`
 
 The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed.
+
 - Required: No
 - Type: object
 - Default:
@@ -1612,19 +1677,15 @@ The configuration for the [Network Watcher Agent] extension. Must at least conta
 ### Parameter: `gracePeriod`
 
 The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 30 minutes (PT30M). The maximum allowed grace period is 90 minutes (PT90M).
+
 - Required: No
 - Type: string
 - Default: `'PT30M'`
 
-### Parameter: `imageReference`
-
-OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image.
-- Required: Yes
-- Type: object
-
 ### Parameter: `licenseType`
 
 Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -1640,6 +1701,7 @@ Specifies that the image or disk that is being used was licensed on-premises. Th
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -1647,26 +1709,35 @@ Location for all resources.
 ### Parameter: `lock`
 
 The lock settings of the service.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
-| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
 ### Parameter: `lock.kind`
 
-Optional. Specify the type of lock.
+Specify the type of lock.
 
 - Required: No
 - Type: string
-- Allowed: `[CanNotDelete, None, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `lock.name`
 
-Optional. Specify the name of lock.
+Specify the name of lock.
 
 - Required: No
 - Type: string
@@ -1674,25 +1745,27 @@ Optional. Specify the name of lock.
 ### Parameter: `managedIdentities`
 
 The managed identity definition for this resource.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | bool | Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
-Optional. Enables system assigned managed identity on the resource.
+Enables system assigned managed identity on the resource.
 
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
-Optional. The resource ID(s) to assign to the resource.
+The resource ID(s) to assign to the resource.
 
 - Required: No
 - Type: array
@@ -1700,6 +1773,7 @@ Optional. The resource ID(s) to assign to the resource.
 ### Parameter: `maxBatchInstancePercent`
 
 The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in previous or future batches can cause the percentage of instances in a batch to decrease to ensure higher reliability.
+
 - Required: No
 - Type: int
 - Default: `20`
@@ -1707,6 +1781,7 @@ The maximum percent of total virtual machine instances that will be upgraded sim
 ### Parameter: `maxPriceForLowPriorityVm`
 
 Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -1714,6 +1789,7 @@ Specifies the maximum price you are willing to pay for a low priority VM/VMSS. T
 ### Parameter: `maxUnhealthyInstancePercent`
 
 The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch.
+
 - Required: No
 - Type: int
 - Default: `20`
@@ -1721,6 +1797,7 @@ The maximum percentage of the total virtual machine instances in the scale set t
 ### Parameter: `maxUnhealthyUpgradedInstancePercent`
 
 The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch.
+
 - Required: No
 - Type: int
 - Default: `20`
@@ -1728,45 +1805,15 @@ The maximum percentage of the total virtual machine instances in the scale set t
 ### Parameter: `monitoringWorkspaceId`
 
 Resource ID of the monitoring log analytics workspace.
+
 - Required: No
 - Type: string
 - Default: `''`
 
-### Parameter: `name`
-
-Name of the VMSS.
-- Required: Yes
-- Type: string
-
-### Parameter: `nicConfigurations`
-
-Configures NICs and PIPs.
-- Required: No
-- Type: array
-- Default: `[]`
-
-### Parameter: `osDisk`
-
-Specifies the OS disk. For security reasons, it is recommended to specify DiskEncryptionSet into the osDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VM Scale sets.
-- Required: Yes
-- Type: object
-
-### Parameter: `osType`
-
-The chosen OS type.
-- Required: Yes
-- Type: string
-- Allowed:
-  ```Bicep
-  [
-    'Linux'
-    'Windows'
-  ]
-  ```
-
 ### Parameter: `overprovision`
 
 Specifies whether the Virtual Machine Scale Set should be overprovisioned.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -1774,6 +1821,7 @@ Specifies whether the Virtual Machine Scale Set should be overprovisioned.
 ### Parameter: `pauseTimeBetweenBatches`
 
 The wait time between completing the update for all virtual machines in one batch and starting the next batch. The time duration should be specified in ISO 8601 format.
+
 - Required: No
 - Type: string
 - Default: `'PT0S'`
@@ -1781,6 +1829,7 @@ The wait time between completing the update for all virtual machines in one batc
 ### Parameter: `plan`
 
 Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -1788,6 +1837,7 @@ Specifies information about the marketplace image used to create the virtual mac
 ### Parameter: `provisionVMAgent`
 
 Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -1795,6 +1845,7 @@ Indicates whether virtual machine agent should be provisioned on the virtual mac
 ### Parameter: `proximityPlacementGroupResourceId`
 
 Resource ID of a proximity placement group.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -1802,81 +1853,104 @@ Resource ID of a proximity placement group.
 ### Parameter: `publicKeys`
 
 The list of SSH public keys used to authenticate with linux based VMs.
+
 - Required: No
 - Type: array
 - Default: `[]`
 
 ### Parameter: `roleAssignments`
 
-Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+Array of role assignments to create.
+
 - Required: No
 - Type: array
 
+**Required parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`condition`](#parameter-roleassignmentscondition) | No | string | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | No | string | Optional. Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | No | string | Optional. The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | No | string | Optional. The description of the role assignment. |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | Yes | string | Required. The principal ID of the principal (user/group/identity) to assign the role to. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | No | string | Optional. The principal type of the assigned principal ID. |
-| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | Yes | string | Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
+| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
+| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+
+### Parameter: `roleAssignments.principalId`
+
+The principal ID of the principal (user/group/identity) to assign the role to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `roleAssignments.roleDefinitionIdOrName`
+
+The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `roleAssignments.condition`
 
-Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
+The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.conditionVersion`
 
-Optional. Version of the condition.
+Version of the condition.
 
 - Required: No
 - Type: string
-- Allowed: `[2.0]`
+- Allowed:
+  ```Bicep
+  [
+    '2.0'
+  ]
+  ```
 
 ### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
 
-Optional. The Resource Id of the delegated managed identity resource.
+The Resource Id of the delegated managed identity resource.
 
 - Required: No
 - Type: string
 
 ### Parameter: `roleAssignments.description`
 
-Optional. The description of the role assignment.
+The description of the role assignment.
 
 - Required: No
-- Type: string
-
-### Parameter: `roleAssignments.principalId`
-
-Required. The principal ID of the principal (user/group/identity) to assign the role to.
-
-- Required: Yes
 - Type: string
 
 ### Parameter: `roleAssignments.principalType`
 
-Optional. The principal type of the assigned principal ID.
+The principal type of the assigned principal ID.
 
 - Required: No
 - Type: string
-- Allowed: `[Device, ForeignGroup, Group, ServicePrincipal, User]`
-
-### Parameter: `roleAssignments.roleDefinitionIdOrName`
-
-Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.
-
-- Required: Yes
-- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Device'
+    'ForeignGroup'
+    'Group'
+    'ServicePrincipal'
+    'User'
+  ]
+  ```
 
 ### Parameter: `sasTokenValidityLength`
 
 SAS token validity length to use to download files from storage accounts. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.
+
 - Required: No
 - Type: string
 - Default: `'PT8H'`
@@ -1884,6 +1958,7 @@ SAS token validity length to use to download files from storage accounts. Usage:
 ### Parameter: `scaleInPolicy`
 
 Specifies the scale-in policy that decides which virtual machines are chosen for removal when a Virtual Machine Scale Set is scaled-in.
+
 - Required: No
 - Type: object
 - Default:
@@ -1898,6 +1973,7 @@ Specifies the scale-in policy that decides which virtual machines are chosen for
 ### Parameter: `scaleSetFaultDomain`
 
 Fault Domain count for each placement group.
+
 - Required: No
 - Type: int
 - Default: `2`
@@ -1905,6 +1981,7 @@ Fault Domain count for each placement group.
 ### Parameter: `scheduledEventsProfile`
 
 Specifies Scheduled Event related configurations.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -1912,6 +1989,7 @@ Specifies Scheduled Event related configurations.
 ### Parameter: `secrets`
 
 Specifies set of certificates that should be installed onto the virtual machines in the scale set.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -1919,6 +1997,7 @@ Specifies set of certificates that should be installed onto the virtual machines
 ### Parameter: `secureBootEnabled`
 
 Specifies whether secure boot should be enabled on the virtual machine scale set. This parameter is part of the UefiSettings. SecurityType should be set to TrustedLaunch to enable UefiSettings.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -1926,6 +2005,7 @@ Specifies whether secure boot should be enabled on the virtual machine scale set
 ### Parameter: `securityType`
 
 Specifies the SecurityType of the virtual machine scale set. It is set as TrustedLaunch to enable UefiSettings.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -1933,6 +2013,7 @@ Specifies the SecurityType of the virtual machine scale set. It is set as Truste
 ### Parameter: `singlePlacementGroup`
 
 When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true.
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -1940,25 +2021,22 @@ When true this limits the scale set to a single placement group, of max size 100
 ### Parameter: `skuCapacity`
 
 The initial instance count of scale set VMs.
+
 - Required: No
 - Type: int
 - Default: `1`
 
-### Parameter: `skuName`
-
-The SKU size of the VMs.
-- Required: Yes
-- Type: string
-
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 
 ### Parameter: `timeZone`
 
 Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -1966,6 +2044,7 @@ Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Po
 ### Parameter: `ultraSSDEnabled`
 
 The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -1973,6 +2052,7 @@ The flag that enables or disables a capability to have one or more managed data 
 ### Parameter: `upgradePolicyMode`
 
 Specifies the mode of an upgrade to virtual machines in the scale set.' Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action. ; Automatic - All virtual machines in the scale set are automatically updated at the same time. - Automatic, Manual, Rolling.
+
 - Required: No
 - Type: string
 - Default: `'Manual'`
@@ -1988,6 +2068,7 @@ Specifies the mode of an upgrade to virtual machines in the scale set.' Manual -
 ### Parameter: `vmNamePrefix`
 
 Specifies the computer name prefix for all of the virtual machines in the scale set.
+
 - Required: No
 - Type: string
 - Default: `'vmssvm'`
@@ -1995,6 +2076,7 @@ Specifies the computer name prefix for all of the virtual machines in the scale 
 ### Parameter: `vmPriority`
 
 Specifies the priority for the virtual machine.
+
 - Required: No
 - Type: string
 - Default: `'Regular'`
@@ -2010,6 +2092,7 @@ Specifies the priority for the virtual machine.
 ### Parameter: `vTpmEnabled`
 
 Specifies whether vTPM should be enabled on the virtual machine scale set. This parameter is part of the UefiSettings.  SecurityType should be set to TrustedLaunch to enable UefiSettings.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -2017,6 +2100,7 @@ Specifies whether vTPM should be enabled on the virtual machine scale set. This 
 ### Parameter: `winRM`
 
 Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -2024,9 +2108,18 @@ Specifies the Windows Remote Management listeners. This enables remote Windows P
 ### Parameter: `zoneBalance`
 
 Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage.
+
 - Required: No
 - Type: bool
 - Default: `False`
+
+### Parameter: `baseTime`
+
+Do not provide a value! This date value is used to generate a registration token.
+
+- Required: No
+- Type: string
+- Default: `[utcNow('u')]`
 
 
 ## Outputs

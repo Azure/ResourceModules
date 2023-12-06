@@ -50,6 +50,7 @@ A security admin configuration contains a set of rule collections. Each rule col
 ### Parameter: `access`
 
 Indicates the access allowed for this particular rule. "Allow" means traffic matching this rule will be allowed. "Deny" means traffic matching this rule will be blocked. "AlwaysAllow" means that traffic matching this rule will be allowed regardless of other rules with lower priority or user-defined NSGs.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -61,30 +62,10 @@ Indicates the access allowed for this particular rule. "Allow" means traffic mat
   ]
   ```
 
-### Parameter: `description`
-
-A description of the rule.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `destinationPortRanges`
-
-List of destination port ranges. This specifies on which ports traffic will be allowed or denied by this rule. Provide an (*) to allow traffic on any port. Port ranges are between 1-65535.
-- Required: No
-- Type: array
-- Default: `[]`
-
-### Parameter: `destinations`
-
-The destnations filter can be an IP Address or a service tag. Each filter contains the properties AddressPrefixType (IPPrefix or ServiceTag) and AddressPrefix (using CIDR notation (e.g. 192.168.99.0/24 or 2001:1234::/64) or a service tag (e.g. AppService.WestEurope)). Combining CIDR and Service tags in one rule filter is not permitted.
-- Required: No
-- Type: array
-- Default: `[]`
-
 ### Parameter: `direction`
 
 Indicates if the traffic matched against the rule in inbound or outbound.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -95,34 +76,24 @@ Indicates if the traffic matched against the rule in inbound or outbound.
   ]
   ```
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `name`
 
 The name of the rule.
-- Required: Yes
-- Type: string
 
-### Parameter: `networkManagerName`
-
-The name of the parent network manager. Required if the template is used in a standalone deployment.
 - Required: Yes
 - Type: string
 
 ### Parameter: `priority`
 
 The priority of the rule. The value can be between 1 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule.
+
 - Required: Yes
 - Type: int
 
 ### Parameter: `protocol`
 
 Network protocol this rule applies to.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -137,21 +108,63 @@ Network protocol this rule applies to.
   ]
   ```
 
+### Parameter: `networkManagerName`
+
+The name of the parent network manager. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `ruleCollectionName`
 
 The name of the parent rule collection. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `securityAdminConfigurationName`
 
 The name of the parent security admin configuration. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `description`
+
+A description of the rule.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `destinationPortRanges`
+
+List of destination port ranges. This specifies on which ports traffic will be allowed or denied by this rule. Provide an (*) to allow traffic on any port. Port ranges are between 1-65535.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `destinations`
+
+The destnations filter can be an IP Address or a service tag. Each filter contains the properties AddressPrefixType (IPPrefix or ServiceTag) and AddressPrefix (using CIDR notation (e.g. 192.168.99.0/24 or 2001:1234::/64) or a service tag (e.g. AppService.WestEurope)). Combining CIDR and Service tags in one rule filter is not permitted.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 ### Parameter: `sourcePortRanges`
 
 List of destination port ranges. This specifies on which ports traffic will be allowed or denied by this rule. Provide an (*) to allow traffic on any port. Port ranges are between 1-65535.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -159,6 +172,7 @@ List of destination port ranges. This specifies on which ports traffic will be a
 ### Parameter: `sources`
 
 The source filter can be an IP Address or a service tag. Each filter contains the properties AddressPrefixType (IPPrefix or ServiceTag) and AddressPrefix (using CIDR notation (e.g. 192.168.99.0/24 or 2001:1234::/64) or a service tag (e.g. AppService.WestEurope)). Combining CIDR and Service tags in one rule filter is not permitted.
+
 - Required: No
 - Type: array
 - Default: `[]`

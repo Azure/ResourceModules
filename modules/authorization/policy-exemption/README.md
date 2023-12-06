@@ -546,9 +546,24 @@ module policyExemption 'br:bicep/modules/authorization.policy-exemption:1.0.0' =
 | [`resourceSelectors`](#parameter-resourceselectors) | array | The resource selector list to filter policies by resource properties. |
 | [`subscriptionId`](#parameter-subscriptionid) | string | The subscription ID of the subscription to be exempted from the policy assignment. Cannot use with management group ID parameter. |
 
+### Parameter: `name`
+
+Specifies the name of the policy exemption. Maximum length is 64 characters for management group, subscription and resource group scopes.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `policyAssignmentId`
+
+The resource ID of the policy assignment that is being exempted.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `assignmentScopeValidation`
 
 The option whether validate the exemption is at or under the assignment scope.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -564,6 +579,7 @@ The option whether validate the exemption is at or under the assignment scope.
 ### Parameter: `description`
 
 The description of the policy exemption.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -571,6 +587,7 @@ The description of the policy exemption.
 ### Parameter: `displayName`
 
 The display name of the policy exemption. Maximum length is 128 characters.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -578,6 +595,7 @@ The display name of the policy exemption. Maximum length is 128 characters.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -585,6 +603,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `exemptionCategory`
 
 The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated.
+
 - Required: No
 - Type: string
 - Default: `'Mitigated'`
@@ -599,6 +618,7 @@ The policy exemption category. Possible values are Waiver and Mitigated. Default
 ### Parameter: `expiresOn`
 
 The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -606,6 +626,7 @@ The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of th
 ### Parameter: `location`
 
 Location deployment metadata.
+
 - Required: No
 - Type: string
 - Default: `[deployment().location]`
@@ -613,6 +634,7 @@ Location deployment metadata.
 ### Parameter: `managementGroupId`
 
 The group ID of the management group to be exempted from the policy assignment. If not provided, will use the current scope for deployment.
+
 - Required: No
 - Type: string
 - Default: `[managementGroup().name]`
@@ -620,25 +642,15 @@ The group ID of the management group to be exempted from the policy assignment. 
 ### Parameter: `metadata`
 
 The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs.
+
 - Required: No
 - Type: object
 - Default: `{}`
 
-### Parameter: `name`
-
-Specifies the name of the policy exemption. Maximum length is 64 characters for management group, subscription and resource group scopes.
-- Required: Yes
-- Type: string
-
-### Parameter: `policyAssignmentId`
-
-The resource ID of the policy assignment that is being exempted.
-- Required: Yes
-- Type: string
-
 ### Parameter: `policyDefinitionReferenceIds`
 
 The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -646,6 +658,7 @@ The policy definition reference ID list when the associated policy assignment is
 ### Parameter: `resourceGroupName`
 
 The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -653,6 +666,7 @@ The name of the resource group to be exempted from the policy assignment. Must a
 ### Parameter: `resourceSelectors`
 
 The resource selector list to filter policies by resource properties.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -660,6 +674,7 @@ The resource selector list to filter policies by resource properties.
 ### Parameter: `subscriptionId`
 
 The subscription ID of the subscription to be exempted from the policy assignment. Cannot use with management group ID parameter.
+
 - Required: No
 - Type: string
 - Default: `''`

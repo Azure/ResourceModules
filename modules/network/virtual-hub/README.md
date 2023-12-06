@@ -30,6 +30,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -221,6 +222,140 @@ module virtualHub 'br:bicep/modules/network.virtual-hub:1.0.0' = {
 </details>
 <p>
 
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualHub 'br:bicep/modules/network.virtual-hub:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nvhwaf'
+  params: {
+    // Required parameters
+    addressPrefix: '10.1.0.0/16'
+    name: 'nvhwaf'
+    virtualWanId: '<virtualWanId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    hubRouteTables: [
+      {
+        name: 'routeTable1'
+      }
+    ]
+    hubVirtualNetworkConnections: [
+      {
+        name: 'connection1'
+        remoteVirtualNetworkId: '<remoteVirtualNetworkId>'
+        routingConfiguration: {
+          associatedRouteTable: {
+            id: '<id>'
+          }
+          propagatedRouteTables: {
+            ids: [
+              {
+                id: '<id>'
+              }
+            ]
+            labels: [
+              'none'
+            ]
+          }
+        }
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "addressPrefix": {
+      "value": "10.1.0.0/16"
+    },
+    "name": {
+      "value": "nvhwaf"
+    },
+    "virtualWanId": {
+      "value": "<virtualWanId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "hubRouteTables": {
+      "value": [
+        {
+          "name": "routeTable1"
+        }
+      ]
+    },
+    "hubVirtualNetworkConnections": {
+      "value": [
+        {
+          "name": "connection1",
+          "remoteVirtualNetworkId": "<remoteVirtualNetworkId>",
+          "routingConfiguration": {
+            "associatedRouteTable": {
+              "id": "<id>"
+            },
+            "propagatedRouteTables": {
+              "ids": [
+                {
+                  "id": "<id>"
+                }
+              ],
+              "labels": [
+                "none"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -258,12 +393,28 @@ module virtualHub 'br:bicep/modules/network.virtual-hub:1.0.0' = {
 ### Parameter: `addressPrefix`
 
 Address-prefix for this VirtualHub.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+The virtual hub name.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `virtualWanId`
+
+Resource ID of the virtual WAN to link to.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `allowBranchToBranchTraffic`
 
 Flag to control transit for VirtualRouter hub.
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -271,6 +422,7 @@ Flag to control transit for VirtualRouter hub.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -278,6 +430,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `expressRouteGatewayId`
 
 Resource ID of the Express Route Gateway to link to.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -285,6 +438,7 @@ Resource ID of the Express Route Gateway to link to.
 ### Parameter: `hubRouteTables`
 
 Route tables to create for the virtual hub.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -292,6 +446,7 @@ Route tables to create for the virtual hub.
 ### Parameter: `hubVirtualNetworkConnections`
 
 Virtual network connections to create for the virtual hub.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -299,6 +454,7 @@ Virtual network connections to create for the virtual hub.
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -306,39 +462,43 @@ Location for all resources.
 ### Parameter: `lock`
 
 The lock settings of the service.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
-| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
 ### Parameter: `lock.kind`
 
-Optional. Specify the type of lock.
+Specify the type of lock.
 
 - Required: No
 - Type: string
-- Allowed: `[CanNotDelete, None, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `lock.name`
 
-Optional. Specify the name of lock.
+Specify the name of lock.
 
 - Required: No
-- Type: string
-
-### Parameter: `name`
-
-The virtual hub name.
-- Required: Yes
 - Type: string
 
 ### Parameter: `p2SVpnGatewayId`
 
 Resource ID of the Point-to-Site VPN Gateway to link to.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -346,6 +506,7 @@ Resource ID of the Point-to-Site VPN Gateway to link to.
 ### Parameter: `preferredRoutingGateway`
 
 The preferred routing gateway types.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -362,6 +523,7 @@ The preferred routing gateway types.
 ### Parameter: `routeTableRoutes`
 
 VirtualHub route tables.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -369,6 +531,7 @@ VirtualHub route tables.
 ### Parameter: `securityPartnerProviderId`
 
 ID of the Security Partner Provider to link to.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -376,6 +539,7 @@ ID of the Security Partner Provider to link to.
 ### Parameter: `securityProviderName`
 
 The Security Provider name.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -383,6 +547,7 @@ The Security Provider name.
 ### Parameter: `sku`
 
 The sku of this VirtualHub.
+
 - Required: No
 - Type: string
 - Default: `'Standard'`
@@ -397,12 +562,14 @@ The sku of this VirtualHub.
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 
 ### Parameter: `virtualHubRouteTableV2s`
 
 List of all virtual hub route table v2s associated with this VirtualHub.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -410,6 +577,7 @@ List of all virtual hub route table v2s associated with this VirtualHub.
 ### Parameter: `virtualRouterAsn`
 
 VirtualRouter ASN.
+
 - Required: No
 - Type: int
 - Default: `-1`
@@ -417,19 +585,15 @@ VirtualRouter ASN.
 ### Parameter: `virtualRouterIps`
 
 VirtualRouter IPs.
+
 - Required: No
 - Type: array
 - Default: `[]`
 
-### Parameter: `virtualWanId`
-
-Resource ID of the virtual WAN to link to.
-- Required: Yes
-- Type: string
-
 ### Parameter: `vpnGatewayId`
 
 Resource ID of the VPN Gateway to link to.
+
 - Required: No
 - Type: string
 - Default: `''`

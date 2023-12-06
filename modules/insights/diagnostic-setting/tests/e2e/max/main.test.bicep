@@ -52,8 +52,9 @@ module diagnosticDependencies '../../../../../.shared/.templates/diagnostic.depe
 // Test Execution //
 // ============== //
 
-module testDeployment '../../../main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+@batchSize(1)
+module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem' ]: {
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
@@ -67,4 +68,4 @@ module testDeployment '../../../main.bicep' = {
     storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
     workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
   }
-}
+}]

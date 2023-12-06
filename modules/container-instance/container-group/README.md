@@ -30,6 +30,7 @@ The following section provides usage examples for the module, which were used to
 - [Encr](#example-2-encr)
 - [Using large parameter set](#example-3-using-large-parameter-set)
 - [Private](#example-4-private)
+- [WAF-aligned](#example-5-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -216,7 +217,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -325,7 +326,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -423,7 +424,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -525,7 +526,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -631,7 +632,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     }
     managedIdentities: {
       systemAssigned: true
-      userAssignedResourcesIds: [
+      userAssignedResourceIds: [
         '<managedIdentityResourceId>'
       ]
     }
@@ -753,7 +754,7 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
     "managedIdentities": {
       "value": {
         "systemAssigned": true,
-        "userAssignedResourcesIds": [
+        "userAssignedResourceIds": [
           "<managedIdentityResourceId>"
         ]
       }
@@ -775,6 +776,206 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
           "name": "my-name"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 5: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-cicgwaf'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        name: 'az-aci-x-001'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '80'
+              protocol: 'Tcp'
+            }
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+      {
+        name: 'az-aci-x-002'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '8080'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+    ]
+    name: 'cicgwaf001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ipAddressPorts: [
+      {
+        port: 80
+        protocol: 'Tcp'
+      }
+      {
+        port: 443
+        protocol: 'Tcp'
+      }
+    ]
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    managedIdentities: {
+      systemAssigned: true
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "name": "az-aci-x-001",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "80",
+                "protocol": "Tcp"
+              },
+              {
+                "port": "443",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        },
+        {
+          "name": "az-aci-x-002",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "8080",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "cicgwaf001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ipAddressPorts": {
+      "value": [
+        {
+          "port": 80,
+          "protocol": "Tcp"
+        },
+        {
+          "port": 443,
+          "protocol": "Tcp"
+        }
+      ]
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "managedIdentities": {
+      "value": {
+        "systemAssigned": true,
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -822,9 +1023,32 @@ module containerGroup 'br:bicep/modules/container-instance.container-group:1.0.0
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`volumes`](#parameter-volumes) | array | Specify if volumes (emptyDir, AzureFileShare or GitRepo) shall be attached to your containergroup. |
 
+### Parameter: `containers`
+
+The containers and their respective config within the container group.
+
+- Required: Yes
+- Type: array
+
+### Parameter: `name`
+
+Name for the container group.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `ipAddressPorts`
+
+Ports to open on the public IP address. Must include all ports assigned on container level. Required if `ipAddressType` is set to `public`.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
 ### Parameter: `autoGeneratedDomainNameLabelScope`
 
 Specify level of protection of the domain name label.
+
 - Required: No
 - Type: string
 - Default: `'TenantReuse'`
@@ -839,50 +1063,51 @@ Specify level of protection of the domain name label.
   ]
   ```
 
-### Parameter: `containers`
-
-The containers and their respective config within the container group.
-- Required: Yes
-- Type: array
-
 ### Parameter: `customerManagedKey`
 
 The customer managed key definition.
+
 - Required: No
 - Type: object
 
+**Required parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`keyName`](#parameter-customermanagedkeykeyname) | Yes | string | Required. The name of the customer managed key to use for encryption. |
-| [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | Yes | string | Required. The resource ID of a key vault to reference a customer managed key for encryption from. |
-| [`keyVersion`](#parameter-customermanagedkeykeyversion) | No | string | Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
-| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | No | string | Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`keyName`](#parameter-customermanagedkeykeyname) | string | The name of the customer managed key to use for encryption. |
+| [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`keyVersion`](#parameter-customermanagedkeykeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
 
 ### Parameter: `customerManagedKey.keyName`
 
-Required. The name of the customer managed key to use for encryption.
+The name of the customer managed key to use for encryption.
 
 - Required: Yes
 - Type: string
 
 ### Parameter: `customerManagedKey.keyVaultResourceId`
 
-Required. The resource ID of a key vault to reference a customer managed key for encryption from.
+The resource ID of a key vault to reference a customer managed key for encryption from.
 
 - Required: Yes
 - Type: string
 
 ### Parameter: `customerManagedKey.keyVersion`
 
-Optional. The version of the customer managed key to reference for encryption. If not provided, using 'latest'.
+The version of the customer managed key to reference for encryption. If not provided, using 'latest'.
 
 - Required: No
 - Type: string
 
 ### Parameter: `customerManagedKey.userAssignedIdentityResourceId`
 
-Optional. User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.
+User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use.
 
 - Required: No
 - Type: string
@@ -890,6 +1115,7 @@ Optional. User assigned identity to use when fetching the customer managed key. 
 ### Parameter: `dnsNameLabel`
 
 The Dns name label for the resource.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -897,6 +1123,7 @@ The Dns name label for the resource.
 ### Parameter: `dnsNameServers`
 
 List of dns servers used by the containers for lookups.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -904,6 +1131,7 @@ List of dns servers used by the containers for lookups.
 ### Parameter: `dnsSearchDomains`
 
 DNS search domain which will be appended to each DNS lookup.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -911,6 +1139,7 @@ DNS search domain which will be appended to each DNS lookup.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -918,6 +1147,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `imageRegistryCredentials`
 
 The image registry credentials by which the container group is created from.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -925,13 +1155,7 @@ The image registry credentials by which the container group is created from.
 ### Parameter: `initContainers`
 
 A list of container definitions which will be executed before the application container starts.
-- Required: No
-- Type: array
-- Default: `[]`
 
-### Parameter: `ipAddressPorts`
-
-Ports to open on the public IP address. Must include all ports assigned on container level. Required if `ipAddressType` is set to `public`.
 - Required: No
 - Type: array
 - Default: `[]`
@@ -939,6 +1163,7 @@ Ports to open on the public IP address. Must include all ports assigned on conta
 ### Parameter: `ipAddressType`
 
 Specifies if the IP is exposed to the public internet or private VNET. - Public or Private.
+
 - Required: No
 - Type: string
 - Default: `'Public'`
@@ -953,6 +1178,7 @@ Specifies if the IP is exposed to the public internet or private VNET. - Public 
 ### Parameter: `location`
 
 Location for all Resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -960,26 +1186,35 @@ Location for all Resources.
 ### Parameter: `lock`
 
 The lock settings of the service.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
-| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
 ### Parameter: `lock.kind`
 
-Optional. Specify the type of lock.
+Specify the type of lock.
 
 - Required: No
 - Type: string
-- Allowed: `[CanNotDelete, None, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `lock.name`
 
-Optional. Specify the name of lock.
+Specify the name of lock.
 
 - Required: No
 - Type: string
@@ -987,38 +1222,35 @@ Optional. Specify the name of lock.
 ### Parameter: `managedIdentities`
 
 The managed identity definition for this resource.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | No | bool | Optional. Enables system assigned managed identity on the resource. |
-| [`userAssignedResourcesIds`](#parameter-managedidentitiesuserassignedresourcesids) | No | array | Optional. The resource ID(s) to assign to the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | bool | Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
-Optional. Enables system assigned managed identity on the resource.
+Enables system assigned managed identity on the resource.
 
 - Required: No
 - Type: bool
 
-### Parameter: `managedIdentities.userAssignedResourcesIds`
+### Parameter: `managedIdentities.userAssignedResourceIds`
 
-Optional. The resource ID(s) to assign to the resource.
+The resource ID(s) to assign to the resource.
 
 - Required: No
 - Type: array
 
-### Parameter: `name`
-
-Name for the container group.
-- Required: Yes
-- Type: string
-
 ### Parameter: `osType`
 
 The operating system type required by the containers in the container group. - Windows or Linux.
+
 - Required: No
 - Type: string
 - Default: `'Linux'`
@@ -1026,6 +1258,7 @@ The operating system type required by the containers in the container group. - W
 ### Parameter: `restartPolicy`
 
 Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never.
+
 - Required: No
 - Type: string
 - Default: `'Always'`
@@ -1041,6 +1274,7 @@ Restart policy for all containers within the container group. - Always: Always r
 ### Parameter: `sku`
 
 The container group SKU.
+
 - Required: No
 - Type: string
 - Default: `'Standard'`
@@ -1055,6 +1289,7 @@ The container group SKU.
 ### Parameter: `subnetId`
 
 Resource ID of the subnet. Only specify when ipAddressType is Private.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -1062,12 +1297,14 @@ Resource ID of the subnet. Only specify when ipAddressType is Private.
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 
 ### Parameter: `volumes`
 
 Specify if volumes (emptyDir, AzureFileShare or GitRepo) shall be attached to your containergroup.
+
 - Required: No
 - Type: array
 - Default: `[]`

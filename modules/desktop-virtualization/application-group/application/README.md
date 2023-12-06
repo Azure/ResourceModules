@@ -43,15 +43,38 @@ This module deploys an Azure Virtual Desktop (AVD) Application Group Application
 | [`iconPath`](#parameter-iconpath) | string | Path to icon. |
 | [`showInPortal`](#parameter-showinportal) | bool | Specifies whether to show the RemoteApp program in the RD Web Access server. |
 
+### Parameter: `filePath`
+
+Specifies a path for the executable file for the application.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `friendlyName`
+
+Friendly name of Application..
+
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+Name of the Application to be created in the Application Group.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `appGroupName`
 
 The name of the parent Application Group to create the application(s) in. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `commandLineArguments`
 
 Command-Line Arguments for Application.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -59,6 +82,7 @@ Command-Line Arguments for Application.
 ### Parameter: `commandLineSetting`
 
 Specifies whether this published application can be launched with command-line arguments provided by the client, command-line arguments specified at publish time, or no command-line arguments at all.
+
 - Required: No
 - Type: string
 - Default: `'DoNotAllow'`
@@ -74,6 +98,7 @@ Specifies whether this published application can be launched with command-line a
 ### Parameter: `description`
 
 Description of Application..
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -81,25 +106,15 @@ Description of Application..
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `filePath`
-
-Specifies a path for the executable file for the application.
-- Required: Yes
-- Type: string
-
-### Parameter: `friendlyName`
-
-Friendly name of Application..
-- Required: Yes
-- Type: string
-
 ### Parameter: `iconIndex`
 
 Index of the icon.
+
 - Required: No
 - Type: int
 - Default: `0`
@@ -107,19 +122,15 @@ Index of the icon.
 ### Parameter: `iconPath`
 
 Path to icon.
+
 - Required: No
 - Type: string
 - Default: `''`
 
-### Parameter: `name`
-
-Name of the Application to be created in the Application Group.
-- Required: Yes
-- Type: string
-
 ### Parameter: `showInPortal`
 
 Specifies whether to show the RemoteApp program in the RD Web Access server.
+
 - Required: No
 - Type: bool
 - Default: `False`

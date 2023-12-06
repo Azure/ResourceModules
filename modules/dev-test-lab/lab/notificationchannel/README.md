@@ -43,43 +43,18 @@ Notification channels are used by the schedule resource type in order to send no
 | [`notificationLocale`](#parameter-notificationlocale) | string | The locale to use when sending a notification (fallback for unsupported languages is EN). |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 
-### Parameter: `description`
-
-Description of notification.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `emailRecipient`
-
-The email recipient to send notifications to (can be a list of semi-colon separated email addresses). Required if "webHookUrl" is empty.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `events`
 
 The list of event for which this notification is enabled.
+
 - Required: No
 - Type: array
 - Default: `[]`
 
-### Parameter: `labName`
-
-The name of the parent lab. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `name`
 
 The name of the notification channel.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -90,9 +65,49 @@ The name of the notification channel.
   ]
   ```
 
+### Parameter: `emailRecipient`
+
+The email recipient to send notifications to (can be a list of semi-colon separated email addresses). Required if "webHookUrl" is empty.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `labName`
+
+The name of the parent lab. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `webHookUrl`
+
+The webhook URL to which the notification will be sent. Required if "emailRecipient" is empty.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `description`
+
+Description of notification.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
 ### Parameter: `notificationLocale`
 
 The locale to use when sending a notification (fallback for unsupported languages is EN).
+
 - Required: No
 - Type: string
 - Default: `'en'`
@@ -100,15 +115,9 @@ The locale to use when sending a notification (fallback for unsupported language
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
-
-### Parameter: `webHookUrl`
-
-The webhook URL to which the notification will be sent. Required if "emailRecipient" is empty.
-- Required: No
-- Type: string
-- Default: `''`
 
 
 ## Outputs

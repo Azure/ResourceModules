@@ -36,28 +36,32 @@ This module deploys a Service Bus Namespace Authorization Rule.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`rights`](#parameter-rights) | array | The rights associated with the rule. |
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `name`
 
 The name of the authorization rule.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `namespaceName`
 
 The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 ### Parameter: `rights`
 
 The rights associated with the rule.
+
 - Required: No
 - Type: array
 - Default: `[]`

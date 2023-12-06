@@ -44,6 +44,7 @@ This module deploys a Healthcare API Workspace IoT Connector FHIR Destination.
 ### Parameter: `destinationMapping`
 
 The mapping JSON that determines how normalized data is converted to FHIR Observations.
+
 - Required: No
 - Type: object
 - Default:
@@ -54,41 +55,54 @@ The mapping JSON that determines how normalized data is converted to FHIR Observ
   }
   ```
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via the Customer Usage Attribution ID (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `fhirServiceResourceId`
 
 The resource identifier of the FHIR Service to connect to.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+The name of the FHIR destination.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `iotConnectorName`
 
 The name of the MedTech service to add this destination to. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `workspaceName`
+
+The name of the parent health data services workspace. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via the Customer Usage Attribution ID (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
 
-### Parameter: `name`
-
-The name of the FHIR destination.
-- Required: Yes
-- Type: string
-
 ### Parameter: `resourceIdentityResolutionType`
 
 Determines how resource identity is resolved on the destination.
+
 - Required: No
 - Type: string
 - Default: `'Lookup'`
@@ -99,12 +113,6 @@ Determines how resource identity is resolved on the destination.
     'Lookup'
   ]
   ```
-
-### Parameter: `workspaceName`
-
-The name of the parent health data services workspace. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
 
 
 ## Outputs

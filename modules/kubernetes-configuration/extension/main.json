@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "5002606439705018990"
+      "version": "0.23.1.45101",
+      "templateHash": "18265527122738367400"
     },
     "name": "Kubernetes Configuration Extensions",
     "description": "This module deploys a Kubernetes Configuration Extension.",
@@ -167,8 +167,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "6686104224333946371"
+              "version": "0.23.1.45101",
+              "templateHash": "8985718648814286209"
             },
             "name": "Kubernetes Configuration Flux Configurations",
             "description": "This module deploys a Kubernetes Configuration Flux Configuration.",

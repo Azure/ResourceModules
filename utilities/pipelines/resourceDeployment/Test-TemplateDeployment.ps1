@@ -30,6 +30,9 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 .PARAMETER additionalParameters
 Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
 
+.PARAMETER RepoRoot
+Optional. The path to the repository's root
+
 .EXAMPLE
 Test-TemplateDeployment -templateFilePath 'C:/key-vault/vault/main.bicep' -parameterFilePath 'C:/key-vault/vault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
@@ -68,17 +71,40 @@ function Test-TemplateDeployment {
         [string] $managementGroupId,
 
         [Parameter(Mandatory = $false)]
-        [Hashtable] $additionalParameters
+        [Hashtable] $additionalParameters,
+
+        [Parameter(Mandatory = $false)]
+        [string] $RepoRoot = (Get-Item -Path $PSScriptRoot).parent.parent.parent.FullName
     )
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load helper
-        . (Join-Path (Get-Item -Path $PSScriptRoot).parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
+        . (Join-Path $RepoRoot 'utilities' 'pipelines' 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
     }
 
     process {
+        $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
+        if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
+            $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
+        }
+
+        $modulesRegex = '.+[\\|\/]modules[\\|\/]'
+        if ($templateFilePath -match $modulesRegex) {
+            # If we can assume we're operating in a module structure, we can further fetch the provider namespace & resource type
+            $shortPathElem = (($templateFilePath -split $modulesRegex)[1] -replace '\\', '/') -split '/' # e.g., app-configuration, configuration-store, .test, common, main.test.bicep
+            $providerNamespace = $shortPathElem[0] # e.g., app-configuration
+            $providerNamespaceShort = ($providerNamespace -split '-' | ForEach-Object { $_[0] }) -join '' # e.g., ac
+
+            $resourceType = $shortPathElem[1] # e.g., configuration-store
+            $resourceTypeShort = ($resourceType -split '-' | ForEach-Object { $_[0] }) -join '' # e.g. cs
+
+            $testFolderShort = Split-Path (Split-Path $templateFilePath -Parent) -Leaf  # e.g., common
+
+            $deploymentNamePrefix = "$providerNamespaceShort-$resourceTypeShort-$testFolderShort" # e.g., ac-cs-common
+        }
+
         $DeploymentInputs = @{
             TemplateFile = $templateFilePath
             Verbose      = $true
@@ -95,24 +121,6 @@ function Test-TemplateDeployment {
         }
 
         $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath -Verbose
-
-        $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
-        if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
-            $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
-        }
-        if ($templateFilePath -match '.*(\\|\/)Microsoft.+') {
-            # If we can assume we're operating in a module structure, we can further fetch the provider namespace & resource type
-            $shortPathElem = (($templateFilePath -split 'Microsoft\.')[1] -replace '\\', '/') -split '/' # e.g., AppConfiguration, configurationStores, .test, common, main.test.bicep
-            $providerNamespace = $shortPathElem[0] # e.g., AppConfiguration
-            $providerNamespaceShort = ($providerNamespace -creplace '[^A-Z]').ToLower() # e.g., ac
-
-            $resourceType = $shortPathElem[1] # e.g., configurationStores
-            $resourceTypeShort = ('{0}{1}' -f ($resourceType.ToLower())[0], ($resourceType -creplace '[^A-Z]')).ToLower() # e.g. cs
-
-            $testFolderShort = Split-Path (Split-Path $templateFilePath -Parent) -Leaf  # e.g., common
-
-            $deploymentNamePrefix = "$providerNamespaceShort-$resourceTypeShort-$testFolderShort" # e.g., ac-cs-common
-        }
 
         # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
         do {

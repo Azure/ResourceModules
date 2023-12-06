@@ -25,6 +25,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/network.application-gateway-web-application-firewall-policy:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -128,6 +129,108 @@ module applicationGatewayWebApplicationFirewallPolicy 'br:bicep/modules/network.
 </details>
 <p>
 
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module applicationGatewayWebApplicationFirewallPolicy 'br:bicep/modules/network.application-gateway-web-application-firewall-policy:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nagwafpwaf'
+  params: {
+    // Required parameters
+    name: 'nagwafpwaf001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedRules: {
+      managedRuleSets: [
+        {
+          ruleGroupOverrides: []
+          ruleSetType: 'OWASP'
+          ruleSetVersion: '3.2'
+        }
+        {
+          ruleGroupOverrides: []
+          ruleSetType: 'Microsoft_BotManagerRuleSet'
+          ruleSetVersion: '0.1'
+        }
+      ]
+    }
+    policySettings: {
+      fileUploadLimitInMb: 10
+      mode: 'Prevention'
+      state: 'Enabled'
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nagwafpwaf001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "managedRules": {
+      "value": {
+        "managedRuleSets": [
+          {
+            "ruleGroupOverrides": [],
+            "ruleSetType": "OWASP",
+            "ruleSetVersion": "3.2"
+          },
+          {
+            "ruleGroupOverrides": [],
+            "ruleSetType": "Microsoft_BotManagerRuleSet",
+            "ruleSetVersion": "0.1"
+          }
+        ]
+      }
+    },
+    "policySettings": {
+      "value": {
+        "fileUploadLimitInMb": 10,
+        "mode": "Prevention",
+        "state": "Enabled"
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -148,9 +251,17 @@ module applicationGatewayWebApplicationFirewallPolicy 'br:bicep/modules/network.
 | [`policySettings`](#parameter-policysettings) | object | The PolicySettings for policy. |
 | [`tags`](#parameter-tags) | object | Resource tags. |
 
+### Parameter: `name`
+
+Name of the Application Gateway WAF policy.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `customRules`
 
 The custom rules inside the policy.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -158,6 +269,7 @@ The custom rules inside the policy.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -165,6 +277,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -172,19 +285,15 @@ Location for all resources.
 ### Parameter: `managedRules`
 
 Describes the managedRules structure.
+
 - Required: No
 - Type: object
 - Default: `{}`
 
-### Parameter: `name`
-
-Name of the Application Gateway WAF policy.
-- Required: Yes
-- Type: string
-
 ### Parameter: `policySettings`
 
 The PolicySettings for policy.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -192,6 +301,7 @@ The PolicySettings for policy.
 ### Parameter: `tags`
 
 Resource tags.
+
 - Required: No
 - Type: object
 

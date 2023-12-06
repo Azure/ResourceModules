@@ -53,30 +53,10 @@ Manage lab costs by setting a spending target that can be viewed in the Monthly 
 | [`thresholdValue75DisplayOnChart`](#parameter-thresholdvalue75displayonchart) | string | Target Cost threshold at 75% display on chart. Indicates whether this threshold will be displayed on cost charts. |
 | [`thresholdValue75SendNotificationWhenExceeded`](#parameter-thresholdvalue75sendnotificationwhenexceeded) | string | Target cost threshold at 75% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
 
-### Parameter: `currencyCode`
-
-The currency code of the cost.
-- Required: No
-- Type: string
-- Default: `'USD'`
-
-### Parameter: `cycleEndDateTime`
-
-Reporting cycle end date in the zulu time format (e.g. 2023-12-01T00:00:00.000Z). Required if cycleType is set to "Custom".
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `cycleStartDateTime`
-
-Reporting cycle start date in the zulu time format (e.g. 2023-12-01T00:00:00.000Z). Required if cycleType is set to "Custom".
-- Required: No
-- Type: string
-- Default: `''`
-
 ### Parameter: `cycleType`
 
 Reporting cycle type.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -87,22 +67,49 @@ Reporting cycle type.
   ]
   ```
 
-### Parameter: `enableDefaultTelemetry`
+### Parameter: `cycleEndDateTime`
 
-Enable telemetry via a Globally Unique Identifier (GUID).
+Reporting cycle end date in the zulu time format (e.g. 2023-12-01T00:00:00.000Z). Required if cycleType is set to "Custom".
+
 - Required: No
-- Type: bool
-- Default: `True`
+- Type: string
+- Default: `''`
+
+### Parameter: `cycleStartDateTime`
+
+Reporting cycle start date in the zulu time format (e.g. 2023-12-01T00:00:00.000Z). Required if cycleType is set to "Custom".
+
+- Required: No
+- Type: string
+- Default: `''`
 
 ### Parameter: `labName`
 
 The name of the parent lab. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
+
+### Parameter: `currencyCode`
+
+The currency code of the cost.
+
+- Required: No
+- Type: string
+- Default: `'USD'`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 ### Parameter: `status`
 
 Target cost status.
+
 - Required: No
 - Type: string
 - Default: `'Enabled'`
@@ -117,12 +124,14 @@ Target cost status.
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 
 ### Parameter: `target`
 
 Lab target cost (e.g. 100). The target cost will appear in the "Cost trend" chart to allow tracking lab spending relative to the target cost for the current reporting cycleSetting the target cost to 0 will disable all thresholds.
+
 - Required: No
 - Type: int
 - Default: `0`
@@ -130,6 +139,7 @@ Lab target cost (e.g. 100). The target cost will appear in the "Cost trend" char
 ### Parameter: `thresholdValue100DisplayOnChart`
 
 Target Cost threshold at 100% display on chart. Indicates whether this threshold will be displayed on cost charts.
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`
@@ -144,6 +154,7 @@ Target Cost threshold at 100% display on chart. Indicates whether this threshold
 ### Parameter: `thresholdValue100SendNotificationWhenExceeded`
 
 Target cost threshold at 100% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`
@@ -158,6 +169,7 @@ Target cost threshold at 100% send notification when exceeded. Indicates whether
 ### Parameter: `thresholdValue125DisplayOnChart`
 
 Target Cost threshold at 125% display on chart. Indicates whether this threshold will be displayed on cost charts.
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`
@@ -172,6 +184,7 @@ Target Cost threshold at 125% display on chart. Indicates whether this threshold
 ### Parameter: `thresholdValue125SendNotificationWhenExceeded`
 
 Target cost threshold at 125% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`
@@ -186,6 +199,7 @@ Target cost threshold at 125% send notification when exceeded. Indicates whether
 ### Parameter: `thresholdValue25DisplayOnChart`
 
 Target Cost threshold at 25% display on chart. Indicates whether this threshold will be displayed on cost charts.
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`
@@ -200,6 +214,7 @@ Target Cost threshold at 25% display on chart. Indicates whether this threshold 
 ### Parameter: `thresholdValue25SendNotificationWhenExceeded`
 
 Target cost threshold at 25% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`
@@ -214,6 +229,7 @@ Target cost threshold at 25% send notification when exceeded. Indicates whether 
 ### Parameter: `thresholdValue50DisplayOnChart`
 
 Target Cost threshold at 50% display on chart. Indicates whether this threshold will be displayed on cost charts.
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`
@@ -228,6 +244,7 @@ Target Cost threshold at 50% display on chart. Indicates whether this threshold 
 ### Parameter: `thresholdValue50SendNotificationWhenExceeded`
 
 Target cost threshold at 50% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`
@@ -242,6 +259,7 @@ Target cost threshold at 50% send notification when exceeded. Indicates whether 
 ### Parameter: `thresholdValue75DisplayOnChart`
 
 Target Cost threshold at 75% display on chart. Indicates whether this threshold will be displayed on cost charts.
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`
@@ -256,6 +274,7 @@ Target Cost threshold at 75% display on chart. Indicates whether this threshold 
 ### Parameter: `thresholdValue75SendNotificationWhenExceeded`
 
 Target cost threshold at 75% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.
+
 - Required: No
 - Type: string
 - Default: `'Disabled'`

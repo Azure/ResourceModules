@@ -30,6 +30,7 @@ The following section provides usage examples for the module, which were used to
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
 ### Example 1: _Using only defaults_
 
@@ -233,6 +234,156 @@ module vpnGateway 'br:bicep/modules/network.vpn-gateway:1.0.0' = {
 </details>
 <p>
 
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vpnGateway 'br:bicep/modules/network.vpn-gateway:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-nvgwaf'
+  params: {
+    // Required parameters
+    name: 'nvgwaf001'
+    virtualHubResourceId: '<virtualHubResourceId>'
+    // Non-required parameters
+    bgpSettings: {
+      asn: 65515
+      peerWeight: 0
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: {
+      kind: 'CanNotDelete'
+      name: 'myCustomLockName'
+    }
+    natRules: [
+      {
+        externalMappings: [
+          {
+            addressSpace: '192.168.21.0/24'
+          }
+        ]
+        internalMappings: [
+          {
+            addressSpace: '10.4.0.0/24'
+          }
+        ]
+        mode: 'EgressSnat'
+        name: 'natRule1'
+        type: 'Static'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      'hidden-title': 'This is visible in the resource name'
+      Role: 'DeploymentValidation'
+    }
+    vpnConnections: [
+      {
+        connectionBandwidth: 100
+        enableBgp: false
+        enableInternetSecurity: true
+        enableRateLimiting: false
+        name: '<name>'
+        remoteVpnSiteResourceId: '<remoteVpnSiteResourceId>'
+        routingWeight: 0
+        useLocalAzureIpAddress: false
+        usePolicyBasedTrafficSelectors: false
+        vpnConnectionProtocolType: 'IKEv2'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "nvgwaf001"
+    },
+    "virtualHubResourceId": {
+      "value": "<virtualHubResourceId>"
+    },
+    // Non-required parameters
+    "bgpSettings": {
+      "value": {
+        "asn": 65515,
+        "peerWeight": 0
+      }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": {
+        "kind": "CanNotDelete",
+        "name": "myCustomLockName"
+      }
+    },
+    "natRules": {
+      "value": [
+        {
+          "externalMappings": [
+            {
+              "addressSpace": "192.168.21.0/24"
+            }
+          ],
+          "internalMappings": [
+            {
+              "addressSpace": "10.4.0.0/24"
+            }
+          ],
+          "mode": "EgressSnat",
+          "name": "natRule1",
+          "type": "Static"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "hidden-title": "This is visible in the resource name",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "vpnConnections": {
+      "value": [
+        {
+          "connectionBandwidth": 100,
+          "enableBgp": false,
+          "enableInternetSecurity": true,
+          "enableRateLimiting": false,
+          "name": "<name>",
+          "remoteVpnSiteResourceId": "<remoteVpnSiteResourceId>",
+          "routingWeight": 0,
+          "useLocalAzureIpAddress": false,
+          "usePolicyBasedTrafficSelectors": false,
+          "vpnConnectionProtocolType": "IKEv2"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
 
 ## Parameters
 
@@ -258,9 +409,24 @@ module vpnGateway 'br:bicep/modules/network.vpn-gateway:1.0.0' = {
 | [`vpnConnections`](#parameter-vpnconnections) | array | The VPN connections to create in the VPN gateway. |
 | [`vpnGatewayScaleUnit`](#parameter-vpngatewayscaleunit) | int | The scale unit for this VPN gateway. |
 
+### Parameter: `name`
+
+Name of the VPN gateway.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `virtualHubResourceId`
+
+The resource ID of a virtual Hub to connect to. Note: The virtual Hub and Gateway must be deployed into the same location.
+
+- Required: Yes
+- Type: string
+
 ### Parameter: `bgpSettings`
 
 BGP settings details.
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -268,6 +434,7 @@ BGP settings details.
 ### Parameter: `enableBgpRouteTranslationForNat`
 
 Enable BGP routes translation for NAT on this VPN gateway.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -275,6 +442,7 @@ Enable BGP routes translation for NAT on this VPN gateway.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -282,6 +450,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `isRoutingPreferenceInternet`
 
 Enable routing preference property for the public IP interface of the VPN gateway.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -289,6 +458,7 @@ Enable routing preference property for the public IP interface of the VPN gatewa
 ### Parameter: `location`
 
 Location where all resources will be created.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -296,39 +466,43 @@ Location where all resources will be created.
 ### Parameter: `lock`
 
 The lock settings of the service.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
-| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
 ### Parameter: `lock.kind`
 
-Optional. Specify the type of lock.
+Specify the type of lock.
 
 - Required: No
 - Type: string
-- Allowed: `[CanNotDelete, None, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `lock.name`
 
-Optional. Specify the name of lock.
+Specify the name of lock.
 
 - Required: No
-- Type: string
-
-### Parameter: `name`
-
-Name of the VPN gateway.
-- Required: Yes
 - Type: string
 
 ### Parameter: `natRules`
 
 List of all the NAT Rules to associate with the gateway.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -336,18 +510,14 @@ List of all the NAT Rules to associate with the gateway.
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
-
-### Parameter: `virtualHubResourceId`
-
-The resource ID of a virtual Hub to connect to. Note: The virtual Hub and Gateway must be deployed into the same location.
-- Required: Yes
-- Type: string
 
 ### Parameter: `vpnConnections`
 
 The VPN connections to create in the VPN gateway.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -355,6 +525,7 @@ The VPN connections to create in the VPN gateway.
 ### Parameter: `vpnGatewayScaleUnit`
 
 The scale unit for this VPN gateway.
+
 - Required: No
 - Type: int
 - Default: `2`

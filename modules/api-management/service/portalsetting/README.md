@@ -36,22 +36,10 @@ This module deploys an API Management Service Portal Setting.
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`properties`](#parameter-properties) | object | Portal setting properties. |
 
-### Parameter: `apiManagementServiceName`
-
-The name of the parent API Management service. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `name`
 
 Portal setting name.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -63,9 +51,25 @@ Portal setting name.
   ]
   ```
 
+### Parameter: `apiManagementServiceName`
+
+The name of the parent API Management service. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
 ### Parameter: `properties`
 
 Portal setting properties.
+
 - Required: No
 - Type: object
 - Default: `{}`

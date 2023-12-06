@@ -50,21 +50,52 @@ This module deploys an API Management Service Authorization Server.
 | [`tokenBodyParameters`](#parameter-tokenbodyparameters) | array | Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects with name and value string properties, i.e. {"name" : "name value", "value": "a value"}. - TokenBodyParameterContract object. |
 | [`tokenEndpoint`](#parameter-tokenendpoint) | string | OAuth token endpoint. Contains absolute URI to entity being referenced. |
 
-### Parameter: `apiManagementServiceName`
-
-The name of the parent API Management service. Required if the template is used in a standalone deployment.
-- Required: Yes
-- Type: string
-
 ### Parameter: `authorizationEndpoint`
 
 OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `clientId`
+
+Client or app ID registered with this authorization server.
+
+- Required: Yes
+- Type: securestring
+
+### Parameter: `clientSecret`
+
+Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+
+- Required: Yes
+- Type: securestring
+
+### Parameter: `grantTypes`
+
+Form of an authorization grant, which the client uses to request the access token. - authorizationCode, implicit, resourceOwnerPassword, clientCredentials.
+
+- Required: Yes
+- Type: array
+
+### Parameter: `name`
+
+Identifier of the authorization server.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `apiManagementServiceName`
+
+The name of the parent API Management service. Required if the template is used in a standalone deployment.
+
 - Required: Yes
 - Type: string
 
 ### Parameter: `authorizationMethods`
 
 HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional. - HEAD, OPTIONS, TRACE, GET, POST, PUT, PATCH, DELETE.
+
 - Required: No
 - Type: array
 - Default:
@@ -77,6 +108,7 @@ HTTP verbs supported by the authorization endpoint. GET must be always present. 
 ### Parameter: `bearerTokenSendingMethods`
 
 Specifies the mechanism by which access token is passed to the API. - authorizationHeader or query.
+
 - Required: No
 - Type: array
 - Default:
@@ -89,6 +121,7 @@ Specifies the mechanism by which access token is passed to the API. - authorizat
 ### Parameter: `clientAuthenticationMethod`
 
 Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or Body. When Body is specified, client credentials and other parameters are passed within the request body in the application/x-www-form-urlencoded format. - Basic or Body.
+
 - Required: No
 - Type: array
 - Default:
@@ -98,28 +131,18 @@ Method of authentication supported by the token endpoint of this authorization s
   ]
   ```
 
-### Parameter: `clientId`
-
-Client or app ID registered with this authorization server.
-- Required: Yes
-- Type: securestring
-
 ### Parameter: `clientRegistrationEndpoint`
 
 Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute URL to entity being referenced.
+
 - Required: No
 - Type: string
 - Default: `''`
 
-### Parameter: `clientSecret`
-
-Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-- Required: Yes
-- Type: securestring
-
 ### Parameter: `defaultScope`
 
 Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in the form of a string containing space-delimited values.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -127,25 +150,15 @@ Access token scope that is going to be requested by default. Can be overridden a
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
 
-### Parameter: `grantTypes`
-
-Form of an authorization grant, which the client uses to request the access token. - authorizationCode, implicit, resourceOwnerPassword, clientCredentials.
-- Required: Yes
-- Type: array
-
-### Parameter: `name`
-
-Identifier of the authorization server.
-- Required: Yes
-- Type: string
-
 ### Parameter: `resourceOwnerPassword`
 
 Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -153,6 +166,7 @@ Can be optionally specified when resource owner password grant type is supported
 ### Parameter: `resourceOwnerUsername`
 
 Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -160,6 +174,7 @@ Can be optionally specified when resource owner password grant type is supported
 ### Parameter: `serverDescription`
 
 Description of the authorization server. Can contain HTML formatting tags.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -167,6 +182,7 @@ Description of the authorization server. Can contain HTML formatting tags.
 ### Parameter: `supportState`
 
 If true, authorization server will include state parameter from the authorization request to its response. Client may use state parameter to raise protocol security.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -174,6 +190,7 @@ If true, authorization server will include state parameter from the authorizatio
 ### Parameter: `tokenBodyParameters`
 
 Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects with name and value string properties, i.e. {"name" : "name value", "value": "a value"}. - TokenBodyParameterContract object.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -181,6 +198,7 @@ Additional parameters required by the token endpoint of this authorization serve
 ### Parameter: `tokenEndpoint`
 
 OAuth token endpoint. Contains absolute URI to entity being referenced.
+
 - Required: No
 - Type: string
 - Default: `''`

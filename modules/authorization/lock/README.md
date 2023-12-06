@@ -25,6 +25,7 @@ The following section provides usage examples for the module, which were used to
 >**Note**: To reference the module, please use the following syntax `br:bicep/modules/authorization.lock:1.0.0`.
 
 - [Using large parameter set](#example-1-using-large-parameter-set)
+- [WAF-aligned](#example-2-waf-aligned)
 
 ### Example 1: _Using large parameter set_
 
@@ -38,6 +39,62 @@ This instance deploys the module with most of its features enabled.
 ```bicep
 module lock 'br:bicep/modules/authorization.lock:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-almax'
+  params: {
+    // Required parameters
+    level: 'CanNotDelete'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    resourceGroupName: '<resourceGroupName>'
+    subscriptionId: '<subscriptionId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "level": {
+      "value": "CanNotDelete"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "resourceGroupName": {
+      "value": "<resourceGroupName>"
+    },
+    "subscriptionId": {
+      "value": "<subscriptionId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 2: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module lock 'br:bicep/modules/authorization.lock:1.0.0' = {
+  name: '${uniqueString(deployment().name, location)}-test-alwaf'
   params: {
     // Required parameters
     level: 'CanNotDelete'
@@ -101,16 +158,10 @@ module lock 'br:bicep/modules/authorization.lock:1.0.0' = {
 | [`resourceGroupName`](#parameter-resourcegroupname) | string | Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group. |
 | [`subscriptionId`](#parameter-subscriptionid) | string | Subscription ID of the subscription to assign the lock to. If not provided, will use the current scope for deployment. If no resource group name is provided, the module deploys at subscription level, therefore assigns the provided locks to the subscription. |
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `level`
 
 Set lock level.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -121,9 +172,18 @@ Set lock level.
   ]
   ```
 
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[deployment().location]`
@@ -131,6 +191,7 @@ Location for all resources.
 ### Parameter: `notes`
 
 The decription attached to the lock.
+
 - Required: No
 - Type: string
 - Default: `[if(equals(parameters('level'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]`
@@ -138,6 +199,7 @@ The decription attached to the lock.
 ### Parameter: `resourceGroupName`
 
 Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -145,6 +207,7 @@ Name of the Resource Group to assign the lock to. If Resource Group name is prov
 ### Parameter: `subscriptionId`
 
 Subscription ID of the subscription to assign the lock to. If not provided, will use the current scope for deployment. If no resource group name is provided, the module deploys at subscription level, therefore assigns the provided locks to the subscription.
+
 - Required: No
 - Type: string
 - Default: `[subscription().id]`

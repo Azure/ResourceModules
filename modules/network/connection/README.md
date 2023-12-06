@@ -158,9 +158,24 @@ module connection 'br:bicep/modules/network.connection:1.0.0' = {
 | [`virtualNetworkGateway2`](#parameter-virtualnetworkgateway2) | object | The remote Virtual Network Gateway. Used for connection connectionType [Vnet2Vnet]. |
 | [`vpnSharedKey`](#parameter-vpnsharedkey) | securestring | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways. |
 
+### Parameter: `name`
+
+Remote connection name.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `virtualNetworkGateway1`
+
+The primary Virtual Network Gateway.
+
+- Required: Yes
+- Type: object
+
 ### Parameter: `authorizationKey`
 
 The Authorization Key to connect to an Express Route Circuit. Used for connection type [ExpressRoute].
+
 - Required: No
 - Type: securestring
 - Default: `''`
@@ -168,6 +183,7 @@ The Authorization Key to connect to an Express Route Circuit. Used for connectio
 ### Parameter: `connectionMode`
 
 The connection connectionMode for this connection. Available for IPSec connections.
+
 - Required: No
 - Type: string
 - Default: `'Default'`
@@ -183,6 +199,7 @@ The connection connectionMode for this connection. Available for IPSec connectio
 ### Parameter: `connectionProtocol`
 
 Connection connectionProtocol used for this connection. Available for IPSec connections.
+
 - Required: No
 - Type: string
 - Default: `'IKEv2'`
@@ -197,6 +214,7 @@ Connection connectionProtocol used for this connection. Available for IPSec conn
 ### Parameter: `connectionType`
 
 Gateway connection connectionType.
+
 - Required: No
 - Type: string
 - Default: `'IPsec'`
@@ -213,6 +231,7 @@ Gateway connection connectionType.
 ### Parameter: `customIPSecPolicy`
 
 The IPSec Policies to be considered by this connection.
+
 - Required: No
 - Type: object
 - Default:
@@ -232,6 +251,7 @@ The IPSec Policies to be considered by this connection.
 ### Parameter: `dpdTimeoutSeconds`
 
 The dead peer detection timeout of this connection in seconds. Setting the timeout to shorter periods will cause IKE to rekey more aggressively, causing the connection to appear to be disconnected in some instances. The general recommendation is to set the timeout between 30 to 45 seconds.
+
 - Required: No
 - Type: int
 - Default: `45`
@@ -239,6 +259,7 @@ The dead peer detection timeout of this connection in seconds. Setting the timeo
 ### Parameter: `enableBgp`
 
 Value to specify if BGP is enabled or not.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -246,6 +267,7 @@ Value to specify if BGP is enabled or not.
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
+
 - Required: No
 - Type: bool
 - Default: `True`
@@ -253,6 +275,7 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 ### Parameter: `enablePrivateLinkFastPath`
 
 Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled. Only available when connection connectionType is Express Route.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -260,6 +283,7 @@ Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastP
 ### Parameter: `expressRouteGatewayBypass`
 
 Bypass ExpressRoute Gateway for data forwarding. Only available when connection connectionType is Express Route.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -267,6 +291,7 @@ Bypass ExpressRoute Gateway for data forwarding. Only available when connection 
 ### Parameter: `localNetworkGateway2`
 
 The local network gateway. Used for connection type [IPsec].
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -274,6 +299,7 @@ The local network gateway. Used for connection type [IPsec].
 ### Parameter: `location`
 
 Location for all resources.
+
 - Required: No
 - Type: string
 - Default: `[resourceGroup().location]`
@@ -281,39 +307,43 @@ Location for all resources.
 ### Parameter: `lock`
 
 The lock settings of the service.
+
 - Required: No
 - Type: object
 
+**Optional parameters**
 
-| Name | Required | Type | Description |
-| :-- | :-- | :--| :-- |
-| [`kind`](#parameter-lockkind) | No | string | Optional. Specify the type of lock. |
-| [`name`](#parameter-lockname) | No | string | Optional. Specify the name of lock. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
+| [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
 ### Parameter: `lock.kind`
 
-Optional. Specify the type of lock.
+Specify the type of lock.
 
 - Required: No
 - Type: string
-- Allowed: `[CanNotDelete, None, ReadOnly]`
+- Allowed:
+  ```Bicep
+  [
+    'CanNotDelete'
+    'None'
+    'ReadOnly'
+  ]
+  ```
 
 ### Parameter: `lock.name`
 
-Optional. Specify the name of lock.
+Specify the name of lock.
 
 - Required: No
-- Type: string
-
-### Parameter: `name`
-
-Remote connection name.
-- Required: Yes
 - Type: string
 
 ### Parameter: `peer`
 
 The remote peer. Used for connection connectionType [ExpressRoute].
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -321,6 +351,7 @@ The remote peer. Used for connection connectionType [ExpressRoute].
 ### Parameter: `routingWeight`
 
 The weight added to routes learned from this BGP speaker.
+
 - Required: No
 - Type: int
 - Default: `-1`
@@ -328,12 +359,14 @@ The weight added to routes learned from this BGP speaker.
 ### Parameter: `tags`
 
 Tags of the resource.
+
 - Required: No
 - Type: object
 
 ### Parameter: `useLocalAzureIpAddress`
 
 Use private local Azure IP for the connection. Only available for IPSec Virtual Network Gateways that use the Azure Private IP Property.
+
 - Required: No
 - Type: bool
 - Default: `False`
@@ -341,19 +374,15 @@ Use private local Azure IP for the connection. Only available for IPSec Virtual 
 ### Parameter: `usePolicyBasedTrafficSelectors`
 
 Enable policy-based traffic selectors.
+
 - Required: No
 - Type: bool
 - Default: `False`
 
-### Parameter: `virtualNetworkGateway1`
-
-The primary Virtual Network Gateway.
-- Required: Yes
-- Type: object
-
 ### Parameter: `virtualNetworkGateway2`
 
 The remote Virtual Network Gateway. Used for connection connectionType [Vnet2Vnet].
+
 - Required: No
 - Type: object
 - Default: `{}`
@@ -361,6 +390,7 @@ The remote Virtual Network Gateway. Used for connection connectionType [Vnet2Vne
 ### Parameter: `vpnSharedKey`
 
 Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways.
+
 - Required: No
 - Type: securestring
 - Default: `''`

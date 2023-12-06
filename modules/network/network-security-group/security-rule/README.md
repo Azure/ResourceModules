@@ -50,65 +50,10 @@ This module deploys a Network Security Group (NSG) Security Rule.
 | [`sourcePortRange`](#parameter-sourceportrange) | string | The source port or range. Integer or range between 0 and 65535. Asterisk "*" can also be used to match all ports. |
 | [`sourcePortRanges`](#parameter-sourceportranges) | array | The source port ranges. |
 
-### Parameter: `access`
-
-Whether network traffic is allowed or denied.
-- Required: No
-- Type: string
-- Default: `'Deny'`
-- Allowed:
-  ```Bicep
-  [
-    'Allow'
-    'Deny'
-  ]
-  ```
-
-### Parameter: `description`
-
-A description for this rule.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `destinationAddressPrefix`
-
-The destination address prefix. CIDR or destination IP range. Asterisk "*" can also be used to match all source IPs. Default tags such as "VirtualNetwork", "AzureLoadBalancer" and "Internet" can also be used.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `destinationAddressPrefixes`
-
-The destination address prefixes. CIDR or destination IP ranges.
-- Required: No
-- Type: array
-- Default: `[]`
-
-### Parameter: `destinationApplicationSecurityGroups`
-
-The application security group specified as destination.
-- Required: No
-- Type: array
-- Default: `[]`
-
-### Parameter: `destinationPortRange`
-
-The destination port or range. Integer or range between 0 and 65535. Asterisk "*" can also be used to match all ports.
-- Required: No
-- Type: string
-- Default: `''`
-
-### Parameter: `destinationPortRanges`
-
-The destination port ranges.
-- Required: No
-- Type: array
-- Default: `[]`
-
 ### Parameter: `direction`
 
 The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -119,34 +64,24 @@ The direction of the rule. The direction specifies if rule will be evaluated on 
   ]
   ```
 
-### Parameter: `enableDefaultTelemetry`
-
-Enable telemetry via a Globally Unique Identifier (GUID).
-- Required: No
-- Type: bool
-- Default: `True`
-
 ### Parameter: `name`
 
 The name of the security rule.
-- Required: Yes
-- Type: string
 
-### Parameter: `networkSecurityGroupName`
-
-The name of the parent network security group to deploy the security rule into. Required if the template is used in a standalone deployment.
 - Required: Yes
 - Type: string
 
 ### Parameter: `priority`
 
 The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule.
+
 - Required: Yes
 - Type: int
 
 ### Parameter: `protocol`
 
 Network protocol this rule applies to.
+
 - Required: Yes
 - Type: string
 - Allowed:
@@ -161,9 +96,88 @@ Network protocol this rule applies to.
   ]
   ```
 
+### Parameter: `networkSecurityGroupName`
+
+The name of the parent network security group to deploy the security rule into. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `access`
+
+Whether network traffic is allowed or denied.
+
+- Required: No
+- Type: string
+- Default: `'Deny'`
+- Allowed:
+  ```Bicep
+  [
+    'Allow'
+    'Deny'
+  ]
+  ```
+
+### Parameter: `description`
+
+A description for this rule.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `destinationAddressPrefix`
+
+The destination address prefix. CIDR or destination IP range. Asterisk "*" can also be used to match all source IPs. Default tags such as "VirtualNetwork", "AzureLoadBalancer" and "Internet" can also be used.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `destinationAddressPrefixes`
+
+The destination address prefixes. CIDR or destination IP ranges.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `destinationApplicationSecurityGroups`
+
+The application security group specified as destination.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `destinationPortRange`
+
+The destination port or range. Integer or range between 0 and 65535. Asterisk "*" can also be used to match all ports.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `destinationPortRanges`
+
+The destination port ranges.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
 ### Parameter: `sourceAddressPrefix`
 
 The CIDR or source IP range. Asterisk "*" can also be used to match all source IPs. Default tags such as "VirtualNetwork", "AzureLoadBalancer" and "Internet" can also be used. If this is an ingress rule, specifies where network traffic originates from.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -171,6 +185,7 @@ The CIDR or source IP range. Asterisk "*" can also be used to match all source I
 ### Parameter: `sourceAddressPrefixes`
 
 The CIDR or source IP ranges.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -178,6 +193,7 @@ The CIDR or source IP ranges.
 ### Parameter: `sourceApplicationSecurityGroups`
 
 The application security group specified as source.
+
 - Required: No
 - Type: array
 - Default: `[]`
@@ -185,6 +201,7 @@ The application security group specified as source.
 ### Parameter: `sourcePortRange`
 
 The source port or range. Integer or range between 0 and 65535. Asterisk "*" can also be used to match all ports.
+
 - Required: No
 - Type: string
 - Default: `''`
@@ -192,6 +209,7 @@ The source port or range. Integer or range between 0 and 65535. Asterisk "*" can
 ### Parameter: `sourcePortRanges`
 
 The source port ranges.
+
 - Required: No
 - Type: array
 - Default: `[]`
