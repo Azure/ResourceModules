@@ -2199,6 +2199,7 @@ Specifies whether the webApplicationRoutingEnabled add-on is enabled or not.
 | `resourceGroupName` | string | The resource group the managed cluster was deployed into. |
 | `resourceId` | string | The resource ID of the managed cluster. |
 | `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
+| `webAppRoutingIdentityObjectId` | string | The Object ID of Web Application Routing. |
 
 ## Cross-referenced modules
 
