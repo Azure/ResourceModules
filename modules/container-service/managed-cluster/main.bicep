@@ -735,6 +735,9 @@ output keyvaultIdentityObjectId string = contains(managedCluster.properties, 'ad
 @description('The Client ID of the Key Vault Secrets Provider identity.')
 output keyvaultIdentityClientId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'azureKeyvaultSecretsProvider') ? contains(managedCluster.properties.addonProfiles.azureKeyvaultSecretsProvider, 'identity') ? managedCluster.properties.addonProfiles.azureKeyvaultSecretsProvider.identity.clientId : '' : '' : ''
 
+@description('The Object ID of Application Gateway Ingress Controller (AGIC) identity.')
+output ingressApplicationGatewayIdentityObjectId string = managedCluster.properties.addonProfiles.?ingressApplicationGateway.?identity.?objectId ?? ''
+
 @description('The location the resource was deployed into.')
 output location string = managedCluster.location
 

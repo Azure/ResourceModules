@@ -2394,6 +2394,7 @@ Specifies whether the webApplicationRoutingEnabled add-on is enabled or not.
 | :-- | :-- | :-- |
 | `addonProfiles` | object | The addonProfiles of the Kubernetes cluster. |
 | `controlPlaneFQDN` | string | The control plane FQDN of the managed cluster. |
+| `ingressApplicationGatewayIdentityObjectId` | string | The Object ID of Application Gateway Ingress Controller (AGIC) identity. |
 | `keyvaultIdentityClientId` | string | The Client ID of the Key Vault Secrets Provider identity. |
 | `keyvaultIdentityObjectId` | string | The Object ID of the Key Vault Secrets Provider identity. |
 | `kubeletidentityObjectId` | string | The Object ID of the AKS identity. |
