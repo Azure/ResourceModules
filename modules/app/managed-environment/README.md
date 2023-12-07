@@ -4,11 +4,11 @@ This module deploys an App Managed Environment (also known as a Container App En
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
-- [Usage examples](#Usage-examples)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Cross-referenced modules](#Cross-referenced-modules)
+- [Resource Types](#resource-types)
+- [Usage examples](#usage-examples)
+- [Parameters](#parameters)
+- [Outputs](#outputs)
+- [Cross-referenced modules](#cross-referenced-modules)
 
 ## Resource Types
 
@@ -33,7 +33,6 @@ The following section provides usage examples for the module, which were used to
 ### Example 1: _Using only defaults_
 
 This instance deploys the module with the minimum set of required parameters.
-
 
 <details>
 
@@ -84,7 +83,6 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
 
 This instance deploys the module with most of its features enabled.
 
-
 <details>
 
 <summary>via Bicep module</summary>
@@ -108,7 +106,8 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     }
     platformReservedCidr: '172.17.17.0/24'
     platformReservedDnsIP: '172.17.17.17'
-    skuName: 'Consumption'
+    infrastructureResourceGroupName: '<infrastructureResourceGroupName>'
+    workloadProfiles: '<workloadProfiles>'
     tags: {
       Env: 'test'
       'hidden-title': 'This is visible in the resource name'
@@ -164,8 +163,8 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     "platformReservedDnsIP": {
       "value": "172.17.17.17"
     },
-    "skuName": {
-      "value": "Consumption"
+    "infrastructureResourceGroupName": {
+      "value": "<infrastructureResourceGroupName>"
     },
     "tags": {
       "value": {
@@ -183,7 +182,6 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
 ### Example 3: _WAF-aligned_
 
 This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
-
 
 <details>
 
@@ -208,7 +206,8 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     }
     platformReservedCidr: '172.17.17.0/24'
     platformReservedDnsIP: '172.17.17.17'
-    skuName: 'Consumption'
+    infrastructureResourceGroupName: '<infrastructureResourceGroupName>'
+    workloadProfiles: '<workloadProfiles>'
     tags: {
       Env: 'test'
       'hidden-title': 'This is visible in the resource name'
@@ -264,8 +263,8 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     "platformReservedDnsIP": {
       "value": "172.17.17.17"
     },
-    "skuName": {
-      "value": "Consumption"
+    "infrastructureResourceGroupName": {
+      "value": "<infrastructureResourceGroupName>"
     },
     "tags": {
       "value": {
@@ -279,7 +278,6 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
 
 </details>
 <p>
-
 
 ## Parameters
 
@@ -314,7 +312,7 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
 | [`platformReservedCidr`](#parameter-platformreservedcidr) | string | IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap with any other provided IP ranges and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
 | [`platformReservedDnsIP`](#parameter-platformreserveddnsip) | string | An IP address from the IP range defined by "platformReservedCidr" that will be reserved for the internal DNS server. It must not be the first address in the range and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`skuName`](#parameter-skuname) | string | Managed environment SKU. |
+| [`infrastructureResourceGroupName`](#parameter-infrastructureresourcegroupname) | string | Custom Resource group name for infrastrcuture components. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`workloadProfiles`](#parameter-workloadprofiles) | array | Workload profiles configured for the Managed Environment. |
 | [`zoneRedundant`](#parameter-zoneredundant) | bool | Whether or not this Managed Environment is zone-redundant. |
@@ -433,6 +431,7 @@ Specify the type of lock.
 - Required: No
 - Type: string
 - Allowed:
+
   ```Bicep
   [
     'CanNotDelete'
@@ -492,7 +491,7 @@ Array of role assignments to create.
 | :-- | :-- | :-- |
 | [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
 | [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource ID of the delegated managed identity resource. |
 | [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
 | [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
 
@@ -524,6 +523,7 @@ Version of the condition.
 - Required: No
 - Type: string
 - Allowed:
+
   ```Bicep
   [
     '2.0'
@@ -532,7 +532,7 @@ Version of the condition.
 
 ### Parameter: `roleAssignments.delegatedManagedIdentityResourceId`
 
-The Resource Id of the delegated managed identity resource.
+The Resource ID of the delegated managed identity resource.
 
 - Required: No
 - Type: string
@@ -551,6 +551,7 @@ The principal type of the assigned principal ID.
 - Required: No
 - Type: string
 - Allowed:
+
   ```Bicep
   [
     'Device'
@@ -561,20 +562,13 @@ The principal type of the assigned principal ID.
   ]
   ```
 
-### Parameter: `skuName`
+### Parameter: `infrastructureResourceGroupName`
 
-Managed environment SKU.
+Customer Resource Group name for additional infrastructure components.
 
 - Required: No
 - Type: string
-- Default: `'Consumption'`
-- Allowed:
-  ```Bicep
-  [
-    'Consumption'
-    'Premium'
-  ]
-  ```
+- Default: `'ME_ManagedEnvironmentName'`
 
 ### Parameter: `tags`
 
@@ -598,7 +592,6 @@ Whether or not this Managed Environment is zone-redundant.
 - Required: No
 - Type: bool
 - Default: `False`
-
 
 ## Outputs
 
