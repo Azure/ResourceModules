@@ -712,7 +712,7 @@ resource managedCluster_roleAssignments 'Microsoft.Authorization/roleAssignments
   scope: managedCluster
 }]
 
-resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' existing = if (dnsZoneResourceId != null && webApplicationRoutingEnabled) {
+resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' existing = if (enableDnsZoneContributorRoleAssignment == true && dnsZoneResourceId != null && webApplicationRoutingEnabled) {
   name: last(split((!empty(dnsZoneResourceId) ? dnsZoneResourceId : '/dummmyZone'), '/'))!
 }
 
@@ -761,6 +761,9 @@ output oidcIssuerUrl string = enableOidcIssuerProfile ? managedCluster.propertie
 
 @description('The addonProfiles of the Kubernetes cluster.')
 output addonProfiles object = contains(managedCluster.properties, 'addonProfiles') ? managedCluster.properties.addonProfiles : {}
+
+@description('The Object ID of Web Application Routing.')
+output webAppRoutingIdentityObjectId string = contains(managedCluster.properties, 'ingressProfile') && contains(managedCluster.properties.ingressProfile, 'webAppRouting') && contains(managedCluster.properties.ingressProfile.webAppRouting, 'identity') && contains(managedCluster.properties.ingressProfile.webAppRouting.identity, 'objectId') ? managedCluster.properties.ingressProfile.webAppRouting.identity.objectId : ''
 
 // =============== //
 //   Definitions   //
