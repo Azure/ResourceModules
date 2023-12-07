@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "4157027857802113569"
+      "templateHash": "14745510264593051323"
     },
     "name": "Resource Groups",
     "description": "This module deploys a Resource Group.",
@@ -140,7 +140,7 @@
     },
     "managedBy": {
       "type": "string",
-      "defaultValue": "",
+      "nullable": true,
       "metadata": {
         "description": "Optional. The ID of the resource that manages this resource group."
       }
@@ -184,12 +184,22 @@
       }
     },
     "resourceGroup": {
+      "condition": "[equals(parameters('managedBy'), null())]",
       "type": "Microsoft.Resources/resourceGroups",
       "apiVersion": "2021-04-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
-      "managedBy": "[parameters('managedBy')]",
+      "properties": {}
+    },
+    "managedResourceGroup": {
+      "condition": "[not(equals(parameters('managedBy'), null()))]",
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2021-04-01",
+      "name": "[parameters('name')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "managedBy": "[if(greater(length(coalesce(parameters('managedBy'), '')), 0), parameters('managedBy'), '')]",
       "properties": {}
     },
     "resourceGroup_roleAssignments": {
@@ -199,7 +209,7 @@
       },
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "name": "[guid(subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+      "name": "[guid(if(equals(parameters('managedBy'), null()), subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('name')), subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('name'))), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
       "properties": {
         "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], if(contains(coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, '/providers/Microsoft.Authorization/roleDefinitions/'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)))]",
         "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
@@ -210,6 +220,7 @@
         "delegatedManagedIdentityResourceId": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
       },
       "dependsOn": [
+        "managedResourceGroup",
         "resourceGroup"
       ]
     },
@@ -218,7 +229,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('{0}-RG-Lock', uniqueString(deployment().name, parameters('location')))]",
-      "resourceGroup": "[parameters('name')]",
+      "location": "[deployment().location]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -228,9 +239,7 @@
           "lock": {
             "value": "[parameters('lock')]"
           },
-          "name": {
-            "value": "[parameters('name')]"
-          }
+          "name": "[if(equals(parameters('managedBy'), null()), createObject('value', parameters('name')), createObject('value', parameters('name')))]"
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -299,6 +308,7 @@
         }
       },
       "dependsOn": [
+        "managedResourceGroup",
         "resourceGroup"
       ]
     }
@@ -309,21 +319,21 @@
       "metadata": {
         "description": "The name of the resource group."
       },
-      "value": "[parameters('name')]"
+      "value": "[if(equals(parameters('managedBy'), null()), parameters('name'), parameters('name'))]"
     },
     "resourceId": {
       "type": "string",
       "metadata": {
         "description": "The resource ID of the resource group."
       },
-      "value": "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('name'))]"
+      "value": "[if(equals(parameters('managedBy'), null()), subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('name')), subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('name')))]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference('resourceGroup', '2021-04-01', 'full').location]"
+      "value": "[if(equals(parameters('managedBy'), null()), reference('resourceGroup', '2021-04-01', 'full').location, reference('managedResourceGroup', '2021-04-01', 'full').location)]"
     }
   }
 }

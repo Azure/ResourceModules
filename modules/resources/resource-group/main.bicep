@@ -20,7 +20,7 @@ param roleAssignments roleAssignmentType
 param tags object?
 
 @description('Optional. The ID of the resource that manages this resource group.')
-param managedBy string = ''
+param managedBy string?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -51,11 +51,18 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = if (managedBy == null) {
   location: location
   name: name
   tags: tags
-  managedBy: managedBy
+  properties: {}
+}
+
+resource managedResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = if (managedBy != null) {
+  location: location
+  name: name
+  tags: tags
+  managedBy: length(managedBy ?? '') > 0 ? managedBy : ''
   properties: {}
 }
 
@@ -63,13 +70,13 @@ module resourceGroup_lock 'modules/nested_lock.bicep' = if (!empty(lock ?? {}) &
   name: '${uniqueString(deployment().name, location)}-RG-Lock'
   params: {
     lock: lock
-    name: resourceGroup.name
+    name: managedBy == null ? resourceGroup.name : managedResourceGroup.name
   }
-  scope: resourceGroup
+  scope: managedBy == null ? resourceGroup : managedResourceGroup
 }
 
 resource resourceGroup_roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for (roleAssignment, index) in (roleAssignments ?? []): {
-  name: guid(resourceGroup.id, roleAssignment.principalId, roleAssignment.roleDefinitionIdOrName)
+  name: guid(managedBy == null ? resourceGroup.id : managedResourceGroup.id, roleAssignment.principalId, roleAssignment.roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : contains(roleAssignment.roleDefinitionIdOrName, '/providers/Microsoft.Authorization/roleDefinitions/') ? roleAssignment.roleDefinitionIdOrName : subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleAssignment.roleDefinitionIdOrName)
     principalId: roleAssignment.principalId
@@ -82,13 +89,13 @@ resource resourceGroup_roleAssignments 'Microsoft.Authorization/roleAssignments@
 }]
 
 @description('The name of the resource group.')
-output name string = resourceGroup.name
+output name string = managedBy == null ? resourceGroup.name : managedResourceGroup.name
 
 @description('The resource ID of the resource group.')
-output resourceId string = resourceGroup.id
+output resourceId string = managedBy == null ? resourceGroup.id : managedResourceGroup.id
 
 @description('The location the resource was deployed into.')
-output location string = resourceGroup.location
+output location string = managedBy == null ? resourceGroup.location : managedResourceGroup.location
 
 // =============== //
 //   Definitions   //

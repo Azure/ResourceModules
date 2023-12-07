@@ -339,7 +339,6 @@ The ID of the resource that manages this resource group.
 
 - Required: No
 - Type: string
-- Default: `''`
 
 ### Parameter: `roleAssignments`
 
