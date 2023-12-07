@@ -351,6 +351,15 @@ param identityProfile object = {}
 @description('Optional. The customer managed key definition.')
 param customerManagedKey customerManagedKeyType
 
+@description('Optional. Whether the metrics profile for the Azure Monitor managed service for Prometheus addon is enabled.')
+param enableAzureMonitorProfileMetrics bool = false
+
+@description('Optional. A comma-separated list of additional Kubernetes label keys.')
+param metricLabelsAllowlist string = ''
+
+@description('Optional. A comma-separated list of Kubernetes annotation keys.')
+param metricAnnotationsAllowList string = ''
+
 resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId)) {
   name: last(split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault'), '/'))
   scope: resourceGroup(split((customerManagedKey.?keyVaultResourceId ?? '//'), '/')[2], split((customerManagedKey.?keyVaultResourceId ?? '////'), '/')[4])
@@ -543,6 +552,15 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-07-02-p
       enablePrivateCluster: enablePrivateCluster
       enablePrivateClusterPublicFQDN: enablePrivateClusterPublicFQDN
       privateDNSZone: privateDNSZone
+    }
+    azureMonitorProfile: {
+      metrics: enableAzureMonitorProfileMetrics ? {
+        enabled: true
+        kubeStateMetrics: {
+          metricAnnotationsAllowList: metricAnnotationsAllowList
+          metricLabelsAllowlist: metricLabelsAllowlist
+        }
+      } : null
     }
     podIdentityProfile: {
       allowNetworkPluginKubenet: podIdentityProfileAllowNetworkPluginKubenet

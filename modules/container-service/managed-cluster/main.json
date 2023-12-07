@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "9522111047987298490"
+      "version": "0.23.1.45101",
+      "templateHash": "609013537229775592"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Clusters",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
@@ -979,6 +979,27 @@
       "metadata": {
         "description": "Optional. The customer managed key definition."
       }
+    },
+    "enableAzureMonitorProfileMetrics": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Whether the metrics profile for the Azure Monitor managed service for Prometheus addon is enabled."
+      }
+    },
+    "metricLabelsAllowlist": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. A comma-separated list of additional Kubernetes label keys."
+      }
+    },
+    "metricAnnotationsAllowList": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. A comma-separated list of Kubernetes annotation keys."
+      }
     }
   },
   "variables": {
@@ -1170,6 +1191,9 @@
           "enablePrivateCluster": "[parameters('enablePrivateCluster')]",
           "enablePrivateClusterPublicFQDN": "[parameters('enablePrivateClusterPublicFQDN')]",
           "privateDNSZone": "[parameters('privateDNSZone')]"
+        },
+        "azureMonitorProfile": {
+          "metrics": "[if(parameters('enableAzureMonitorProfileMetrics'), createObject('enabled', true(), 'kubeStateMetrics', createObject('metricAnnotationsAllowList', parameters('metricAnnotationsAllowList'), 'metricLabelsAllowlist', parameters('metricLabelsAllowlist'))), null())]"
         },
         "podIdentityProfile": {
           "allowNetworkPluginKubenet": "[parameters('podIdentityProfileAllowNetworkPluginKubenet')]",

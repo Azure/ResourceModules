@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "15830956831455159038"
+      "templateHash": "6452494198386670014"
     },
     "name": "App ManagedEnvironments",
     "description": "This module deploys an App Managed Environment (also known as a Container App Environment).",
@@ -138,17 +138,6 @@
         "description": "Optional. Array of role assignments to create."
       }
     },
-    "skuName": {
-      "type": "string",
-      "defaultValue": "Consumption",
-      "allowedValues": [
-        "Consumption",
-        "Premium"
-      ],
-      "metadata": {
-        "description": "Optional. Managed environment SKU."
-      }
-    },
     "logsDestination": {
       "type": "string",
       "defaultValue": "log-analytics",
@@ -251,6 +240,13 @@
       "metadata": {
         "description": "Optional. Workload profiles configured for the Managed Environment."
       }
+    },
+    "infrastructureResourceGroupName": {
+      "type": "string",
+      "defaultValue": "[take(format('ME_{0}', parameters('name')), 63)]",
+      "metadata": {
+        "description": "Optional. Name of the infrastructure resource group. If not provided, it will be set with a default value."
+      }
     }
   },
   "variables": {
@@ -288,13 +284,10 @@
     },
     "managedEnvironment": {
       "type": "Microsoft.App/managedEnvironments",
-      "apiVersion": "2022-10-01",
+      "apiVersion": "2023-05-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
-      "sku": {
-        "name": "[parameters('skuName')]"
-      },
       "properties": {
         "appLogsConfiguration": {
           "destination": "[parameters('logsDestination')]",
@@ -312,13 +305,14 @@
         },
         "vnetConfiguration": {
           "internal": "[parameters('internal')]",
-          "infrastructureSubnetId": "[if(and(not(empty(parameters('infrastructureSubnetId'))), equals(parameters('internal'), true())), parameters('infrastructureSubnetId'), null())]",
-          "dockerBridgeCidr": "[if(and(not(empty(parameters('infrastructureSubnetId'))), equals(parameters('internal'), true())), parameters('dockerBridgeCidr'), null())]",
-          "platformReservedCidr": "[if(and(not(empty(parameters('infrastructureSubnetId'))), equals(parameters('internal'), true())), parameters('platformReservedCidr'), null())]",
-          "platformReservedDnsIP": "[if(and(not(empty(parameters('infrastructureSubnetId'))), equals(parameters('internal'), true())), parameters('platformReservedDnsIP'), null())]"
+          "infrastructureSubnetId": "[if(not(empty(parameters('infrastructureSubnetId'))), parameters('infrastructureSubnetId'), null())]",
+          "dockerBridgeCidr": "[if(not(empty(parameters('infrastructureSubnetId'))), parameters('dockerBridgeCidr'), null())]",
+          "platformReservedCidr": "[if(and(empty(parameters('workloadProfiles')), not(empty(parameters('infrastructureSubnetId')))), parameters('platformReservedCidr'), null())]",
+          "platformReservedDnsIP": "[if(and(empty(parameters('workloadProfiles')), not(empty(parameters('infrastructureSubnetId')))), parameters('platformReservedDnsIP'), null())]"
         },
         "workloadProfiles": "[if(not(empty(parameters('workloadProfiles'))), parameters('workloadProfiles'), null())]",
-        "zoneRedundant": "[parameters('zoneRedundant')]"
+        "zoneRedundant": "[parameters('zoneRedundant')]",
+        "infrastructureResourceGroup": "[parameters('infrastructureResourceGroupName')]"
       },
       "dependsOn": [
         "logAnalyticsWorkspace"
@@ -374,7 +368,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference('managedEnvironment', '2022-10-01', 'full').location]"
+      "value": "[reference('managedEnvironment', '2023-05-01', 'full').location]"
     },
     "name": {
       "type": "string",
@@ -389,6 +383,13 @@
         "description": "The resource ID of the Managed Environment."
       },
       "value": "[resourceId('Microsoft.App/managedEnvironments', parameters('name'))]"
+    },
+    "defaultDomain": {
+      "type": "string",
+      "metadata": {
+        "description": "The Default domain of the Managed Environment."
+      },
+      "value": "[reference('managedEnvironment').defaultDomain]"
     }
   }
 }

@@ -145,6 +145,7 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
     ]
     diskEncryptionSetID: '<diskEncryptionSetID>'
     enableAzureDefender: true
+    enableAzureMonitorProfileMetrics: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enableKeyvaultSecretsProvider: true
     enableOidcIssuerProfile: true
@@ -381,6 +382,9 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
       "value": "<diskEncryptionSetID>"
     },
     "enableAzureDefender": {
+      "value": true
+    },
+    "enableAzureMonitorProfileMetrics": {
       "value": true
     },
     "enableDefaultTelemetry": {
@@ -1228,6 +1232,7 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
 | [`dnsServiceIP`](#parameter-dnsserviceip) | string | Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr. |
 | [`dnsZoneResourceId`](#parameter-dnszoneresourceid) | string | Specifies the resource ID of connected DNS zone. It will be ignored if `webApplicationRoutingEnabled` is set to `false`. |
 | [`enableAzureDefender`](#parameter-enableazuredefender) | bool | Whether to enable Azure Defender. |
+| [`enableAzureMonitorProfileMetrics`](#parameter-enableazuremonitorprofilemetrics) | bool | Whether the metrics profile for the Azure Monitor managed service for Prometheus addon is enabled. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`enableDnsZoneContributorRoleAssignment`](#parameter-enablednszonecontributorroleassignment) | bool | Specifies whether assing the DNS zone contributor role to the cluster service principal. It will be ignored if `webApplicationRoutingEnabled` is set to `false` or `dnsZoneResourceId` not provided. |
 | [`enableKeyvaultSecretsProvider`](#parameter-enablekeyvaultsecretsprovider) | bool | Specifies whether the KeyvaultSecretsProvider add-on is enabled or not. |
@@ -1255,6 +1260,8 @@ module managedCluster 'br:bicep/modules/container-service.managed-cluster:1.0.0'
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. Only one type of identity is supported: system-assigned or user-assigned, but not both. |
 | [`managedOutboundIPCount`](#parameter-managedoutboundipcount) | int | Outbound IP Count for the Load balancer. |
+| [`metricAnnotationsAllowList`](#parameter-metricannotationsallowlist) | string | A comma-separated list of Kubernetes annotation keys. |
+| [`metricLabelsAllowlist`](#parameter-metriclabelsallowlist) | string | A comma-separated list of additional Kubernetes label keys. |
 | [`monitoringWorkspaceId`](#parameter-monitoringworkspaceid) | string | Resource ID of the monitoring log analytics workspace. |
 | [`networkDataplane`](#parameter-networkdataplane) | string | Network dataplane used in the Kubernetes cluster. Not compatible with kubenet network plugin. |
 | [`networkPlugin`](#parameter-networkplugin) | string | Specifies the network plugin used for building Kubernetes network. |
@@ -1800,6 +1807,14 @@ Whether to enable Azure Defender.
 - Type: bool
 - Default: `False`
 
+### Parameter: `enableAzureMonitorProfileMetrics`
+
+Whether the metrics profile for the Azure Monitor managed service for Prometheus addon is enabled.
+
+- Required: No
+- Type: bool
+- Default: `False`
+
 ### Parameter: `enableDefaultTelemetry`
 
 Enable telemetry via a Globally Unique Identifier (GUID).
@@ -2077,6 +2092,22 @@ Outbound IP Count for the Load balancer.
 - Required: No
 - Type: int
 - Default: `0`
+
+### Parameter: `metricAnnotationsAllowList`
+
+A comma-separated list of Kubernetes annotation keys.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `metricLabelsAllowlist`
+
+A comma-separated list of additional Kubernetes label keys.
+
+- Required: No
+- Type: string
+- Default: `''`
 
 ### Parameter: `monitoringWorkspaceId`
 
