@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "5457009656345678407"
+      "templateHash": "6452494198386670014"
     },
     "name": "App ManagedEnvironments",
     "description": "This module deploys an App Managed Environment (also known as a Container App Environment).",
@@ -307,8 +307,8 @@
           "internal": "[parameters('internal')]",
           "infrastructureSubnetId": "[if(not(empty(parameters('infrastructureSubnetId'))), parameters('infrastructureSubnetId'), null())]",
           "dockerBridgeCidr": "[if(not(empty(parameters('infrastructureSubnetId'))), parameters('dockerBridgeCidr'), null())]",
-          "platformReservedCidr": "[if(not(empty(parameters('infrastructureSubnetId'))), parameters('platformReservedCidr'), null())]",
-          "platformReservedDnsIP": "[if(not(empty(parameters('infrastructureSubnetId'))), parameters('platformReservedDnsIP'), null())]"
+          "platformReservedCidr": "[if(and(empty(parameters('workloadProfiles')), not(empty(parameters('infrastructureSubnetId')))), parameters('platformReservedCidr'), null())]",
+          "platformReservedDnsIP": "[if(and(empty(parameters('workloadProfiles')), not(empty(parameters('infrastructureSubnetId')))), parameters('platformReservedDnsIP'), null())]"
         },
         "workloadProfiles": "[if(not(empty(parameters('workloadProfiles'))), parameters('workloadProfiles'), null())]",
         "zoneRedundant": "[parameters('zoneRedundant')]",

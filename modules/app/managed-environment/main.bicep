@@ -117,8 +117,8 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' = {
       internal: internal
       infrastructureSubnetId: !empty(infrastructureSubnetId) ? infrastructureSubnetId : null
       dockerBridgeCidr: !empty(infrastructureSubnetId) ? dockerBridgeCidr : null
-      platformReservedCidr: !empty(infrastructureSubnetId) ? platformReservedCidr : null
-      platformReservedDnsIP: !empty(infrastructureSubnetId) ? platformReservedDnsIP : null
+      platformReservedCidr: empty(workloadProfiles) && !empty(infrastructureSubnetId) ? platformReservedCidr : null
+      platformReservedDnsIP: empty(workloadProfiles) && !empty(infrastructureSubnetId) ? platformReservedDnsIP : null
     }
     workloadProfiles: !empty(workloadProfiles) ? workloadProfiles : null
     zoneRedundant: zoneRedundant
