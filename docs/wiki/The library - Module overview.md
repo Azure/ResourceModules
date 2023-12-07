@@ -19,7 +19,7 @@ This section provides an overview of the library's feature set.
 | 4 | app-configuration<p>configuration-store | [![AppConfiguration - ConfigurationStores](https://github.com/Azure/ResourceModules/workflows/AppConfiguration%20-%20ConfigurationStores/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.appconfiguration.configurationstores.yml) |  |  |  |  |  |  | [L1:2, L2:1, L3:5] | 322 |
 | 5 | app<p>container-app | [![App - ContainerApps](https://github.com/Azure/ResourceModules/workflows/App%20-%20ContainerApps/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.app.containerapps.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:3] | 211 |
 | 6 | app<p>job | [![App - Jobs](https://github.com/Azure/ResourceModules/workflows/App%20-%20Jobs/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.app.jobs.yml) |  |  | :white_check_mark: |  |  |  | [L1:1, L2:1, L3:3] | 162 |
-| 7 | app<p>managed-environment | [![App - Managed Environments](https://github.com/Azure/ResourceModules/workflows/App%20-%20Managed%20Environments/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.app.managedenvironments.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:3] | 163 |
+| 7 | app<p>managed-environment | [![App - Managed Environments](https://github.com/Azure/ResourceModules/workflows/App%20-%20Managed%20Environments/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.app.managedenvironments.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:3] | 159 |
 | 8 | authorization<p>lock | [![Authorization - Locks](https://github.com/Azure/ResourceModules/workflows/Authorization%20-%20Locks/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.authorization.locks.yml) |  |  |  |  |  |  | [L1:3, L2:1, L3:2] | 62 |
 | 9 | authorization<p>policy-assignment | [![Authorization - PolicyAssignments](https://github.com/Azure/ResourceModules/workflows/Authorization%20-%20PolicyAssignments/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.authorization.policyassignments.yml) |  |  |  |  |  |  | [L1:4, L2:1, L3:6] | 143 |
 | 10 | authorization<p>policy-definition | [![Authorization - PolicyDefinitions](https://github.com/Azure/ResourceModules/workflows/Authorization%20-%20PolicyDefinitions/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.authorization.policydefinitions.yml) |  |  |  |  |  |  | [L1:3, L2:1, L3:4] | 86 |
@@ -150,7 +150,7 @@ This section provides an overview of the library's feature set.
 | 135 | web<p>serverfarm | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:2] | 184 |
 | 136 | web<p>site | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |  |  |  |  |  |  | [L1:6, L2:6, L3:5] | 455 |
 | 137 | web<p>static-site | [![Web - StaticSites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) |  |  |  |  |  |  | [L1:4, L2:1, L3:3] | 284 |
-| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 981 | 29909 |
+| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 981 | 29905 |
 
 ## Legend
 
