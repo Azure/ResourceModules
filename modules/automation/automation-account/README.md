@@ -1,5 +1,7 @@
 # Automation Accounts `[Microsoft.Automation/automationAccounts]`
 
+> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
+
 This module deploys an Azure Automation Account.
 
 ## Navigation
