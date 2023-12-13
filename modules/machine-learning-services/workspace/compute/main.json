@@ -6,10 +6,10 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "15942233592020548593"
+      "templateHash": "10790106014691997162"
     },
     "name": "Machine Learning Services Workspaces Computes",
-    "description": "This module deploys a Machine Learning Services Workspaces Compute.\r\n\r\nAttaching a compute is not idempotent and will fail in case you try to redeploy over an existing compute in AML (see parameter `deployCompute`).",
+    "description": "This module deploys a Machine Learning Services Workspaces Compute.\n\nAttaching a compute is not idempotent and will fail in case you try to redeploy over an existing compute in AML (see parameter `deployCompute`).",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {

@@ -1,5 +1,7 @@
 # Data Collection Rules `[Microsoft.Insights/dataCollectionRules]`
 
+> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
+
 This module deploys a Data Collection Rule.
 
 ## Navigation
@@ -53,7 +55,7 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
         streams: [
           'Custom-CustomTableAdvanced_CL'
         ]
-        transformKql: 'source | extend LogFields = split(RawData \'\') | extend EventTime = todatetime(LogFields[0]) | extend EventLevel = tostring(LogFields[1]) | extend EventCode = toint(LogFields[2]) | extend Message = tostring(LogFields[3]) | project TimeGenerated EventTime EventLevel EventCode Message'
+        transformKql: 'source | extend LogFields = split(RawData, \',\') | extend EventTime = todatetime(LogFields[0]) | extend EventLevel = tostring(LogFields[1]) | extend EventCode = toint(LogFields[2]) | extend Message = tostring(LogFields[3]) | project TimeGenerated, EventTime, EventLevel, EventCode, Message'
       }
     ]
     dataSources: {
@@ -87,7 +89,7 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
     name: 'idcrcusadv001'
     // Non-required parameters
     dataCollectionEndpointId: '<dataCollectionEndpointId>'
-    description: 'Collecting custom text logs with ingestion-time transformation to columns. Expected format of a log line (comma separated values): \'<DateTime><EventLevel><EventCode><Message>\' for example: \'2023-01-25T20:15:05ZERROR404Page not found\''
+    description: 'Collecting custom text logs with ingestion-time transformation to columns. Expected format of a log line (comma separated values): \'<DateTime>,<EventLevel>,<EventCode>,<Message>\', for example: \'2023-01-25T20:15:05Z,ERROR,404,Page not found\''
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
     lock: {
@@ -1274,7 +1276,7 @@ module dataCollectionRule 'br:bicep/modules/insights.data-collection-rule:1.0.0'
           ]
           xPathQueries: [
             'Application!*[System[(Level=1 or Level=2 or Level=3 or Level=4 or Level=0 or Level=5)]]'
-            'Security!*[System[(band(Keywords13510798882111488))]]'
+            'Security!*[System[(band(Keywords,13510798882111488))]]'
             'System!*[System[(Level=1 or Level=2 or Level=3 or Level=4 or Level=0 or Level=5)]]'
           ]
         }

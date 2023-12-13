@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "15762371668357130382"
+      "version": "0.23.1.45101",
+      "templateHash": "1679575632831341410"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Clusters",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
@@ -979,6 +979,27 @@
       "metadata": {
         "description": "Optional. The customer managed key definition."
       }
+    },
+    "enableAzureMonitorProfileMetrics": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Whether the metrics profile for the Azure Monitor managed service for Prometheus addon is enabled."
+      }
+    },
+    "metricLabelsAllowlist": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. A comma-separated list of additional Kubernetes label keys."
+      }
+    },
+    "metricAnnotationsAllowList": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. A comma-separated list of Kubernetes annotation keys."
+      }
     }
   },
   "variables": {
@@ -1171,6 +1192,9 @@
           "enablePrivateClusterPublicFQDN": "[parameters('enablePrivateClusterPublicFQDN')]",
           "privateDNSZone": "[parameters('privateDNSZone')]"
         },
+        "azureMonitorProfile": {
+          "metrics": "[if(parameters('enableAzureMonitorProfileMetrics'), createObject('enabled', true(), 'kubeStateMetrics', createObject('metricAnnotationsAllowList', parameters('metricAnnotationsAllowList'), 'metricLabelsAllowlist', parameters('metricLabelsAllowlist'))), null())]"
+        },
         "podIdentityProfile": {
           "allowNetworkPluginKubenet": "[parameters('podIdentityProfileAllowNetworkPluginKubenet')]",
           "enabled": "[parameters('podIdentityProfileEnable')]",
@@ -1262,7 +1286,7 @@
       ]
     },
     "dnsZone": {
-      "condition": "[and(not(equals(parameters('dnsZoneResourceId'), null())), parameters('webApplicationRoutingEnabled'))]",
+      "condition": "[and(and(equals(parameters('enableDnsZoneContributorRoleAssignment'), true()), not(equals(parameters('dnsZoneResourceId'), null()))), parameters('webApplicationRoutingEnabled'))]",
       "existing": true,
       "type": "Microsoft.Network/dnsZones",
       "apiVersion": "2018-05-01",
@@ -2244,6 +2268,13 @@
         "description": "The addonProfiles of the Kubernetes cluster."
       },
       "value": "[if(contains(reference('managedCluster'), 'addonProfiles'), reference('managedCluster').addonProfiles, createObject())]"
+    },
+    "webAppRoutingIdentityObjectId": {
+      "type": "string",
+      "metadata": {
+        "description": "The Object ID of Web Application Routing."
+      },
+      "value": "[if(and(and(and(contains(reference('managedCluster'), 'ingressProfile'), contains(reference('managedCluster').ingressProfile, 'webAppRouting')), contains(reference('managedCluster').ingressProfile.webAppRouting, 'identity')), contains(reference('managedCluster').ingressProfile.webAppRouting.identity, 'objectId')), reference('managedCluster').ingressProfile.webAppRouting.identity.objectId, '')]"
     }
   }
 }

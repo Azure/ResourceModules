@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "8947023489504947393"
+      "version": "0.23.1.45101",
+      "templateHash": "6991913570355678944"
     },
     "name": "Relay Namespace Authorization Rules",
     "description": "This module deploys a Relay Namespace Authorization Rule.",

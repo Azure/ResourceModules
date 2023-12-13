@@ -93,9 +93,9 @@ Type of slot to deploy.
   [
     'app'
     'functionapp'
-    'functionapplinux'
-    'functionappworkflowapp'
-    'functionappworkflowapplinux'
+    'functionapp,linux'
+    'functionapp,workflowapp'
+    'functionapp,workflowapp,linux'
   ]
   ```
 

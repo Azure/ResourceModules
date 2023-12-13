@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "16702773762135222765"
+      "version": "0.23.1.45101",
+      "templateHash": "3377145363217957068"
     },
     "name": "Role Definitions (All scopes)",
     "description": "This module deploys a Role Definition at a Management Group, Subscription or Resource Group scope.",
@@ -151,8 +151,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "5277764931156995532"
+              "version": "0.23.1.45101",
+              "templateHash": "15617520602952688455"
             },
             "name": "Role Definitions (Management Group scope)",
             "description": "This module deploys a Role Definition at a Management Group scope.",
@@ -313,8 +313,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "5911596219403447648"
+              "version": "0.23.1.45101",
+              "templateHash": "9622245925766749041"
             },
             "name": "Role Definitions (Subscription scope)",
             "description": "This module deploys a Role Definition at a Subscription scope.",
@@ -491,8 +491,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "15123790149450958610"
+              "version": "0.23.1.45101",
+              "templateHash": "16590569046115003591"
             },
             "name": "Role Definitions (Resource Group scope)",
             "description": "This module deploys a Role Definition at a Resource Group scope.",

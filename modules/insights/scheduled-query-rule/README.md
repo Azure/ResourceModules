@@ -1,5 +1,7 @@
 # Scheduled Query Rules `[Microsoft.Insights/scheduledQueryRules]`
 
+> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
+
 This module deploys a Scheduled Query Rule.
 
 ## Navigation
@@ -63,7 +65,7 @@ module scheduledQueryRule 'br:bicep/modules/insights.scheduled-query-rule:1.0.0'
           ]
           metricMeasureColumn: 'AggregatedValue'
           operator: 'GreaterThan'
-          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
+          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)'
           threshold: 0
           timeAggregation: 'Average'
         }
@@ -247,7 +249,7 @@ module scheduledQueryRule 'br:bicep/modules/insights.scheduled-query-rule:1.0.0'
           ]
           metricMeasureColumn: 'AggregatedValue'
           operator: 'GreaterThan'
-          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
+          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)'
           threshold: 0
           timeAggregation: 'Average'
         }

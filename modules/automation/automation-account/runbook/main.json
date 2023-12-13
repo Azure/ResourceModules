@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "1833872657708381069"
+      "version": "0.23.1.45101",
+      "templateHash": "3054091660106074138"
     },
     "name": "Automation Account Runbooks",
     "description": "This module deploys an Azure Automation Account Runbook.",

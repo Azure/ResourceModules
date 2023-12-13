@@ -351,6 +351,15 @@ param identityProfile object = {}
 @description('Optional. The customer managed key definition.')
 param customerManagedKey customerManagedKeyType
 
+@description('Optional. Whether the metrics profile for the Azure Monitor managed service for Prometheus addon is enabled.')
+param enableAzureMonitorProfileMetrics bool = false
+
+@description('Optional. A comma-separated list of additional Kubernetes label keys.')
+param metricLabelsAllowlist string = ''
+
+@description('Optional. A comma-separated list of Kubernetes annotation keys.')
+param metricAnnotationsAllowList string = ''
+
 resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(customerManagedKey.?keyVaultResourceId)) {
   name: last(split((customerManagedKey.?keyVaultResourceId ?? 'dummyVault'), '/'))
   scope: resourceGroup(split((customerManagedKey.?keyVaultResourceId ?? '//'), '/')[2], split((customerManagedKey.?keyVaultResourceId ?? '////'), '/')[4])
@@ -544,6 +553,15 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-07-02-p
       enablePrivateClusterPublicFQDN: enablePrivateClusterPublicFQDN
       privateDNSZone: privateDNSZone
     }
+    azureMonitorProfile: {
+      metrics: enableAzureMonitorProfileMetrics ? {
+        enabled: true
+        kubeStateMetrics: {
+          metricAnnotationsAllowList: metricAnnotationsAllowList
+          metricLabelsAllowlist: metricLabelsAllowlist
+        }
+      } : null
+    }
     podIdentityProfile: {
       allowNetworkPluginKubenet: podIdentityProfileAllowNetworkPluginKubenet
       enabled: podIdentityProfileEnable
@@ -694,7 +712,7 @@ resource managedCluster_roleAssignments 'Microsoft.Authorization/roleAssignments
   scope: managedCluster
 }]
 
-resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' existing = if (dnsZoneResourceId != null && webApplicationRoutingEnabled) {
+resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' existing = if (enableDnsZoneContributorRoleAssignment == true && dnsZoneResourceId != null && webApplicationRoutingEnabled) {
   name: last(split((!empty(dnsZoneResourceId) ? dnsZoneResourceId : '/dummmyZone'), '/'))!
 }
 
@@ -746,6 +764,9 @@ output oidcIssuerUrl string = enableOidcIssuerProfile ? managedCluster.propertie
 
 @description('The addonProfiles of the Kubernetes cluster.')
 output addonProfiles object = contains(managedCluster.properties, 'addonProfiles') ? managedCluster.properties.addonProfiles : {}
+
+@description('The Object ID of Web Application Routing.')
+output webAppRoutingIdentityObjectId string = contains(managedCluster.properties, 'ingressProfile') && contains(managedCluster.properties.ingressProfile, 'webAppRouting') && contains(managedCluster.properties.ingressProfile.webAppRouting, 'identity') && contains(managedCluster.properties.ingressProfile.webAppRouting.identity, 'objectId') ? managedCluster.properties.ingressProfile.webAppRouting.identity.objectId : ''
 
 // =============== //
 //   Definitions   //

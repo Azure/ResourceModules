@@ -14,7 +14,7 @@ This module deploys an App Managed Environment (also known as a Container App En
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.App/managedEnvironments` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.App/2022-10-01/managedEnvironments) |
+| `Microsoft.App/managedEnvironments` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.App/2023-05-01/managedEnvironments) |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 
@@ -99,6 +99,7 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     name: 'amemax001'
     // Non-required parameters
     dockerBridgeCidr: '172.16.0.1/28'
+    infrastructureResourceGroupName: '<infrastructureResourceGroupName>'
     infrastructureSubnetId: '<infrastructureSubnetId>'
     internal: true
     location: '<location>'
@@ -108,11 +109,11 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     }
     platformReservedCidr: '172.17.17.0/24'
     platformReservedDnsIP: '172.17.17.17'
-    skuName: 'Consumption'
     tags: {
       Env: 'test'
       'hidden-title': 'This is visible in the resource name'
     }
+    workloadProfiles: '<workloadProfiles>'
   }
 }
 ```
@@ -143,6 +144,9 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     "dockerBridgeCidr": {
       "value": "172.16.0.1/28"
     },
+    "infrastructureResourceGroupName": {
+      "value": "<infrastructureResourceGroupName>"
+    },
     "infrastructureSubnetId": {
       "value": "<infrastructureSubnetId>"
     },
@@ -164,14 +168,14 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     "platformReservedDnsIP": {
       "value": "172.17.17.17"
     },
-    "skuName": {
-      "value": "Consumption"
-    },
     "tags": {
       "value": {
         "Env": "test",
         "hidden-title": "This is visible in the resource name"
       }
+    },
+    "workloadProfiles": {
+      "value": "<workloadProfiles>"
     }
   }
 }
@@ -199,6 +203,7 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     name: 'amewaf001'
     // Non-required parameters
     dockerBridgeCidr: '172.16.0.1/28'
+    infrastructureResourceGroupName: '<infrastructureResourceGroupName>'
     infrastructureSubnetId: '<infrastructureSubnetId>'
     internal: true
     location: '<location>'
@@ -208,11 +213,11 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     }
     platformReservedCidr: '172.17.17.0/24'
     platformReservedDnsIP: '172.17.17.17'
-    skuName: 'Consumption'
     tags: {
       Env: 'test'
       'hidden-title': 'This is visible in the resource name'
     }
+    workloadProfiles: '<workloadProfiles>'
   }
 }
 ```
@@ -243,6 +248,9 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     "dockerBridgeCidr": {
       "value": "172.16.0.1/28"
     },
+    "infrastructureResourceGroupName": {
+      "value": "<infrastructureResourceGroupName>"
+    },
     "infrastructureSubnetId": {
       "value": "<infrastructureSubnetId>"
     },
@@ -264,14 +272,14 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
     "platformReservedDnsIP": {
       "value": "172.17.17.17"
     },
-    "skuName": {
-      "value": "Consumption"
-    },
     "tags": {
       "value": {
         "Env": "test",
         "hidden-title": "This is visible in the resource name"
       }
+    },
+    "workloadProfiles": {
+      "value": "<workloadProfiles>"
     }
   }
 }
@@ -307,6 +315,7 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
 | [`dnsSuffix`](#parameter-dnssuffix) | string | DNS suffix for the environment domain. |
 | [`dockerBridgeCidr`](#parameter-dockerbridgecidr) | string | CIDR notation IP range assigned to the Docker bridge, network. It must not overlap with any other provided IP ranges and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`infrastructureResourceGroupName`](#parameter-infrastructureresourcegroupname) | string | Name of the infrastructure resource group. If not provided, it will be set with a default value. |
 | [`internal`](#parameter-internal) | bool | Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. If set to true, then "infrastructureSubnetId" must be provided. |
 | [`location`](#parameter-location) | string | Location for all Resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
@@ -314,7 +323,6 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
 | [`platformReservedCidr`](#parameter-platformreservedcidr) | string | IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap with any other provided IP ranges and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
 | [`platformReservedDnsIP`](#parameter-platformreserveddnsip) | string | An IP address from the IP range defined by "platformReservedCidr" that will be reserved for the internal DNS server. It must not be the first address in the range and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`skuName`](#parameter-skuname) | string | Managed environment SKU. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
 | [`workloadProfiles`](#parameter-workloadprofiles) | array | Workload profiles configured for the Managed Environment. |
 | [`zoneRedundant`](#parameter-zoneredundant) | bool | Whether or not this Managed Environment is zone-redundant. |
@@ -395,6 +403,14 @@ Enable telemetry via a Globally Unique Identifier (GUID).
 
 - Required: Yes
 - Type: bool
+
+### Parameter: `infrastructureResourceGroupName`
+
+Name of the infrastructure resource group. If not provided, it will be set with a default value.
+
+- Required: No
+- Type: string
+- Default: `[take(format('ME_{0}', parameters('name')), 63)]`
 
 ### Parameter: `internal`
 
@@ -561,21 +577,6 @@ The principal type of the assigned principal ID.
   ]
   ```
 
-### Parameter: `skuName`
-
-Managed environment SKU.
-
-- Required: No
-- Type: string
-- Default: `'Consumption'`
-- Allowed:
-  ```Bicep
-  [
-    'Consumption'
-    'Premium'
-  ]
-  ```
-
 ### Parameter: `tags`
 
 Tags of the resource.
@@ -604,6 +605,7 @@ Whether or not this Managed Environment is zone-redundant.
 
 | Output | Type | Description |
 | :-- | :-- | :-- |
+| `defaultDomain` | string | The Default domain of the Managed Environment. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the Managed Environment. |
 | `resourceGroupName` | string | The name of the resource group the Managed Environment was deployed into. |

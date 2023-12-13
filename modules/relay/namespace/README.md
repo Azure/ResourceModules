@@ -146,7 +146,7 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
             roleDefinitionIdOrName: 'Reader'
           }
         ]
-        userMetadata: '[{\'key\':\'endpoint\'\'value\':\'db-server.constoso.com:1433\'}]'
+        userMetadata: '[{\'key\':\'endpoint\',\'value\':\'db-server.constoso.com:1433\'}]'
       }
     ]
     lock: {
@@ -543,7 +543,7 @@ module namespace 'br:bicep/modules/relay.namespace:1.0.0' = {
             roleDefinitionIdOrName: 'Reader'
           }
         ]
-        userMetadata: '[{\'key\':\'endpoint\'\'value\':\'db-server.constoso.com:1433\'}]'
+        userMetadata: '[{\'key\':\'endpoint\',\'value\':\'db-server.constoso.com:1433\'}]'
       }
     ]
     lock: {

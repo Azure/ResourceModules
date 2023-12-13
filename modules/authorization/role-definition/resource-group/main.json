@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "15123790149450958610"
+      "version": "0.23.1.45101",
+      "templateHash": "16590569046115003591"
     },
     "name": "Role Definitions (Resource Group scope)",
     "description": "This module deploys a Role Definition at a Resource Group scope.",

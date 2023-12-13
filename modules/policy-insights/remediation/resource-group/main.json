@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "1603868954809777625"
+      "version": "0.23.1.45101",
+      "templateHash": "6808524543119403982"
     },
     "name": "Policy Insights Remediations (Resource Group scope)",
     "description": "This module deploys a Policy Insights Remediation on a Resource Group scope.",

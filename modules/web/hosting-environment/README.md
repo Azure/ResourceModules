@@ -238,7 +238,7 @@ module hostingEnvironment 'br:bicep/modules/web.hosting-environment:1.0.0' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ftpEnabled: true
     inboundIpAddressOverride: '10.0.0.10'
-    internalLoadBalancingMode: 'Web Publishing'
+    internalLoadBalancingMode: 'Web, Publishing'
     location: '<location>'
     lock: {
       kind: 'CanNotDelete'
@@ -648,7 +648,7 @@ Specifies which endpoints to serve internally in the Virtual Network for the App
     'None'
     'Publishing'
     'Web'
-    'Web Publishing'
+    'Web, Publishing'
   ]
   ```
 
