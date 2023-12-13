@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "1296030047986147440"
+      "version": "0.23.1.45101",
+      "templateHash": "6792324469101659711"
     },
     "name": "Policy Assignments (Subscription scope)",
     "description": "This module deploys a Policy Assignment at a Subscription scope.",

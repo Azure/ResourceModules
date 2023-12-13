@@ -6,10 +6,10 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "3410935905412487886"
+      "templateHash": "15154780567521533176"
     },
     "name": "Virtual Hubs",
-    "description": "This module deploys a Virtual Hub.\r\nIf you are planning to deploy a Secure Virtual Hub (with an Azure Firewall integrated), please refer to the Azure Firewall module.",
+    "description": "This module deploys a Virtual Hub.\nIf you are planning to deploy a Secure Virtual Hub (with an Azure Firewall integrated), please refer to the Azure Firewall module.",
     "owner": "Azure/module-maintainers"
   },
   "definitions": {

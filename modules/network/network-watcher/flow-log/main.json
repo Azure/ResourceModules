@@ -5,11 +5,11 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "7397123180177309349"
+      "version": "0.23.1.45101",
+      "templateHash": "2197507893118006956"
     },
     "name": "NSG Flow Logs",
-    "description": "This module controls the Network Security Group Flow Logs and analytics settings.\r\n**Note: this module must be run on the Resource Group where Network Watcher is deployed**",
+    "description": "This module controls the Network Security Group Flow Logs and analytics settings.\n**Note: this module must be run on the Resource Group where Network Watcher is deployed**",
     "owner": "Azure/module-maintainers"
   },
   "parameters": {

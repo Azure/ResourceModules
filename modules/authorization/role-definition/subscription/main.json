@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.22.6.54827",
-      "templateHash": "5911596219403447648"
+      "version": "0.23.1.45101",
+      "templateHash": "9622245925766749041"
     },
     "name": "Role Definitions (Subscription scope)",
     "description": "This module deploys a Role Definition at a Subscription scope.",
