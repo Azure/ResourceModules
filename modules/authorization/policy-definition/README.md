@@ -51,7 +51,7 @@ module policyDefinition 'br:bicep/modules/authorization.policy-definition:1.0.0'
           }
           {
             exists: 'false'
-            field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
+            field: '[concat(\'tags[\', parameters(\'tagName\'), \']\')]'
           }
         ]
       }
@@ -59,7 +59,7 @@ module policyDefinition 'br:bicep/modules/authorization.policy-definition:1.0.0'
         details: {
           operations: [
             {
-              field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
+              field: '[concat(\'tags[\', parameters(\'tagName\'), \']\')]'
               operation: 'add'
               value: '[parameters(\'tagValue\')]'
             }
@@ -299,7 +299,7 @@ module policyDefinition 'br:bicep/modules/authorization.policy-definition:1.0.0'
           }
           {
             exists: 'false'
-            field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
+            field: '[concat(\'tags[\', parameters(\'tagName\'), \']\')]'
           }
         ]
       }
@@ -307,7 +307,7 @@ module policyDefinition 'br:bicep/modules/authorization.policy-definition:1.0.0'
         details: {
           operations: [
             {
-              field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
+              field: '[concat(\'tags[\', parameters(\'tagName\'), \']\')]'
               operation: 'add'
               value: '[parameters(\'tagValue\')]'
             }
