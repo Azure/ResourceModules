@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "1679575632831341410"
+      "templateHash": "1414107545361983559"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Clusters",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
@@ -1375,8 +1375,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "15823498371287518640"
+              "version": "0.23.1.45101",
+              "templateHash": "13811832596066396545"
             },
             "name": "Azure Kubernetes Service (AKS) Managed Cluster Agent Pools",
             "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster Agent Pool.",
@@ -1827,8 +1827,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.22.6.54827",
-              "templateHash": "14180657853974250794"
+              "version": "0.23.1.45101",
+              "templateHash": "548642834195454661"
             },
             "name": "Kubernetes Configuration Extensions",
             "description": "This module deploys a Kubernetes Configuration Extension.",
@@ -1990,8 +1990,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.22.6.54827",
-                      "templateHash": "9895901356491357008"
+                      "version": "0.23.1.45101",
+                      "templateHash": "10031296768791737313"
                     },
                     "name": "Kubernetes Configuration Flux Configurations",
                     "description": "This module deploys a Kubernetes Configuration Flux Configuration.",
