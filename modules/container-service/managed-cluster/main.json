@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.23.1.45101",
-      "templateHash": "1679575632831341410"
+      "templateHash": "1414107545361983559"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Clusters",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
@@ -2240,6 +2240,13 @@
         "description": "The Client ID of the Key Vault Secrets Provider identity."
       },
       "value": "[if(contains(reference('managedCluster'), 'addonProfiles'), if(contains(reference('managedCluster').addonProfiles, 'azureKeyvaultSecretsProvider'), if(contains(reference('managedCluster').addonProfiles.azureKeyvaultSecretsProvider, 'identity'), reference('managedCluster').addonProfiles.azureKeyvaultSecretsProvider.identity.clientId, ''), ''), '')]"
+    },
+    "ingressApplicationGatewayIdentityObjectId": {
+      "type": "string",
+      "metadata": {
+        "description": "The Object ID of Application Gateway Ingress Controller (AGIC) identity."
+      },
+      "value": "[coalesce(tryGet(tryGet(tryGet(reference('managedCluster').addonProfiles, 'ingressApplicationGateway'), 'identity'), 'objectId'), '')]"
     },
     "location": {
       "type": "string",
