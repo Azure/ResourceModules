@@ -1284,7 +1284,7 @@ module virtualMachineScaleSet 'br:bicep/modules/compute.virtual-machine-scale-se
 | [`vmNamePrefix`](#parameter-vmnameprefix) | string | Specifies the computer name prefix for all of the virtual machines in the scale set. |
 | [`vmPriority`](#parameter-vmpriority) | string | Specifies the priority for the virtual machine. |
 | [`vTpmEnabled`](#parameter-vtpmenabled) | bool | Specifies whether vTPM should be enabled on the virtual machine scale set. This parameter is part of the UefiSettings.  SecurityType should be set to TrustedLaunch to enable UefiSettings. |
-| [`winRM`](#parameter-winrm) | object | Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
+| [`winRM`](#parameter-winrm) | array | Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
 | [`zoneBalance`](#parameter-zonebalance) | bool | Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage. |
 
 **Generated parameters**
@@ -2102,8 +2102,8 @@ Specifies whether vTPM should be enabled on the virtual machine scale set. This 
 Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.
 
 - Required: No
-- Type: object
-- Default: `{}`
+- Type: array
+- Default: `[]`
 
 ### Parameter: `zoneBalance`
 

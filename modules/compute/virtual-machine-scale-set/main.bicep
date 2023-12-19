@@ -190,7 +190,7 @@ param timeZone string = ''
 param additionalUnattendContent array = []
 
 @description('Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.')
-param winRM object = {}
+param winRM array = []
 
 @description('Optional. Specifies whether password authentication should be disabled.')
 #disable-next-line secure-secrets-in-params // Not a secret
