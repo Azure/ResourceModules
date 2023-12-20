@@ -45,5 +45,9 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
+    accessModeSettings: {
+      ingestionAccessMode: 'Open'
+      queryAccessMode: 'Open'
+    }
   }
 }]
