@@ -56,13 +56,13 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
     accessModeSettings: {
-      // exclusions: [
-      //   {
-      //     ingestionAccessMode: 'PrivateOnly'
-      //     queryAccessMode: 'PrivateOnly'
-      //     privateEndpointConnectionName: 'thisisatest'
-      //   }
-      // ]
+      exclusions: [
+        {
+          ingestionAccessMode: 'PrivateOnly'
+          queryAccessMode: 'PrivateOnly'
+          privateEndpointConnectionName: 'thisisatest'
+        }
+      ]
       ingestionAccessMode: 'Open'
       queryAccessMode: 'Open'
     }
