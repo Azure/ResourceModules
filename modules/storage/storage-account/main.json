@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.23.1.45101",
-      "templateHash": "3619035184821404610"
+      "version": "0.24.24.22086",
+      "templateHash": "18392898268305996931"
     },
     "name": "Storage Accounts",
     "description": "This module deploys a Storage Account.",
@@ -991,8 +991,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.23.1.45101",
-              "templateHash": "6873008238043407177"
+              "version": "0.24.24.22086",
+              "templateHash": "11154909986774213690"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1394,8 +1394,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.23.1.45101",
-                      "templateHash": "17578977753131828304"
+                      "version": "0.24.24.22086",
+                      "templateHash": "6129461321051281170"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
@@ -1562,8 +1562,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.23.1.45101",
-              "templateHash": "9776092818963506976"
+              "version": "0.24.24.22086",
+              "templateHash": "17367295274678732206"
             },
             "name": "Storage Account Management Policies",
             "description": "This module deploys a Storage Account Management Policy.",
@@ -1690,8 +1690,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.23.1.45101",
-              "templateHash": "11792662730124549359"
+              "version": "0.24.24.22086",
+              "templateHash": "9451599245128557073"
             },
             "name": "Storage Account Local Users",
             "description": "This module deploys a Storage Account Local User, which is used for SFTP authentication.",
@@ -1868,8 +1868,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.23.1.45101",
-              "templateHash": "7804367921688111066"
+              "version": "0.24.24.22086",
+              "templateHash": "15895331301993414988"
             },
             "name": "Storage Account blob Services",
             "description": "This module deploys a Storage Account Blob Service.",
@@ -2245,8 +2245,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.23.1.45101",
-                      "templateHash": "679743391871280708"
+                      "version": "0.24.24.22086",
+                      "templateHash": "12877248389226548296"
                     },
                     "name": "Storage Account Blob Containers",
                     "description": "This module deploys a Storage Account Blob Container.",
@@ -2542,8 +2542,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.23.1.45101",
-                              "templateHash": "11642031800707172818"
+                              "version": "0.24.24.22086",
+                              "templateHash": "4658218767079659572"
                             },
                             "name": "Storage Account Blob Container Immutability Policies",
                             "description": "This module deploys a Storage Account Blob Container Immutability Policy.",
@@ -2739,8 +2739,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.23.1.45101",
-              "templateHash": "14917534017717518918"
+              "version": "0.24.24.22086",
+              "templateHash": "5919540891902254282"
             },
             "name": "Storage Account File Share Services",
             "description": "This module deploys a Storage Account File Share Service.",
@@ -3005,8 +3005,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.23.1.45101",
-                      "templateHash": "9132955781190739589"
+                      "version": "0.24.24.22086",
+                      "templateHash": "3643709768620634256"
                     },
                     "name": "Storage Account File Shares",
                     "description": "This module deploys a Storage Account File Share.",
@@ -3158,32 +3158,6 @@
                       }
                     }
                   },
-                  "variables": {
-                    "builtInRoleNames": {
-                      "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-                      "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
-                      "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
-                      "Reader and Data Access": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c12c1c16-33a1-487b-954d-41c89c60f349')]",
-                      "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
-                      "Storage Account Backup Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e5e2a7ff-d759-4cd2-bb51-3152d37e2eb1')]",
-                      "Storage Account Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab')]",
-                      "Storage Account Key Operator Service Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '81a9662b-bebf-436f-a333-f67b29880f12')]",
-                      "Storage Blob Data Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
-                      "Storage Blob Data Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
-                      "Storage Blob Data Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')]",
-                      "Storage Blob Delegator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'db58b8e5-c6ad-4a2a-8342-4190687cbf4a')]",
-                      "Storage File Data SMB Share Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0c867c2a-1d8c-454a-a3db-ab2ea1bdc8bb')]",
-                      "Storage File Data SMB Share Elevated Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a7264617-510b-434b-a828-9731dc254ea7')]",
-                      "Storage File Data SMB Share Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'aba4ae5f-2193-4029-9191-0cb91df5e314')]",
-                      "Storage Queue Data Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '974c5e8b-45b9-4653-ba55-5f855dd0fb88')]",
-                      "Storage Queue Data Message Processor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8a0f0c08-91a1-4084-bc3d-661d67233fed')]",
-                      "Storage Queue Data Message Sender": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c6a89b2d-59bc-44d0-9896-0f6e12d7b80a')]",
-                      "Storage Queue Data Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '19e7f393-937e-4f77-808e-94535e297925')]",
-                      "Storage Table Data Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3')]",
-                      "Storage Table Data Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76199698-9eea-4c19-bc75-cec21354c6b6')]",
-                      "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
-                    }
-                  },
                   "resources": {
                     "storageAccount::fileService": {
                       "existing": true,
@@ -3216,7 +3190,7 @@
                     },
                     "fileShare": {
                       "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
-                      "apiVersion": "2021-09-01",
+                      "apiVersion": "2023-01-01",
                       "name": "[format('{0}/{1}/{2}', parameters('storageAccountName'), parameters('fileServicesName'), parameters('name'))]",
                       "properties": {
                         "accessTier": "[parameters('accessTier')]",
@@ -3229,22 +3203,214 @@
                       ]
                     },
                     "fileShare_roleAssignments": {
-                      "copy": {
-                        "name": "fileShare_roleAssignments",
-                        "count": "[length(coalesce(parameters('roleAssignments'), createArray()))]"
-                      },
-                      "type": "Microsoft.Authorization/roleAssignments",
-                      "apiVersion": "2022-04-01",
-                      "scope": "[format('Microsoft.Storage/storageAccounts/{0}/fileServices/{1}/shares/{2}', parameters('storageAccountName'), parameters('fileServicesName'), parameters('name'))]",
-                      "name": "[guid(resourceId('Microsoft.Storage/storageAccounts/fileServices/shares', parameters('storageAccountName'), parameters('fileServicesName'), parameters('name')), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)]",
+                      "condition": "[not(empty(parameters('roleAssignments')))]",
+                      "type": "Microsoft.Resources/deployments",
+                      "apiVersion": "2022-09-01",
+                      "name": "[format('{0}-Share-Rbac', uniqueString(deployment().name))]",
                       "properties": {
-                        "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], if(contains(coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, '/providers/Microsoft.Authorization/roleDefinitions/'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)))]",
-                        "principalId": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]",
-                        "description": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]",
-                        "principalType": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]",
-                        "condition": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition')]",
-                        "conditionVersion": "[if(not(empty(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition'))), coalesce(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'conditionVersion'), '2.0'), null())]",
-                        "delegatedManagedIdentityResourceId": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
+                        "expressionEvaluationOptions": {
+                          "scope": "inner"
+                        },
+                        "mode": "Incremental",
+                        "parameters": {
+                          "fileShareResourceId": {
+                            "value": "[resourceId('Microsoft.Storage/storageAccounts/fileServices/shares', parameters('storageAccountName'), parameters('fileServicesName'), parameters('name'))]"
+                          },
+                          "roleAssignments": {
+                            "value": "[parameters('roleAssignments')]"
+                          }
+                        },
+                        "template": {
+                          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                          "contentVersion": "1.0.0.0",
+                          "metadata": {
+                            "_generator": {
+                              "name": "bicep",
+                              "version": "0.24.24.22086",
+                              "templateHash": "12925188407376905475"
+                            }
+                          },
+                          "parameters": {
+                            "roleAssignments": {
+                              "type": "array",
+                              "metadata": {
+                                "description": "Optional. Array of role assignments to create."
+                              }
+                            },
+                            "fileShareResourceId": {
+                              "type": "string",
+                              "metadata": {
+                                "description": "Required. The resource id of the file share to assign the roles to."
+                              }
+                            }
+                          },
+                          "variables": {
+                            "$fxv#0": {
+                              "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                              "contentVersion": "1.0.0.0",
+                              "parameters": {
+                                "scope": {
+                                  "type": "string",
+                                  "metadata": {
+                                    "description": "Required. The scope to deploy the role assignment to."
+                                  }
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "metadata": {
+                                    "description": "Required. The name of the role assignment."
+                                  }
+                                },
+                                "roleDefinitionId": {
+                                  "type": "string",
+                                  "metadata": {
+                                    "description": "Required. The role definition Id to assign."
+                                  }
+                                },
+                                "principalId": {
+                                  "type": "string",
+                                  "metadata": {
+                                    "description": "Required. The principal ID of the principal (user/group/identity) to assign the role to."
+                                  }
+                                },
+                                "principalType": {
+                                  "type": "string",
+                                  "allowedValues": [
+                                    "Device",
+                                    "ForeignGroup",
+                                    "Group",
+                                    "ServicePrincipal",
+                                    "User",
+                                    ""
+                                  ],
+                                  "defaultValue": "",
+                                  "metadata": {
+                                    "description": "Optional. The principal type of the assigned principal ID."
+                                  }
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "defaultValue": "",
+                                  "metadata": {
+                                    "description": "Optional. The description of the role assignment."
+                                  }
+                                },
+                                "condition": {
+                                  "type": "string",
+                                  "defaultValue": "",
+                                  "metadata": {
+                                    "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                                  }
+                                },
+                                "conditionVersion": {
+                                  "type": "string",
+                                  "allowedValues": [
+                                    "2.0"
+                                  ],
+                                  "defaultValue": "2.0",
+                                  "metadata": {
+                                    "description": "Optional. Version of the condition."
+                                  }
+                                },
+                                "delegatedManagedIdentityResourceId": {
+                                  "type": "string",
+                                  "defaultValue": "",
+                                  "metadata": {
+                                    "description": "Optional. The Resource Id of the delegated managed identity resource."
+                                  }
+                                }
+                              },
+                              "resources": [
+                                {
+                                  "type": "Microsoft.Authorization/roleAssignments",
+                                  "apiVersion": "2022-04-01",
+                                  "scope": "[[parameters('scope')]",
+                                  "name": "[[parameters('name')]",
+                                  "properties": {
+                                    "roleDefinitionId": "[[parameters('roleDefinitionId')]",
+                                    "principalId": "[[parameters('principalId')]",
+                                    "description": "[[parameters('description')]",
+                                    "principalType": "[[if(not(empty(parameters('principalType'))), parameters('principalType'), null())]",
+                                    "condition": "[[if(not(empty(parameters('condition'))), parameters('condition'), null())]",
+                                    "conditionVersion": "[[if(and(not(empty(parameters('conditionVersion'))), not(empty(parameters('condition')))), parameters('conditionVersion'), null())]",
+                                    "delegatedManagedIdentityResourceId": "[[if(not(empty(parameters('delegatedManagedIdentityResourceId'))), parameters('delegatedManagedIdentityResourceId'), null())]"
+                                  }
+                                }
+                              ]
+                            },
+                            "builtInRoleNames": {
+                              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+                              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+                              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+                              "Reader and Data Access": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c12c1c16-33a1-487b-954d-41c89c60f349')]",
+                              "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+                              "Storage Account Backup Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e5e2a7ff-d759-4cd2-bb51-3152d37e2eb1')]",
+                              "Storage Account Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab')]",
+                              "Storage Account Key Operator Service Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '81a9662b-bebf-436f-a333-f67b29880f12')]",
+                              "Storage Blob Data Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+                              "Storage Blob Data Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
+                              "Storage Blob Data Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')]",
+                              "Storage Blob Delegator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'db58b8e5-c6ad-4a2a-8342-4190687cbf4a')]",
+                              "Storage File Data SMB Share Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0c867c2a-1d8c-454a-a3db-ab2ea1bdc8bb')]",
+                              "Storage File Data SMB Share Elevated Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a7264617-510b-434b-a828-9731dc254ea7')]",
+                              "Storage File Data SMB Share Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'aba4ae5f-2193-4029-9191-0cb91df5e314')]",
+                              "Storage Queue Data Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '974c5e8b-45b9-4653-ba55-5f855dd0fb88')]",
+                              "Storage Queue Data Message Processor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8a0f0c08-91a1-4084-bc3d-661d67233fed')]",
+                              "Storage Queue Data Message Sender": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c6a89b2d-59bc-44d0-9896-0f6e12d7b80a')]",
+                              "Storage Queue Data Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '19e7f393-937e-4f77-808e-94535e297925')]",
+                              "Storage Table Data Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3')]",
+                              "Storage Table Data Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76199698-9eea-4c19-bc75-cec21354c6b6')]",
+                              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+                            }
+                          },
+                          "resources": [
+                            {
+                              "copy": {
+                                "name": "fileShare_roleAssignments",
+                                "count": "[length(coalesce(parameters('roleAssignments'), createArray()))]"
+                              },
+                              "type": "Microsoft.Resources/deployments",
+                              "apiVersion": "2021-04-01",
+                              "name": "[format('{0}-Share-Rbac-{1}', uniqueString(deployment().name), copyIndex())]",
+                              "properties": {
+                                "mode": "Incremental",
+                                "expressionEvaluationOptions": {
+                                  "scope": "Outer"
+                                },
+                                "template": "[variables('$fxv#0')]",
+                                "parameters": {
+                                  "scope": {
+                                    "value": "[replace(parameters('fileShareResourceId'), '/shares/', '/fileShares/')]"
+                                  },
+                                  "name": {
+                                    "value": "[guid(parameters('fileShareResourceId'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId, coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, 'tyfa')]"
+                                  },
+                                  "roleDefinitionId": {
+                                    "value": "[if(contains(variables('builtInRoleNames'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName), variables('builtInRoleNames')[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName], if(contains(coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, '/providers/Microsoft.Authorization/roleDefinitions/'), coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', coalesce(parameters('roleAssignments'), createArray())[copyIndex()].roleDefinitionIdOrName)))]"
+                                  },
+                                  "principalId": {
+                                    "value": "[coalesce(parameters('roleAssignments'), createArray())[copyIndex()].principalId]"
+                                  },
+                                  "principalType": {
+                                    "value": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'principalType')]"
+                                  },
+                                  "description": {
+                                    "value": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'description')]"
+                                  },
+                                  "condition": {
+                                    "value": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition')]"
+                                  },
+                                  "conditionVersion": {
+                                    "value": "[if(not(empty(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'condition'))), coalesce(tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'conditionVersion'), '2.0'), null())]"
+                                  },
+                                  "delegatedManagedIdentityResourceId": {
+                                    "value": "[tryGet(coalesce(parameters('roleAssignments'), createArray())[copyIndex()], 'delegatedManagedIdentityResourceId')]"
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
                       },
                       "dependsOn": [
                         "fileShare"
@@ -3340,8 +3506,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.23.1.45101",
-              "templateHash": "13348116021204111185"
+              "version": "0.24.24.22086",
+              "templateHash": "488727166620230076"
             },
             "name": "Storage Account Queue Services",
             "description": "This module deploys a Storage Account Queue Service.",
@@ -3574,8 +3740,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.23.1.45101",
-                      "templateHash": "1310506738440238472"
+                      "version": "0.24.24.22086",
+                      "templateHash": "100286929116341954"
                     },
                     "name": "Storage Account Queues",
                     "description": "This module deploys a Storage Account Queue.",
@@ -3862,8 +4028,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.23.1.45101",
-              "templateHash": "4505205701529964174"
+              "version": "0.24.24.22086",
+              "templateHash": "4899998340898025880"
             },
             "name": "Storage Account Table Services",
             "description": "This module deploys a Storage Account Table Service.",
@@ -4093,8 +4259,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.23.1.45101",
-                      "templateHash": "10703796356093627612"
+                      "version": "0.24.24.22086",
+                      "templateHash": "12296091632007980628"
                     },
                     "name": "Storage Account Table",
                     "description": "This module deploys a Storage Account Table.",
