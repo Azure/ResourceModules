@@ -141,7 +141,7 @@ This section provides an overview of the library's feature set.
 | 126 | signal-r-service<p>web-pub-sub | [![SignalRService - WebPubSub](https://github.com/Azure/ResourceModules/workflows/SignalRService%20-%20WebPubSub/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.signalrservice.webpubsub.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:4] | 253 |
 | 127 | sql<p>managed-instance | [![Sql - ManagedInstances](https://github.com/Azure/ResourceModules/workflows/Sql%20-%20ManagedInstances/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.sql.managedinstances.yml) |  |  |  |  |  |  | [L1:7, L2:4, L3:4] | 373 |
 | 128 | sql<p>server | [![Sql - Servers](https://github.com/Azure/ResourceModules/workflows/Sql%20-%20Servers/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.sql.servers.yml) |  |  |  |  |  |  | [L1:9, L2:4, L3:6] | 389 |
-| 129 | storage<p>storage-account | [![Storage - StorageAccounts](https://github.com/Azure/ResourceModules/workflows/Storage%20-%20StorageAccounts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.storage.storageaccounts.yml) |  |  |  |  |  |  | [L1:7, L2:5, L3:7] | 524 |
+| 129 | storage<p>storage-account | [![Storage - StorageAccounts](https://github.com/Azure/ResourceModules/workflows/Storage%20-%20StorageAccounts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.storage.storageaccounts.yml) |  |  |  |  |  |  | [L1:7, L2:5, L3:8] | 524 |
 | 130 | synapse<p>private-link-hub | [![Synapse - PrivateLinkHubs](https://github.com/Azure/ResourceModules/workflows/Synapse%20-%20PrivateLinkHubs/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.synapse.privatelinkhubs.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:3] | 171 |
 | 131 | synapse<p>workspace | [![Synapse - Workspaces](https://github.com/Azure/ResourceModules/workflows/Synapse%20-%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.synapse.workspaces.yml) |  |  |  |  |  |  | [L1:4, L2:1, L3:6] | 377 |
 | 132 | virtual-machine-images<p>image-template | [![VirtualMachineImages - ImageTemplates](https://github.com/Azure/ResourceModules/workflows/VirtualMachineImages%20-%20ImageTemplates/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.virtualmachineimages.imagetemplates.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:3] | 216 |
@@ -150,7 +150,7 @@ This section provides an overview of the library's feature set.
 | 135 | web<p>serverfarm | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:2] | 184 |
 | 136 | web<p>site | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |  |  |  |  |  |  | [L1:6, L2:6, L3:5] | 455 |
 | 137 | web<p>static-site | [![Web - StaticSites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) |  |  |  |  |  |  | [L1:4, L2:1, L3:3] | 284 |
-| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 981 | 29909 |
+| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 982 | 29909 |
 
 ## Legend
 
