@@ -18,6 +18,16 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
+// required for the Azure Image Builder service to assign the list of User Assigned Identities to the Build VM.
+resource msi_managedIdentityOperatorRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(subscription().id, 'ManagedIdentityContributor', managedIdentity.id)
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f1a07417-d97a-45cb-824c-7a7467783830') // Managed Identity Operator
+    principalId: managedIdentity.properties.principalId
+    principalType: 'ServicePrincipal'
+  }
+}
+
 var addressPrefix = '10.0.0.0/16'
 
 resource gallery 'Microsoft.Compute/galleries@2022-03-03' = {
@@ -85,9 +95,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
-
-@description('The principal ID of the created Managed Identity.')
-output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
 @description('The name of the created Managed Identity.')
 output managedIdentityName string = managedIdentity.name
