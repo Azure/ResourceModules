@@ -13,8 +13,8 @@ param name string
   * Open - Allows the connected virtual network to reach both Private Link resources and the resources not in the AMPLS resource. Data exfiltration cannot be prevented in this mode.
 ''')
 param accessModeSettings accessModeType = {
-  ingestionAccessMode: 'PrivateOnly'
-  queryAccessMode: 'PrivateOnly'
+  ingestionAccessMode: empty(privateEndpoints) ? 'Open' : 'PrivateOnly'
+  queryAccessMode: empty(privateEndpoints) ? 'Open' : 'PrivateOnly'
 }
 
 @description('Optional. The location of the private link scope. Should be global.')
