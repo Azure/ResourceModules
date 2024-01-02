@@ -12,10 +12,7 @@ param name string
   * Private Only (default) - Allows the connected virtual network to reach only Private Link resources. This mode is the most secure.
   * Open - Allows the connected virtual network to reach both Private Link resources and the resources not in the AMPLS resource. Data exfiltration cannot be prevented in this mode.
 ''')
-param accessModeSettings accessModeType = {
-  ingestionAccessMode: empty(privateEndpoints) ? 'Open' : 'PrivateOnly'
-  queryAccessMode: empty(privateEndpoints) ? 'Open' : 'PrivateOnly'
-}
+param accessModeSettings accessModeType
 
 @description('Optional. The location of the private link scope. Should be global.')
 param location string = 'global'
@@ -65,7 +62,10 @@ resource privateLinkScope 'microsoft.insights/privateLinkScopes@2021-07-01-previ
   location: location
   tags: tags
   properties: {
-    accessModeSettings: accessModeSettings
+    accessModeSettings: accessModeSettings ?? {
+      ingestionAccessMode: empty(privateEndpoints) ? 'Open' : 'PrivateOnly'
+      queryAccessMode: empty(privateEndpoints) ? 'Open' : 'PrivateOnly'
+    }
   }
 }
 
@@ -267,4 +267,4 @@ type accessModeType = {
 
   @description('Required. Specifies the default access mode of queries through associated private endpoints in scope.')
   queryAccessMode: 'Open' | 'PrivateOnly'
-}
+}?
