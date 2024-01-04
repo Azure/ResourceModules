@@ -6,12 +6,10 @@ metadata owner = 'Azure/module-maintainers'
 @minLength(1)
 param name string
 
-@description('''
-  Optional. Specifies the access mode of ingestion or queries through associated private endpoints in scope. For security reasons, it is recommended to use PrivateOnly whenever possible to avoid data exfiltration.
+@description('''Optional. Specifies the access mode of ingestion or queries through associated private endpoints in scope. For security reasons, it is recommended to use PrivateOnly whenever possible to avoid data exfiltration.
 
   * Private Only (default) - Allows the connected virtual network to reach only Private Link resources. This mode is the most secure.
-  * Open - Allows the connected virtual network to reach both Private Link resources and the resources not in the AMPLS resource. Data exfiltration cannot be prevented in this mode.
-''')
+  * Open - Allows the connected virtual network to reach both Private Link resources and the resources not in the AMPLS resource. Data exfiltration cannot be prevented in this mode.''')
 param accessModeSettings accessModeType
 
 @description('Optional. The location of the private link scope. Should be global.')

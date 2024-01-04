@@ -379,6 +379,10 @@ This instance deploys the module in alignment with the best-practices of the Azu
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`accessModeSettings`](#parameter-accessmodesettings) | object | Specifies the access mode of ingestion or queries through associated private endpoints in scope. For security reasons, it is recommended to use PrivateOnly whenever possible to avoid data exfiltration.
+
+  * Private Only (default) - Allows the connected virtual network to reach only Private Link resources. This mode is the most secure.
+  * Open - Allows the connected virtual network to reach both Private Link resources and the resources not in the AMPLS resource. Data exfiltration cannot be prevented in this mode. |
 | [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 | [`location`](#parameter-location) | string | The location of the private link scope. Should be global. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
@@ -387,22 +391,70 @@ This instance deploys the module in alignment with the best-practices of the Azu
 | [`scopedResources`](#parameter-scopedresources) | array | Configuration details for Azure Monitor Resources. |
 | [`tags`](#parameter-tags) | object | Resource tags. |
 
-**  Optional parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`accessModeSettings`](#parameter-accessmodesettings) | object | Specifies the access mode of ingestion or queries through associated private endpoints in scope. For security reasons, it is recommended to use PrivateOnly whenever possible to avoid data exfiltration.
-
-  * Private Only (default) - Allows the connected virtual network to reach only Private Link resources. This mode is the most secure.
-  * Open - Allows the connected virtual network to reach both Private Link resources and the resources not in the AMPLS resource. Data exfiltration cannot be prevented in this mode.
- |
-
 ### Parameter: `name`
 
 Name of the private link scope.
 
 - Required: Yes
 - Type: string
+
+### Parameter: `accessModeSettings`
+
+Specifies the access mode of ingestion or queries through associated private endpoints in scope. For security reasons, it is recommended to use PrivateOnly whenever possible to avoid data exfiltration.
+
+  * Private Only (default) - Allows the connected virtual network to reach only Private Link resources. This mode is the most secure.
+  * Open - Allows the connected virtual network to reach both Private Link resources and the resources not in the AMPLS resource. Data exfiltration cannot be prevented in this mode.
+
+- Required: No
+- Type: object
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`ingestionAccessMode`](#parameter-accessmodesettingsingestionaccessmode) | string | Specifies the default access mode of ingestion through associated private endpoints in scope. |
+| [`queryAccessMode`](#parameter-accessmodesettingsqueryaccessmode) | string | Specifies the default access mode of queries through associated private endpoints in scope. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`exclusions`](#parameter-accessmodesettingsexclusions) | array | List of exclusions that override the default access mode settings for specific private endpoint connections. Exclusions for the current created Private endpoints can only be applied post initial provisioning. |
+
+### Parameter: `accessModeSettings.ingestionAccessMode`
+
+Specifies the default access mode of ingestion through associated private endpoints in scope.
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Open'
+    'PrivateOnly'
+  ]
+  ```
+
+### Parameter: `accessModeSettings.queryAccessMode`
+
+Specifies the default access mode of queries through associated private endpoints in scope.
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Open'
+    'PrivateOnly'
+  ]
+  ```
+
+### Parameter: `accessModeSettings.exclusions`
+
+List of exclusions that override the default access mode settings for specific private endpoint connections. Exclusions for the current created Private endpoints can only be applied post initial provisioning.
+
+- Required: No
+- Type: array
 
 ### Parameter: `enableDefaultTelemetry`
 
@@ -827,65 +879,6 @@ Resource tags.
 
 - Required: No
 - Type: object
-
-### Parameter: `accessModeSettings`
-
-Specifies the access mode of ingestion or queries through associated private endpoints in scope. For security reasons, it is recommended to use PrivateOnly whenever possible to avoid data exfiltration.
-
-  * Private Only (default) - Allows the connected virtual network to reach only Private Link resources. This mode is the most secure.
-  * Open - Allows the connected virtual network to reach both Private Link resources and the resources not in the AMPLS resource. Data exfiltration cannot be prevented in this mode.
-
-
-- Required: No
-- Type: object
-
-**Required parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`ingestionAccessMode`](#parameter-accessmodesettingsingestionaccessmode) | string | Specifies the default access mode of ingestion through associated private endpoints in scope. |
-| [`queryAccessMode`](#parameter-accessmodesettingsqueryaccessmode) | string | Specifies the default access mode of queries through associated private endpoints in scope. |
-
-**Optional parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`exclusions`](#parameter-accessmodesettingsexclusions) | array | List of exclusions that override the default access mode settings for specific private endpoint connections. Exclusions for the current created Private endpoints can only be applied post initial provisioning. |
-
-### Parameter: `accessModeSettings.ingestionAccessMode`
-
-Specifies the default access mode of ingestion through associated private endpoints in scope.
-
-- Required: Yes
-- Type: string
-- Allowed:
-  ```Bicep
-  [
-    'Open'
-    'PrivateOnly'
-  ]
-  ```
-
-### Parameter: `accessModeSettings.queryAccessMode`
-
-Specifies the default access mode of queries through associated private endpoints in scope.
-
-- Required: Yes
-- Type: string
-- Allowed:
-  ```Bicep
-  [
-    'Open'
-    'PrivateOnly'
-  ]
-  ```
-
-### Parameter: `accessModeSettings.exclusions`
-
-List of exclusions that override the default access mode settings for specific private endpoint connections. Exclusions for the current created Private endpoints can only be applied post initial provisioning.
-
-- Required: No
-- Type: array
 
 
 ## Outputs
