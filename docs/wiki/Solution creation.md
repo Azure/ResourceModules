@@ -30,11 +30,11 @@ This section shows you how you can orchestrate a deployment using multiple resou
 
 There are several open-source repositories that leverage the CARML library today. Alongside the examples, we provide you with below, the referenced repositories are a good reference on how you can leverage CARML for larger solutions.
 
-| Repository | Description |
-| - | - |
-| [AVD Accelerator](https://github.com/Azure/avdaccelerator) | AVD Accelerator deployment automation to simplify the setup of AVD (Azure Virtual Desktop) |
-| [AKS Baseline Automation](https://github.com/Azure/aks-baseline-automation) | Repository for the AKS Landing Zone Accelerator program's Automation reference implementation |
-| [DevOps Self-Hosted](https://github.com/Azure/DevOps-Self-Hosted) | - Create & maintain images with a pipeline using the Azure Image Builder service <p> - Deploy & maintain Azure DevOps Self-Hosted agent pools with a pipeline using Virtual Machine Scale Set |
+| Repository                                                                  | Description                                                                                                                                                                                   |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [AVD Accelerator](https://github.com/Azure/avdaccelerator)                  | AVD Accelerator deployment automation to simplify the setup of AVD (Azure Virtual Desktop)                                                                                                    |
+| [AKS Baseline Automation](https://github.com/Azure/aks-baseline-automation) | Repository for the AKS Landing Zone Accelerator program's Automation reference implementation                                                                                                 |
+| [DevOps Self-Hosted](https://github.com/Azure/DevOps-Self-Hosted)           | - Create & maintain images with a pipeline using the Azure Image Builder service <p> - Deploy & maintain Azure DevOps Self-Hosted agent pools with a pipeline using Virtual Machine Scale Set |
 
 # Orchestration overview
 
@@ -44,16 +44,18 @@ When it comes to deploying multi-module solutions (applications/workloads/enviro
 
    <img src="./media/SolutionCreation/templateOrchestration.png" alt="Template orchestration" height="250">
 
-    _Advantages_
-    - The deployment of resources in parallel is handled by Azure which means it is generally faster
-    - Passing information in between resource deployments is handled inside a single deployment
-    - The pipeline remains relatively simple as most complexity is handled by the resource template </p>
+  _Advantages_
 
-    _Limitations_
-    - As per Azure [template limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#template-limits), the compiled (i.e., ARM/JSON) resource template file size may not exceed 4 MB in size. This limitation is more likely to be encountered in a template orchestrated approach.
-    - As per Azure [template limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#template-limits), it is not possible to perform more than 800 deployments using a single resource template. This limitation is more likely to be encountered in a template orchestrated approach.
-    - Not all deployments can be done using the resource template, or only using workarounds (for example, the upload of files, the deployment of AAD resources, etc.)
-    - The deploying principal must have permissions of all resource deployments that are part of the resource template
+  - The deployment of resources in parallel is handled by Azure which means it is generally faster
+  - Passing information in between resource deployments is handled inside a single deployment
+  - The pipeline remains relatively simple as most complexity is handled by the resource template </p>
+
+  _Limitations_
+
+  - As per Azure [template limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#template-limits), the compiled (i.e., ARM/JSON) resource template file size may not exceed 4 MB in size. This limitation is more likely to be encountered in a template orchestrated approach.
+  - As per Azure [template limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#template-limits), it is not possible to perform more than 800 deployments using a single resource template. This limitation is more likely to be encountered in a template orchestrated approach.
+  - Not all deployments can be done using the resource template, or only using workarounds (for example, the upload of files, the deployment of AAD resources, etc.)
+  - The deploying principal must have permissions of all resource deployments that are part of the resource template
 
 </p>
 
@@ -61,17 +63,19 @@ When it comes to deploying multi-module solutions (applications/workloads/enviro
 
    <img src="./media/SolutionCreation/pipelineOrchestration.png" alt="Pipeline orchestration" height="400">
 
-    _Advantages_
-    - The deployment of an individual resource is very simple
-    - Most CI/CD systems provide you with a visual representation of the deployment flow
-    - If deployments fail, you can re-run them individually
-    - The split into individual jobs make them easier to troubleshoot
-    - Different deployment jobs can use different principals </p>
+  _Advantages_
 
-    _Limitations_
-    - Each deployment needs its own job, and in turn its own agent. As a consequence, parallel resource deployments require multiple agents.
-    - Passing information from one deployment to another requires passing information from one agent to another
-    - As each agent job has to start up and check out the code first, it generally runs slower
+  - The deployment of an individual resource is very simple
+  - Most CI/CD systems provide you with a visual representation of the deployment flow
+  - If deployments fail, you can re-run them individually
+  - The split into individual jobs make them easier to troubleshoot
+  - Different deployment jobs can use different principals </p>
+
+  _Limitations_
+
+  - Each deployment needs its own job, and in turn its own agent. As a consequence, parallel resource deployments require multiple agents.
+  - Passing information from one deployment to another requires passing information from one agent to another
+  - As each agent job has to start up and check out the code first, it generally runs slower
 
 </p>
 
@@ -88,10 +92,12 @@ In either case, you may effectively decide to configure only a subset of publish
 To help you with the decision, the following content provides you with an overview of the possibilities of each target location.
 
 ### Outline
+
 - **Template Specs**<p>
   A [Template Spec](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell) is an Azure resource with the purpose of storing & referencing Azure Resource Manager (ARM) templates. <p>
   When publishing Bicep modules as Template Specs, the module is compiled - and the resulting ARM template is uploaded as a Template Spec resource version to a Resource Group of your choice.
   For deployment, it is recommended to apply a [template-orchestrated](#Orchestration-overview) approach. As Bicep supports the Template-Specs as linked templates, this approach enables you to fully utilize Azure's parallel deployment capabilities.
+
   > **Note:** Even though the published resource is an ARM template, you can reference it in you Bicep template as a remote module like it would be native Bicep.
   > **Note:** Template Spec names have a maximum of 90 characters
 
@@ -110,21 +116,21 @@ To help you with the decision, the following content provides you with an overvi
 
 The following table provides you with a comparison of the locations described above:
 
-| Category | Feature | Template Specs | Bicep Registry | Universal Packages |
-| - | - | - | - | - |
-| Portal/UI |
-| | Template can be viewed |:white_check_mark: | | |
-| | Template can be downloaded | | | |
-| |
+| Category   | Feature                                                                                   | Template Specs     | Bicep Registry     | Universal Packages     |
+| ---------- | ----------------------------------------------------------------------------------------- | ------------------ | ------------------ | ---------------------- |
+| Portal/UI  |
+|            | Template can be viewed                                                                    | :white_check_mark: |                    |                        |
+|            | Template can be downloaded                                                                |                    |                    |                        |
+|            |
 | Deployment |
-| | Supports [template-orchestration](./Solution%20creation#Orchestration-overview) | :white_check_mark: | :white_check_mark: | :large_orange_diamond: |
-| | Supports [pipeline-orchestration](./Solution%20creation#Orchestration-overview) | :white_check_mark: | :white_check_mark: | :white_check_mark:  |
-| | Supports single endpoint | | :white_check_mark: | :white_check_mark: |
-| |
-| Other |
-| | Template can be downloaded/restored via CLI | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| | Allows referencing latest [minor](./The%20CI%20environment%20-%20Publishing#how-it-works) | :white_check_mark: | :white_check_mark: | |
-| | Allows referencing latest [major](./The%20CI%20environment%20-%20Publishing#how-it-works) | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|            | Supports [template-orchestration](./Solution%20creation#Orchestration-overview)           | :white_check_mark: | :white_check_mark: | :large_orange_diamond: |
+|            | Supports [pipeline-orchestration](./Solution%20creation#Orchestration-overview)           | :white_check_mark: | :white_check_mark: | :white_check_mark:     |
+|            | Supports single endpoint                                                                  |                    | :white_check_mark: | :white_check_mark:     |
+|            |
+| Other      |
+|            | Template can be downloaded/restored via CLI                                               | :white_check_mark: | :white_check_mark: | :white_check_mark:     |
+|            | Allows referencing latest [minor](./The%20CI%20environment%20-%20Publishing#how-it-works) | :white_check_mark: | :white_check_mark: |                        |
+|            | Allows referencing latest [major](./The%20CI%20environment%20-%20Publishing#how-it-works) | :white_check_mark: | :white_check_mark: | :white_check_mark:     |
 
 # Template-orchestration
 
@@ -297,14 +303,14 @@ The example assumes you are using a [`bicepconfig.json`](https://learn.microsoft
 
 ```json
 {
-    "moduleAliases": {
-        "br": {
-            "modules": {
-                "registry": "<registryName>.azurecr.io",
-                "modulePath": "bicep/modules"
-            }
-        }
+  "moduleAliases": {
+    "br": {
+      "modules": {
+        "registry": "<registryName>.azurecr.io",
+        "modulePath": "bicep/modules"
+      }
     }
+  }
 }
 ```
 
@@ -387,14 +393,14 @@ The example assumes you are using a [`bicepconfig.json`](https://learn.microsoft
 
 ```json
 {
-    "moduleAliases": {
-        "ts": {
-            "modules": {
-                "subscription": "[[subscriptionId]]",
-                "resourceGroup": "artifacts-rg"
-            }
-        }
+  "moduleAliases": {
+    "ts": {
+      "modules": {
+        "subscription": "[[subscriptionId]]",
+        "resourceGroup": "artifacts-rg"
+      }
     }
+  }
 }
 ```
 
@@ -421,6 +427,7 @@ It fetches the _public_ **Azure/ResourceModules** repo for consuming bicep modul
 The example executes one job that creates a Resource group, an NSG and a VNet.
 
 It does so by performing the following tasks
+
 1. Checkout 'Azure/ResourceModules' repo at root of the agent
 1. Set environment for the agent
 1. Checkout 'contoso/MultiRepoTest' repo containing the parameter files in a nested folder - "MultiRepoTestParentFolder"
@@ -431,7 +438,6 @@ It does so by performing the following tasks
 <h3>Example</h3>
 
 <img src="./media/SolutionCreation/MultiRepoTestFolderStructure.png" alt="Repository Structure" height="300">
-
 
 ```YAML
 name: 'Multi-Repo solution deployment'
@@ -451,7 +457,7 @@ env:
 
 jobs:
   job_deploy_multi_repo_solution:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: 'Deploy multi-repo solution'
     steps:
       - name: 'Checkout ResourceModules repo at the root location'
@@ -507,10 +513,9 @@ jobs:
 ```
 
 > 1. 'Azure/ResourceModules' repo has been checked out at the root location intentionally because GitHub Actions expect the underlying utility scripts and variables at a specific location.
-> 1. 'contoso/MultiRepoTest' repo has been checked out in a nested folder, called  "MultiRepoTestParentFolder", to distinguish it from the folders of the other repo in the agent, but can also be downloaded at the root location if desired.
+> 1. 'contoso/MultiRepoTest' repo has been checked out in a nested folder, called "MultiRepoTestParentFolder", to distinguish it from the folders of the other repo in the agent, but can also be downloaded at the root location if desired.
 
 </details>
-
 
 ## Azure DevOps Samples
 
@@ -528,6 +533,7 @@ Below, you can find an example which makes use of multiple repositories to orche
 > The full source can be found here as a reference: [Litware/Platform](https://github.com/segraef/Platform/).
 
 Each deployment is its own pipeline job. This means, when triggered, each job performs the following actions:
+
 1. Fetching the _public_ **Azure/ResourceModules** repository for consuming Module into a nested folder `ResourceModules` of the main **Litware/Platform** repository (which in turn contains all parameters files to be used for deployments)
 1. Checkout 'Litware/Platform' repository containing the parameter files in a nested folder - `Platform`
 1. Deploy resources in target Azure subscription
@@ -608,12 +614,14 @@ stages:
 The below example using _Azure DevOps Artifacts_ assumes that each CARML module was published as an Universal Package into the Azure DevOps organization ahead of time.
 
 Each step in the pipeline has to carry out the same 2 tasks:
+
 1. Download the artifact (based on the inputs, which artifact)
 1. Deploy the artifact using a provided parameter file
 
 As these 2 steps always remain the same, no matter the deployment, they are abstracted into the below 'Helper Template'.
 
 The 'Main Template' after then references this template 3 times to deploy
+
 - A 'Resource Group'
 - A 'Network Security Group'
 - A 'Virtual Network'
@@ -729,67 +737,68 @@ When creating a solution that leverages CARML modules, there are several aspects
 
 1. Identify the resources & deployment scope needed for your architecture
 
-    If you want to create your solution, you should first gain an understanding of the planned architecture and the resulting required services. For this and the subsequent steps, let's consider the following scenario:
+   If you want to create your solution, you should first gain an understanding of the planned architecture and the resulting required services. For this and the subsequent steps, let's consider the following scenario:
 
-    - You want to deploy a Virtual Machine that is able to connect privately to a storage account
-    - For this architecture you may use the following services
-      - 1 Resource Group to place your resources in
-      - 1 Network Security Group to allow traffic control for your subnets
-      - 1 Virtual Network with 2 subnets
-      - 1 Storage Account with 1 Private Endpoint that connects into the 1st Virtual Network Subnet
-      - 1 Virtual Machine that is deployed into the 2nd Virtual Network subnet
+   - You want to deploy a Virtual Machine that is able to connect privately to a storage account
+   - For this architecture you may use the following services
+     - 1 Resource Group to place your resources in
+     - 1 Network Security Group to allow traffic control for your subnets
+     - 1 Virtual Network with 2 subnets
+     - 1 Storage Account with 1 Private Endpoint that connects into the 1st Virtual Network Subnet
+     - 1 Virtual Machine that is deployed into the 2nd Virtual Network subnet
 
-    Also, you need to consider the scope you want to deploy into. In the above example, we want to deploy a Resource Group, which must be deployed into a Subscription scope. All other resources, in turn can be deployed into the resource group scope of that resource group.
+   Also, you need to consider the scope you want to deploy into. In the above example, we want to deploy a Resource Group, which must be deployed into a Subscription scope. All other resources, in turn can be deployed into the resource group scope of that resource group.
 
-    <p>
+   <p>
 
 1. Identify dependencies between them
 
-    Next, you need to know in which order you need to deploy those resources. For example, as all resources must be placed in a resource group, the resource group must be deployed first. Likewise, before you can deploy a Virtual Machine, you first need to create a Virtual Network. All together this may look like
+   Next, you need to know in which order you need to deploy those resources. For example, as all resources must be placed in a resource group, the resource group must be deployed first. Likewise, before you can deploy a Virtual Machine, you first need to create a Virtual Network. All together this may look like
 
-      ```mermaid
-      graph LR;
-      rg[Resource Group]
-      vnet[Virtual Network]
-      st[Storage Account]
-      pe[Private Endpoint]
-      vm[Virtual Machine]
-      nsg[Network Security Group]
+   ```mermaid
+   graph LR;
+   rg[Resource Group]
+   vnet[Virtual Network]
+   st[Storage Account]
+   pe[Private Endpoint]
+   vm[Virtual Machine]
+   nsg[Network Security Group]
 
 
-      rg --> vnet
-      rg --> st
-      rg --> vm
-      rg --> nsg
-      vnet --> pe
-      st --> pe
-      nsg --> vnet
-      vnet --> vm
-      ```
+   rg --> vnet
+   rg --> st
+   rg --> vm
+   rg --> nsg
+   vnet --> pe
+   st --> pe
+   nsg --> vnet
+   vnet --> vm
+   ```
 
 1. Consider orchestration options
 
-    With the services & dependencies identified, the next question is, how those dependencies can be implemented. As described in the [Orchestration Overview](#orchestration-overview) sub-section, this is primarily a decision about 'pipeline-orchestration' vs. 'template-orchestration' - and in case of the latter, if there are any steps that have to run in the pipeline regardless (for example an upload of files).
+   With the services & dependencies identified, the next question is, how those dependencies can be implemented. As described in the [Orchestration Overview](#orchestration-overview) sub-section, this is primarily a decision about 'pipeline-orchestration' vs. 'template-orchestration' - and in case of the latter, if there are any steps that have to run in the pipeline regardless (for example an upload of files).
 
-    Generally speaking, both approaches are valid, though we would recommend to use template-orchestration as much as possible and only implement logic in the pipelines if absolutely necessary.
+   Generally speaking, both approaches are valid, though we would recommend to use template-orchestration as much as possible and only implement logic in the pipelines if absolutely necessary.
 
-    The previously introduced scenario could be implemented either way.
+   The previously introduced scenario could be implemented either way.
 
 1. Choose publishing
 
-    Building on the previous step, you must also consider where you consume the resources from, i.e. if you use native Bicep, or published modules from either a Bicep registry, Template Specs, or Azure DevOps universal packages. The characteristics of each option is outlined in the corresponding [sub-section](#publish-location-considerations).
+   Building on the previous step, you must also consider where you consume the resources from, i.e. if you use native Bicep, or published modules from either a Bicep registry, Template Specs, or Azure DevOps universal packages. The characteristics of each option is outlined in the corresponding [sub-section](#publish-location-considerations).
 
 1. Implement you solution
 
-    Finally, you can start building your solution. As peviously started, the chosen orchestration option & source of your code will haeavily impact the design of your solution. To help you along the way, you can use both the [template-orchestration](#template-orchestration) and [pipeline-orchestration](#pipeline-orchestration) sections to draw inspiration from.
+   Finally, you can start building your solution. As peviously started, the chosen orchestration option & source of your code will haeavily impact the design of your solution. To help you along the way, you can use both the [template-orchestration](#template-orchestration) and [pipeline-orchestration](#pipeline-orchestration) sections to draw inspiration from.
 
-    However, there are also some general guidelines you can leverage in either case:
-    - When using CARML modules, make sure you not only check out each module's readme, but also its test cases (`./test/`) to gain an understanding how the module can be used and how certain parameters work. For example, if you want to deploy Customer-Managed-Keys for a service like an Automation Account using the corresponding CARML module, it's `encr` test case provides you also with insights into the required permissions and dependent resources.
-    - If a feature or module is not part of the library nothing prevents you from adding it - or - implementing native Bicep code to complement your solution.
-    - You can build 'constructs' from CARML modules that deploy a common set of resources and in turn leverage them to build even bigger solutions with minimal code.
-    - Leverage capabilities such as `-WhatIf` deployments to get an understanding of the designated changes before you apply them
-    - Also consider to use `staging` in your pipelines to test your solutions in a safe environment first, before you eventually roll them out to production.
+   However, there are also some general guidelines you can leverage in either case:
+
+   - When using CARML modules, make sure you not only check out each module's readme, but also its test cases (`./test/`) to gain an understanding how the module can be used and how certain parameters work. For example, if you want to deploy Customer-Managed-Keys for a service like an Automation Account using the corresponding CARML module, it's `encr` test case provides you also with insights into the required permissions and dependent resources.
+   - If a feature or module is not part of the library nothing prevents you from adding it - or - implementing native Bicep code to complement your solution.
+   - You can build 'constructs' from CARML modules that deploy a common set of resources and in turn leverage them to build even bigger solutions with minimal code.
+   - Leverage capabilities such as `-WhatIf` deployments to get an understanding of the designated changes before you apply them
+   - Also consider to use `staging` in your pipelines to test your solutions in a safe environment first, before you eventually roll them out to production.
 
 1. Deploy the solution
 
-    Last but not least, you only have to deploy you solution. As started in the [Orchestration Overview](#orchestration-overview) sub-section, be vary of the requirements of each correspoinding deployment approach.
+   Last but not least, you only have to deploy you solution. As started in the [Orchestration Overview](#orchestration-overview) sub-section, be vary of the requirements of each correspoinding deployment approach.

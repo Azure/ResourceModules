@@ -2,7 +2,7 @@
 # This pipeline requires a secret 'PLATFORM_REPO_UPDATE_PAT' set up in the GitHub secrets.
 # The secret's value should be a PAT token with the permissions to push to the repository's main branch.
 
-name: '.Platform: Update ReadMe Module Tables'
+name: ".Platform: Update ReadMe Module Tables"
 
 on:
   workflow_dispatch:
@@ -10,30 +10,30 @@ on:
     branches:
       - main
     paths:
-      - 'modules/**/main.bicep'
-      - 'modules/**/main.json'
-      - 'utilities/tools/platform/**'
+      - "modules/**/main.bicep"
+      - "modules/**/main.json"
+      - "utilities/tools/platform/**"
 
 env:
-  pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
-  pipelinePrincipalGitUserEmail: 'CARML@noreply.github.com'
-  relativeScriptPath_SetReadMeModuleTable: 'utilities/tools/platform/Set-ReadMeModuleTable.ps1'
-  relativeScriptPath_SetModuleOverviewTable: 'utilities/tools/platform/Set-ModuleOverviewTable.ps1'
-  relativeScriptPath_SetReadMePlatformTable: 'utilities/tools/platform/Set-ReadMePlatformTable.ps1'
+  pipelinePrincipalGitUserName: "CARMLPipelinePrincipal"
+  pipelinePrincipalGitUserEmail: "CARML@noreply.github.com"
+  relativeScriptPath_SetReadMeModuleTable: "utilities/tools/platform/Set-ReadMeModuleTable.ps1"
+  relativeScriptPath_SetModuleOverviewTable: "utilities/tools/platform/Set-ModuleOverviewTable.ps1"
+  relativeScriptPath_SetReadMePlatformTable: "utilities/tools/platform/Set-ReadMePlatformTable.ps1"
 
 jobs:
   job_update_readme:
-    runs-on: ubuntu-20.04
-    name: 'Update status tables'
+    runs-on: ubuntu-latest
+    name: "Update status tables"
     steps:
-      - name: 'Checkout'
+      - name: "Checkout"
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+          token: "${{ secrets.PLATFORM_REPO_UPDATE_PAT }}" # Sets general GIT credentials up
 
       # Update the root ReadMe Module Pipelines table ([`/README.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
-      - name: 'Update front-page module table'
+      - name: "Update front-page module table"
         shell: pwsh
         run: |
           # Load used functions
@@ -54,7 +54,7 @@ jobs:
           Set-ReadMeModuleTable @functionInput -Verbose
 
       # Update the module overview table ([`/docs/wiki/The library - Module overview.md`](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview))
-      - name: 'Update module outline'
+      - name: "Update module outline"
         shell: pwsh
         run: |
           # Load used functions
@@ -74,7 +74,7 @@ jobs:
           Set-ModuleOverviewTable @functionInput -Verbose
 
       # Update the root ReadMe Platform Pipelines table ([`/README.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
-      - name: 'Update platform pipelines table'
+      - name: "Update platform pipelines table"
         shell: pwsh
         run: |
           # Load used functions
@@ -92,7 +92,7 @@ jobs:
 
           Set-ReadMePlatformTable @functionInput -Verbose
 
-      - name: 'Push changes'
+      - name: "Push changes"
         shell: pwsh
         run: |
           git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
