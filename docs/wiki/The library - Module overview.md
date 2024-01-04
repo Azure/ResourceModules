@@ -72,7 +72,7 @@ This section provides an overview of the library's feature set.
 | 57 | insights<p>data-collection-rule | [![Insights - DataCollectionRules](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20DataCollectionRules/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.datacollectionrules.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:6] | 129 |
 | 58 | insights<p>diagnostic-setting | [![Insights - DiagnosticSettings](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20DiagnosticSettings/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.diagnosticsettings.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:2] | 91 |
 | 59 | insights<p>metric-alert | [![Insights - MetricAlerts](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20MetricAlerts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.metricalerts.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:2] | 152 |
-| 60 | insights<p>private-link-scope | [![Insights - PrivateLinkScopes](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20PrivateLinkScopes/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.privatelinkscopes.yml) |  |  |  |  |  |  | [L1:2, L2:1, L3:3] | 181 |
+| 60 | insights<p>private-link-scope | [![Insights - PrivateLinkScopes](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20PrivateLinkScopes/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.privatelinkscopes.yml) |  |  |  |  |  |  | [L1:2, L2:1, L3:3] | 211 |
 | 61 | insights<p>scheduled-query-rule | [![Insights - ScheduledQueryRules](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20ScheduledQueryRules/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.scheduledqueryrules.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:2] | 136 |
 | 62 | insights<p>webtest | [![Insights - Web Tests](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20Web%20Tests/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.webtests.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:3] | 152 |
 | 63 | key-vault<p>vault | [![KeyVault - Vaults](https://github.com/Azure/ResourceModules/workflows/KeyVault%20-%20Vaults/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.keyvault.vaults.yml) |  |  |  |  |  |  | [L1:4, L2:1, L3:5] | 356 |
@@ -150,7 +150,7 @@ This section provides an overview of the library's feature set.
 | 135 | web<p>serverfarm | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |  |  |  |  |  |  | [L1:1, L2:1, L3:2] | 184 |
 | 136 | web<p>site | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |  |  |  |  |  |  | [L1:6, L2:6, L3:5] | 455 |
 | 137 | web<p>static-site | [![Web - StaticSites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) |  |  |  |  |  |  | [L1:4, L2:1, L3:3] | 284 |
-| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 982 | 29909 |
+| Sum | | | 0 | 0 | 1 | 0 | 0 | 2 | 982 | 29939 |
 
 ## Legend
 
