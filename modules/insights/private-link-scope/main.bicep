@@ -250,7 +250,7 @@ type scopedResourceType = {
 }[]?
 
 type accessModeType = {
-  @description('Optional. List of exclusions that override the default access mode settings for specific private endpoint connections.')
+  @description('Optional. List of exclusions that override the default access mode settings for specific private endpoint connections. Exclusions for the current created Private endpoints can only be applied post initial provisioning.')
   exclusions: {
     @description('Required. The private endpoint connection name associated to the private endpoint on which we want to apply the specific access mode settings.')
     privateEndpointConnectionName: string
