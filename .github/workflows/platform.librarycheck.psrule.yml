@@ -13,7 +13,7 @@ env:
 jobs:
   psrule:
     name: 'PSRule validation'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       # Analyze module library with PSRule
       - name: Checkout

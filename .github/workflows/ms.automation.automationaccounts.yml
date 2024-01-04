@@ -51,7 +51,7 @@ jobs:
   #   Initialize pipeline   #
   ###########################
   job_initialize_pipeline:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'

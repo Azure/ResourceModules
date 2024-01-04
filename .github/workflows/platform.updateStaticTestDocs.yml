@@ -18,7 +18,7 @@ jobs:
   job_update_static_test_docs:
     name: "Update file"
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
