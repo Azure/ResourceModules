@@ -8,7 +8,7 @@ param name string
 
 @description('''Optional. Specifies the access mode of ingestion or queries through associated private endpoints in scope. For security reasons, it is recommended to use PrivateOnly whenever possible to avoid data exfiltration.
 
-  * Private Only (default) - Allows the connected virtual network to reach only Private Link resources. This mode is the most secure.
+  * Private Only - This mode allows the connected virtual network to reach only Private Link resources. It is the most secure mode and is set as the default when the `privateEndpoints` parameter is configured.
   * Open - Allows the connected virtual network to reach both Private Link resources and the resources not in the AMPLS resource. Data exfiltration cannot be prevented in this mode.''')
 param accessModeSettings accessModeType
 
