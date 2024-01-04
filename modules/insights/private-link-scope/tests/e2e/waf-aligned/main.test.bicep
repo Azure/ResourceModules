@@ -55,6 +55,17 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
+    accessModeSettings: {
+      exclusions: [
+        {
+          ingestionAccessMode: 'PrivateOnly'
+          queryAccessMode: 'PrivateOnly'
+          privateEndpointConnectionName: 'thisisatest'
+        }
+      ]
+      ingestionAccessMode: 'Open'
+      queryAccessMode: 'Open'
+    }
     scopedResources: [
       {
         name: 'scoped1'
