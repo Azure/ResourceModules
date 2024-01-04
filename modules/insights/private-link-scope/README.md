@@ -257,6 +257,13 @@ This instance deploys the module in alignment with the best-practices of the Azu
     name: 'iplswaf001'
     // Non-required parameters
     accessModeSettings: {
+      exclusions: [
+        {
+          ingestionAccessMode: 'PrivateOnly'
+          privateEndpointConnectionName: 'thisisatest'
+          queryAccessMode: 'PrivateOnly'
+        }
+      ]
       ingestionAccessMode: 'Open'
       queryAccessMode: 'Open'
     }
@@ -308,6 +315,13 @@ This instance deploys the module in alignment with the best-practices of the Azu
     // Non-required parameters
     "accessModeSettings": {
       "value": {
+        "exclusions": [
+          {
+            "ingestionAccessMode": "PrivateOnly",
+            "privateEndpointConnectionName": "thisisatest",
+            "queryAccessMode": "PrivateOnly"
+          }
+        ],
         "ingestionAccessMode": "Open",
         "queryAccessMode": "Open"
       }
@@ -373,7 +387,7 @@ This instance deploys the module in alignment with the best-practices of the Azu
 | [`scopedResources`](#parameter-scopedresources) | array | Configuration details for Azure Monitor Resources. |
 | [`tags`](#parameter-tags) | object | Resource tags. |
 
-**  Required parameters**
+**  Optional parameters**
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
@@ -836,7 +850,7 @@ Specifies the access mode of ingestion or queries through associated private end
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`exclusions`](#parameter-accessmodesettingsexclusions) | array | List of exclusions that override the default access mode settings for specific private endpoint connections. |
+| [`exclusions`](#parameter-accessmodesettingsexclusions) | array | List of exclusions that override the default access mode settings for specific private endpoint connections. Exclusions for the current created Private endpoints can only be applied post initial provisioning. |
 
 ### Parameter: `accessModeSettings.ingestionAccessMode`
 
@@ -868,7 +882,7 @@ Specifies the default access mode of queries through associated private endpoint
 
 ### Parameter: `accessModeSettings.exclusions`
 
-List of exclusions that override the default access mode settings for specific private endpoint connections.
+List of exclusions that override the default access mode settings for specific private endpoint connections. Exclusions for the current created Private endpoints can only be applied post initial provisioning.
 
 - Required: No
 - Type: array

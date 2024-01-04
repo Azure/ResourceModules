@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.21.1.54444",
-      "templateHash": "11384171938669528188"
+      "templateHash": "10745909267699392093"
     },
     "name": "Azure Monitor Private Link Scopes",
     "description": "This module deploys an Azure Monitor Private Link Scope.",
@@ -338,7 +338,7 @@
           },
           "nullable": true,
           "metadata": {
-            "description": "Optional. List of exclusions that override the default access mode settings for specific private endpoint connections."
+            "description": "Optional. List of exclusions that override the default access mode settings for specific private endpoint connections. Exclusions for the current created Private endpoints can only be applied post initial provisioning."
           }
         },
         "ingestionAccessMode": {
@@ -376,7 +376,7 @@
     "accessModeSettings": {
       "$ref": "#/definitions/accessModeType",
       "metadata": {
-        "description": "  Required. Specifies the access mode of ingestion or queries through associated private endpoints in scope. For security reasons, it is recommended to use PrivateOnly whenever possible to avoid data exfiltration.\n\n  * Private Only (default) - Allows the connected virtual network to reach only Private Link resources. This mode is the most secure.\n  * Open - Allows the connected virtual network to reach both Private Link resources and the resources not in the AMPLS resource. Data exfiltration cannot be prevented in this mode.\n"
+        "description": "  Optional. Specifies the access mode of ingestion or queries through associated private endpoints in scope. For security reasons, it is recommended to use PrivateOnly whenever possible to avoid data exfiltration.\n\n  * Private Only (default) - Allows the connected virtual network to reach only Private Link resources. This mode is the most secure.\n  * Open - Allows the connected virtual network to reach both Private Link resources and the resources not in the AMPLS resource. Data exfiltration cannot be prevented in this mode.\n"
       }
     },
     "location": {
