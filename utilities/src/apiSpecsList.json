@@ -2258,7 +2258,8 @@
       "2023-04-01-preview",
       "2023-05-01",
       "2023-05-02-preview",
-      "2023-08-01-preview"
+      "2023-08-01-preview",
+      "2023-11-02-preview"
     ]
   },
   "Microsoft.AppAssessment": {
@@ -13473,7 +13474,8 @@
     "workspaces/privateEndpointConnections": [
       "2021-04-01-preview",
       "2022-04-01-preview",
-      "2023-02-01"
+      "2023-02-01",
+      "2023-09-15-preview"
     ],
     "workspaces/virtualNetworkPeerings": [
       "2018-04-01",
@@ -22245,6 +22247,12 @@
     ],
     "loadBalancers": [
       "2023-10-01-preview"
+    ],
+    "locations": [
+      "2023-10-01-preview"
+    ],
+    "locations/operationStatuses": [
+      "2019-10-01"
     ],
     "operations": [
       "2023-10-01-preview"
@@ -32347,7 +32355,8 @@
       "2017-04-01",
       "2020-01-01-preview",
       "2023-01-01-preview",
-      "2023-09-01"
+      "2023-09-01",
+      "2023-10-01-preview"
     ],
     "namespaces": [
       "2014-09-01",
@@ -32394,7 +32403,8 @@
       "2017-04-01",
       "2020-01-01-preview",
       "2023-01-01-preview",
-      "2023-09-01"
+      "2023-09-01",
+      "2023-10-01-preview"
     ]
   },
   "Microsoft.Nutanix": {
@@ -33522,7 +33532,8 @@
     "accounts/privateEndpointConnections": [
       "2020-12-01-preview",
       "2021-07-01",
-      "2021-12-01"
+      "2021-12-01",
+      "2023-05-01-preview"
     ],
     "checkNameAvailability": [
       "2020-12-01-preview",
@@ -48481,67 +48492,80 @@
     "Locations": [
       "2022-01-01-preview",
       "2022-10-01-preview",
-      "2023-02-01-preview"
+      "2023-02-01-preview",
+      "2023-11-01-preview"
     ],
     "Locations/operationStatuses": [
       "2022-01-01-preview",
       "2022-10-01-preview",
-      "2023-02-01-preview"
+      "2023-02-01-preview",
+      "2023-11-01-preview"
     ],
     "migrators": [
       "2022-01-01-preview",
       "2022-10-01-preview",
-      "2023-02-01-preview"
+      "2023-02-01-preview",
+      "2023-11-01-preview"
     ],
     "migrators/dataTransferAgents": [
       "2022-01-01-preview",
       "2022-10-01-preview",
-      "2023-02-01-preview"
+      "2023-02-01-preview",
+      "2023-11-01-preview"
     ],
     "migrators/exclusionTemplates": [
       "2022-01-01-preview",
       "2022-10-01-preview",
-      "2023-02-01-preview"
+      "2023-02-01-preview",
+      "2023-11-01-preview"
     ],
     "migrators/liveDataMigrations": [
       "2022-01-01-preview",
       "2022-10-01-preview",
-      "2023-02-01-preview"
+      "2023-02-01-preview",
+      "2023-11-01-preview"
     ],
     "migrators/metadataMigrations": [
       "2022-01-01-preview",
       "2022-10-01-preview",
-      "2023-02-01-preview"
+      "2023-02-01-preview",
+      "2023-11-01-preview"
     ],
     "migrators/metadataTargets": [
       "2022-01-01-preview",
       "2022-10-01-preview",
-      "2023-02-01-preview"
+      "2023-02-01-preview",
+      "2023-11-01-preview"
     ],
     "migrators/pathMappings": [
       "2022-01-01-preview",
       "2022-10-01-preview",
-      "2023-02-01-preview"
+      "2023-02-01-preview",
+      "2023-11-01-preview"
     ],
     "migrators/targets": [
       "2022-01-01-preview",
       "2022-10-01-preview",
-      "2023-02-01-preview"
+      "2023-02-01-preview",
+      "2023-11-01-preview"
     ],
     "migrators/verifications": [
       "2022-01-01-preview",
       "2022-10-01-preview",
-      "2023-02-01-preview"
+      "2023-02-01-preview",
+      "2023-11-01-preview"
     ],
     "Operations": [
       "2022-01-01-preview",
       "2022-10-01-preview",
-      "2023-02-01-preview"
+      "2023-02-01-preview",
+      "2023-11-01-preview"
     ],
     "registeredSubscriptions": [
       "2022-01-01-preview",
       "2022-10-01-preview",
-      "2023-02-01-preview"
+      "2023-02-01-preview",
+      "2023-11-01-preview"
     ]
   }
 }
