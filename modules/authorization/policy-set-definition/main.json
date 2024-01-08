@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "1831706179623308969"
+      "version": "0.23.1.45101",
+      "templateHash": "13920267319234015315"
     },
     "name": "Policy Set Definitions (Initiatives) (All scopes)",
     "description": "This module deploys a Policy Set Definition (Initiative) at a Management Group or Subscription scope.",
@@ -146,8 +146,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "9278231745561513332"
+              "version": "0.23.1.45101",
+              "templateHash": "11109083846476796782"
             },
             "name": "Policy Set Definitions (Initiatives) (Management Group scope)",
             "description": "This module deploys a Policy Set Definition (Initiative) at a Management Group scope.",
@@ -305,8 +305,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "3357776167220688626"
+              "version": "0.23.1.45101",
+              "templateHash": "14930393896542927337"
             },
             "name": "Policy Set Definitions (Initiatives) (Subscription scope)",
             "description": "This module deploys a Policy Set Definition (Initiative) at a Subscription scope.",

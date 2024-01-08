@@ -8,6 +8,7 @@ This module deploys an Azure Automation Account Variable.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -19,24 +20,84 @@ This module deploys an Azure Automation Account Variable.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the variable. |
-| `value` | securestring | The value of the variable. For security best practices, this value is always passed as a secure string as it could contain an encrypted value when the "isEncrypted" property is set to true. |
+| [`name`](#parameter-name) | string | The name of the variable. |
+| [`value`](#parameter-value) | securestring | The value of the variable. For security best practices, this value is always passed as a secure string as it could contain an encrypted value when the "isEncrypted" property is set to true. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `automationAccountName` | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
+| [`automationAccountName`](#parameter-automationaccountname) | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `description` | string | `''` | The description of the variable. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `isEncrypted` | bool | `True` | If the variable should be encrypted. For security reasons encryption of variables should be enabled. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`description`](#parameter-description) | string | The description of the variable. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`isEncrypted`](#parameter-isencrypted) | bool | If the variable should be encrypted. For security reasons encryption of variables should be enabled. |
+
+### Parameter: `name`
+
+The name of the variable.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `value`
+
+The value of the variable. For security best practices, this value is always passed as a secure string as it could contain an encrypted value when the "isEncrypted" property is set to true.
+
+- Required: Yes
+- Type: securestring
+
+### Parameter: `automationAccountName`
+
+The name of the parent Automation Account. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `description`
+
+The description of the variable.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `isEncrypted`
+
+If the variable should be encrypted. For security reasons encryption of variables should be enabled.
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the deployed variable. |
+| `resourceGroupName` | string | The resource group of the deployed variable. |
+| `resourceId` | string | The resource ID of the deployed variable. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 
 ### Parameter Usage: `value`
@@ -89,15 +150,3 @@ value: '\'TestString\''
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the deployed variable. |
-| `resourceGroupName` | string | The resource group of the deployed variable. |
-| `resourceId` | string | The resource ID of the deployed variable. |
-
-## Cross-referenced modules
-
-_None_

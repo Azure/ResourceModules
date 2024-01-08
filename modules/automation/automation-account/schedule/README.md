@@ -19,39 +19,136 @@ This module deploys an Azure Automation Account Schedule.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Automation Account schedule. |
+| [`name`](#parameter-name) | string | Name of the Automation Account schedule. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `automationAccountName` | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
+| [`automationAccountName`](#parameter-automationaccountname) | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `advancedSchedule` | object | `{object}` |  | The properties of the create Advanced Schedule. |
-| `description` | string | `''` |  | The description of the schedule. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `expiryTime` | string | `''` |  | The end time of the schedule. |
-| `frequency` | string | `'OneTime'` | `[Day, Hour, Minute, Month, OneTime, Week]` | The frequency of the schedule. |
-| `interval` | int | `0` |  | Anything. |
-| `startTime` | string | `''` |  | The start time of the schedule. |
-| `timeZone` | string | `''` |  | The time zone of the schedule. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`advancedSchedule`](#parameter-advancedschedule) | object | The properties of the create Advanced Schedule. |
+| [`description`](#parameter-description) | string | The description of the schedule. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`expiryTime`](#parameter-expirytime) | string | The end time of the schedule. |
+| [`frequency`](#parameter-frequency) | string | The frequency of the schedule. |
+| [`interval`](#parameter-interval) | int | Anything. |
+| [`startTime`](#parameter-starttime) | string | The start time of the schedule. |
+| [`timeZone`](#parameter-timezone) | string | The time zone of the schedule. |
 
 **Generated parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `baseTime` | string | `[utcNow('u')]` | Time used as a basis for e.g. the schedule start date. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`baseTime`](#parameter-basetime) | string | Time used as a basis for e.g. the schedule start date. |
+
+### Parameter: `name`
+
+Name of the Automation Account schedule.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `automationAccountName`
+
+The name of the parent Automation Account. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `advancedSchedule`
+
+The properties of the create Advanced Schedule.
+
+- Required: No
+- Type: object
+- Default: `{}`
+
+### Parameter: `description`
+
+The description of the schedule.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `expiryTime`
+
+The end time of the schedule.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `frequency`
+
+The frequency of the schedule.
+
+- Required: No
+- Type: string
+- Default: `'OneTime'`
+- Allowed:
+  ```Bicep
+  [
+    'Day'
+    'Hour'
+    'Minute'
+    'Month'
+    'OneTime'
+    'Week'
+  ]
+  ```
+
+### Parameter: `interval`
+
+Anything.
+
+- Required: No
+- Type: int
+- Default: `0`
+
+### Parameter: `startTime`
+
+The start time of the schedule.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `timeZone`
+
+The time zone of the schedule.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `baseTime`
+
+Time used as a basis for e.g. the schedule start date.
+
+- Required: No
+- Type: string
+- Default: `[utcNow('u')]`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed schedule. |
 | `resourceGroupName` | string | The resource group of the deployed schedule. |

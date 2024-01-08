@@ -19,28 +19,72 @@ This module deploys a Synapse Workspace Integration Runtime.
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string |  | The name of the Integration Runtime. |
-| `type` | string | `[Managed, SelfHosted]` | The type of Integration Runtime. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The name of the Integration Runtime. |
+| [`type`](#parameter-type) | string | The type of Integration Runtime. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `typeProperties` | object | Integration Runtime type properties. Required if type is "Managed". |
-| `workspaceName` | string | The name of the parent Synapse Workspace. Required if the template is used in a standalone deployment. |
+| [`typeProperties`](#parameter-typeproperties) | object | Integration Runtime type properties. Required if type is "Managed". |
+| [`workspaceName`](#parameter-workspacename) | string | The name of the parent Synapse Workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+
+### Parameter: `name`
+
+The name of the Integration Runtime.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `type`
+
+The type of Integration Runtime.
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Managed'
+    'SelfHosted'
+  ]
+  ```
+
+### Parameter: `typeProperties`
+
+Integration Runtime type properties. Required if type is "Managed".
+
+- Required: No
+- Type: object
+- Default: `{}`
+
+### Parameter: `workspaceName`
+
+The name of the parent Synapse Workspace. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the Integration Runtime. |
 | `resourceGroupName` | string | The name of the Resource Group the Integration Runtime was created in. |

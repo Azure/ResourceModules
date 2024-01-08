@@ -1,11 +1,12 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "15838012443949702483"
+      "version": "0.23.1.45101",
+      "templateHash": "13811832596066396545"
     },
     "name": "Azure Kubernetes Service (AKS) Managed Cluster Agent Pools",
     "description": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster Agent Pool.",
@@ -262,7 +263,7 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
@@ -318,8 +319,8 @@
       "maxSurge": "[parameters('maxSurge')]"
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -333,9 +334,15 @@
         }
       }
     },
-    {
+    "managedCluster": {
+      "existing": true,
+      "type": "Microsoft.ContainerService/managedClusters",
+      "apiVersion": "2023-07-02-preview",
+      "name": "[parameters('managedClusterName')]"
+    },
+    "agentPool": {
       "type": "Microsoft.ContainerService/managedClusters/agentPools",
-      "apiVersion": "2023-06-02-preview",
+      "apiVersion": "2023-07-02-preview",
       "name": "[format('{0}/{1}', parameters('managedClusterName'), parameters('name'))]",
       "properties": {
         "availabilityZones": "[parameters('availabilityZones')]",
@@ -372,9 +379,12 @@
         "vmSize": "[parameters('vmSize')]",
         "vnetSubnetID": "[parameters('vnetSubnetId')]",
         "workloadRuntime": "[parameters('workloadRuntime')]"
-      }
+      },
+      "dependsOn": [
+        "managedCluster"
+      ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",

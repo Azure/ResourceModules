@@ -5,12 +5,12 @@ This module controls the Network Security Group Flow Logs and analytics settings
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -20,71 +20,137 @@ This module controls the Network Security Group Flow Logs and analytics settings
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `storageId` | string | Resource ID of the diagnostic storage account. |
-| `targetResourceId` | string | Resource ID of the NSG that must be enabled for Flow Logs. |
+| [`storageId`](#parameter-storageid) | string | Resource ID of the diagnostic storage account. |
+| [`targetResourceId`](#parameter-targetresourceid) | string | Resource ID of the NSG that must be enabled for Flow Logs. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enabled` | bool | `True` |  | If the flow log should be enabled. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `formatVersion` | int | `2` | `[1, 2]` | The flow log format version. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `name` | string | `[format('{0}-{1}-flowlog', last(split(parameters('targetResourceId'), '/')), split(parameters('targetResourceId'), '/')[4])]` |  | Name of the resource. |
-| `networkWatcherName` | string | `[format('NetworkWatcher_{0}', resourceGroup().location)]` |  | Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG. |
-| `retentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `trafficAnalyticsInterval` | int | `60` | `[10, 60]` | The interval in minutes which would decide how frequently TA service should do flow analytics. |
-| `workspaceResourceId` | string | `''` |  | Specify the Log Analytics Workspace Resource ID. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enabled`](#parameter-enabled) | bool | If the flow log should be enabled. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`formatVersion`](#parameter-formatversion) | int | The flow log format version. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`name`](#parameter-name) | string | Name of the resource. |
+| [`networkWatcherName`](#parameter-networkwatchername) | string | Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG. |
+| [`retentionInDays`](#parameter-retentionindays) | int | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`trafficAnalyticsInterval`](#parameter-trafficanalyticsinterval) | int | The interval in minutes which would decide how frequently TA service should do flow analytics. |
+| [`workspaceResourceId`](#parameter-workspaceresourceid) | string | Specify the Log Analytics Workspace Resource ID. |
 
+### Parameter: `storageId`
 
-### Parameter Usage: `tags`
+Resource ID of the diagnostic storage account.
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+- Required: Yes
+- Type: string
 
-<details>
+### Parameter: `targetResourceId`
 
-<summary>Parameter JSON format</summary>
+Resource ID of the NSG that must be enabled for Flow Logs.
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+- Required: Yes
+- Type: string
 
-</details>
+### Parameter: `enabled`
 
-<details>
+If the flow log should be enabled.
 
-<summary>Bicep format</summary>
+- Required: No
+- Type: bool
+- Default: `True`
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+### Parameter: `enableDefaultTelemetry`
 
-</details>
-<p>
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `formatVersion`
+
+The flow log format version.
+
+- Required: No
+- Type: int
+- Default: `2`
+- Allowed:
+  ```Bicep
+  [
+    1
+    2
+  ]
+  ```
+
+### Parameter: `location`
+
+Location for all resources.
+
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `name`
+
+Name of the resource.
+
+- Required: No
+- Type: string
+- Default: `[format('{0}-{1}-flowlog', last(split(parameters('targetResourceId'), '/')), split(parameters('targetResourceId'), '/')[4])]`
+
+### Parameter: `networkWatcherName`
+
+Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG.
+
+- Required: No
+- Type: string
+- Default: `[format('NetworkWatcher_{0}', resourceGroup().location)]`
+
+### Parameter: `retentionInDays`
+
+Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.
+
+- Required: No
+- Type: int
+- Default: `365`
+
+### Parameter: `tags`
+
+Tags of the resource.
+
+- Required: No
+- Type: object
+
+### Parameter: `trafficAnalyticsInterval`
+
+The interval in minutes which would decide how frequently TA service should do flow analytics.
+
+- Required: No
+- Type: int
+- Default: `60`
+- Allowed:
+  ```Bicep
+  [
+    10
+    60
+  ]
+  ```
+
+### Parameter: `workspaceResourceId`
+
+Specify the Log Analytics Workspace Resource ID.
+
+- Required: No
+- Type: string
+- Default: `''`
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the flow log. |

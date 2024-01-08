@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "16752439019054773130"
+      "version": "0.23.1.45101",
+      "templateHash": "7311789591820295360"
     },
     "name": "CDN Profiles Endpoints Origins",
     "description": "This module deploys a CDN Profile Endpoint Origin.",
@@ -69,7 +69,7 @@
       "type": "int",
       "defaultValue": -1,
       "metadata": {
-        "description": "Conditional. The weight of the origin used for load balancing. Required if `priority` is provided.."
+        "description": "Conditional. The weight of the origin used for load balancing. Required if `priority` is provided."
       }
     },
     "privateLinkAlias": {

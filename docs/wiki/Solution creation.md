@@ -451,7 +451,7 @@ env:
 
 jobs:
   job_deploy_multi_repo_solution:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: 'Deploy multi-repo solution'
     steps:
       - name: 'Checkout ResourceModules repo at the root location'

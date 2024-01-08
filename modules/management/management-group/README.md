@@ -8,193 +8,42 @@ This module has some known **limitations**:
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
+- [Usage examples](#Usage-examples)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Considerations](#Considerations)
 - [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
+- [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Management/managementGroups` | [2021-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Management/2021-04-01/managementGroups) |
 
-## Parameters
+## Usage examples
 
-**Required parameters**
+The following section provides usage examples for the module, which were used to validate and deploy the module successfully. For a full reference, please review the module's test folder in its repository.
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The group ID of the Management group. |
+>**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-**Optional parameters**
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/management.management-group:1.0.0`.
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `displayName` | string | `''` | The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[deployment().location]` | Location deployment metadata. |
-| `parentId` | string | `[last(split(managementGroup().id, '/'))]` | The management group parent ID. Defaults to current scope. |
+- [Using only defaults](#example-1-using-only-defaults)
+- [Using large parameter set](#example-2-using-large-parameter-set)
+- [WAF-aligned](#example-3-waf-aligned)
 
+### Example 1: _Using only defaults_
 
-### Parameter Usage: `roleAssignments`
+This instance deploys the module with the minimum set of required parameters.
 
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
-
-</details>
-<p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the management group. |
-| `resourceId` | string | The resource ID of the management group. |
-
-## Considerations
-
-This template is using a **Tenant level deployment**, meaning the user/principal deploying it needs to have the [proper access](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-to-tenant#required-access)
-
-If owner access is excessive, the following rights roles will grant enough rights:
-
-- **Automation Job Operator** at **tenant** level (scope '/')
-- **Management Group Contributor** at the top management group that needs to be managed
-
-Consider using the following script:
-
-```powershell
-$PrincipalID = "<The object ID of the identity here>"
-$TopMGID = "<The group ID of the management group here>"
-New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Automation Job Operator"
-New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"
-```
-
-## Cross-referenced modules
-
-_None_
-
-## Deployment examples
-
-The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
-   >**Note**: The name of each example is based on the name of the file from which it is taken.
-
-   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
-
-<h3>Example 1: Common</h3>
 
 <details>
 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managementGroup './management/management-group/main.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-mmgcom'
-  params: {
-    // Required parameters
-    name: 'mmgcom001'
-    // Non-required parameters
-    displayName: 'Test MG'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    parentId: '<parentId>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "mmgcom001"
-    },
-    // Non-required parameters
-    "displayName": {
-      "value": "Test MG"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "parentId": {
-      "value": "<parentId>"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module managementGroup './management/management-group/main.bicep' = {
+module managementGroup 'br:bicep/modules/management.management-group:1.0.0' = {
   name: '${uniqueString(deployment().name)}-test-mmgmin'
   params: {
     // Required parameters
@@ -231,3 +80,204 @@ module managementGroup './management/management-group/main.bicep' = {
 
 </details>
 <p>
+
+### Example 2: _Using large parameter set_
+
+This instance deploys the module with most of its features enabled.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managementGroup 'br:bicep/modules/management.management-group:1.0.0' = {
+  name: '${uniqueString(deployment().name)}-test-mmgmax'
+  params: {
+    // Required parameters
+    name: 'mmgmax001'
+    // Non-required parameters
+    displayName: 'Test MG'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    parentId: '<parentId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "mmgmax001"
+    },
+    // Non-required parameters
+    "displayName": {
+      "value": "Test MG"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "parentId": {
+      "value": "<parentId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+### Example 3: _WAF-aligned_
+
+This instance deploys the module in alignment with the best-practices of the Azure Well-Architected Framework.
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managementGroup 'br:bicep/modules/management.management-group:1.0.0' = {
+  name: '${uniqueString(deployment().name)}-test-mmgwaf'
+  params: {
+    // Required parameters
+    name: 'mmgwaf001'
+    // Non-required parameters
+    displayName: 'Test MG'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    parentId: '<parentId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "mmgwaf001"
+    },
+    // Non-required parameters
+    "displayName": {
+      "value": "Test MG"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "parentId": {
+      "value": "<parentId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+
+## Parameters
+
+**Required parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The group ID of the Management group. |
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`displayName`](#parameter-displayname) | string | The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location deployment metadata. |
+| [`parentId`](#parameter-parentid) | string | The management group parent ID. Defaults to current scope. |
+
+### Parameter: `name`
+
+The group ID of the Management group.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `displayName`
+
+The friendly name of the management group. If no value is passed then this field will be set to the group ID.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location deployment metadata.
+
+- Required: No
+- Type: string
+- Default: `[deployment().location]`
+
+### Parameter: `parentId`
+
+The management group parent ID. Defaults to current scope.
+
+- Required: No
+- Type: string
+- Default: `[last(split(managementGroup().id, '/'))]`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the management group. |
+| `resourceId` | string | The resource ID of the management group. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
+
+### Considerations
+
+This template is using a **Tenant level deployment**, meaning the user/principal deploying it needs to have the [proper access](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-to-tenant#required-access)
+
+If owner access is excessive, the following rights roles will grant enough rights:
+
+- **Automation Job Operator** at **tenant** level (scope '/')
+- **Management Group Contributor** at the top management group that needs to be managed
+
+Consider using the following script:
+
+```powershell
+$PrincipalID = "<The object ID of the identity here>"
+$TopMGID = "<The group ID of the management group here>"
+New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Automation Job Operator"
+New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"
+```

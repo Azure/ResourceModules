@@ -20,74 +20,74 @@ This module deploys a MongoDB Database within a CosmosDB Account.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the mongodb database. |
+| [`name`](#parameter-name) | string | Name of the mongodb database. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `databaseAccountName` | string | The name of the parent Cosmos DB database account. Required if the template is used in a standalone deployment. |
+| [`databaseAccountName`](#parameter-databaseaccountname) | string | The name of the parent Cosmos DB database account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `collections` | array | `[]` | Collections in the mongodb database. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `tags` | object | `{object}` | Tags of the resource. |
-| `throughput` | int | `400` | Name of the mongodb database. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`collections`](#parameter-collections) | array | Collections in the mongodb database. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`throughput`](#parameter-throughput) | int | Name of the mongodb database. |
 
+### Parameter: `name`
 
-### Parameter Usage: `tags`
+Name of the mongodb database.
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+- Required: Yes
+- Type: string
 
-<details>
+### Parameter: `databaseAccountName`
 
-<summary>Parameter JSON format</summary>
+The name of the parent Cosmos DB database account. Required if the template is used in a standalone deployment.
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+- Required: Yes
+- Type: string
 
-</details>
+### Parameter: `collections`
 
-<details>
+Collections in the mongodb database.
 
-<summary>Bicep format</summary>
+- Required: No
+- Type: array
+- Default: `[]`
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+### Parameter: `enableDefaultTelemetry`
 
-</details>
-<p>
+Enable telemetry via a Globally Unique Identifier (GUID).
 
-### Parameter Usage: `collections`
+- Required: No
+- Type: bool
+- Default: `True`
 
-Please reference the documentation for [collection](./collection/README.md)
+### Parameter: `tags`
+
+Tags of the resource.
+
+- Required: No
+- Type: object
+
+### Parameter: `throughput`
+
+Name of the mongodb database.
+
+- Required: No
+- Type: int
+- Default: `400`
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the mongodb database. |
 | `resourceGroupName` | string | The name of the resource group the mongodb database was created in. |

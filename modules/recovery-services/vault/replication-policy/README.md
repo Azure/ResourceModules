@@ -21,30 +21,91 @@ This module deploys a Recovery Services Vault Replication Policy for Disaster Re
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the replication policy. |
+| [`name`](#parameter-name) | string | The name of the replication policy. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
+| [`recoveryVaultName`](#parameter-recoveryvaultname) | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `appConsistentFrequencyInMinutes` | int | `60` |  | The app consistent snapshot frequency (in minutes). |
-| `crashConsistentFrequencyInMinutes` | int | `5` |  | The crash consistent snapshot frequency (in minutes). |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `multiVmSyncStatus` | string | `'Enable'` | `[Disable, Enable]` | A value indicating whether multi-VM sync has to be enabled. |
-| `recoveryPointHistory` | int | `1440` |  | The duration in minutes until which the recovery points need to be stored. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`appConsistentFrequencyInMinutes`](#parameter-appconsistentfrequencyinminutes) | int | The app consistent snapshot frequency (in minutes). |
+| [`crashConsistentFrequencyInMinutes`](#parameter-crashconsistentfrequencyinminutes) | int | The crash consistent snapshot frequency (in minutes). |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`multiVmSyncStatus`](#parameter-multivmsyncstatus) | string | A value indicating whether multi-VM sync has to be enabled. |
+| [`recoveryPointHistory`](#parameter-recoverypointhistory) | int | The duration in minutes until which the recovery points need to be stored. |
+
+### Parameter: `name`
+
+The name of the replication policy.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `recoveryVaultName`
+
+The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `appConsistentFrequencyInMinutes`
+
+The app consistent snapshot frequency (in minutes).
+
+- Required: No
+- Type: int
+- Default: `60`
+
+### Parameter: `crashConsistentFrequencyInMinutes`
+
+The crash consistent snapshot frequency (in minutes).
+
+- Required: No
+- Type: int
+- Default: `5`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `multiVmSyncStatus`
+
+A value indicating whether multi-VM sync has to be enabled.
+
+- Required: No
+- Type: string
+- Default: `'Enable'`
+- Allowed:
+  ```Bicep
+  [
+    'Disable'
+    'Enable'
+  ]
+  ```
+
+### Parameter: `recoveryPointHistory`
+
+The duration in minutes until which the recovery points need to be stored.
+
+- Required: No
+- Type: int
+- Default: `1440`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the replication policy. |
 | `resourceGroupName` | string | The name of the resource group the replication policy was created in. |

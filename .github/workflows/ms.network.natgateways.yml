@@ -29,6 +29,7 @@ on:
     paths:
       - 'modules/network/nat-gateway/**'
       - 'modules/network/public-ip-address/**'
+      - 'modules/network/public-ip-prefix/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.natgateways.yml'
@@ -48,7 +49,7 @@ jobs:
   #   Initialize pipeline   #
   ###########################
   job_initialize_pipeline:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'

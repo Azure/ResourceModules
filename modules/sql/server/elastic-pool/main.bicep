@@ -9,7 +9,7 @@ param name string
 param serverName string
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -66,11 +66,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource server 'Microsoft.Sql/servers@2021-11-01' existing = {
+resource server 'Microsoft.Sql/servers@2022-05-01-preview' existing = {
   name: serverName
 }
 
-resource elasticPool 'Microsoft.Sql/servers/elasticPools@2022-02-01-preview' = {
+resource elasticPool 'Microsoft.Sql/servers/elasticPools@2022-05-01-preview' = {
   name: name
   location: location
   parent: server

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "16351992787760940933"
+      "version": "0.23.1.45101",
+      "templateHash": "545140399885435174"
     },
     "name": "Hosting Environment Network Configuration",
     "description": "This module deploys a Hosting Environment Network Configuration.",

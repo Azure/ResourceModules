@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "5067037150154630010"
+      "version": "0.23.1.45101",
+      "templateHash": "15478604165722569737"
     },
     "name": "Policy Exemptions (Subscription scope)",
     "description": "This module deploys a Policy Exemption at a Subscription scope.",

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "18039866213861972678"
+      "version": "0.23.1.45101",
+      "templateHash": "17590031156732651952"
     },
     "name": "Service Bus Namespace Queue Authorization Rules",
     "description": "This module deploys a Service Bus Namespace Queue Authorization Rule.",
@@ -67,7 +67,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/queues/authorizationRules",
-      "apiVersion": "2017-04-01",
+      "apiVersion": "2022-10-01-preview",
       "name": "[format('{0}/{1}/{2}', parameters('namespaceName'), parameters('queueName'), parameters('name'))]",
       "properties": {
         "rights": "[parameters('rights')]"

@@ -19,23 +19,61 @@ This module deploys an Azure SQL Server Database Short-Term Backup Retention Pol
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `databaseName` | string | The name of the parent database. |
-| `serverName` | string | The name of the parent SQL Server. |
+| [`databaseName`](#parameter-databasename) | string | The name of the parent database. |
+| [`serverName`](#parameter-servername) | string | The name of the parent SQL Server. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `diffBackupIntervalInHours` | int | `24` | Differential backup interval in hours. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `retentionDays` | int | `7` | Poin-in-time retention in days. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`diffBackupIntervalInHours`](#parameter-diffbackupintervalinhours) | int | Differential backup interval in hours. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`retentionDays`](#parameter-retentiondays) | int | Poin-in-time retention in days. |
+
+### Parameter: `databaseName`
+
+The name of the parent database.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `serverName`
+
+The name of the parent SQL Server.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `diffBackupIntervalInHours`
+
+Differential backup interval in hours.
+
+- Required: No
+- Type: int
+- Default: `24`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `retentionDays`
+
+Poin-in-time retention in days.
+
+- Required: No
+- Type: int
+- Default: `7`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the short-term policy. |
 | `resourceGroupName` | string | The resource group the short-term policy was deployed into. |

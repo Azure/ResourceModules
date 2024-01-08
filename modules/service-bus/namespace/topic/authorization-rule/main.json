@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "12912382339345981506"
+      "version": "0.23.1.45101",
+      "templateHash": "1333107238814449885"
     },
     "name": "Service Bus Namespace Topic Authorization Rules",
     "description": "This module deploys a Service Bus Namespace Topic Authorization Rule.",
@@ -67,7 +67,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/topics/authorizationRules",
-      "apiVersion": "2021-06-01-preview",
+      "apiVersion": "2022-10-01-preview",
       "name": "[format('{0}/{1}/{2}', parameters('namespaceName'), parameters('topicName'), parameters('name'))]",
       "properties": {
         "rights": "[parameters('rights')]"

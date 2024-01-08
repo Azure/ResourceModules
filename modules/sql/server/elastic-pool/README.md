@@ -13,86 +13,177 @@ This module deploys an Azure SQL Server Elastic Pool.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/servers/elasticPools` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/elasticPools) |
+| `Microsoft.Sql/servers/elasticPools` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/elasticPools) |
 
 ## Parameters
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the Elastic Pool. |
+| [`name`](#parameter-name) | string | The name of the Elastic Pool. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `serverName` | string | The name of the parent SQL Server. Required if the template is used in a standalone deployment. |
+| [`serverName`](#parameter-servername) | string | The name of the parent SQL Server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `databaseMaxCapacity` | int | `2` |  | The maximum capacity any one database can consume. |
-| `databaseMinCapacity` | int | `0` |  | The minimum capacity all databases are guaranteed. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `highAvailabilityReplicaCount` | int | `-1` |  | The number of secondary replicas associated with the elastic pool that are used to provide high availability. Applicable only to Hyperscale elastic pools. |
-| `licenseType` | string | `'LicenseIncluded'` | `[BasePrice, LicenseIncluded]` | The license type to apply for this elastic pool. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `maintenanceConfigurationId` | string | `''` |  | Maintenance configuration resource ID assigned to the elastic pool. This configuration defines the period when the maintenance updates will will occur. |
-| `maxSizeBytes` | int | `34359738368` |  | The storage limit for the database elastic pool in bytes. |
-| `minCapacity` | int | `-1` |  | Minimal capacity that serverless pool will not shrink below, if not paused. |
-| `skuCapacity` | int | `2` |  | Capacity of the particular SKU. |
-| `skuName` | string | `'GP_Gen5'` |  | The name of the SKU, typically, a letter + Number code, e.g. P3. |
-| `skuTier` | string | `'GeneralPurpose'` |  | The tier or edition of the particular SKU, e.g. Basic, Premium. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `zoneRedundant` | bool | `False` |  | Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread across multiple availability zones. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`databaseMaxCapacity`](#parameter-databasemaxcapacity) | int | The maximum capacity any one database can consume. |
+| [`databaseMinCapacity`](#parameter-databasemincapacity) | int | The minimum capacity all databases are guaranteed. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`highAvailabilityReplicaCount`](#parameter-highavailabilityreplicacount) | int | The number of secondary replicas associated with the elastic pool that are used to provide high availability. Applicable only to Hyperscale elastic pools. |
+| [`licenseType`](#parameter-licensetype) | string | The license type to apply for this elastic pool. |
+| [`location`](#parameter-location) | string | Location for all resources. |
+| [`maintenanceConfigurationId`](#parameter-maintenanceconfigurationid) | string | Maintenance configuration resource ID assigned to the elastic pool. This configuration defines the period when the maintenance updates will will occur. |
+| [`maxSizeBytes`](#parameter-maxsizebytes) | int | The storage limit for the database elastic pool in bytes. |
+| [`minCapacity`](#parameter-mincapacity) | int | Minimal capacity that serverless pool will not shrink below, if not paused. |
+| [`skuCapacity`](#parameter-skucapacity) | int | Capacity of the particular SKU. |
+| [`skuName`](#parameter-skuname) | string | The name of the SKU, typically, a letter + Number code, e.g. P3. |
+| [`skuTier`](#parameter-skutier) | string | The tier or edition of the particular SKU, e.g. Basic, Premium. |
+| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`zoneRedundant`](#parameter-zoneredundant) | bool | Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread across multiple availability zones. |
 
+### Parameter: `name`
 
-### Parameter Usage: `tags`
+The name of the Elastic Pool.
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+- Required: Yes
+- Type: string
 
-<details>
+### Parameter: `serverName`
 
-<summary>Parameter JSON format</summary>
+The name of the parent SQL Server. Required if the template is used in a standalone deployment.
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+- Required: Yes
+- Type: string
 
-</details>
+### Parameter: `databaseMaxCapacity`
 
-<details>
+The maximum capacity any one database can consume.
 
-<summary>Bicep format</summary>
+- Required: No
+- Type: int
+- Default: `2`
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+### Parameter: `databaseMinCapacity`
 
-</details>
-<p>
+The minimum capacity all databases are guaranteed.
+
+- Required: No
+- Type: int
+- Default: `0`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `highAvailabilityReplicaCount`
+
+The number of secondary replicas associated with the elastic pool that are used to provide high availability. Applicable only to Hyperscale elastic pools.
+
+- Required: No
+- Type: int
+- Default: `-1`
+
+### Parameter: `licenseType`
+
+The license type to apply for this elastic pool.
+
+- Required: No
+- Type: string
+- Default: `'LicenseIncluded'`
+- Allowed:
+  ```Bicep
+  [
+    'BasePrice'
+    'LicenseIncluded'
+  ]
+  ```
+
+### Parameter: `location`
+
+Location for all resources.
+
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `maintenanceConfigurationId`
+
+Maintenance configuration resource ID assigned to the elastic pool. This configuration defines the period when the maintenance updates will will occur.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `maxSizeBytes`
+
+The storage limit for the database elastic pool in bytes.
+
+- Required: No
+- Type: int
+- Default: `34359738368`
+
+### Parameter: `minCapacity`
+
+Minimal capacity that serverless pool will not shrink below, if not paused.
+
+- Required: No
+- Type: int
+- Default: `-1`
+
+### Parameter: `skuCapacity`
+
+Capacity of the particular SKU.
+
+- Required: No
+- Type: int
+- Default: `2`
+
+### Parameter: `skuName`
+
+The name of the SKU, typically, a letter + Number code, e.g. P3.
+
+- Required: No
+- Type: string
+- Default: `'GP_Gen5'`
+
+### Parameter: `skuTier`
+
+The tier or edition of the particular SKU, e.g. Basic, Premium.
+
+- Required: No
+- Type: string
+- Default: `'GeneralPurpose'`
+
+### Parameter: `tags`
+
+Tags of the resource.
+
+- Required: No
+- Type: object
+
+### Parameter: `zoneRedundant`
+
+Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread across multiple availability zones.
+
+- Required: No
+- Type: bool
+- Default: `False`
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployed Elastic Pool. |

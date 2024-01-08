@@ -19,80 +19,177 @@ This module deploys a Log Analytics Workspace Data Source.
 
 **Required parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `kind` | string | `'AzureActivityLog'` | `[AzureActivityLog, IISLogs, LinuxPerformanceCollection, LinuxPerformanceObject, LinuxSyslog, LinuxSyslogCollection, WindowsEvent, WindowsPerformanceCounter]` | The kind of the DataSource. |
-| `name` | string |  |  | Name of the solution. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`kind`](#parameter-kind) | string | The kind of the DataSource. |
+| [`name`](#parameter-name) | string | Name of the solution. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `logAnalyticsWorkspaceName` | string | The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment. |
+| [`logAnalyticsWorkspaceName`](#parameter-loganalyticsworkspacename) | string | The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `counterName` | string | `''` | Counter name to configure when kind is WindowsPerformanceCounter. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `eventLogName` | string | `''` | Windows event log name to configure when kind is WindowsEvent. |
-| `eventTypes` | array | `[]` | Windows event types to configure when kind is WindowsEvent. |
-| `instanceName` | string | `'*'` | Name of the instance to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject. |
-| `intervalSeconds` | int | `60` | Interval in seconds to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject. |
-| `linkedResourceId` | string | `''` | Resource ID of the resource to be linked. |
-| `objectName` | string | `''` | Name of the object to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject. |
-| `performanceCounters` | array | `[]` | List of counters to configure when the kind is LinuxPerformanceObject. |
-| `state` | string | `''` | State to configure when kind is IISLogs or LinuxSyslogCollection or LinuxPerformanceCollection. |
-| `syslogName` | string | `''` | System log to configure when kind is LinuxSyslog. |
-| `syslogSeverities` | array | `[]` | Severities to configure when kind is LinuxSyslog. |
-| `tags` | object | `{object}` | Tags to configure in the resource. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`counterName`](#parameter-countername) | string | Counter name to configure when kind is WindowsPerformanceCounter. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`eventLogName`](#parameter-eventlogname) | string | Windows event log name to configure when kind is WindowsEvent. |
+| [`eventTypes`](#parameter-eventtypes) | array | Windows event types to configure when kind is WindowsEvent. |
+| [`instanceName`](#parameter-instancename) | string | Name of the instance to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject. |
+| [`intervalSeconds`](#parameter-intervalseconds) | int | Interval in seconds to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject. |
+| [`linkedResourceId`](#parameter-linkedresourceid) | string | Resource ID of the resource to be linked. |
+| [`objectName`](#parameter-objectname) | string | Name of the object to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject. |
+| [`performanceCounters`](#parameter-performancecounters) | array | List of counters to configure when the kind is LinuxPerformanceObject. |
+| [`state`](#parameter-state) | string | State to configure when kind is IISLogs or LinuxSyslogCollection or LinuxPerformanceCollection. |
+| [`syslogName`](#parameter-syslogname) | string | System log to configure when kind is LinuxSyslog. |
+| [`syslogSeverities`](#parameter-syslogseverities) | array | Severities to configure when kind is LinuxSyslog. |
+| [`tags`](#parameter-tags) | object | Tags to configure in the resource. |
 
+### Parameter: `kind`
 
-### Parameter Usage: `tags`
+The kind of the DataSource.
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+- Required: No
+- Type: string
+- Default: `'AzureActivityLog'`
+- Allowed:
+  ```Bicep
+  [
+    'AzureActivityLog'
+    'IISLogs'
+    'LinuxPerformanceCollection'
+    'LinuxPerformanceObject'
+    'LinuxSyslog'
+    'LinuxSyslogCollection'
+    'WindowsEvent'
+    'WindowsPerformanceCounter'
+  ]
+  ```
 
-<details>
+### Parameter: `name`
 
-<summary>Parameter JSON format</summary>
+Name of the solution.
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+- Required: Yes
+- Type: string
 
-</details>
+### Parameter: `logAnalyticsWorkspaceName`
 
-<details>
+The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment.
 
-<summary>Bicep format</summary>
+- Required: Yes
+- Type: string
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+### Parameter: `counterName`
 
-</details>
-<p>
+Counter name to configure when kind is WindowsPerformanceCounter.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `eventLogName`
+
+Windows event log name to configure when kind is WindowsEvent.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `eventTypes`
+
+Windows event types to configure when kind is WindowsEvent.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `instanceName`
+
+Name of the instance to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject.
+
+- Required: No
+- Type: string
+- Default: `'*'`
+
+### Parameter: `intervalSeconds`
+
+Interval in seconds to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject.
+
+- Required: No
+- Type: int
+- Default: `60`
+
+### Parameter: `linkedResourceId`
+
+Resource ID of the resource to be linked.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `objectName`
+
+Name of the object to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `performanceCounters`
+
+List of counters to configure when the kind is LinuxPerformanceObject.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `state`
+
+State to configure when kind is IISLogs or LinuxSyslogCollection or LinuxPerformanceCollection.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `syslogName`
+
+System log to configure when kind is LinuxSyslog.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `syslogSeverities`
+
+Severities to configure when kind is LinuxSyslog.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `tags`
+
+Tags to configure in the resource.
+
+- Required: No
+- Type: object
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed data source. |
 | `resourceGroupName` | string | The resource group where the data source is deployed. |

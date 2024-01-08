@@ -4,12 +4,13 @@ This module deploys a Data Factory Managed Virtual Network.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -20,23 +21,67 @@ This module deploys a Data Factory Managed Virtual Network.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the Managed Virtual Network. |
+| [`name`](#parameter-name) | string | The name of the Managed Virtual Network. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `dataFactoryName` | string | The name of the parent Azure Data Factory. Required if the template is used in a standalone deployment. |
+| [`dataFactoryName`](#parameter-datafactoryname) | string | The name of the parent Azure Data Factory. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `managedPrivateEndpoints` | array | `[]` | An array of managed private endpoints objects created in the Data Factory managed virtual network. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`managedPrivateEndpoints`](#parameter-managedprivateendpoints) | array | An array of managed private endpoints objects created in the Data Factory managed virtual network. |
 
+### Parameter: `name`
+
+The name of the Managed Virtual Network.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `dataFactoryName`
+
+The name of the parent Azure Data Factory. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `managedPrivateEndpoints`
+
+An array of managed private endpoints objects created in the Data Factory managed virtual network.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the Managed Virtual Network. |
+| `resourceGroupName` | string | The name of the Resource Group the Managed Virtual Network was created in. |
+| `resourceId` | string | The resource ID of the Managed Virtual Network. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `managedPrivateEndpoints`
 
@@ -86,15 +131,3 @@ managedPrivateEndpoints:  [
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the Managed Virtual Network. |
-| `resourceGroupName` | string | The name of the Resource Group the Managed Virtual Network was created in. |
-| `resourceId` | string | The resource ID of the Managed Virtual Network. |
-
-## Cross-referenced modules
-
-_None_

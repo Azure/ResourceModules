@@ -8,6 +8,7 @@ This module deploys a MongoDB Database Collection.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -19,26 +20,91 @@ This module deploys a MongoDB Database Collection.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `indexes` | array | Indexes for the collection. |
-| `name` | string | Name of the collection. |
-| `shardKey` | object | ShardKey for the collection. |
+| [`indexes`](#parameter-indexes) | array | Indexes for the collection. |
+| [`name`](#parameter-name) | string | Name of the collection. |
+| [`shardKey`](#parameter-shardkey) | object | ShardKey for the collection. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `databaseAccountName` | string | The name of the parent Cosmos DB database account. Required if the template is used in a standalone deployment. |
-| `mongodbDatabaseName` | string | The name of the parent mongodb database. Required if the template is used in a standalone deployment. |
+| [`databaseAccountName`](#parameter-databaseaccountname) | string | The name of the parent Cosmos DB database account. Required if the template is used in a standalone deployment. |
+| [`mongodbDatabaseName`](#parameter-mongodbdatabasename) | string | The name of the parent mongodb database. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `throughput` | int | `400` | Name of the mongodb database. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`throughput`](#parameter-throughput) | int | Name of the mongodb database. |
 
+### Parameter: `indexes`
+
+Indexes for the collection.
+
+- Required: Yes
+- Type: array
+
+### Parameter: `name`
+
+Name of the collection.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `shardKey`
+
+ShardKey for the collection.
+
+- Required: Yes
+- Type: object
+
+### Parameter: `databaseAccountName`
+
+The name of the parent Cosmos DB database account. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `mongodbDatabaseName`
+
+The name of the parent mongodb database. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `throughput`
+
+Name of the mongodb database.
+
+- Required: No
+- Type: int
+- Default: `400`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the mongodb database. |
+| `resourceGroupName` | string | The name of the resource group the mongodb database was created in. |
+| `resourceId` | string | The resource ID of the mongodb database. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `indexes`
 
@@ -169,15 +235,3 @@ shardKey: {
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the mongodb database. |
-| `resourceGroupName` | string | The name of the resource group the mongodb database was created in. |
-| `resourceId` | string | The resource ID of the mongodb database. |
-
-## Cross-referenced modules
-
-_None_

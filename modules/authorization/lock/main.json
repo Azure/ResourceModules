@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "15010949072500473441"
+      "version": "0.23.1.45101",
+      "templateHash": "16738109321180473178"
     },
     "name": "Authorization Locks (All scopes)",
     "description": "This module deploys an Authorization Lock at a Subscription or Resource Group scope.",
@@ -109,8 +109,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "15362884032350876286"
+              "version": "0.23.1.45101",
+              "templateHash": "15541007349238410358"
             },
             "name": "Authorization Locks (Subscription scope)",
             "description": "This module deploys an Authorization Lock at a Subscription scope.",
@@ -239,8 +239,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "10420976827552614779"
+              "version": "0.23.1.45101",
+              "templateHash": "11141983424917801407"
             },
             "name": "Authorization Locks (Resource Group scope)",
             "description": "This module deploys an Authorization Lock at a Resource Group scope.",

@@ -19,29 +19,75 @@ This module deploys a Log Analytics Workspace Data Export.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The data export rule name. |
+| [`name`](#parameter-name) | string | The data export rule name. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `workspaceName` | string | The name of the parent workspaces. Required if the template is used in a standalone deployment. |
+| [`workspaceName`](#parameter-workspacename) | string | The name of the parent workspaces. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `destination` | object | `{object}` | Destination properties. |
-| `enable` | bool | `False` | Active when enabled. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `tableNames` | array | `[]` | An array of tables to export, for example: ['Heartbeat', 'SecurityEvent']. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`destination`](#parameter-destination) | object | Destination properties. |
+| [`enable`](#parameter-enable) | bool | Active when enabled. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| [`tableNames`](#parameter-tablenames) | array | An array of tables to export, for example: ['Heartbeat', 'SecurityEvent']. |
+
+### Parameter: `name`
+
+The data export rule name.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `workspaceName`
+
+The name of the parent workspaces. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `destination`
+
+Destination properties.
+
+- Required: No
+- Type: object
+- Default: `{}`
+
+### Parameter: `enable`
+
+Active when enabled.
+
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via the Customer Usage Attribution ID (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `tableNames`
+
+An array of tables to export, for example: ['Heartbeat', 'SecurityEvent'].
+
+- Required: No
+- Type: array
+- Default: `[]`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the data export. |
 | `resourceGroupName` | string | The name of the resource group the data export was created in. |

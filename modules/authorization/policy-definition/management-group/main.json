@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "14890815799488372081"
+      "version": "0.23.1.45101",
+      "templateHash": "2259464056966333575"
     },
     "name": "Policy Definitions (Management Group scope)",
     "description": "This module deploys a Policy Definition at a Management Group scope.",

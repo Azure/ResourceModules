@@ -19,32 +19,109 @@ This module deploys a Log Analytics Workspace Table.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the table. |
+| [`name`](#parameter-name) | string | The name of the table. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `workspaceName` | string | The name of the parent workspaces. Required if the template is used in a standalone deployment. |
+| [`workspaceName`](#parameter-workspacename) | string | The name of the parent workspaces. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `plan` | string | `'Analytics'` | `[Analytics, Basic]` | Instruct the system how to handle and charge the logs ingested to this table. |
-| `restoredLogs` | object | `{object}` |  | Restore parameters. |
-| `retentionInDays` | int | `-1` |  | The table retention in days, between 4 and 730. Setting this property to -1 will default to the workspace retention. |
-| `schema` | object | `{object}` |  | Table's schema. |
-| `searchResults` | object | `{object}` |  | Parameters of the search job that initiated this table. |
-| `totalRetentionInDays` | int | `-1` |  | The table total retention in days, between 4 and 2555. Setting this property to -1 will default to table retention. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| [`plan`](#parameter-plan) | string | Instruct the system how to handle and charge the logs ingested to this table. |
+| [`restoredLogs`](#parameter-restoredlogs) | object | Restore parameters. |
+| [`retentionInDays`](#parameter-retentionindays) | int | The table retention in days, between 4 and 730. Setting this property to -1 will default to the workspace retention. |
+| [`schema`](#parameter-schema) | object | Table's schema. |
+| [`searchResults`](#parameter-searchresults) | object | Parameters of the search job that initiated this table. |
+| [`totalRetentionInDays`](#parameter-totalretentionindays) | int | The table total retention in days, between 4 and 2555. Setting this property to -1 will default to table retention. |
+
+### Parameter: `name`
+
+The name of the table.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `workspaceName`
+
+The name of the parent workspaces. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via the Customer Usage Attribution ID (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `plan`
+
+Instruct the system how to handle and charge the logs ingested to this table.
+
+- Required: No
+- Type: string
+- Default: `'Analytics'`
+- Allowed:
+  ```Bicep
+  [
+    'Analytics'
+    'Basic'
+  ]
+  ```
+
+### Parameter: `restoredLogs`
+
+Restore parameters.
+
+- Required: No
+- Type: object
+- Default: `{}`
+
+### Parameter: `retentionInDays`
+
+The table retention in days, between 4 and 730. Setting this property to -1 will default to the workspace retention.
+
+- Required: No
+- Type: int
+- Default: `-1`
+
+### Parameter: `schema`
+
+Table's schema.
+
+- Required: No
+- Type: object
+- Default: `{}`
+
+### Parameter: `searchResults`
+
+Parameters of the search job that initiated this table.
+
+- Required: No
+- Type: object
+- Default: `{}`
+
+### Parameter: `totalRetentionInDays`
+
+The table total retention in days, between 4 and 2555. Setting this property to -1 will default to table retention.
+
+- Required: No
+- Type: int
+- Default: `-1`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the table. |
 | `resourceGroupName` | string | The name of the resource group the table was created in. |

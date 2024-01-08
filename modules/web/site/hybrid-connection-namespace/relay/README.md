@@ -19,28 +19,66 @@ This module deploys a Site Hybrid Connection Namespace Relay.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `hybridConnectionResourceId` | string | The resource ID of the relay namespace hybrid connection. |
+| [`hybridConnectionResourceId`](#parameter-hybridconnectionresourceid) | string | The resource ID of the relay namespace hybrid connection. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `appName` | string | The name of the parent web site. Required if the template is used in a standalone deployment. |
+| [`appName`](#parameter-appname) | string | The name of the parent web site. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` | Location for all Resources. |
-| `sendKeyName` | string | `'defaultSender'` | Name of the authorization rule send key to use. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location) | string | Location for all Resources. |
+| [`sendKeyName`](#parameter-sendkeyname) | string | Name of the authorization rule send key to use. |
+
+### Parameter: `hybridConnectionResourceId`
+
+The resource ID of the relay namespace hybrid connection.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `appName`
+
+The name of the parent web site. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `location`
+
+Location for all Resources.
+
+- Required: No
+- Type: string
+- Default: `[resourceGroup().location]`
+
+### Parameter: `sendKeyName`
+
+Name of the authorization rule send key to use.
+
+- Required: No
+- Type: string
+- Default: `'defaultSender'`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the hybrid connection relay.. |
 | `resourceGroupName` | string | The name of the resource group the resource was deployed into. |

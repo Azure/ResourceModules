@@ -19,28 +19,64 @@ This module deploys a Hosting Environment Custom DNS Suffix Configuration.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `certificateUrl` | string | The URL referencing the Azure Key Vault certificate secret that should be used as the default SSL/TLS certificate for sites with the custom domain suffix. |
-| `dnsSuffix` | string | Enable the default custom domain suffix to use for all sites deployed on the ASE. |
-| `keyVaultReferenceIdentity` | string | The user-assigned identity to use for resolving the key vault certificate reference. If not specified, the system-assigned ASE identity will be used if available. |
+| [`certificateUrl`](#parameter-certificateurl) | string | The URL referencing the Azure Key Vault certificate secret that should be used as the default SSL/TLS certificate for sites with the custom domain suffix. |
+| [`dnsSuffix`](#parameter-dnssuffix) | string | Enable the default custom domain suffix to use for all sites deployed on the ASE. |
+| [`keyVaultReferenceIdentity`](#parameter-keyvaultreferenceidentity) | string | The user-assigned identity to use for resolving the key vault certificate reference. If not specified, the system-assigned ASE identity will be used if available. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `hostingEnvironmentName` | string | The name of the parent Hosting Environment. Required if the template is used in a standalone deployment. |
+| [`hostingEnvironmentName`](#parameter-hostingenvironmentname) | string | The name of the parent Hosting Environment. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+
+### Parameter: `certificateUrl`
+
+The URL referencing the Azure Key Vault certificate secret that should be used as the default SSL/TLS certificate for sites with the custom domain suffix.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `dnsSuffix`
+
+Enable the default custom domain suffix to use for all sites deployed on the ASE.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `keyVaultReferenceIdentity`
+
+The user-assigned identity to use for resolving the key vault certificate reference. If not specified, the system-assigned ASE identity will be used if available.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `hostingEnvironmentName`
+
+The name of the parent Hosting Environment. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the configuration. |
 | `resourceGroupName` | string | The resource group of the deployed configuration. |

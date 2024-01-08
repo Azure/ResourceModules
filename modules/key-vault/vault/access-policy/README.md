@@ -19,80 +19,44 @@ This module deploys a Key Vault Access Policy.
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `keyVaultName` | string | The name of the parent key vault. Required if the template is used in a standalone deployment. |
+| [`keyVaultName`](#parameter-keyvaultname) | string | The name of the parent key vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `accessPolicies` | array | `[]` | An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`accessPolicies`](#parameter-accesspolicies) | array | An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 
+### Parameter: `keyVaultName`
 
-### Parameter Usage: `accessPolicies`
+The name of the parent key vault. Required if the template is used in a standalone deployment.
 
-<details>
+- Required: Yes
+- Type: string
 
-<summary>Parameter JSON format</summary>
+### Parameter: `accessPolicies`
 
-```json
-"accessPolicies": {
-    "value": [
-        {
-            "tenantId": null, // Optional
-            "applicationId": null, // Optional
-            "objectId": null,
-            "permissions": {
-                "certificates": [
-                    "All"
-                ],
-                "keys": [
-                    "All"
-                ],
-                "secrets": [
-                    "All"
-                ]
-            }
-        }
-    ]
-}
-```
+An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
 
-</details>
+- Required: No
+- Type: array
+- Default: `[]`
 
-<details>
+### Parameter: `enableDefaultTelemetry`
 
-<summary>Bicep format</summary>
+Enable telemetry via a Globally Unique Identifier (GUID).
 
-```bicep
-accessPolicies: [
-    {
-        tenantId: null // Optional
-        applicationId: null // Optional
-        objectId: null
-        permissions: {
-            certificates: [
-                'All'
-            ]
-            keys: [
-                'All'
-            ]
-            secrets: [
-                'All'
-            ]
-        }
-    }
-]
-```
+- Required: No
+- Type: bool
+- Default: `True`
 
-</details>
-<p>
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the access policies assignment. |
 | `resourceGroupName` | string | The name of the resource group the access policies assignment was created in. |

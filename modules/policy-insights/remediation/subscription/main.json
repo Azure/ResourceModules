@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "16781098206548824638"
+      "version": "0.23.1.45101",
+      "templateHash": "15638854500024270747"
     },
     "name": "Policy Insights Remediations (Subscription scope)",
     "description": "This module deploys a Policy Insights Remediation on a Subscription scope.",

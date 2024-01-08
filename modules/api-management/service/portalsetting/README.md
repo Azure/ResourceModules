@@ -19,27 +19,65 @@ This module deploys an API Management Service Portal Setting.
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string | `[delegation, signin, signup]` | Portal setting name. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | Portal setting name. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
+| [`apiManagementServiceName`](#parameter-apimanagementservicename) | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `properties` | object | `{object}` | Portal setting properties. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`properties`](#parameter-properties) | object | Portal setting properties. |
+
+### Parameter: `name`
+
+Portal setting name.
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'delegation'
+    'signin'
+    'signup'
+  ]
+  ```
+
+### Parameter: `apiManagementServiceName`
+
+The name of the parent API Management service. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `properties`
+
+Portal setting properties.
+
+- Required: No
+- Type: object
+- Default: `{}`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the API management service portal setting. |
 | `resourceGroupName` | string | The resource group the API management service portal setting was deployed into. |

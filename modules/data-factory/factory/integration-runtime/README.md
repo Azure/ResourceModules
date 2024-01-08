@@ -4,12 +4,13 @@ This module deploys a Data Factory Managed or Self-Hosted Integration Runtime.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -19,27 +20,93 @@ This module deploys a Data Factory Managed or Self-Hosted Integration Runtime.
 
 **Required parameters**
 
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string |  | The name of the Integration Runtime. |
-| `type` | string | `[Managed, SelfHosted]` | The type of Integration Runtime. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`name`](#parameter-name) | string | The name of the Integration Runtime. |
+| [`type`](#parameter-type) | string | The type of Integration Runtime. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `dataFactoryName` | string | The name of the parent Azure Data Factory. Required if the template is used in a standalone deployment. |
+| [`dataFactoryName`](#parameter-datafactoryname) | string | The name of the parent Azure Data Factory. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `managedVirtualNetworkName` | string | `''` | The name of the Managed Virtual Network if using type "Managed" . |
-| `typeProperties` | object | `{object}` | Integration Runtime type properties. Required if type is "Managed". |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`managedVirtualNetworkName`](#parameter-managedvirtualnetworkname) | string | The name of the Managed Virtual Network if using type "Managed" . |
+| [`typeProperties`](#parameter-typeproperties) | object | Integration Runtime type properties. Required if type is "Managed". |
+
+### Parameter: `name`
+
+The name of the Integration Runtime.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `type`
+
+The type of Integration Runtime.
+
+- Required: Yes
+- Type: string
+- Allowed:
+  ```Bicep
+  [
+    'Managed'
+    'SelfHosted'
+  ]
+  ```
+
+### Parameter: `dataFactoryName`
+
+The name of the parent Azure Data Factory. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `managedVirtualNetworkName`
+
+The name of the Managed Virtual Network if using type "Managed" .
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `typeProperties`
+
+Integration Runtime type properties. Required if type is "Managed".
+
+- Required: No
+- Type: object
+- Default: `{}`
 
 
-### Parameter Usage: [`typeProperties`](https://learn.microsoft.com/en-us/azure/templates/microsoft.datafactory/factories/integrationruntimes?tabs=bicep#integrationruntime-objects)
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the Integration Runtime. |
+| `resourceGroupName` | string | The name of the Resource Group the Integration Runtime was created in. |
+| `resourceId` | string | The resource ID of the Integration Runtime. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
+
+### Parameter Usage: `typeProperties`
 
 <details>
 
@@ -69,15 +136,3 @@ typeProperties: {
 
 <details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the Integration Runtime. |
-| `resourceGroupName` | string | The name of the Resource Group the Integration Runtime was created in. |
-| `resourceId` | string | The resource ID of the Integration Runtime. |
-
-## Cross-referenced modules
-
-_None_

@@ -1,11 +1,12 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "3227525972274814852"
+      "version": "0.23.1.45101",
+      "templateHash": "5421737065579119324"
     },
     "name": "Virtual Machine Extensions",
     "description": "This module deploys a Virtual Machine Extension.",
@@ -98,14 +99,14 @@
     },
     "tags": {
       "type": "object",
-      "defaultValue": {},
+      "nullable": true,
       "metadata": {
         "description": "Optional. Tags of the resource."
       }
     }
   },
-  "resources": [
-    {
+  "resources": {
+    "defaultTelemetry": {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-04-01",
@@ -119,7 +120,13 @@
         }
       }
     },
-    {
+    "virtualMachine": {
+      "existing": true,
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2022-11-01",
+      "name": "[parameters('virtualMachineName')]"
+    },
+    "extension": {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "apiVersion": "2022-11-01",
       "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('name'))]",
@@ -135,9 +142,12 @@
         "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), null())]",
         "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), null())]",
         "suppressFailures": "[parameters('supressFailures')]"
-      }
+      },
+      "dependsOn": [
+        "virtualMachine"
+      ]
     }
-  ],
+  },
   "outputs": {
     "name": {
       "type": "string",
@@ -165,7 +175,7 @@
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), parameters('name')), '2022-11-01', 'full').location]"
+      "value": "[reference('extension', '2022-11-01', 'full').location]"
     }
   }
 }

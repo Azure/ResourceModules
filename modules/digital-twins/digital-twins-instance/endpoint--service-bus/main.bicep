@@ -22,7 +22,7 @@ param deadLetterSecret string = ''
 @description('Optional. Dead letter storage URL for identity-based authentication.')
 param deadLetterUri string = ''
 
-@description('Optional. The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol \'sb://\'.')
+@description('Optional. The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol \'sb://\' (e.g. sb://xyz.servicebus.windows.net).')
 param endpointUri string = ''
 
 @description('Optional. The ServiceBus Topic name for identity-based authentication.')
@@ -32,24 +32,19 @@ param entityPath string = ''
 @secure()
 param primaryConnectionString string = ''
 
-@description('Optional. SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.')
+@description('Optional. SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Only used if the `authenticationType` is "KeyBased".')
 @secure()
 param secondaryConnectionString string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
+@description('Optional. The managed identity definition for this resource.')
+param managedIdentities managedIdentitiesType
 
-@description('Optional. The ID to assign to the resource.')
-param userAssignedIdentity string = ''
-
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentity) ? 'SystemAssigned, UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentity) ? 'UserAssigned' : 'None')
-
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentity: !empty(userAssignedIdentity) ? userAssignedIdentity : null
+var identity = !empty(managedIdentities) ? {
+  type: (managedIdentities.?systemAssigned ?? false) ? (!empty(managedIdentities.?userAssignedResourceId ?? '') ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(managedIdentities.?userAssignedResourceId ?? '') ? 'UserAssigned' : null)
+  userAssignedIdentity: !empty(managedIdentities.?userAssignedResourceId) ? managedIdentities.?userAssignedResourceId : null
 } : null
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -92,3 +87,15 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The name of the Endpoint.')
 output name string = endpoint.name
+
+// =============== //
+//   Definitions   //
+// =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. Enables system assigned managed identity on the resource.')
+  systemAssigned: bool?
+
+  @description('Optional. The resource ID to assign to the resource.')
+  userAssignedResourceId: string?
+}?

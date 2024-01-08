@@ -4,12 +4,13 @@ This module deploys an API Management Service Named Value.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -19,27 +20,101 @@ This module deploys an API Management Service Named Value.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `displayName` | string | Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters. |
-| `name` | string | Named value Name. |
+| [`displayName`](#parameter-displayname) | string | Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters. |
+| [`name`](#parameter-name) | string | Named value Name. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
+| [`apiManagementServiceName`](#parameter-apimanagementservicename) | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `keyVault` | object | `{object}` | KeyVault location details of the namedValue. |
-| `secret` | bool | `False` | Determines whether the value is a secret and should be encrypted or not. Default value is false. |
-| `tags` | array | `[]` | Tags that when provided can be used to filter the NamedValue list. - string. |
-| `value` | string | `[newGuid()]` | Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`keyVault`](#parameter-keyvault) | object | KeyVault location details of the namedValue. |
+| [`secret`](#parameter-secret) | bool | Determines whether the value is a secret and should be encrypted or not. Default value is false. |
+| [`tags`](#parameter-tags) | array | Tags that when provided can be used to filter the NamedValue list. - string. |
+| [`value`](#parameter-value) | string | Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
 
+### Parameter: `displayName`
+
+Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+Named value Name.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `apiManagementServiceName`
+
+The name of the parent API Management service. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `keyVault`
+
+KeyVault location details of the namedValue.
+
+- Required: No
+- Type: object
+- Default: `{}`
+
+### Parameter: `secret`
+
+Determines whether the value is a secret and should be encrypted or not. Default value is false.
+
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `tags`
+
+Tags that when provided can be used to filter the NamedValue list. - string.
+
+- Required: No
+- Type: array
+
+### Parameter: `value`
+
+Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+
+- Required: No
+- Type: string
+- Default: `[newGuid()]`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the named value. |
+| `resourceGroupName` | string | The resource group the named value was deployed into. |
+| `resourceId` | string | The resource ID of the named value. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `keyVault`
 
@@ -71,56 +146,3 @@ keyVault: {
 
 </details>
 <p>
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the named value. |
-| `resourceGroupName` | string | The resource group the named value was deployed into. |
-| `resourceId` | string | The resource ID of the named value. |
-
-## Cross-referenced modules
-
-_None_

@@ -8,6 +8,7 @@ This module deploys a VPN Gateway VPN Connection.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Notes](#Notes)
 
 ## Resource Types
 
@@ -19,36 +20,191 @@ This module deploys a VPN Gateway VPN Connection.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the VPN connection. |
+| [`name`](#parameter-name) | string | The name of the VPN connection. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `vpnGatewayName` | string | The name of the parent VPN gateway this VPN connection is associated with. Required if the template is used in a standalone deployment. |
+| [`vpnGatewayName`](#parameter-vpngatewayname) | string | The name of the parent VPN gateway this VPN connection is associated with. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `connectionBandwidth` | int | `10` |  | Expected bandwidth in MBPS. |
-| `enableBgp` | bool | `False` |  | Enable BGP flag. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `enableInternetSecurity` | bool | `False` |  | Enable internet security. |
-| `enableRateLimiting` | bool | `False` |  | Enable rate limiting. |
-| `ipsecPolicies` | array | `[]` |  | The IPSec policies to be considered by this connection. |
-| `remoteVpnSiteResourceId` | string | `''` |  | Reference to a VPN site to link to. |
-| `routingConfiguration` | object | `{object}` |  | Routing configuration indicating the associated and propagated route tables for this connection. |
-| `routingWeight` | int | `0` |  | Routing weight for VPN connection. |
-| `sharedKey` | securestring | `''` |  | SharedKey for the VPN connection. |
-| `trafficSelectorPolicies` | array | `[]` |  | The traffic selector policies to be considered by this connection. |
-| `useLocalAzureIpAddress` | bool | `False` |  | Use local Azure IP to initiate connection. |
-| `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors. |
-| `vpnConnectionProtocolType` | string | `'IKEv2'` | `[IKEv1, IKEv2]` | Gateway connection protocol. |
-| `vpnLinkConnections` | array | `[]` |  | List of all VPN site link connections to the gateway. |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`connectionBandwidth`](#parameter-connectionbandwidth) | int | Expected bandwidth in MBPS. |
+| [`enableBgp`](#parameter-enablebgp) | bool | Enable BGP flag. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`enableInternetSecurity`](#parameter-enableinternetsecurity) | bool | Enable internet security. |
+| [`enableRateLimiting`](#parameter-enableratelimiting) | bool | Enable rate limiting. |
+| [`ipsecPolicies`](#parameter-ipsecpolicies) | array | The IPSec policies to be considered by this connection. |
+| [`remoteVpnSiteResourceId`](#parameter-remotevpnsiteresourceid) | string | Reference to a VPN site to link to. |
+| [`routingConfiguration`](#parameter-routingconfiguration) | object | Routing configuration indicating the associated and propagated route tables for this connection. |
+| [`routingWeight`](#parameter-routingweight) | int | Routing weight for VPN connection. |
+| [`sharedKey`](#parameter-sharedkey) | securestring | SharedKey for the VPN connection. |
+| [`trafficSelectorPolicies`](#parameter-trafficselectorpolicies) | array | The traffic selector policies to be considered by this connection. |
+| [`useLocalAzureIpAddress`](#parameter-uselocalazureipaddress) | bool | Use local Azure IP to initiate connection. |
+| [`usePolicyBasedTrafficSelectors`](#parameter-usepolicybasedtrafficselectors) | bool | Enable policy-based traffic selectors. |
+| [`vpnConnectionProtocolType`](#parameter-vpnconnectionprotocoltype) | string | Gateway connection protocol. |
+| [`vpnLinkConnections`](#parameter-vpnlinkconnections) | array | List of all VPN site link connections to the gateway. |
 
+### Parameter: `name`
+
+The name of the VPN connection.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `vpnGatewayName`
+
+The name of the parent VPN gateway this VPN connection is associated with. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `connectionBandwidth`
+
+Expected bandwidth in MBPS.
+
+- Required: No
+- Type: int
+- Default: `10`
+
+### Parameter: `enableBgp`
+
+Enable BGP flag.
+
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
+
+### Parameter: `enableInternetSecurity`
+
+Enable internet security.
+
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `enableRateLimiting`
+
+Enable rate limiting.
+
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `ipsecPolicies`
+
+The IPSec policies to be considered by this connection.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `remoteVpnSiteResourceId`
+
+Reference to a VPN site to link to.
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `routingConfiguration`
+
+Routing configuration indicating the associated and propagated route tables for this connection.
+
+- Required: No
+- Type: object
+- Default: `{}`
+
+### Parameter: `routingWeight`
+
+Routing weight for VPN connection.
+
+- Required: No
+- Type: int
+- Default: `0`
+
+### Parameter: `sharedKey`
+
+SharedKey for the VPN connection.
+
+- Required: No
+- Type: securestring
+- Default: `''`
+
+### Parameter: `trafficSelectorPolicies`
+
+The traffic selector policies to be considered by this connection.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+### Parameter: `useLocalAzureIpAddress`
+
+Use local Azure IP to initiate connection.
+
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `usePolicyBasedTrafficSelectors`
+
+Enable policy-based traffic selectors.
+
+- Required: No
+- Type: bool
+- Default: `False`
+
+### Parameter: `vpnConnectionProtocolType`
+
+Gateway connection protocol.
+
+- Required: No
+- Type: string
+- Default: `'IKEv2'`
+- Allowed:
+  ```Bicep
+  [
+    'IKEv1'
+    'IKEv2'
+  ]
+  ```
+
+### Parameter: `vpnLinkConnections`
+
+List of all VPN site link connections to the gateway.
+
+- Required: No
+- Type: array
+- Default: `[]`
+
+
+## Outputs
+
+| Output | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the VPN connection. |
+| `resourceGroupName` | string | The name of the resource group the VPN connection was deployed into. |
+| `resourceId` | string | The resource ID of the VPN connection. |
+
+## Cross-referenced modules
+
+_None_
+
+## Notes
 
 ### Parameter Usage: `routingConfiguration`
 
@@ -106,15 +262,3 @@ routingConfiguration: {
 
 </details>
 <p>
-
-## Outputs
-
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the VPN connection. |
-| `resourceGroupName` | string | The name of the resource group the VPN connection was deployed into. |
-| `resourceId` | string | The resource ID of the VPN connection. |
-
-## Cross-referenced modules
-
-_None_

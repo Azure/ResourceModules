@@ -4,12 +4,12 @@ This module deploys a Recovery Services Vault Backup Policy.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
@@ -19,209 +19,56 @@ This module deploys a Recovery Services Vault Backup Policy.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Azure Recovery Service Vault Backup Policy. |
-| `properties` | object | Configuration of the Azure Recovery Service Vault Backup Policy. |
+| [`name`](#parameter-name) | string | Name of the Azure Recovery Service Vault Backup Policy. |
+| [`properties`](#parameter-properties) | object | Configuration of the Azure Recovery Service Vault Backup Policy. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
+| [`recoveryVaultName`](#parameter-recoveryvaultname) | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
 
+### Parameter: `name`
 
-### Parameter Usage: `backupPolicyProperties`
+Name of the Azure Recovery Service Vault Backup Policy.
 
-Object continaining the configuration for backup policies. It needs to be properly formatted and can be VM backup policies, SQL on VM backup policies or fileshare policies. The following example shows a VM backup policy.
+- Required: Yes
+- Type: string
 
-<details>
+### Parameter: `properties`
 
-<summary>Parameter JSON format</summary>
+Configuration of the Azure Recovery Service Vault Backup Policy.
 
-```json
-"backupPolicyProperties": {
-    "value": {
-        "backupManagementType": "AzureIaasVM",
-        "instantRPDetails": {},
-        "schedulePolicy": {
-            "schedulePolicyType": "SimpleSchedulePolicy",
-            "scheduleRunFrequency": "Daily",
-            "scheduleRunTimes": [
-                "2019-11-07T07:00:00Z"
-            ],
-            "scheduleWeeklyFrequency": 0
-        },
-        "retentionPolicy": {
-            "retentionPolicyType": "LongTermRetentionPolicy",
-            "dailySchedule": {
-                "retentionTimes": [
-                    "2019-11-07T07:00:00Z"
-                ],
-                "retentionDuration": {
-                    "count": 180,
-                    "durationType": "Days"
-                }
-            },
-            "weeklySchedule": {
-                "daysOfTheWeek": [
-                    "Sunday"
-                ],
-                "retentionTimes": [
-                    "2019-11-07T07:00:00Z"
-                ],
-                "retentionDuration": {
-                    "count": 12,
-                    "durationType": "Weeks"
-                }
-            },
-            "monthlySchedule": {
-                "retentionScheduleFormatType": "Weekly",
-                "retentionScheduleWeekly": {
-                    "daysOfTheWeek": [
-                        "Sunday"
-                    ],
-                    "weeksOfTheMonth": [
-                        "First"
-                    ]
-                },
-                "retentionTimes": [
-                    "2019-11-07T07:00:00Z"
-                ],
-                "retentionDuration": {
-                    "count": 60,
-                    "durationType": "Months"
-                }
-            },
-            "yearlySchedule": {
-                "retentionScheduleFormatType": "Weekly",
-                "monthsOfYear": [
-                    "January"
-                ],
-                "retentionScheduleWeekly": {
-                    "daysOfTheWeek": [
-                        "Sunday"
-                    ],
-                    "weeksOfTheMonth": [
-                        "First"
-                    ]
-                },
-                "retentionTimes": [
-                    "2019-11-07T07:00:00Z"
-                ],
-                "retentionDuration": {
-                    "count": 10,
-                    "durationType": "Years"
-                }
-            }
-        },
-        "instantRpRetentionRangeInDays": 2,
-        "timeZone": "UTC",
-        "protectedItemsCount": 0
-    }
-}
-```
+- Required: Yes
+- Type: object
 
-</details>
+### Parameter: `recoveryVaultName`
 
+The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.
 
-<details>
+- Required: Yes
+- Type: string
 
-<summary>Bicep format</summary>
+### Parameter: `enableDefaultTelemetry`
 
-```bicep
-backupPolicyProperties: {
-    backupManagementType: 'AzureIaasVM'
-    instantRPDetails: {}
-    schedulePolicy: {
-        schedulePolicyType: 'SimpleSchedulePolicy'
-        scheduleRunFrequency: 'Daily'
-        scheduleRunTimes: [
-            '2019-11-07T07:00:00Z'
-        ]
-        scheduleWeeklyFrequency: 0
-    }
-    retentionPolicy: {
-        retentionPolicyType: 'LongTermRetentionPolicy'
-        dailySchedule: {
-            retentionTimes: [
-                '2019-11-07T07:00:00Z'
-            ]
-            retentionDuration: {
-                count: 180
-                durationType: 'Days'
-            }
-        }
-        weeklySchedule: {
-            daysOfTheWeek: [
-                'Sunday'
-            ]
-            retentionTimes: [
-                '2019-11-07T07:00:00Z'
-            ]
-            retentionDuration: {
-                count: 12
-                durationType: 'Weeks'
-            }
-        }
-        monthlySchedule: {
-            retentionScheduleFormatType: 'Weekly'
-            retentionScheduleWeekly: {
-                daysOfTheWeek: [
-                    'Sunday'
-                ]
-                weeksOfTheMonth: [
-                    'First'
-                ]
-            }
-            retentionTimes: [
-                '2019-11-07T07:00:00Z'
-            ]
-            retentionDuration: {
-                count: 60
-                durationType: 'Months'
-            }
-        }
-        yearlySchedule: {
-            retentionScheduleFormatType: 'Weekly'
-            monthsOfYear: [
-                'January'
-            ]
-            retentionScheduleWeekly: {
-                daysOfTheWeek: [
-                    'Sunday'
-                ]
-                weeksOfTheMonth: [
-                    'First'
-                ]
-            }
-            retentionTimes: [
-                '2019-11-07T07:00:00Z'
-            ]
-            retentionDuration: {
-                count: 10
-                durationType: 'Years'
-            }
-        }
-    }
-    instantRpRetentionRangeInDays: 2
-    timeZone: 'UTC'
-    protectedItemsCount: 0
-}
-```
+Enable telemetry via a Globally Unique Identifier (GUID).
 
-</details>
-<p>
+- Required: No
+- Type: bool
+- Default: `True`
+
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the backup policy. |
 | `resourceGroupName` | string | The name of the resource group the backup policy was created in. |

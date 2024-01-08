@@ -19,30 +19,80 @@ This module deploys a Data Factory Managed Virtual Network Managed Private Endpo
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `fqdns` | array | Fully qualified domain names. |
-| `groupId` | string | The groupId to which the managed private endpoint is created. |
-| `managedVirtualNetworkName` | string | The name of the parent managed virtual network. |
-| `name` | string | The managed private endpoint resource name. |
-| `privateLinkResourceId` | string | The ARM resource ID of the resource to which the managed private endpoint is created. |
+| [`fqdns`](#parameter-fqdns) | array | Fully qualified domain names. |
+| [`groupId`](#parameter-groupid) | string | The groupId to which the managed private endpoint is created. |
+| [`managedVirtualNetworkName`](#parameter-managedvirtualnetworkname) | string | The name of the parent managed virtual network. |
+| [`name`](#parameter-name) | string | The managed private endpoint resource name. |
+| [`privateLinkResourceId`](#parameter-privatelinkresourceid) | string | The ARM resource ID of the resource to which the managed private endpoint is created. |
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
+| Parameter | Type | Description |
 | :-- | :-- | :-- |
-| `dataFactoryName` | string | The name of the parent data factory. Required if the template is used in a standalone deployment. |
+| [`dataFactoryName`](#parameter-datafactoryname) | string | The name of the parent data factory. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
+
+### Parameter: `fqdns`
+
+Fully qualified domain names.
+
+- Required: Yes
+- Type: array
+
+### Parameter: `groupId`
+
+The groupId to which the managed private endpoint is created.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `managedVirtualNetworkName`
+
+The name of the parent managed virtual network.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `name`
+
+The managed private endpoint resource name.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `privateLinkResourceId`
+
+The ARM resource ID of the resource to which the managed private endpoint is created.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `dataFactoryName`
+
+The name of the parent data factory. Required if the template is used in a standalone deployment.
+
+- Required: Yes
+- Type: string
+
+### Parameter: `enableDefaultTelemetry`
+
+Enable telemetry via a Globally Unique Identifier (GUID).
+
+- Required: No
+- Type: bool
+- Default: `True`
 
 
 ## Outputs
 
-| Output Name | Type | Description |
+| Output | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed managed private endpoint. |
 | `resourceGroupName` | string | The resource group of the deployed managed private endpoint. |

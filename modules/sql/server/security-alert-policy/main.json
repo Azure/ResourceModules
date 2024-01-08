@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.20.4.51522",
-      "templateHash": "15954751031444198635"
+      "version": "0.23.1.45101",
+      "templateHash": "15800765189083682209"
     },
     "name": "Azure SQL Server Security Alert Policies",
     "description": "This module deploys an Azure SQL Server Security Alert Policy.",
@@ -102,7 +102,7 @@
     },
     {
       "type": "Microsoft.Sql/servers/securityAlertPolicies",
-      "apiVersion": "2022-02-01-preview",
+      "apiVersion": "2022-05-01-preview",
       "name": "[format('{0}/{1}', parameters('serverName'), parameters('name'))]",
       "properties": {
         "disabledAlerts": "[parameters('disabledAlerts')]",

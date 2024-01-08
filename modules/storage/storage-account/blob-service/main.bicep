@@ -15,7 +15,7 @@ param changeFeedEnabled bool = true
 @minValue(0)
 @maxValue(146000)
 @description('Optional. Indicates whether change feed event logging is enabled for the Blob service. Indicates the duration of changeFeed retention in days. A "0" value indicates an infinite retention of the change feed.')
-param changeFeedRetentionInDays int = 7
+param changeFeedRetentionInDays int?
 
 @description('Optional. The blob service properties for container soft delete. Indicates whether DeleteRetentionPolicy is enabled.')
 param containerDeleteRetentionPolicyEnabled bool = true
@@ -23,7 +23,7 @@ param containerDeleteRetentionPolicyEnabled bool = true
 @minValue(1)
 @maxValue(365)
 @description('Optional. Indicates the number of days that the deleted item should be retained.')
-param containerDeleteRetentionPolicyDays int = 7
+param containerDeleteRetentionPolicyDays int?
 
 @description('Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share.')
 param containerDeleteRetentionPolicyAllowPermanentDelete bool = false
@@ -40,7 +40,7 @@ param deleteRetentionPolicyEnabled bool = true
 @minValue(1)
 @maxValue(365)
 @description('Optional. Indicates the number of days that the deleted blob should be retained.')
-param deleteRetentionPolicyDays int = 7
+param deleteRetentionPolicyDays int?
 
 @description('Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share.')
 param deleteRetentionPolicyAllowPermanentDelete bool = false
@@ -55,70 +55,20 @@ param lastAccessTimeTrackingPolicyEnabled bool = false
 param restorePolicyEnabled bool = true
 
 @minValue(1)
-@description('Optional. how long this blob can be restored. It should be less than DeleteRetentionPolicy days.')
-param restorePolicyDays int = 6
+@description('Optional. How long this blob can be restored. It should be less than DeleteRetentionPolicy days.')
+param restorePolicyDays int?
 
 @description('Optional. Blob containers to create.')
 param containers array = []
 
-@description('Optional. Resource ID of the diagnostic storage account.')
-param diagnosticStorageAccountId string = ''
-
-@description('Optional. Resource ID of a log analytics workspace.')
-param diagnosticWorkspaceId string = ''
-
-@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param diagnosticEventHubAuthorizationRuleId string = ''
-
-@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param diagnosticEventHubName string = ''
+@description('Optional. The diagnostic settings of the service.')
+param diagnosticSettings diagnosticSettingType
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
-@allowed([
-  ''
-  'allLogs'
-  'StorageRead'
-  'StorageWrite'
-  'StorageDelete'
-])
-param diagnosticLogCategoriesToEnable array = [
-  'allLogs'
-]
-
-@description('Optional. The name of metrics that will be streamed.')
-@allowed([
-  'Transaction'
-])
-param diagnosticMetricsToEnable array = [
-  'Transaction'
-]
-
-@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
-param diagnosticSettingsName string = ''
-
 // The name of the blob services
 var name = 'default'
-
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
-  category: category
-  enabled: true
-}]
-
-var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
-  {
-    categoryGroup: 'allLogs'
-    enabled: true
-  }
-] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
-
-var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
-  category: metric
-  timeGrain: null
-  enabled: true
-}]
 
 var enableReferencedModulesTelemetry = false
 
@@ -143,13 +93,13 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01
   parent: storageAccount
   properties: {
     automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
-    changeFeed: {
-      enabled: changeFeedEnabled
-      retentionInDays: changeFeedEnabled == true ? (changeFeedRetentionInDays != 0 ? changeFeedRetentionInDays : null) : null
-    }
+    changeFeed: changeFeedEnabled ? {
+      enabled: true
+      retentionInDays: changeFeedRetentionInDays
+    } : null
     containerDeleteRetentionPolicy: {
       enabled: containerDeleteRetentionPolicyEnabled
-      days: containerDeleteRetentionPolicyEnabled == true ? containerDeleteRetentionPolicyDays : null
+      days: containerDeleteRetentionPolicyDays
       allowPermanentDelete: containerDeleteRetentionPolicyEnabled == true ? containerDeleteRetentionPolicyAllowPermanentDelete : null
     }
     cors: {
@@ -158,7 +108,7 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01
     defaultServiceVersion: !empty(defaultServiceVersion) ? defaultServiceVersion : null
     deleteRetentionPolicy: {
       enabled: deleteRetentionPolicyEnabled
-      days: deleteRetentionPolicyEnabled == true ? deleteRetentionPolicyDays : null
+      days: deleteRetentionPolicyDays
       allowPermanentDelete: deleteRetentionPolicyEnabled && deleteRetentionPolicyAllowPermanentDelete ? true : null
     }
     isVersioningEnabled: isVersioningEnabled
@@ -167,25 +117,38 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01
       name: lastAccessTimeTrackingPolicyEnabled == true ? 'AccessTimeTracking' : null
       trackingGranularityInDays: lastAccessTimeTrackingPolicyEnabled == true ? 1 : null
     }
-    restorePolicy: {
-      enabled: restorePolicyEnabled
-      days: restorePolicyEnabled == true ? restorePolicyDays : null
-    }
+    restorePolicy: restorePolicyEnabled ? {
+      enabled: true
+      days: restorePolicyDays
+    } : null
   }
 }
 
-resource blobServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
+resource blobServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for (diagnosticSetting, index) in (diagnosticSettings ?? []): {
+  name: diagnosticSetting.?name ?? '${name}-diagnosticSettings'
   properties: {
-    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
-    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
-    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-    metrics: diagnosticsMetrics
-    logs: diagnosticsLogs
+    storageAccountId: diagnosticSetting.?storageAccountResourceId
+    workspaceId: diagnosticSetting.?workspaceResourceId
+    eventHubAuthorizationRuleId: diagnosticSetting.?eventHubAuthorizationRuleResourceId
+    eventHubName: diagnosticSetting.?eventHubName
+    metrics: diagnosticSetting.?metricCategories ?? [
+      {
+        category: 'AllMetrics'
+        timeGrain: null
+        enabled: true
+      }
+    ]
+    logs: diagnosticSetting.?logCategoriesAndGroups ?? [
+      {
+        categoryGroup: 'AllLogs'
+        enabled: true
+      }
+    ]
+    marketplacePartnerId: diagnosticSetting.?marketplacePartnerResourceId
+    logAnalyticsDestinationType: diagnosticSetting.?logAnalyticsDestinationType
   }
   scope: blobServices
-}
+}]
 
 module blobServices_container 'container/main.bicep' = [for (container, index) in containers: {
   name: '${deployment().name}-Container-${index}'
@@ -213,3 +176,44 @@ output resourceId string = blobServices.id
 
 @description('The name of the deployed blob service.')
 output resourceGroupName string = resourceGroup().name
+// =============== //
+//   Definitions   //
+// =============== //
+
+type diagnosticSettingType = {
+  @description('Optional. The name of diagnostic setting.')
+  name: string?
+
+  @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
+  logCategoriesAndGroups: {
+    @description('Optional. Name of a Diagnostic Log category for a resource type this setting is applied to. Set the specific logs to collect here.')
+    category: string?
+
+    @description('Optional. Name of a Diagnostic Log category group for a resource type this setting is applied to. Set to \'AllLogs\' to collect all logs.')
+    categoryGroup: string?
+  }[]?
+
+  @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
+  metricCategories: {
+    @description('Required. Name of a Diagnostic Metric category for a resource type this setting is applied to. Set to \'AllMetrics\' to collect all metrics.')
+    category: string
+  }[]?
+
+  @description('Optional. A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.')
+  logAnalyticsDestinationType: ('Dedicated' | 'AzureDiagnostics')?
+
+  @description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  workspaceResourceId: string?
+
+  @description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  storageAccountResourceId: string?
+
+  @description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+  eventHubAuthorizationRuleResourceId: string?
+
+  @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
+  eventHubName: string?
+
+  @description('Optional. The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.')
+  marketplacePartnerResourceId: string?
+}[]?

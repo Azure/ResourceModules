@@ -15,7 +15,7 @@ param location string = resourceGroup().location
 param properties object
 
 @description('Optional. Endpoint tags.')
-param tags object = {}
+param tags object?
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

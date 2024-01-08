@@ -133,7 +133,7 @@ param scaleSetPriority string = ''
 param spotMaxPrice int = -1
 
 @description('Optional. Tags of the resource.')
-param tags object = {}
+param tags object?
 
 @description('Optional. The type of Agent Pool.')
 param type string = ''
@@ -173,11 +173,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-06-02-preview' existing = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-07-02-preview' existing = {
   name: managedClusterName
 }
 
-resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2023-06-02-preview' = {
+resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2023-07-02-preview' = {
   name: name
   parent: managedCluster
   properties: {
