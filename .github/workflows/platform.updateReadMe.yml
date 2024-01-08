@@ -23,7 +23,7 @@ env:
 
 jobs:
   job_update_readme:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: 'Update status tables'
     steps:
       - name: 'Checkout'
