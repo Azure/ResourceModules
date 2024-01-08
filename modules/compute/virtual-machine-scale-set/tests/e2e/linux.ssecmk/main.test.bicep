@@ -57,6 +57,9 @@ module testDeployment '../../../main.bicep' = [for iteration in [ 'init', 'idem'
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}-${iteration}'
   params: {
+    extensionMonitoringAgentConfig: {
+      enabled: true
+    }
     enableDefaultTelemetry: enableDefaultTelemetry
     location: location
     name: '${namePrefix}${serviceShort}001'

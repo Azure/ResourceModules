@@ -490,13 +490,13 @@ resource vmss_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@20
   scope: az.resourceGroup(split((!empty(monitoringWorkspaceId) ? monitoringWorkspaceId : '//'), '/')[2], split((!empty(monitoringWorkspaceId) ? monitoringWorkspaceId : '////'), '/')[4])
 }
 
-module vmss_microsoftMonitoringAgentExtension 'extension/main.bicep' = if (extensionMonitoringAgentConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-VMSS-MicrosoftMonitoringAgent'
+module vmss_azureMonitorAgentExtension 'extension/main.bicep' = if (extensionMonitoringAgentConfig.enabled) {
+  name: '${uniqueString(deployment().name, location)}-VMSS-AzureMonitorAgent'
   params: {
     virtualMachineScaleSetName: vmss.name
-    name: 'MicrosoftMonitoringAgent'
-    publisher: 'Microsoft.EnterpriseCloud.Monitoring'
-    type: osType == 'Windows' ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
+    name: 'AzureMonitorAgent'
+    publisher: 'Microsoft.Azure.Monitor'
+    type: osType == 'Windows' ? 'AzureMonitorWindowsAgent' : 'AzureMonitorLinuxAgent'
     typeHandlerVersion: contains(extensionMonitoringAgentConfig, 'typeHandlerVersion') ? extensionMonitoringAgentConfig.typeHandlerVersion : (osType == 'Windows' ? '1.0' : '1.7')
     autoUpgradeMinorVersion: contains(extensionMonitoringAgentConfig, 'autoUpgradeMinorVersion') ? extensionMonitoringAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionMonitoringAgentConfig, 'enableAutomaticUpgrade') ? extensionMonitoringAgentConfig.enableAutomaticUpgrade : false
@@ -591,7 +591,7 @@ module vmss_azureDiskEncryptionExtension 'extension/main.bicep' = if (extensionA
   }
   dependsOn: [
     vmss_customScriptExtension
-    vmss_microsoftMonitoringAgentExtension
+    vmss_azureMonitorAgentExtension
   ]
 }
 

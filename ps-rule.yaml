@@ -16,7 +16,7 @@ binding:
 # Require minimum versions of modules.
 requires:
   PSRule: '@pre >=2.4.0'
-  PSRule.Rules.Azure: '@pre >=1.19.2'
+  PSRule.Rules.Azure: '@pre >=1.27.3'
 
 # Use PSRule for Azure.
 include:
@@ -24,8 +24,10 @@ include:
     - PSRule.Rules.Azure
 
 execution:
-  suppressedRuleWarning: false
-  notProcessedWarning: false
+  # suppressedRuleWarning: false - no more supported in PsRule ver 3.0
+  # notProcessedWarning: false - no more supported in PsRule ver 3.0
+  ruleSuppressed: Warn
+  unprocessedObject: Warn
 
 output:
   culture:
@@ -54,3 +56,4 @@ rule:
   exclude:
   # Ignore the following rules for all resources
    - Azure.KeyVault.PurgeProtect
+   - Azure.Resource.AllowedRegions

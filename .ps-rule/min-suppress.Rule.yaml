@@ -9,6 +9,7 @@ spec:
     - Azure.Resource.UseTags
     - Azure.KeyVault.Logs
     - Azure.KeyVault.Firewall
+    - Azure.VMSS.AMA
     - Azure.Policy.ExemptionDescriptors
     - Azure.Policy.Descriptors
     - Azure.Policy.AssignmentDescriptors
