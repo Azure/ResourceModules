@@ -2,6 +2,8 @@
 
 This module deploys an Azure Databricks Access Connector.
 
+> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)
