@@ -319,6 +319,7 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
           ipMask: '10.10.10.10'
         }
       ]
+      publicNetworkAccess: 'Disabled'
       trustedServiceAccessEnabled: false
       virtualNetworkRules: [
         {
@@ -530,6 +531,7 @@ module namespace 'br:bicep/modules/event-hub.namespace:1.0.0' = {
             "ipMask": "10.10.10.10"
           }
         ],
+        "publicNetworkAccess": "Disabled",
         "trustedServiceAccessEnabled": false,
         "virtualNetworkRules": [
           {

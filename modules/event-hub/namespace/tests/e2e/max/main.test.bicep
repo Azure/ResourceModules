@@ -179,6 +179,7 @@ module testDeployment '../../../main.bicep' = {
         }
       ]
       trustedServiceAccessEnabled: false
+      publicNetworkAccess: 'Disabled'
       virtualNetworkRules: [
         {
           ignoreMissingVnetServiceEndpoint: true
