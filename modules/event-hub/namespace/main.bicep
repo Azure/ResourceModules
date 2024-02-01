@@ -250,7 +250,7 @@ module eventHubNamespace_networkRuleSet 'network-rule-set/main.bicep' = if (!emp
     namespaceName: eventHubNamespace.name
     publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : (!empty(privateEndpoints) && empty(networkRuleSets) ? 'Disabled' : 'Enabled')
     defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : 'Allow'
-    trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
+    trustedServiceAccessEnabled: networkRuleSets.?trustedServiceAccessEnabled
     ipRules: contains(networkRuleSets, 'ipRules') ? networkRuleSets.ipRules : []
     virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? networkRuleSets.virtualNetworkRules : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry

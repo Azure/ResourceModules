@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.23.1.45101",
-      "templateHash": "7843391232136950856"
+      "version": "0.24.24.22086",
+      "templateHash": "7604418407731554463"
     },
     "name": "Event Hub Namespace Network Rule Sets",
     "description": "This module deploys an Event Hub Namespace Network Rule Set.",
@@ -44,7 +44,7 @@
       "type": "bool",
       "defaultValue": true,
       "metadata": {
-        "description": "Optional. Value that indicates whether Trusted Service Access is enabled or not. Default is \"true\". It will not be set if publicNetworkAccess is \"Disabled\"."
+        "description": "Optional. Value that indicates whether Trusted Service Access is enabled or not."
       }
     },
     "virtualNetworkRules": {
@@ -103,7 +103,7 @@
       "properties": {
         "publicNetworkAccess": "[parameters('publicNetworkAccess')]",
         "defaultAction": "[if(equals(parameters('publicNetworkAccess'), 'Disabled'), null(), if(or(not(empty(parameters('ipRules'))), not(empty(parameters('virtualNetworkRules')))), 'Deny', parameters('defaultAction')))]",
-        "trustedServiceAccessEnabled": "[if(equals(parameters('publicNetworkAccess'), 'Disabled'), null(), parameters('trustedServiceAccessEnabled'))]",
+        "trustedServiceAccessEnabled": "[parameters('trustedServiceAccessEnabled')]",
         "ipRules": "[if(equals(parameters('publicNetworkAccess'), 'Disabled'), null(), parameters('ipRules'))]",
         "virtualNetworkRules": "[if(equals(parameters('publicNetworkAccess'), 'Disabled'), null(), variables('networkRules'))]"
       }

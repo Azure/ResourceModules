@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.23.1.45101",
-      "templateHash": "16593644436338874715"
+      "version": "0.24.24.22086",
+      "templateHash": "16520792819194375091"
     },
     "name": "Event Hub Namespaces",
     "description": "This module deploys an Event Hub Namespace.",
@@ -812,8 +812,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.23.1.45101",
-              "templateHash": "7668723234672576868"
+              "version": "0.24.24.22086",
+              "templateHash": "3454130656900257881"
             },
             "name": "Event Hub Namespace Authorization Rule",
             "description": "This module deploys an Event Hub Namespace Authorization Rule.",
@@ -933,8 +933,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.23.1.45101",
-              "templateHash": "7231520764645220131"
+              "version": "0.24.24.22086",
+              "templateHash": "16561098614039073875"
             },
             "name": "Event Hub Namespace Disaster Recovery Configs",
             "description": "This module deploys an Event Hub Namespace Disaster Recovery Config.",
@@ -1073,8 +1073,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.23.1.45101",
-              "templateHash": "8940174354642715236"
+              "version": "0.24.24.22086",
+              "templateHash": "3029831252290713160"
             },
             "name": "Event Hub Namespace Event Hubs",
             "description": "This module deploys an Event Hub Namespace Event Hub.",
@@ -1509,8 +1509,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.23.1.45101",
-                      "templateHash": "7142673381100704232"
+                      "version": "0.24.24.22086",
+                      "templateHash": "1238713274798294217"
                     },
                     "name": "Event Hub Namespace Event Hub Consumer Groups",
                     "description": "This module deploys an Event Hub Namespace Event Hub Consumer Group.",
@@ -1637,8 +1637,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.23.1.45101",
-                      "templateHash": "4935957739850887741"
+                      "version": "0.24.24.22086",
+                      "templateHash": "14602222687176746114"
                     },
                     "name": "Event Hub Namespace Event Hub Authorization Rules",
                     "description": "This module deploys an Event Hub Namespace Event Hub Authorization Rule.",
@@ -1789,7 +1789,9 @@
           },
           "publicNetworkAccess": "[if(contains(parameters('networkRuleSets'), 'publicNetworkAccess'), createObject('value', parameters('networkRuleSets').publicNetworkAccess), if(and(not(empty(parameters('privateEndpoints'))), empty(parameters('networkRuleSets'))), createObject('value', 'Disabled'), createObject('value', 'Enabled')))]",
           "defaultAction": "[if(contains(parameters('networkRuleSets'), 'defaultAction'), createObject('value', parameters('networkRuleSets').defaultAction), createObject('value', 'Allow'))]",
-          "trustedServiceAccessEnabled": "[if(contains(parameters('networkRuleSets'), 'trustedServiceAccessEnabled'), createObject('value', parameters('networkRuleSets').trustedServiceAccessEnabled), createObject('value', true()))]",
+          "trustedServiceAccessEnabled": {
+            "value": "[tryGet(parameters('networkRuleSets'), 'trustedServiceAccessEnabled')]"
+          },
           "ipRules": "[if(contains(parameters('networkRuleSets'), 'ipRules'), createObject('value', parameters('networkRuleSets').ipRules), createObject('value', createArray()))]",
           "virtualNetworkRules": "[if(contains(parameters('networkRuleSets'), 'virtualNetworkRules'), createObject('value', parameters('networkRuleSets').virtualNetworkRules), createObject('value', createArray()))]",
           "enableDefaultTelemetry": {
@@ -1802,8 +1804,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.23.1.45101",
-              "templateHash": "7843391232136950856"
+              "version": "0.24.24.22086",
+              "templateHash": "7604418407731554463"
             },
             "name": "Event Hub Namespace Network Rule Sets",
             "description": "This module deploys an Event Hub Namespace Network Rule Set.",
@@ -1842,7 +1844,7 @@
               "type": "bool",
               "defaultValue": true,
               "metadata": {
-                "description": "Optional. Value that indicates whether Trusted Service Access is enabled or not. Default is \"true\". It will not be set if publicNetworkAccess is \"Disabled\"."
+                "description": "Optional. Value that indicates whether Trusted Service Access is enabled or not."
               }
             },
             "virtualNetworkRules": {
@@ -1901,7 +1903,7 @@
               "properties": {
                 "publicNetworkAccess": "[parameters('publicNetworkAccess')]",
                 "defaultAction": "[if(equals(parameters('publicNetworkAccess'), 'Disabled'), null(), if(or(not(empty(parameters('ipRules'))), not(empty(parameters('virtualNetworkRules')))), 'Deny', parameters('defaultAction')))]",
-                "trustedServiceAccessEnabled": "[if(equals(parameters('publicNetworkAccess'), 'Disabled'), null(), parameters('trustedServiceAccessEnabled'))]",
+                "trustedServiceAccessEnabled": "[parameters('trustedServiceAccessEnabled')]",
                 "ipRules": "[if(equals(parameters('publicNetworkAccess'), 'Disabled'), null(), parameters('ipRules'))]",
                 "virtualNetworkRules": "[if(equals(parameters('publicNetworkAccess'), 'Disabled'), null(), variables('networkRules'))]"
               }
@@ -2008,8 +2010,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.23.1.45101",
-              "templateHash": "6873008238043407177"
+              "version": "0.24.24.22086",
+              "templateHash": "11154909986774213690"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -2411,8 +2413,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.23.1.45101",
-                      "templateHash": "17578977753131828304"
+                      "version": "0.24.24.22086",
+                      "templateHash": "6129461321051281170"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
