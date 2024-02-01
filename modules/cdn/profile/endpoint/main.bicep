@@ -50,7 +50,7 @@ module endpoint_origins 'origin/main.bicep' = [for origin in properties.origins:
   name: '${name}-origins-${origin.name}'
   params: {
     profileName: profile.name
-    endpointName: name
+    endpointName: endpoint.name
     name: origin.name
     hostName: origin.properties.hostName
     httpPort: contains(origin.properties, 'httpPort') ? origin.properties.httpPort : 80
