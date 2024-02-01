@@ -13,7 +13,7 @@ This module deploys a CDN Profile Secret.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Cdn/profiles/secrets` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/profiles/secrets) |
+| `Microsoft.Cdn/profiles/secrets` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/secrets) |
 
 ## Parameters
 
@@ -29,7 +29,7 @@ This module deploys a CDN Profile Secret.
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
 | [`profileName`](#parameter-profilename) | string | The name of the parent CDN profile. Required if the template is used in a standalone deployment. |
-| [`secretSourceResourceId`](#parameter-secretsourceresourceid) | string | The resource ID of the secrect source. Required if the type is CustomerCertificate. |
+| [`secretSourceResourceId`](#parameter-secretsourceresourceid) | string | The resource ID of the secret source. Required if the `type` is "CustomerCertificate". |
 
 **Optional parameters**
 
@@ -73,7 +73,7 @@ The name of the parent CDN profile. Required if the template is used in a standa
 
 ### Parameter: `secretSourceResourceId`
 
-The resource ID of the secrect source. Required if the type is CustomerCertificate.
+The resource ID of the secret source. Required if the `type` is "CustomerCertificate".
 
 - Required: No
 - Type: string

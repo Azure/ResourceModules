@@ -17,7 +17,8 @@ param profileName string
 @description('Required. The type of the secrect.')
 param type string = 'AzureFirstPartyManagedCertificate'
 
-@description('Conditional. The resource ID of the secrect source. Required if the type is CustomerCertificate.')
+@description('Conditional. The resource ID of the secret source. Required if the `type` is "CustomerCertificate".')
+#disable-next-line secure-secrets-in-params
 param secretSourceResourceId string = ''
 
 @description('Optional. The version of the secret.')

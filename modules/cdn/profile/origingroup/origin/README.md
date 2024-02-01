@@ -13,7 +13,7 @@ This module deploys a CDN Profile Origin.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Cdn/profiles/originGroups/origins` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/profiles/originGroups/origins) |
+| `Microsoft.Cdn/profiles/originGroups/origins` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/originGroups/origins) |
 
 ## Parameters
 
