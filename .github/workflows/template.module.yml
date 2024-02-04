@@ -57,10 +57,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        moduleTestFilePaths: ${{ fromJson(inputs.moduleTestFilePaths) }}
+        testCases: ${{ fromJson(inputs.testCases) }}
     steps:
-      - name: Checkout
+      - name: 'Checkout'
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set environment
         uses: ./.github/actions/templates/setEnvironment
         with:
@@ -68,7 +70,7 @@ jobs:
       - name: Set PSRule validation
         uses: ./.github/actions/templates/validateModulePSRule
         with:
-          templateFilePath: '${{ inputs.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+          templateFilePath: '${{ inputs.modulePath }}/${{ matrix.testCases }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
 
@@ -76,7 +78,7 @@ jobs:
   #   Deployment validation   #
   #############################
   job_module_deploy_validation: # Note: Please don't change this job name. It is used by the setEnvironment action to define which PS modules to install on runners.
-    name: 'Deployment validation'
+    name: 'Deploy [${{ matrix.testCases.name}}]'
     runs-on: ubuntu-latest
     if: |
       !cancelled() &&
@@ -88,7 +90,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        moduleTestFilePaths: ${{ fromJson(inputs.moduleTestFilePaths) }}
+        testCases: ${{ fromJson(inputs.moduleTestFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
@@ -99,10 +101,10 @@ jobs:
         with:
           variablesPath: ${{ env.variablesPath }}
           removeDeployment: '${{ fromJson(inputs.workflowInput).removeDeployment }}'
-      - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
+      - name: 'Run deployment validation with test file [${{ matrix.testCases.path }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: '${{ inputs.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+          templateFilePath: '${{ inputs.modulePath }}/${{ matrix.testCases }}'
           location: '${{ env.location }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
