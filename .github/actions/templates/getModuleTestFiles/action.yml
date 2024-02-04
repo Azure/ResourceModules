@@ -1,5 +1,5 @@
-name: 'Get parameter files'
-description: 'Retrieve the parameter file paths of a given module'
+name: 'Get test files'
+description: 'Retrieve the test file paths of a given module'
 
 inputs:
   modulePath:
