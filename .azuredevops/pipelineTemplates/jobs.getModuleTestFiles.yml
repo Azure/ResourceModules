@@ -5,6 +5,7 @@ parameters:
 
   # Logic-related parameters
   modulePath: '$(modulePath)'
+  psRuleFilterRegex: '(defaults|waf-aligned)'
 
 ##---------------------------------------------##
 ## TEMPLATE LOGIC                              ##
@@ -27,24 +28,48 @@ jobs:
           script: |
             # Get the list of parameter file paths
             $moduleFolderPath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
-            $testFilePaths = (Get-ChildItem -Path $moduleFolderPath -Recurse -Filter 'main.test.bicep').FullName | Sort-Object
 
-            $deploymentTestPaths = $testFilePaths | ForEach-Object {
+            $testFilePaths = (Get-ChildItem -Path $moduleFolderPath -Recurse -Filter 'main.test.bicep').FullName | Sort-Object
+            $testFilePaths = $testFilePaths | ForEach-Object {
               $_.Replace($moduleFolderPath, '').Trim('\').Trim('/')
             }
 
-            Write-Verbose 'Found module test files' -Verbose
-            $deploymentTestPaths | ForEach-Object { Write-Verbose "- [$_]" -Verbose }
+            Write-Verbose 'Found all module test files' -Verbose
+            $testFilePaths | ForEach-Object { Write-Verbose "- [$_]" -Verbose }
 
-            $testTable = @{}
-            foreach ($deploymentTestPath in $deploymentTestPaths) {
-                $deploymentTestFileName = Split-Path (Split-Path $deploymentTestPath -Parent) -Leaf
-                $testTable[$deploymentTestFileName] += @{
-                    moduleTestFilePath = $deploymentTestPath
-                }
+            # Output values to be accessed by next jobs
+            $deployCompressedOutput = $testFilePaths | ForEach-Object {
+              @{
+                path = $_
+                name = Split-Path (Split-Path $_) -Leaf
+              }
+            } | ConvertTo-Json -Compress
+
+            # Output values to be accessed by next jobs
+            if($deployCompressedOutput -notmatch "\[.*\]") {
+              $deployCompressedOutput = "[$deployCompressedOutput]"
             }
+            Write-Verbose "Publishing output: $deployCompressedOutput" -Verbose
+            Write-Host ('##vso[task.setVariable variable=moduleTestFilePaths;isOutput=true]{0}' -f $deployCompressedOutput)
 
-            $deploymentTestPathsOutput = $testTable | ConvertTo-Json -Compress
+            Write-Output '::endgroup::'
 
-            Write-Host ('##vso[task.setVariable variable=moduleTests;isOutput=true]{0}' -f ($testTable | ConvertTo-Json -Compress))
-            Write-Verbose "Module test files: $deploymentTestPathsOutput" -Verbose
+            Write-Output '::group::Get PSRule test files'
+            $psRuleTestFilePaths = $testFilePaths | Where-Object { $_ -match '${{ parameters.psRuleFilterRegex }}' }
+
+            Write-Verbose 'Found PSRule module test files' -Verbose
+            $psRuleTestFilePaths | ForEach-Object { Write-Verbose "- [$_]" -Verbose }
+
+            # Output values to be accessed by next jobs
+            $psRuleCompressedOutput = $psRuleTestFilePaths | ForEach-Object {
+              @{
+                path = $_
+                name = Split-Path (Split-Path $_) -Leaf
+              }
+            } | ConvertTo-Json -Compress
+
+            if($psRuleCompressedOutput -notmatch "\[.*\]") {
+              $psRuleCompressedOutput = "[$psRuleCompressedOutput]"
+            }
+            Write-Verbose "Publishing output: $psRuleCompressedOutput" -Verbose
+            Write-Host ('##vso[task.setVariable variable=psRuleModuleTestFilePaths;isOutput=true]{0}' -f $psRuleCompressedOutput)
