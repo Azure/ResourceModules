@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "10175644994453911680"
+      "version": "0.24.24.22086",
+      "templateHash": "4014545030296978209"
     },
     "name": "Azure Monitor Private Link Scopes",
     "description": "This module deploys an Azure Monitor Private Link Scope.",
@@ -376,7 +376,7 @@
     "accessModeSettings": {
       "$ref": "#/definitions/accessModeType",
       "metadata": {
-        "description": "Optional. Specifies the access mode of ingestion or queries through associated private endpoints in scope. For security reasons, it is recommended to use PrivateOnly whenever possible to avoid data exfiltration.\n\n  * Private Only - This mode allows the connected virtual network to reach only Private Link resources. It is the most secure mode and is set as the default when the `privateEndpoints` parameter is configured.\n  * Open - Allows the connected virtual network to reach both Private Link resources and the resources not in the AMPLS resource. Data exfiltration cannot be prevented in this mode."
+        "description": "Optional. Specifies the access mode of ingestion or queries through associated private endpoints in scope. For security reasons, it is recommended to use PrivateOnly whenever possible to avoid data exfiltration.\r\n\r\n  * Private Only - This mode allows the connected virtual network to reach only Private Link resources. It is the most secure mode and is set as the default when the `privateEndpoints` parameter is configured.\r\n  * Open - Allows the connected virtual network to reach both Private Link resources and the resources not in the AMPLS resource. Data exfiltration cannot be prevented in this mode."
       }
     },
     "location": {
@@ -529,8 +529,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "3902218127334936289"
+              "version": "0.24.24.22086",
+              "templateHash": "590222292996782879"
             },
             "name": "Private Link Scope Scoped Resources",
             "description": "This module deploys a Private Link Scope Scoped Resource.",
@@ -690,8 +690,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "12070877359436548097"
+              "version": "0.24.24.22086",
+              "templateHash": "11154909986774213690"
             },
             "name": "Private Endpoints",
             "description": "This module deploys a Private Endpoint.",
@@ -1093,8 +1093,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.21.1.54444",
-                      "templateHash": "18097769811078256480"
+                      "version": "0.24.24.22086",
+                      "templateHash": "6129461321051281170"
                     },
                     "name": "Private Endpoint Private DNS Zone Groups",
                     "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
