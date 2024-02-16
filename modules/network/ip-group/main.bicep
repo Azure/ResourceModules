@@ -9,7 +9,7 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. IpAddresses/IpAddressPrefixes in the IpGroups resource.')
+@description('Optional. IpAddresses/IpAddressPrefixes in the IpGroups resource...')
 param ipAddresses array = []
 
 @description('Optional. The lock settings of the service.')
