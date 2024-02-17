@@ -76,10 +76,14 @@ function Invoke-GitHubWorkflow {
         } | ConvertTo-Json
     }
     if ($PSCmdlet.ShouldProcess("GitHub workflow [$workflowFileName] for branch [$TargetBranch]", 'Invoke')) {
-        $response = Invoke-RestMethod @requestInputObject -Verbose:$false
+        try {
+            $response = Invoke-RestMethod @requestInputObject -Verbose:$false
+        } catch {
+            Write-Error "Request failed for [$workflowFileName]. Reponse: [$_]"
+        }
 
         if ($response) {
-            Write-Error "Request failed. Reponse: [$response]"
+            Write-Error "Request failed for [$workflowFileName]. Reponse: [$response]"
             return $false
         }
     }
@@ -269,7 +273,7 @@ function Invoke-PipelinesForBranch {
 
         if ($InvokeForDiff) {
             # Load used function
-            . (Join-Path $RepoRoot 'utilities' 'tools' 'helper' 'Get-PipelineFileName.ps1')
+            . (Join-Path $RepositoryRoot 'utilities' 'tools' 'helper' 'Get-PipelineFileName.ps1')
 
             # Get diff
             $diff = git diff 'main' --name-only
@@ -278,16 +282,21 @@ function Invoke-PipelinesForBranch {
             $pipelineNames = [System.Collections.ArrayList]@()
             $pipelineNames = $diff | ForEach-Object {
                 $folderPath = Split-Path $_ -Parent
-                $pipelineFileName = Get-PipelineFileName -ResourceIdentifier $folderPath
-                if ($pipelineFileName -match $PipelineFilter) {
-                    $pipelineFileName
+                $resourceTypeIdentifier = ($folderPath -split 'modules[\/|\\]{1}')[1] -replace '\\', '/'
+                if ($resourceTypeIdentifier.Length -gt 0) {
+                    $pipelineFileName = Get-PipelineFileName -ResourceIdentifier $resourceTypeIdentifier
+                    if ($pipelineFileName -match $PipelineFilter) {
+                        $pipelineFileName
+                    }
                 }
             } | Select-Object -Unique
 
             # Filter workflows
-            $workflows = $workflows | Where-Object { $pipelineNames -contains (Split-Path $_.path -Leaf) }
+            $workflows = $workflows | Where-Object {
+                $pipelineNames -contains (Split-Path $_.path -Leaf)
+            }
 
-            Write-Verbose ("As per 'diff', filtered workflows down to [{0}]" -f $workflows.Count)
+            Write-Verbose ("As per 'diff', filtered workflows down to [{0}]" -f $workflows.Count) -Verbose
         }
 
         $gitHubWorkflowBadges = [System.Collections.ArrayList]@()
