@@ -8,7 +8,7 @@ param name string
 @description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixResourceId string = ''
 
-@description('Optional. The public IP address allocation method...')
+@description('Optional. The public IP address allocation method.')
 @allowed([
   'Dynamic'
   'Static'
