@@ -7,7 +7,7 @@
             "value": "validation-rg"
         },
         "subscriptionId": {
-            "value": "[[subscriptionId]]"
+            "value": "#_subscriptionId_#"
         },
         "roleAssignments": {
             "value": [

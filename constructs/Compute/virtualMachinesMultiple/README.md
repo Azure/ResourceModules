@@ -4,11 +4,14 @@ This module deploys one or multiple Virtual Machines.
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
+- [Multiple Virtual Machines `[Microsoft.Compute/virtualMachinesMultiple]`](#multiple-virtual-machines-microsoftcomputevirtualmachinesmultiple)
+  - [Navigation](#navigation)
+  - [Resource Types](#resource-types)
+  - [Parameters](#parameters)
+    - [Parameter Usage: `vmNames`](#parameter-usage-vmnames)
+  - [Outputs](#outputs)
+  - [Cross-referenced modules](#cross-referenced-modules)
+  - [Deployment examples](#deployment-examples)
 
 ## Resource Types
 
@@ -126,9 +129,9 @@ Name(s) of the virtual machine(s). If no explicit names are provided, VM name(s)
 ```json
 "vmNames": {
     "value": [
-        "[[namePrefix]]-vm-linux-vmnames-01",
-        "[[namePrefix]]-vm-linux-vmnames-02",
-        "[[namePrefix]]-vm-linux-vmnames-03"
+        "#_namePrefix_#-vm-linux-vmnames-01",
+        "#_namePrefix_#-vm-linux-vmnames-02",
+        "#_namePrefix_#-vm-linux-vmnames-03"
     ]
 }
 ```
@@ -180,7 +183,7 @@ module virtualMachinesMultiple 'ts/modules:compute.virtualmachinesmultiple:1.0.0
             pipConfiguration: {
               publicIpNameSuffix: '-pip-01'
             }
-            subnetId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-001/subnets/[[namePrefix]]-az-subnet-x-001'
+            subnetId: '/subscriptions/#_subscriptionId_#/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-#_namePrefix_#-az-vnet-x-001/subnets/#_namePrefix_#-az-subnet-x-001'
           }
         ]
         nicSuffix: '-nic-01'
@@ -203,7 +206,7 @@ module virtualMachinesMultiple 'ts/modules:compute.virtualmachinesmultiple:1.0.0
       }
     ]
     vmInitialNumber: 1
-    vmNamePrefix: '[[namePrefix]]-vm-linux-prefix'
+    vmNamePrefix: '#_namePrefix_#-vm-linux-prefix'
     vmNumberOfInstances: 3
   }
 }
@@ -242,7 +245,7 @@ module virtualMachinesMultiple 'ts/modules:compute.virtualmachinesmultiple:1.0.0
               "pipConfiguration": {
                 "publicIpNameSuffix": "-pip-01"
               },
-              "subnetId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-001/subnets/[[namePrefix]]-az-subnet-x-001"
+              "subnetId": "/subscriptions/#_subscriptionId_#/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-#_namePrefix_#-az-vnet-x-001/subnets/#_namePrefix_#-az-subnet-x-001"
             }
           ],
           "nicSuffix": "-nic-01"
@@ -279,7 +282,7 @@ module virtualMachinesMultiple 'ts/modules:compute.virtualmachinesmultiple:1.0.0
       "value": 1
     },
     "vmNamePrefix": {
-      "value": "[[namePrefix]]-vm-linux-prefix"
+      "value": "#_namePrefix_#-vm-linux-prefix"
     },
     "vmNumberOfInstances": {
       "value": 3
@@ -317,7 +320,7 @@ module virtualMachinesMultiple 'ts/modules:compute.virtualmachinesmultiple:1.0.0
             pipConfiguration: {
               publicIpNameSuffix: '-pip-01'
             }
-            subnetId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-001/subnets/[[namePrefix]]-az-subnet-x-001'
+            subnetId: '/subscriptions/#_subscriptionId_#/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-#_namePrefix_#-az-vnet-x-001/subnets/#_namePrefix_#-az-subnet-x-001'
           }
         ]
         nicSuffix: '-nic-01'
@@ -340,9 +343,9 @@ module virtualMachinesMultiple 'ts/modules:compute.virtualmachinesmultiple:1.0.0
       }
     ]
     vmNames: [
-      '[[namePrefix]]-vm-linux-vmnames-01'
-      '[[namePrefix]]-vm-linux-vmnames-02'
-      '[[namePrefix]]-vm-linux-vmnames-03'
+      '#_namePrefix_#-vm-linux-vmnames-01'
+      '#_namePrefix_#-vm-linux-vmnames-02'
+      '#_namePrefix_#-vm-linux-vmnames-03'
     ]
   }
 }
@@ -381,7 +384,7 @@ module virtualMachinesMultiple 'ts/modules:compute.virtualmachinesmultiple:1.0.0
               "pipConfiguration": {
                 "publicIpNameSuffix": "-pip-01"
               },
-              "subnetId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-001/subnets/[[namePrefix]]-az-subnet-x-001"
+              "subnetId": "/subscriptions/#_subscriptionId_#/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-#_namePrefix_#-az-vnet-x-001/subnets/#_namePrefix_#-az-subnet-x-001"
             }
           ],
           "nicSuffix": "-nic-01"
@@ -416,9 +419,9 @@ module virtualMachinesMultiple 'ts/modules:compute.virtualmachinesmultiple:1.0.0
     },
     "vmNames": {
       "value": [
-        "[[namePrefix]]-vm-linux-vmnames-01",
-        "[[namePrefix]]-vm-linux-vmnames-02",
-        "[[namePrefix]]-vm-linux-vmnames-03"
+        "#_namePrefix_#-vm-linux-vmnames-01",
+        "#_namePrefix_#-vm-linux-vmnames-02",
+        "#_namePrefix_#-vm-linux-vmnames-03"
       ]
     }
   }

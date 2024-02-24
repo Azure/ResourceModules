@@ -390,7 +390,7 @@ The example assumes you are using a [`bicepconfig.json`](https://learn.microsoft
     "moduleAliases": {
         "ts": {
             "modules": {
-                "subscription": "[[subscriptionId]]",
+                "subscription": "#_subscriptionId_#",
                 "resourceGroup": "artifacts-rg"
             }
         }

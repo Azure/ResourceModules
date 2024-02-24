@@ -17,7 +17,7 @@ This section provides details on the tokens replacement functionality that enabl
 
 Tokens allow you to test deploying modules in your own environment (i.e., using tokens for your naming conventions), or apply other customizations to your resources (i.e., injecting a subscription ID inside a Resource ID string).
 
-The [module pipelines](./The%20CI%20environment%20-%20Pipeline%20design#module-pipelines) leverage a token replacement function that enables module test files to contain tokens (i.e., `[[subscriptionId]]`, `[[tenantId]]`) instead of using static values. This helps with the following:
+The [module pipelines](./The%20CI%20environment%20-%20Pipeline%20design#module-pipelines) leverage a token replacement function that enables module test files to contain tokens (i.e., `#_subscriptionId_#`, `#_tenantId_#`) instead of using static values. This helps with the following:
 
 - Allows the repository to be portable without having static values from where it was cloned.
 - Enables dynamic updates of the tokens from single locations without having to modify all files.
@@ -31,9 +31,9 @@ There are 2 types of tokens that can be applied on a module test file:
 
 These are tokens constructed from environment variables, which are defined in the workflow (Pipeline). Review [Getting Started - GitHub specific prerequisites](./Getting%20Started) for more information on these environment variables.
 
-- `[[subscriptionId]]`: Will point to the Azure subscription.
-- `[[managementGroupId]]`: Will point to the Azure an Azure Management Group.
-- `[[tenantId]]`: Will point to the Azure Tenant ID.
+- `#_subscriptionId_#`: Will point to the Azure subscription.
+- `#_managementGroupId_#`: Will point to the Azure an Azure Management Group.
+- `#_tenantId_#`: Will point to the Azure Tenant ID.
 
 ## (Optional) Local Custom Tokens
 
@@ -86,15 +86,15 @@ The below diagram illustrates the Token Replacement Functionality via the [valid
 
 - **1A.** The user creates default tokens as [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) or [Azure DevOps Pipeline Variables](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/?view=azure-devops), that are injected as environment variables.
 - **1B.** The user can also create local custom Tokens in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml). Tokens start with `localTokens_` and then followed by the actual token name (e.g. `tokenA`). This prefix gets removed by the CI leaving the original token name
-- **2.** The module test files can now be tokenized as per required value. And the token format can look like `[[tokenA]]`. Example:
+- **2.** The module test files can now be tokenized as per required value. And the token format can look like `#_tokenA_#`. Example:
 
   ```json
   "adminPassword": {
     "reference": {
         "keyVault": {
-            "id": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/[[tokenA]]-keyVault"
+            "id": "/subscriptions/#_subscriptionId_#/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/#_tokenA_#-keyVault"
         },
-        "secretName": "[[tokenB]]"
+        "secretName": "#_tokenB_#"
     }
   }
   ```
