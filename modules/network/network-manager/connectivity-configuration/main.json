@@ -4,11 +4,11 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.23.1.45101",
-      "templateHash": "9661323239609366787"
+      "version": "0.25.53.49325",
+      "templateHash": "2318326690435131857"
     },
     "name": "Network Manager Connectivity Configurations",
-    "description": "This module deploys a Network Manager Connectivity Configuration.\nConnectivity configurations define hub-and-spoke or mesh topologies applied to one or more network groups.",
+    "description": "This module deploys a Network Manager Connectivity Configuration.\r\nConnectivity configurations define hub-and-spoke or mesh topologies applied to one or more network groups.",
     "owner": "Azure/module-maintainers"
   },
   "parameters": {
