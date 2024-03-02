@@ -57,11 +57,13 @@ function Get-RoleAssignmentList {
         if ("$ProviderNamespace/$ResourceType" -eq 'Microsoft.Authorization/RoleAssignments') {
             # No filter
             $relevantRoles = $roleDefinitions
-        } else {
+        }
+        else {
             # Filter Action based
             $relevantRoles += $roleDefinitions | Where-Object {
                 $_.Actions -like "$ProviderNamespace/$ResourceType/*" -or
                 $_.Actions -like "$ProviderNamespace/`**" -or
+                # Leave general roles (https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#general)
                 $_.Id -eq 'b24988ac-6180-42a0-ab88-20f7382dd24c' -or # Contributor
                 $_.Id -eq '8e3af657-a8ff-443c-a75c-2fe8c4bcb635' -or # Owner
                 $_.Id -eq 'acdd72a7-3385-48ef-bd42-f606fba81ae7' -or # Reader
@@ -83,17 +85,20 @@ function Get-RoleAssignmentList {
             foreach ($role in $relevantRoles | Sort-Object -Property 'Name' -Unique) {
                 if ($role.Name -match '\s') {
                     $resBicep += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '{1}')" -f $role.Name, $role.Id
-                } else {
+                }
+                else {
                     $resBicep += "{0}: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '{1}')" -f $role.Name, $role.Id
                 }
                 $resArm += "`"{0}`": `"[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '{1}')]`"," -f $role.Name, $role.Id
             }
-        } else {
+        }
+        else {
             # different output format for the 'Microsoft.Authorization/RoleAssignments' module
             foreach ($role in $relevantRoles | Sort-Object -Property 'Name' -Unique) {
                 if ($role.Name -match '\s') {
                     $resBicep += "'{0}': '/providers/Microsoft.Authorization/roleDefinitions/{1}'" -f $role.Name, $role.Id
-                } else {
+                }
+                else {
                     $resBicep += "{0}: '/providers/Microsoft.Authorization/roleDefinitions/{1}'" -f $role.Name, $role.Id
                 }
                 $resArm += "`"{0}`": `"/providers/Microsoft.Authorization/roleDefinitions/{1}`"" -f $role.Name, $role.Id
