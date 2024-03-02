@@ -74,7 +74,6 @@ function Get-RoleAssignmentList {
                     $_.DataActions -like "$ProviderNamespace/$ResourceType/*" -or
                     $_.DataActions -like "$ProviderNamespace/`**" -or
                     $_.DataActions -like '`**'
-                    Write-Debug "Actions: ALL"
                 }
             }
             else {
@@ -89,7 +88,6 @@ function Get-RoleAssignmentList {
                     $_.Id -eq 'acdd72a7-3385-48ef-bd42-f606fba81ae7' -or # Reader
                     $_.Id -eq 'f58310d9-a9f6-439a-9e8d-f62e7b41a168' -or # Role Based Access Control Administrator
                     $_.Id -eq '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9' # User Access Administrator
-                    Write-Debug "Actions: Default"
                 }
             }
 
