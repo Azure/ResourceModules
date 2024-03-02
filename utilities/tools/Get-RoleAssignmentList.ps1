@@ -62,14 +62,17 @@ function Get-RoleAssignmentList {
             $relevantRoles += $roleDefinitions | Where-Object {
                 $_.Actions -like "$ProviderNamespace/$ResourceType/*" -or
                 $_.Actions -like "$ProviderNamespace/`**" -or
-                $_.Actions -like '`**'
+                $_.Id -eq 'b24988ac-6180-42a0-ab88-20f7382dd24c' -or # Contributor
+                $_.Id -eq '8e3af657-a8ff-443c-a75c-2fe8c4bcb635' -or # Owner
+                $_.Id -eq 'acdd72a7-3385-48ef-bd42-f606fba81ae7' -or # Reader
+                $_.Id -eq 'f58310d9-a9f6-439a-9e8d-f62e7b41a168' -or # Role Based Access Control Administrator
+                $_.Id -eq '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9' # User Access Administrator
             }
 
             # Filter Data Action based
             $relevantRoles += $roleDefinitions | Where-Object {
                 $_.DataActions -like "$ProviderNamespace/$ResourceType/*" -or
-                $_.DataActions -like "$ProviderNamespace/`**" -or
-                $_.DataActions -like '`**'
+                $_.DataActions -like "$ProviderNamespace/`**"
             }
         }
 
