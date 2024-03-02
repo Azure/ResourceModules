@@ -1,9 +1,9 @@
 ﻿<#
 .SYNOPSIS
-Fetch all available Role Definitions for the given ProviderNamespace
+Fetch relevant Role Definitions for the given ProviderNamespace
 
 .DESCRIPTION
-Fetch all available Role Definitions for the given ProviderNamespace
+Fetch relevant Role Definitions for the given ProviderNamespace by default. Optionally, you can fetch all available roles or include custom roles as well.
 Leverges Microsoft Docs's [https://learn.microsoft.com/en-us/powershell/module/az.resources/get-azroledefinition?view=azps-8.3.0] to fetch the data
 
 .PARAMETER ProviderNamespace
