@@ -26,6 +26,12 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
+            // ======= //
+            //   All   //
+            // ======= //
+
+            Write-Output '::group::Get all test files'
+
             # Get the list of parameter file paths
             $moduleFolderPath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
 
@@ -49,10 +55,15 @@ jobs:
             if($deployCompressedOutput -notmatch "\[.*\]") {
               $deployCompressedOutput = "[$deployCompressedOutput]"
             }
+
             Write-Verbose "Publishing output: $deployCompressedOutput" -Verbose
             Write-Host ('##vso[task.setVariable variable=moduleTestFilePaths;isOutput=true]{0}' -f $deployCompressedOutput)
 
             Write-Output '::endgroup::'
+
+            // =========== //
+            //   PS-Rule   //
+            // =========== //
 
             Write-Output '::group::Get PSRule test files'
             $psRuleTestFilePaths = $testFilePaths | Where-Object { $_ -match '${{ parameters.psRuleFilterRegex }}' }
@@ -60,7 +71,6 @@ jobs:
             Write-Verbose 'Found PSRule module test files' -Verbose
             $psRuleTestFilePaths | ForEach-Object { Write-Verbose "- [$_]" -Verbose }
 
-            # Output values to be accessed by next jobs
             $psRuleCompressedOutput = $psRuleTestFilePaths | ForEach-Object {
               @{
                 path = $_
@@ -68,8 +78,12 @@ jobs:
               }
             } | ConvertTo-Json -Compress
 
+            # Output values to be accessed by next jobs
             if($psRuleCompressedOutput -notmatch "\[.*\]") {
               $psRuleCompressedOutput = "[$psRuleCompressedOutput]"
             }
-            Write-Verbose "Publishing output: $psRuleCompressedOutput" -Verbose
+
             Write-Host ('##vso[task.setVariable variable=psRuleModuleTestFilePaths;isOutput=true]{0}' -f $psRuleCompressedOutput)
+            Write-Verbose "PS Rule publishing output: $psRuleCompressedOutput" -Verbose
+
+            Write-Output '::endgroup::'
