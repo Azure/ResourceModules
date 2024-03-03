@@ -52,9 +52,9 @@ jobs:
             } | ConvertTo-Json -Compress
 
             # Output values to be accessed by next jobs
-            if($deployCompressedOutput -notmatch "\[.*\]") {
-              $deployCompressedOutput = "[$deployCompressedOutput]"
-            }
+            # if($deployCompressedOutput -notmatch "\[.*\]") {
+            #   $deployCompressedOutput = "[$deployCompressedOutput]"
+            # }
 
             Write-Verbose "Publishing output: $deployCompressedOutput" -Verbose
             Write-Host ('##vso[task.setVariable variable=moduleTestFilePaths;isOutput=true]{0}' -f $deployCompressedOutput)
@@ -79,9 +79,9 @@ jobs:
             } | ConvertTo-Json -Compress
 
             # Output values to be accessed by next jobs
-            if($psRuleCompressedOutput -notmatch "\[.*\]") {
-              $psRuleCompressedOutput = "[$psRuleCompressedOutput]"
-            }
+            # if($psRuleCompressedOutput -notmatch "\[.*\]") {
+            #   $psRuleCompressedOutput = "[$psRuleCompressedOutput]"
+            # }
 
             Write-Host ('##vso[task.setVariable variable=psRuleModuleTestFilePaths;isOutput=true]{0}' -f $psRuleCompressedOutput)
             Write-Verbose "PS Rule publishing output: $psRuleCompressedOutput" -Verbose
