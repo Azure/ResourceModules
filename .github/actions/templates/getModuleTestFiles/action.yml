@@ -42,8 +42,8 @@ runs:
         # Output values to be accessed by next jobs
         $deployCompressedOutput = $testFilePaths | ForEach-Object {
           @{
-            path = $_
-            name = Split-Path (Split-Path $_) -Leaf
+            moduleTestFilePath = $_
+            moduleTestFileName = Split-Path (Split-Path $_) -Leaf
           }
         } | ConvertTo-Json -Compress
 
@@ -65,8 +65,8 @@ runs:
         # Output values to be accessed by next jobs
         $psRuleCompressedOutput = $psRuleTestFilePaths | ForEach-Object {
           @{
-            path = $_
-            name = Split-Path (Split-Path $_) -Leaf
+            moduleTestFilePath = $_
+            moduleTestFileName = Split-Path (Split-Path $_) -Leaf
           }
         } | ConvertTo-Json -Compress
 

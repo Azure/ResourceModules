@@ -54,7 +54,7 @@ jobs:
   #   PSRule validation   #
   #########################
   job_psrule_test: # Note: Please don't change this job name. It is used by the setEnvironment action to define which PS modules to install on runners.
-    name: "PSRule [${{ matrix.testCases.name }}]"
+    name: "PSRule [${{ matrix.testCases.moduleTestFileName }}]"
     runs-on: ubuntu-latest
     if: (fromJson(inputs.workflowInput)).staticValidation == 'true'
     strategy:
@@ -70,10 +70,10 @@ jobs:
         uses: ./.github/actions/templates/setEnvironment
         with:
           variablesPath: ${{ env.variablesPath }}
-      - name: "Run PSRule validation with [${{ matrix.testCases.path }}]"
+      - name: "Run PSRule validation with [${{ matrix.testCases.moduleTestFilePath }}]"
         uses: ./.github/actions/templates/validateModulePSRule
         with:
-          templateFilePath: "${{ inputs.modulePath }}/${{ matrix.testCases.path }}"
+          templateFilePath: "${{ inputs.modulePath }}/${{ matrix.testCases.moduleTestFilePath }}"
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           psrulePath: "utilities/pipelines/staticValidation/psrule"
@@ -82,7 +82,7 @@ jobs:
   #   Deployment validation   #
   #############################
   job_module_deploy_validation: # Note: Please don't change this job name. It is used by the setEnvironment action to define which PS modules to install on runners.
-    name: 'Deploy [${{ matrix.testCases.name}}]'
+    name: 'Deploy [${{ matrix.testCases.moduleTestFileName}}]'
     runs-on: ubuntu-latest
     if: |
       !cancelled() &&
@@ -105,10 +105,10 @@ jobs:
         with:
           variablesPath: ${{ env.variablesPath }}
           removeDeployment: '${{ fromJson(inputs.workflowInput).removeDeployment }}'
-      - name: 'Run deployment validation with test file [${{ matrix.testCases.path }}]'
+      - name: 'Run deployment validation with test file [${{ matrix.testCases.moduleTestFilePath }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: '${{ inputs.modulePath }}/${{ matrix.testCases.path }}'
+          templateFilePath: '${{ inputs.modulePath }}/${{ matrix.testCases.moduleTestFilePath }}'
           location: '${{ env.location }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
