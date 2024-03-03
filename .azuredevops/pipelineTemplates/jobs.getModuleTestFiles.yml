@@ -26,9 +26,9 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
-            // ======= //
-            //   All   //
-            // ======= //
+            ## ======= ##
+            ##   All   ##
+            ## ======= ##
 
             Write-Output '::group::Get all test files'
 
@@ -61,9 +61,9 @@ jobs:
 
             Write-Output '::endgroup::'
 
-            // =========== //
-            //   PS-Rule   //
-            // =========== //
+            ## =========== ##
+            ##   PS-Rule   ##
+            ## =========== ##
 
             Write-Output '::group::Get PSRule test files'
             $psRuleTestFilePaths = $testFilePaths | Where-Object { $_ -match '${{ parameters.psRuleFilterRegex }}' }
