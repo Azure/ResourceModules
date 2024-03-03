@@ -73,6 +73,13 @@ jobs:
     strategy:
       matrix: $[ dependencies.getModuleTestFiles.outputs['getModuleTestFilesTask.psRuleModuleTestFilePaths'] ]
     steps:
+      - task: PowerShell@2
+        displayName: 'Version info'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            Write-Verbose ($PSVersionTable | Out-String) -Verbose
       # [Agent] Replace tokens
       #-----------------------
       - task: PowerShell@2
@@ -81,8 +88,6 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
-            Write-Verbose 'Hey there' -Verbose
-
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Get-LocallyReferencedFileList.ps1')
