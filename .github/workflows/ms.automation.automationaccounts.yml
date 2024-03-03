@@ -78,7 +78,7 @@ jobs:
   #   Call reusable workflow   #
   ##############################
   call-workflow-passing-data:
-    name: 'Module'
+    name: 'Run'
     needs:
       - job_initialize_pipeline
     uses: ./.github/workflows/template.module.yml
