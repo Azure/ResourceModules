@@ -16,7 +16,7 @@ Optional. The ResourceType to fetch the role definitions for
 Optional. Whether to include custom roles or not
 
 .PARAMETER All
-Optional. Fetch all available roles. By default it only fetches the relevant roles
+Optional. Fetch all available roles that can be applied to the given Resource Type. By default it only fetches the relevant roles.
 
 .EXAMPLE
 Get-RoleAssignmentList -ProviderNamespace 'Microsoft.KeyVault' -ResourceType 'vaults'
