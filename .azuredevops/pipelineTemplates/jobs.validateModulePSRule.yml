@@ -24,7 +24,6 @@
 ##   |========================================================================================================================================================================================================================================================================|
 ##   | Parameter                       | Default Value                                           | Description                                                                                               | Example                                                        |
 ##   |---------------------------------|---------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
-##   | serviceConnection               | '$(serviceConnection)'                                  | The service connection that connects to Azure                                                             | 'demo-internal'                                                |
 ##   | poolName                        | '$(poolName)'                                           | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'Custom Deployment Pool'                                       |
 ##   | vmImage                         | '$(vmImage)'                                            | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'ubuntu20.04'                                                  |
 ##   | defaultJobTimeoutInMinutes      | 120                                                     | The timeout for the job in this pipeline                                                                  | 120                                                            |
@@ -33,10 +32,6 @@
 ##   | location                        | '$(location)'                                           | The location to validate with                                                                             | 'France Central'                                               |
 ##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'                                | The id of the subscription to validate with when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'                         |
 ##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                                   | The id of the management group to validate with. Required only for Management-Group-Level validations     | '477c9620-cb01-454f-9ebc-fc6b1df48c14'                         |
-##   | parametersRepository            | '$(Build.Repository.Name)'                              | The respository with the parameter files. Defaults to the triggering repository                           | 'Solutions'                                                    |
-##   | modulesRepository               | '$(modulesRepository)'                                  | The respository with the modules.                                                                         | 'Components'                                                   |
-##   | azurePowerShellVersion          | '$(azurePowerShellVersion)'                             | Used for configuring the Azure PowerShellModules Version, one of the example values.                      | 'latestVersion' or 'OtherVersion'                              |
-##   | preferredAzurePowerShellVersion | '$(preferredAzurePowerShellVersion)'                    | Used for configuring the Azure PowerShellModules Version, either an empty string or the specific version. | '4.4.0'                                                        |
 ##   |========================================================================================================================================================================================================================================================================|
 ##
 ##---------------------------------------------##
@@ -49,11 +44,9 @@ parameters:
   # Logic-related parameters
   modulePath: '$(modulePath)'
   moduleTestFilePath: 'utilities/pipelines/staticValidation/module.tests.ps1'
-  parametersRepository: '$(Build.Repository.Name)'
   location: '$(location)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
-  modulesRepository: '$(modulesRepository)'
 
 ##---------------------------------------------##
 ## TEMPLATE LOGIC                              ##
