@@ -132,7 +132,7 @@ jobs:
 
 
             # Get target files
-            $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(path)'
+            $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
 
             # Get target files
             $targetFileList = @(
