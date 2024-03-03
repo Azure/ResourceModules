@@ -81,6 +81,8 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
+            Write-Verbose 'Hey there' -Verbose
+
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Get-LocallyReferencedFileList.ps1')
