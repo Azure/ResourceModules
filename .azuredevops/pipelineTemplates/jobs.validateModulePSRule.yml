@@ -73,13 +73,6 @@ jobs:
     strategy:
       matrix: $[ dependencies.getModuleTestFiles.outputs['getModuleTestFilesTask.psRuleModuleTestFilePaths'] ]
     steps:
-      - task: PowerShell@2
-        displayName: 'Version info'
-        inputs:
-          targetType: inline
-          pwsh: false
-          script: |
-            Write-Verbose ($PSVersionTable | Out-String) -Verbose
       # [Agent] Replace tokens
       #-----------------------
       - task: PowerShell@2
