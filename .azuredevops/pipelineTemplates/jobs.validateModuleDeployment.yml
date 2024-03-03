@@ -76,7 +76,7 @@ jobs:
     dependsOn:
       - getModuleTestFiles
     strategy:
-      matrix: $[ dependencies.getModuleTestFiles.outputs['getModuleTestFilesTask.moduleTests'] ]
+      matrix: $[ dependencies.getModuleTestFiles.outputs['getModuleTestFilesTask.moduleTestFilePaths'] ]
     ##---------------------------------------------##
     ## TEMPLATE LOGIC                              ##
     ##---------------------------------------------##
@@ -132,7 +132,7 @@ jobs:
 
 
             # Get target files
-            $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
+            $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(path)'
 
             # Get target files
             $targetFileList = @(
