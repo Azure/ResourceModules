@@ -83,21 +83,12 @@ jobs:
     steps:
       # [Agent] Prepare environment
       #----------------------------
-      # - task: PowerShell@2
-      #   displayName: 'Setup agent for deployment'
-      #   inputs:
-      #     targetType: inline
-      #     pwsh: true
-      #     script: |
-      - task: AzurePowerShell@5
-        displayName: 'Replace tokens in template file via connection [${{ parameters.serviceConnection }}]'
+      - task: PowerShell@2
+        displayName: 'Setup agent for deployment'
         inputs:
-          azureSubscription: ${{ parameters.serviceConnection }}
-          azurePowerShellVersion: 'latestVersion'
-          preferredAzurePowerShellVersion: ''
-          ScriptType: InlineScript
+          targetType: inline
           pwsh: true
-          inline: |
+          script: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
