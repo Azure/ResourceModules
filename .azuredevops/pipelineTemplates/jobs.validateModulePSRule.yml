@@ -77,6 +77,7 @@ jobs:
         displayName: 'Version info'
         inputs:
           targetType: inline
+          pwsh: false
           script: |
             Write-Verbose ($PSVersionTable | Out-String) -Verbose
       # [Agent] Replace tokens
