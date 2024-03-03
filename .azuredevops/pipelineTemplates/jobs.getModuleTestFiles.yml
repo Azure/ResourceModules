@@ -45,8 +45,8 @@ jobs:
             $testFilePaths | ForEach-Object {
               $testFileName = Split-Path (Split-Path $_) -Leaf
               $testTable[$testFileName] = @{
-                path = $_
-                name = $testFileName
+                moduleTestFilePath = $_
+                moduleTestFileName = $testFileName
               }
             } | ConvertTo-Json -Compress
             $deployCompressedOutput = $testTable | ConvertTo-Json -Compress
@@ -67,8 +67,8 @@ jobs:
             $psRuleTestFilePaths | ForEach-Object {
               $testFileName = Split-Path (Split-Path $_) -Leaf
               $psRuleTestTable[$testFileName] = @{
-                path = $_
-                name = $testFileName
+                moduleTestFilePath = $_
+                moduleTestFileName = $testFileName
               }
             }
             $psRuleCompressedOutput = $psRuleTestTable | ConvertTo-Json -Compress
