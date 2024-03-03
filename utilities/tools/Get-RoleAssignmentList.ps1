@@ -3,7 +3,7 @@
 Fetch relevant Role Definitions for the given ProviderNamespace
 
 .DESCRIPTION
-Fetch relevant Role Definitions for the given ProviderNamespace by default. Optionally, you can fetch all available roles or include custom roles as well.
+Fetch relevant Role Definitions for the given ProviderNamespace by default. Optionally, you can fetch all available roles or include custom roles as well. 'Relevant' roles include the most common roles (e.g., Reader, Owner, etc.), as well as those that tie directly into the targeted resource type (e.g., a `Key Vault Secrets Reader` for a Key Vault).
 Leverges Microsoft Docs's [https://learn.microsoft.com/en-us/powershell/module/az.resources/get-azroledefinition?view=azps-8.3.0] to fetch the data
 
 .PARAMETER ProviderNamespace
