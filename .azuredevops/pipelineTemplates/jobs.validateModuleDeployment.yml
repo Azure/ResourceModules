@@ -87,7 +87,7 @@ jobs:
         displayName: 'Setup agent for deployment'
         inputs:
           targetType: inline
-          # pwsh: true
+          pwsh: true
           script: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
