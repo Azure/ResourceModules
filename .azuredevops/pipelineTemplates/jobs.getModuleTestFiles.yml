@@ -20,7 +20,7 @@ jobs:
         name: ${{ parameters.poolName }}
     steps:
       - task: PowerShell@2
-        displayName: 'Get parameter files'
+        displayName: 'Get module test file paths'
         name: getModuleTestFilesTask
         inputs:
           targetType: inline
@@ -43,13 +43,15 @@ jobs:
             Write-Verbose 'Found all module test files' -Verbose
             $testFilePaths | ForEach-Object { Write-Verbose "- [$_]" -Verbose }
 
-            # Output values to be accessed by next jobs
-            $deployCompressedOutput = $testFilePaths | ForEach-Object {
-              @{
+            $testTable = @{}
+            $testFilePaths | ForEach-Object {
+              $testFileName = Split-Path (Split-Path $_) -Leaf
+              $testTable[$testFileName] = @{
                 path = $_
-                name = Split-Path (Split-Path $_) -Leaf
+                name = $testFileName
               }
             } | ConvertTo-Json -Compress
+            $deployCompressedOutput = $testTable | ConvertTo-Json -Compress
 
             # Output values to be accessed by next jobs
             # if($deployCompressedOutput -notmatch "\[.*\]") {
@@ -71,12 +73,15 @@ jobs:
             Write-Verbose 'Found PSRule module test files' -Verbose
             $psRuleTestFilePaths | ForEach-Object { Write-Verbose "- [$_]" -Verbose }
 
-            $psRuleCompressedOutput = $psRuleTestFilePaths | ForEach-Object {
-              @{
+            $psRuleTestTable = @{}
+            $psRuleTestFilePaths | ForEach-Object {
+              $testFileName = Split-Path (Split-Path $_) -Leaf
+              $psRuleTestTable[$testFileName] = @{
                 path = $_
-                name = Split-Path (Split-Path $_) -Leaf
+                name = $testFileName
               }
-            } | ConvertTo-Json -Compress
+            }
+            $psRuleCompressedOutput = $psRuleTestTable | ConvertTo-Json -Compress
 
             # Output values to be accessed by next jobs
             # if($psRuleCompressedOutput -notmatch "\[.*\]") {
