@@ -75,15 +75,12 @@ jobs:
     steps:
       # [Agent] Replace tokens
       #-----------------------
-      - task: AzurePowerShell@5
-        displayName: 'Replace tokens in template file via connection [${{ parameters.serviceConnection }}]'
+      - task: PowerShell@2
+        displayName: 'Replace tokens in template files'
         inputs:
-          azureSubscription: ${{ parameters.serviceConnection }}
-          azurePowerShellVersion: 'latestVersion'
-          preferredAzurePowerShellVersion: ''
-          ScriptType: InlineScript
+          targetType: inline
           pwsh: true
-          inline: |
+          script: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Get-LocallyReferencedFileList.ps1')
