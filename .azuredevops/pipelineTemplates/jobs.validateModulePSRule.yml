@@ -66,6 +66,25 @@ jobs:
     strategy:
       matrix: $[ dependencies.getModuleTestFiles.outputs['getModuleTestFilesTask.psRuleModuleTestFilePaths'] ]
     steps:
+      # [Agent] Prepare environment
+      #----------------------------
+      - task: PowerShell@2
+        displayName: 'Setup agent for deployment'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+            # Define PS modules to install on the runner
+            $modules = @(
+                @{ Name = 'Az.Resources' }
+            )
+
+            # Set agent up
+            Set-EnvironmentOnAgent -PSModules $modules
+
       # [Agent] Replace tokens
       #-----------------------
       - task: PowerShell@2
