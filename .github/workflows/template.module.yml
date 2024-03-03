@@ -11,6 +11,10 @@ on:
         type: string
         description: 'List of relative path to the module test files in JSON format'
         required: true
+      psRuleModuleTestFilePaths:
+        type: string
+        description: "List of relative path to the PSRule module test files in JSON format"
+        required: true
       modulePath:
         type: string
         description: 'Relative path to the module folder'
@@ -57,7 +61,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        testCases: ${{ fromJson(inputs.testCases) }}
+        testCases: ${{ fromJson(inputs.psRuleModuleTestFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
@@ -67,12 +71,13 @@ jobs:
         uses: ./.github/actions/templates/setEnvironment
         with:
           variablesPath: ${{ env.variablesPath }}
-      - name: Set PSRule validation
+      - name: "Run PSRule validation with [${{ matrix.testCases.path }}]"
         uses: ./.github/actions/templates/validateModulePSRule
         with:
-          templateFilePath: '${{ inputs.modulePath }}/${{ matrix.testCases }}'
+          templateFilePath: "${{ inputs.modulePath }}/${{ matrix.testCases.path }}"
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          psrulePath: "utilities/pipelines/staticValidation/psrule"
 
   #############################
   #   Deployment validation   #
