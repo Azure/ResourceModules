@@ -30,8 +30,6 @@ jobs:
             ##   All   ##
             ## ======= ##
 
-            Write-Output '::group::Get all test files'
-
             # Get the list of parameter file paths
             $moduleFolderPath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
 
@@ -56,13 +54,10 @@ jobs:
             Write-Verbose "Publishing output: $deployCompressedOutput" -Verbose
             Write-Host ('##vso[task.setVariable variable=moduleTestFilePaths;isOutput=true]{0}' -f $deployCompressedOutput)
 
-            Write-Output '::endgroup::'
-
             ## =========== ##
             ##   PS-Rule   ##
             ## =========== ##
 
-            Write-Output '::group::Get PSRule test files'
             $psRuleTestFilePaths = $testFilePaths | Where-Object { $_ -match '${{ parameters.psRuleFilterRegex }}' }
 
             Write-Verbose 'Found PSRule module test files' -Verbose
@@ -80,5 +75,3 @@ jobs:
 
             Write-Host ('##vso[task.setVariable variable=psRuleModuleTestFilePaths;isOutput=true]{0}' -f $psRuleCompressedOutput)
             Write-Verbose "PS Rule publishing output: $psRuleCompressedOutput" -Verbose
-
-            Write-Output '::endgroup::'
