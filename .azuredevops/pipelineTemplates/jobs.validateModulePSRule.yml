@@ -138,7 +138,7 @@ jobs:
           modules: 'PSRule.Rules.Azure'
           inputPath: '$(System.DefaultWorkingDirectory)/$(modulePath)/$(moduleTestFilePath)'
           outputFormat: Csv
-          option: '(System.DefaultWorkingDirectory)/${{ parameters.psrulePath}}/ps-rule.yaml' # Path to PSRule configuration options file
+          option: '${{ parameters.psrulePath}}/ps-rule.yaml' # Path to PSRule configuration options file
           source: '${{ parameters.psrulePath}}/.ps-rule/' # Path to folder containing suppression rules to use for analysis.
           outputPath: '$(System.DefaultWorkingDirectory)/$(modulePath)/$(moduleTestFilePath)-PSRule-output.csv'
         continueOnError: true
