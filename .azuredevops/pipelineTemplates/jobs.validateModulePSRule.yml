@@ -21,18 +21,18 @@
 ##
 ## NOTE: If you don't need to overwrite a shared value, you can IGNORE this section
 ##
-##   |========================================================================================================================================================================================================================================================================|
-##   | Parameter                       | Default Value                                           | Description                                                                                               | Example                                                        |
-##   |---------------------------------|---------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
-##   | poolName                        | '$(poolName)'                                           | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'Custom Deployment Pool'                                       |
-##   | vmImage                         | '$(vmImage)'                                            | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'ubuntu20.04'                                                  |
-##   | defaultJobTimeoutInMinutes      | 120                                                     | The timeout for the job in this pipeline                                                                  | 120                                                            |
-##   | modulePath                      | '$(modulePath)'                                         | The path to the module to deploy.                                                                         | 'c:/KeyVault'                                                  |
-##   | moduleTestFilePath              | 'utilities/pipelines/staticValidation/module.tests.ps1' | The path to the module Pester tests.                                                                      | 'utilities/pipelines/staticValidation/module.tests.ps1'        |
-##   | location                        | '$(location)'                                           | The location to validate with                                                                             | 'France Central'                                               |
-##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'                                | The id of the subscription to validate with when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'                         |
-##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                                   | The id of the management group to validate with. Required only for Management-Group-Level validations     | '477c9620-cb01-454f-9ebc-fc6b1df48c14'                         |
-##   |========================================================================================================================================================================================================================================================================|
+##   |==============================================================================================================================================================================================================================================|
+##   | Parameter                  | Default Value                                 | Description                                                                                           | Example                                                 |
+##   |----------------------------|-----------------------------------------------|-------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
+##   | poolName                   | '$(poolName)'                                 | You can provide either a [poolname] or [vmImage] to run the job on                                    | 'Custom Deployment Pool'                                |
+##   | vmImage                    | '$(vmImage)'                                  | You can provide either a [poolname] or [vmImage] to run the job on                                    | 'ubuntu20.04'                                           |
+##   | defaultJobTimeoutInMinutes | 120                                           | The timeout for the job in this pipeline                                                              | 120                                                     |
+##   | modulePath                 | '$(modulePath)'                               | The path to the module to deploy.                                                                     | 'c:/KeyVault'                                           |
+##   | psrulePath                 | 'utilities/pipelines/staticValidation/psrule' | The path to the PS-Rule configuration                                                                 | 'utilities/pipelines/staticValidation/module.tests.ps1' |
+##   | location                   | '$(location)'                                 | The location to validate with                                                                         | 'France Central'                                        |
+##   | subscriptionId             | '$(ARM_SUBSCRIPTION_ID)'                      | The id of the subscription to validate with when using a Management group service connection          | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'                  |
+##   | managementGroupId          | '$(ARM_MGMTGROUP_ID)'                         | The id of the management group to validate with. Required only for Management-Group-Level validations | '477c9620-cb01-454f-9ebc-fc6b1df48c14'                  |
+##   |==============================================================================================================================================================================================================================================|
 ##
 ##---------------------------------------------##
 
@@ -43,7 +43,7 @@ parameters:
   defaultJobTimeoutInMinutes: 120
   # Logic-related parameters
   modulePath: '$(modulePath)'
-  moduleTestFilePath: 'utilities/pipelines/staticValidation/module.tests.ps1'
+  psrulePath: 'utilities/pipelines/staticValidation/psrule'
   location: '$(location)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
@@ -130,6 +130,7 @@ jobs:
 
             # Invoke Token Replacement Functionality [For Module]
             $null = Convert-TokensInFileList @ConvertTokensInputs
+
       - task: ps-rule-assert@2
         displayName: Analyze Azure template files
         inputs:
@@ -137,5 +138,7 @@ jobs:
           modules: 'PSRule.Rules.Azure'
           inputPath: '$(System.DefaultWorkingDirectory)/$(modulePath)/$(moduleTestFilePath)'
           outputFormat: Csv
+          option: '(System.DefaultWorkingDirectory)/${{ parameters.psrulePath}}/ps-rule.yaml' # Path to PSRule configuration options file
+          source: '${{ parameters.psrulePath}}/.ps-rule/' # Path to folder containing suppression rules to use for analysis.
           outputPath: '$(System.DefaultWorkingDirectory)/$(modulePath)/$(moduleTestFilePath)-PSRule-output.csv'
         continueOnError: true
