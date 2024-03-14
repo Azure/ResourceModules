@@ -12,6 +12,7 @@ stages:
     condition: eq('${{ parameters.staticValidation }}', 'True')
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePSRule.yml
 
   - stage: deployment
     displayName: Deployment validation
@@ -21,7 +22,6 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          templateFilePath: '$(modulePath)/main.bicep'
           removeDeployment: '${{ parameters.removeDeployment }}'
           defaultJobTimeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
 

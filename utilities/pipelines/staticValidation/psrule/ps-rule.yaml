@@ -15,8 +15,8 @@ binding:
 
 # Require minimum versions of modules.
 requires:
-  PSRule: '@pre >=2.4.0'
-  PSRule.Rules.Azure: '@pre >=1.27.3'
+  PSRule: '@pre >=2.9.0'
+  PSRule.Rules.Azure: '>=1.29.0'
 
 # Use PSRule for Azure.
 include:
@@ -24,10 +24,8 @@ include:
     - PSRule.Rules.Azure
 
 execution:
-  # suppressedRuleWarning: false - no more supported in PsRule ver 3.0
-  # notProcessedWarning: false - no more supported in PsRule ver 3.0
-  ruleSuppressed: Warn
-  unprocessedObject: Warn
+  ruleSuppressed: Debug
+  unprocessedObject: Debug
 
 output:
   culture:
@@ -35,9 +33,9 @@ output:
 
 input:
   pathIgnore:
-    # Ignore other files in the repository.
-    - '**/*'
-    # Do not ignore tests.
+    # Exclude all files.
+    - '*'
+    # Only process test files.
     - '!modules/**/*.test.bicep'
 
 configuration:
@@ -50,10 +48,33 @@ configuration:
   # Configures the number of seconds to wait for build Bicep files.
   AZURE_BICEP_FILE_EXPANSION_TIMEOUT: 10
 
+  # Custom non-sensitive parameters' names
+  AZURE_DEPLOYMENT_NONSENSITIVE_PARAMETER_NAMES:
+    [
+      'sasTokenValidityLength',
+      'passwordlength',
+      'secretname',
+      'secreturl',
+      'secreturi',
+      'secretrotation',
+      'secretinterval',
+      'secretprovider',
+      'secretsprovider',
+      'secretref',
+      'secretid',
+      'disablepassword',
+      'sync*passwords',
+      'sqlAdministratorLogin',
+      'tokenname',
+      'ssoClientSecretKeyVaultPath',
+      'ssoSecretType',
+      'tokenValidityLength',
+    ]
+
 rule:
   # Enable custom rules that don't exist in the baseline
   includeLocal: false
   exclude:
-  # Ignore the following rules for all resources
-   - Azure.KeyVault.PurgeProtect
-   - Azure.Resource.AllowedRegions
+    # Ignore the following rules for all resources
+    - Azure.KeyVault.PurgeProtect
+    - Azure.VM.UseHybridUseBenefit

@@ -6,7 +6,7 @@ metadata:
   name: 'SuppressNA'
 spec:
   rule:
-   - Azure.Resource.UseTags
+    - Azure.Resource.UseTags
   if:
     type: '.'
     in:
@@ -14,7 +14,6 @@ spec:
       - Microsoft.ManagedServices/registrationDefinitions
       - Microsoft.ManagedServices/registrationAssignments
       - Microsoft.Management/managementGroups
-      - Microsoft.Resources/resourceGroups
       - Microsoft.Network/networkWatchers
       - Microsoft.PolicyInsights/remediations
       - Microsoft.KubernetesConfiguration/fluxConfigurations
