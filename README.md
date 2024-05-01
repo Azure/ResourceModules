@@ -1,6 +1,6 @@
 <h1 style="color: steelblue;">⚠️ CARML - AVM transition ⚠️</h1>
 
-**CARML evolved to and has been rebranded as the Bicep version of Azure Verifiefd Modules ([AVM](https://aka.ms/AVM)).** AVM is a straight-line evolution of CARML, the next evolutionary step. A lot of CARML’s principles and architecture decisions have formed the basis for AVM.
+**CARML evolved to and has been rebranded as the Bicep version of Azure Verifiefd Modules ([AVM](https://aka.ms/AVM)).** AVM is a straight-line successor of CARML, the next evolutionary step. A lot of CARML’s principles and architecture decisions have formed the basis for AVM.
 
 While this means some minor changes in things such as parameter names or "standard interfaces" (e.g., diagnostic settings, etc.), **you can still use the same modules you're used to and love, as they have been transitioned to AVM as resource or pattern modules.**
 
