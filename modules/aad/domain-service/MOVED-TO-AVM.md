@@ -2,6 +2,6 @@
 
 This module has been evolved into the following AVM module: [](https://github.com/Azure/bicep-registry-modules/tree/main/).
 
-The source code of this module has been removed from the main branch of this repository. If for any reason, you still need access to the CARML version of the module, you can find it [here](https://github.com/Azure/ResourceModules/tree/module-archive/modules/).
+The source code of this module has been removed from the main branch of this repository. If for any reason, you still need to access the CARML version of the module, you can find it [here](https://github.com/Azure/ResourceModules/tree/module-archive/modules/).
 
 For more information about this transition, see the informational notice, [here](https://github.com/Azure/ResourceModules?tab=readme-ov-file#%EF%B8%8F-CARML---AVM-transition-%EF%B8%8F).
