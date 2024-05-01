@@ -1,7 +1,5 @@
 # Container Apps `[Microsoft.App/containerApps]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Container App.
 
 ## Navigation
@@ -14,10 +12,10 @@ This module deploys a Container App.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.App/containerApps` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.App/2022-10-01/containerApps) |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| Resource Type                             | API Version                                                                                                        |
+|:------------------------------------------|:-------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.App/containerApps`             | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.App/2022-10-01/containerApps)             |
+| `Microsoft.Authorization/locks`           | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)           |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 
 ## Usage examples
@@ -449,45 +447,45 @@ module containerApp 'br:bicep/modules/app.container-app:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`containers`](#parameter-containers) | array | List of container definitions for the Container App. |
-| [`environmentId`](#parameter-environmentid) | string | Resource ID of environment. |
-| [`name`](#parameter-name) | string | Name of the Container App. |
+| Parameter                                   | Type   | Description                                          |
+|:--------------------------------------------|:-------|:-----------------------------------------------------|
+| [`containers`](#parameter-containers)       | array  | List of container definitions for the Container App. |
+| [`environmentId`](#parameter-environmentid) | string | Resource ID of environment.                          |
+| [`name`](#parameter-name)                   | string | Name of the Container App.                           |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`activeRevisionsMode`](#parameter-activerevisionsmode) | string | ActiveRevisionsMode controls how active revisions are handled for the Container app. |
-| [`customDomains`](#parameter-customdomains) | array | Custom domain bindings for Container App hostnames. |
-| [`dapr`](#parameter-dapr) | object | Dapr configuration for the Container App. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`exposedPort`](#parameter-exposedport) | int | Exposed Port in containers for TCP traffic from ingress. |
-| [`ingressAllowInsecure`](#parameter-ingressallowinsecure) | bool | Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS connections. |
-| [`ingressExternal`](#parameter-ingressexternal) | bool | Bool indicating if app exposes an external http endpoint. |
-| [`ingressTargetPort`](#parameter-ingresstargetport) | int | Target Port in containers for traffic from ingress. |
-| [`ingressTransport`](#parameter-ingresstransport) | string | Ingress transport protocol. |
-| [`initContainersTemplate`](#parameter-initcontainerstemplate) | array | List of specialized containers that run before app containers. |
-| [`ipSecurityRestrictions`](#parameter-ipsecurityrestrictions) | array | Rules to restrict incoming IP address. |
-| [`location`](#parameter-location) | string | Location for all Resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
-| [`maxInactiveRevisions`](#parameter-maxinactiverevisions) | int | Max inactive revisions a Container App can have. |
-| [`registries`](#parameter-registries) | array | Collection of private container registry credentials for containers used by the Container app. |
-| [`revisionSuffix`](#parameter-revisionsuffix) | string | User friendly suffix that is appended to the revision name. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute. |
-| [`scaleMaxReplicas`](#parameter-scalemaxreplicas) | int | Maximum number of container replicas. Defaults to 10 if not set. |
-| [`scaleMinReplicas`](#parameter-scaleminreplicas) | int | Minimum number of container replicas. |
-| [`scaleRules`](#parameter-scalerules) | array | Scaling rules. |
-| [`secrets`](#parameter-secrets) | secureObject | The secrets of the Container App. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`trafficLabel`](#parameter-trafficlabel) | string | Associates a traffic label with a revision. Label name should be consist of lower case alphanumeric characters or dashes. |
-| [`trafficLatestRevision`](#parameter-trafficlatestrevision) | bool | Indicates that the traffic weight belongs to a latest stable revision. |
-| [`trafficRevisionName`](#parameter-trafficrevisionname) | string | Name of a revision. |
-| [`trafficWeight`](#parameter-trafficweight) | int | Traffic weight assigned to a revision. |
-| [`volumes`](#parameter-volumes) | array | List of volume definitions for the Container App. |
-| [`workloadProfileType`](#parameter-workloadprofiletype) | string | Workload profile type to pin for container app execution. |
+| Parameter                                                     | Type         | Description                                                                                                                                                                             |
+|:--------------------------------------------------------------|:-------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`activeRevisionsMode`](#parameter-activerevisionsmode)       | string       | ActiveRevisionsMode controls how active revisions are handled for the Container app.                                                                                                    |
+| [`customDomains`](#parameter-customdomains)                   | array        | Custom domain bindings for Container App hostnames.                                                                                                                                     |
+| [`dapr`](#parameter-dapr)                                     | object       | Dapr configuration for the Container App.                                                                                                                                               |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool         | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                               |
+| [`exposedPort`](#parameter-exposedport)                       | int          | Exposed Port in containers for TCP traffic from ingress.                                                                                                                                |
+| [`ingressAllowInsecure`](#parameter-ingressallowinsecure)     | bool         | Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS connections.                                                  |
+| [`ingressExternal`](#parameter-ingressexternal)               | bool         | Bool indicating if app exposes an external http endpoint.                                                                                                                               |
+| [`ingressTargetPort`](#parameter-ingresstargetport)           | int          | Target Port in containers for traffic from ingress.                                                                                                                                     |
+| [`ingressTransport`](#parameter-ingresstransport)             | string       | Ingress transport protocol.                                                                                                                                                             |
+| [`initContainersTemplate`](#parameter-initcontainerstemplate) | array        | List of specialized containers that run before app containers.                                                                                                                          |
+| [`ipSecurityRestrictions`](#parameter-ipsecurityrestrictions) | array        | Rules to restrict incoming IP address.                                                                                                                                                  |
+| [`location`](#parameter-location)                             | string       | Location for all Resources.                                                                                                                                                             |
+| [`lock`](#parameter-lock)                                     | object       | The lock settings of the service.                                                                                                                                                       |
+| [`managedIdentities`](#parameter-managedidentities)           | object       | The managed identity definition for this resource.                                                                                                                                      |
+| [`maxInactiveRevisions`](#parameter-maxinactiverevisions)     | int          | Max inactive revisions a Container App can have.                                                                                                                                        |
+| [`registries`](#parameter-registries)                         | array        | Collection of private container registry credentials for containers used by the Container app.                                                                                          |
+| [`revisionSuffix`](#parameter-revisionsuffix)                 | string       | User friendly suffix that is appended to the revision name.                                                                                                                             |
+| [`roleAssignments`](#parameter-roleassignments)               | array        | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute. |
+| [`scaleMaxReplicas`](#parameter-scalemaxreplicas)             | int          | Maximum number of container replicas. Defaults to 10 if not set.                                                                                                                        |
+| [`scaleMinReplicas`](#parameter-scaleminreplicas)             | int          | Minimum number of container replicas.                                                                                                                                                   |
+| [`scaleRules`](#parameter-scalerules)                         | array        | Scaling rules.                                                                                                                                                                          |
+| [`secrets`](#parameter-secrets)                               | secureObject | The secrets of the Container App.                                                                                                                                                       |
+| [`tags`](#parameter-tags)                                     | object       | Tags of the resource.                                                                                                                                                                   |
+| [`trafficLabel`](#parameter-trafficlabel)                     | string       | Associates a traffic label with a revision. Label name should be consist of lower case alphanumeric characters or dashes.                                                               |
+| [`trafficLatestRevision`](#parameter-trafficlatestrevision)   | bool         | Indicates that the traffic weight belongs to a latest stable revision.                                                                                                                  |
+| [`trafficRevisionName`](#parameter-trafficrevisionname)       | string       | Name of a revision.                                                                                                                                                                     |
+| [`trafficWeight`](#parameter-trafficweight)                   | int          | Traffic weight assigned to a revision.                                                                                                                                                  |
+| [`volumes`](#parameter-volumes)                               | array        | List of volume definitions for the Container App.                                                                                                                                       |
+| [`workloadProfileType`](#parameter-workloadprofiletype)       | string       | Workload profile type to pin for container app execution.                                                                                                                               |
 
 ### Parameter: `containers`
 
@@ -631,8 +629,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -667,10 +665,10 @@ The managed identity definition for this resource.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | bool | Enables system assigned managed identity on the resource. |
-| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
+| Parameter                                                                        | Type  | Description                                               |
+|:---------------------------------------------------------------------------------|:------|:----------------------------------------------------------|
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned)                   | bool  | Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource.             |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -719,20 +717,20 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -889,13 +887,13 @@ Workload profile type to pin for container app execution.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the Container App. |
-| `resourceGroupName` | string | The name of the resource group the Container App was deployed into. |
-| `resourceId` | string | The resource ID of the Container App. |
-| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
+| Output                        | Type   | Description                                                         |
+|:------------------------------|:-------|:--------------------------------------------------------------------|
+| `location`                    | string | The location the resource was deployed into.                        |
+| `name`                        | string | The name of the Container App.                                      |
+| `resourceGroupName`           | string | The name of the resource group the Container App was deployed into. |
+| `resourceId`                  | string | The resource ID of the Container App.                               |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity.                   |
 
 ## Cross-referenced modules
 

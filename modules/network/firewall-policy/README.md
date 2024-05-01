@@ -1,7 +1,5 @@
 # Firewall Policies `[Microsoft.Network/firewallPolicies]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Firewall Policy.
 
 ## Navigation
@@ -14,9 +12,9 @@ This module deploys a Firewall Policy.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Network/firewallPolicies` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/firewallPolicies) |
+| Resource Type                                             | API Version                                                                                                                        |
+|:----------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Network/firewallPolicies`                      | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/firewallPolicies)                      |
 | `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/firewallPolicies/ruleCollectionGroups) |
 
 ## Usage examples
@@ -376,38 +374,38 @@ module firewallPolicy 'br:bicep/modules/network.firewall-policy:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                 | Type   | Description                  |
+|:--------------------------|:-------|:-----------------------------|
 | [`name`](#parameter-name) | string | Name of the Firewall Policy. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`allowSqlRedirect`](#parameter-allowsqlredirect) | bool | A flag to indicate if SQL Redirect traffic filtering is enabled. Turning on the flag requires no rule using port 11000-11999. |
-| [`autoLearnPrivateRanges`](#parameter-autolearnprivateranges) | string | The operation mode for automatically learning private ranges to not be SNAT. |
-| [`basePolicyResourceId`](#parameter-basepolicyresourceid) | string | Resource ID of the base policy. |
-| [`bypassTrafficSettings`](#parameter-bypasstrafficsettings) | array | List of rules for traffic to bypass. |
-| [`certificateName`](#parameter-certificatename) | string | Name of the CA certificate. |
-| [`defaultWorkspaceId`](#parameter-defaultworkspaceid) | string | Default Log Analytics Resource ID for Firewall Policy Insights. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`enableProxy`](#parameter-enableproxy) | bool | Enable DNS Proxy on Firewalls attached to the Firewall Policy. |
-| [`fqdns`](#parameter-fqdns) | array | List of FQDNs for the ThreatIntel Allowlist. |
-| [`insightsIsEnabled`](#parameter-insightsisenabled) | bool | A flag to indicate if the insights are enabled on the policy. |
-| [`ipAddresses`](#parameter-ipaddresses) | array | List of IP addresses for the ThreatIntel Allowlist. |
-| [`keyVaultSecretId`](#parameter-keyvaultsecretid) | string | Secret ID of (base-64 encoded unencrypted PFX) Secret or Certificate object stored in KeyVault. |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
-| [`mode`](#parameter-mode) | string | The configuring of intrusion detection. |
-| [`privateRanges`](#parameter-privateranges) | array | List of private IP addresses/IP address ranges to not be SNAT. |
-| [`retentionDays`](#parameter-retentiondays) | int | Number of days the insights should be enabled on the policy. |
-| [`ruleCollectionGroups`](#parameter-rulecollectiongroups) | array | Rule collection groups. |
-| [`servers`](#parameter-servers) | array | List of Custom DNS Servers. |
-| [`signatureOverrides`](#parameter-signatureoverrides) | array | List of specific signatures states. |
-| [`tags`](#parameter-tags) | object | Tags of the Firewall policy resource. |
-| [`threatIntelMode`](#parameter-threatintelmode) | string | The operation mode for Threat Intel. |
-| [`tier`](#parameter-tier) | string | Tier of Firewall Policy. |
-| [`workspaces`](#parameter-workspaces) | array | List of workspaces for Firewall Policy Insights. |
+| Parameter                                                     | Type   | Description                                                                                                                   |
+|:--------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------|
+| [`allowSqlRedirect`](#parameter-allowsqlredirect)             | bool   | A flag to indicate if SQL Redirect traffic filtering is enabled. Turning on the flag requires no rule using port 11000-11999. |
+| [`autoLearnPrivateRanges`](#parameter-autolearnprivateranges) | string | The operation mode for automatically learning private ranges to not be SNAT.                                                  |
+| [`basePolicyResourceId`](#parameter-basepolicyresourceid)     | string | Resource ID of the base policy.                                                                                               |
+| [`bypassTrafficSettings`](#parameter-bypasstrafficsettings)   | array  | List of rules for traffic to bypass.                                                                                          |
+| [`certificateName`](#parameter-certificatename)               | string | Name of the CA certificate.                                                                                                   |
+| [`defaultWorkspaceId`](#parameter-defaultworkspaceid)         | string | Default Log Analytics Resource ID for Firewall Policy Insights.                                                               |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                     |
+| [`enableProxy`](#parameter-enableproxy)                       | bool   | Enable DNS Proxy on Firewalls attached to the Firewall Policy.                                                                |
+| [`fqdns`](#parameter-fqdns)                                   | array  | List of FQDNs for the ThreatIntel Allowlist.                                                                                  |
+| [`insightsIsEnabled`](#parameter-insightsisenabled)           | bool   | A flag to indicate if the insights are enabled on the policy.                                                                 |
+| [`ipAddresses`](#parameter-ipaddresses)                       | array  | List of IP addresses for the ThreatIntel Allowlist.                                                                           |
+| [`keyVaultSecretId`](#parameter-keyvaultsecretid)             | string | Secret ID of (base-64 encoded unencrypted PFX) Secret or Certificate object stored in KeyVault.                               |
+| [`location`](#parameter-location)                             | string | Location for all resources.                                                                                                   |
+| [`managedIdentities`](#parameter-managedidentities)           | object | The managed identity definition for this resource.                                                                            |
+| [`mode`](#parameter-mode)                                     | string | The configuring of intrusion detection.                                                                                       |
+| [`privateRanges`](#parameter-privateranges)                   | array  | List of private IP addresses/IP address ranges to not be SNAT.                                                                |
+| [`retentionDays`](#parameter-retentiondays)                   | int    | Number of days the insights should be enabled on the policy.                                                                  |
+| [`ruleCollectionGroups`](#parameter-rulecollectiongroups)     | array  | Rule collection groups.                                                                                                       |
+| [`servers`](#parameter-servers)                               | array  | List of Custom DNS Servers.                                                                                                   |
+| [`signatureOverrides`](#parameter-signatureoverrides)         | array  | List of specific signatures states.                                                                                           |
+| [`tags`](#parameter-tags)                                     | object | Tags of the Firewall policy resource.                                                                                         |
+| [`threatIntelMode`](#parameter-threatintelmode)               | string | The operation mode for Threat Intel.                                                                                          |
+| [`tier`](#parameter-tier)                                     | string | Tier of Firewall Policy.                                                                                                      |
+| [`workspaces`](#parameter-workspaces)                         | array  | List of workspaces for Firewall Policy Insights.                                                                              |
 
 ### Parameter: `name`
 
@@ -536,8 +534,8 @@ The managed identity definition for this resource.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                                                        | Type  | Description                                   |
+|:---------------------------------------------------------------------------------|:------|:----------------------------------------------|
 | [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.userAssignedResourceIds`
@@ -652,12 +650,12 @@ List of workspaces for Firewall Policy Insights.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed firewall policy. |
+| Output              | Type   | Description                                         |
+|:--------------------|:-------|:----------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.        |
+| `name`              | string | The name of the deployed firewall policy.           |
 | `resourceGroupName` | string | The resource group of the deployed firewall policy. |
-| `resourceId` | string | The resource ID of the deployed firewall policy. |
+| `resourceId`        | string | The resource ID of the deployed firewall policy.    |
 
 ## Cross-referenced modules
 

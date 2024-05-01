@@ -1,7 +1,5 @@
 # DBforMySQL Flexible Servers `[Microsoft.DBforMySQL/flexibleServers]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a DBforMySQL Flexible Server.
 
 ## Navigation
@@ -14,15 +12,15 @@ This module deploys a DBforMySQL Flexible Server.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DBforMySQL/flexibleServers` | [2022-09-30-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-09-30-preview/flexibleServers) |
-| `Microsoft.DBforMySQL/flexibleServers/administrators` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-01-01/flexibleServers/administrators) |
-| `Microsoft.DBforMySQL/flexibleServers/databases` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-01-01/flexibleServers/databases) |
-| `Microsoft.DBforMySQL/flexibleServers/firewallRules` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-01-01/flexibleServers/firewallRules) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| Resource Type                                         | API Version                                                                                                                      |
+|:------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`                       | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                         |
+| `Microsoft.Authorization/roleAssignments`             | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)               |
+| `Microsoft.DBforMySQL/flexibleServers`                | [2022-09-30-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-09-30-preview/flexibleServers)  |
+| `Microsoft.DBforMySQL/flexibleServers/administrators` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-01-01/flexibleServers/administrators)   |
+| `Microsoft.DBforMySQL/flexibleServers/databases`      | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-01-01/flexibleServers/databases)        |
+| `Microsoft.DBforMySQL/flexibleServers/firewallRules`  | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-01-01/flexibleServers/firewallRules)    |
+| `Microsoft.Insights/diagnosticSettings`               | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Usage examples
 
@@ -595,51 +593,51 @@ module flexibleServer 'br:bicep/modules/db-for-my-sql.flexible-server:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`name`](#parameter-name) | string | The name of the MySQL flexible server. |
-| [`skuName`](#parameter-skuname) | string | The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3. |
-| [`tier`](#parameter-tier) | string | The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3". |
+| Parameter                       | Type   | Description                                                                                                                                       |
+|:--------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`name`](#parameter-name)       | string | The name of the MySQL flexible server.                                                                                                            |
+| [`skuName`](#parameter-skuname) | string | The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.                                                                      |
+| [`tier`](#parameter-tier)       | string | The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3". |
 
 **Conditional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. Required if 'customerManagedKey' is not empty. |
+| Parameter                                                         | Type   | Description                                                                                                                                                                                                                                                             |
+|:------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`managedIdentities`](#parameter-managedidentities)               | object | The managed identity definition for this resource. Required if 'customerManagedKey' is not empty.                                                                                                                                                                       |
 | [`privateDnsZoneResourceId`](#parameter-privatednszoneresourceid) | string | Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access". Required if "delegatedSubnetResourceId" is used and the Private DNS Zone name must end with mysql.database.azure.com in order to be linked to the MySQL Flexible Server. |
-| [`restorePointInTime`](#parameter-restorepointintime) | string | Restore point creation time (ISO8601 format), specifying the time to restore from. Required if "createMode" is set to "PointInTimeRestore". |
-| [`sourceServerResourceId`](#parameter-sourceserverresourceid) | string | The source MySQL server ID. Required if "createMode" is set to "PointInTimeRestore". |
-| [`storageAutoGrow`](#parameter-storageautogrow) | string | Enable Storage Auto Grow or not. Storage auto-growth prevents a server from running out of storage and becoming read-only. Required if "highAvailability" is not "Disabled". |
+| [`restorePointInTime`](#parameter-restorepointintime)             | string | Restore point creation time (ISO8601 format), specifying the time to restore from. Required if "createMode" is set to "PointInTimeRestore".                                                                                                                             |
+| [`sourceServerResourceId`](#parameter-sourceserverresourceid)     | string | The source MySQL server ID. Required if "createMode" is set to "PointInTimeRestore".                                                                                                                                                                                    |
+| [`storageAutoGrow`](#parameter-storageautogrow)                   | string | Enable Storage Auto Grow or not. Storage auto-growth prevents a server from running out of storage and becoming read-only. Required if "highAvailability" is not "Disabled".                                                                                            |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`administratorLogin`](#parameter-administratorlogin) | string | The administrator login name of a server. Can only be specified when the MySQL server is being created. |
-| [`administratorLoginPassword`](#parameter-administratorloginpassword) | securestring | The administrator login password. |
-| [`administrators`](#parameter-administrators) | array | The Azure AD administrators when AAD authentication enabled. |
-| [`availabilityZone`](#parameter-availabilityzone) | string | Availability zone information of the server. Default will have no preference set. |
-| [`backupRetentionDays`](#parameter-backupretentiondays) | int | Backup retention days for the server. |
-| [`createMode`](#parameter-createmode) | string | The mode to create a new MySQL server. |
-| [`customerManagedKey`](#parameter-customermanagedkey) | object | The customer managed key definition to use for the managed service. |
-| [`customerManagedKeyGeo`](#parameter-customermanagedkeygeo) | object | The customer managed key definition to use when geoRedundantBackup is "Enabled". |
-| [`databases`](#parameter-databases) | array | The databases to create in the server. |
-| [`delegatedSubnetResourceId`](#parameter-delegatedsubnetresourceid) | string | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. Delegation must be enabled on the subnet for MySQL Flexible Servers and subnet CIDR size is /29. |
-| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`firewallRules`](#parameter-firewallrules) | array | The firewall rules to create in the MySQL flexible server. |
-| [`geoRedundantBackup`](#parameter-georedundantbackup) | string | A value indicating whether Geo-Redundant backup is enabled on the server. If "Enabled" and "cMKKeyName" is not empty, then "geoBackupCMKKeyVaultResourceId" and "cMKUserAssignedIdentityResourceId" are also required. |
-| [`highAvailability`](#parameter-highavailability) | string | The mode for High Availability (HA). It is not supported for the Burstable pricing tier and Zone redundant HA can only be set during server provisioning. |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`maintenanceWindow`](#parameter-maintenancewindow) | object | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled". |
-| [`replicationRole`](#parameter-replicationrole) | string | The replication role. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the "roleDefinitionIdOrName" and "principalId" to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11". |
-| [`storageAutoIoScaling`](#parameter-storageautoioscaling) | string | Enable IO Auto Scaling or not. The server scales IOPs up or down automatically depending on your workload needs. |
-| [`storageIOPS`](#parameter-storageiops) | int | Storage IOPS for a server. Max IOPS are determined by compute size. |
-| [`storageSizeGB`](#parameter-storagesizegb) | int | Max storage allowed for a server. In all compute tiers, the minimum storage supported is 20 GiB and maximum is 16 TiB. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`version`](#parameter-version) | string | MySQL Server version. |
+| Parameter                                                             | Type         | Description                                                                                                                                                                                                                                                                                                                                                                                           |
+|:----------------------------------------------------------------------|:-------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`administratorLogin`](#parameter-administratorlogin)                 | string       | The administrator login name of a server. Can only be specified when the MySQL server is being created.                                                                                                                                                                                                                                                                                               |
+| [`administratorLoginPassword`](#parameter-administratorloginpassword) | securestring | The administrator login password.                                                                                                                                                                                                                                                                                                                                                                     |
+| [`administrators`](#parameter-administrators)                         | array        | The Azure AD administrators when AAD authentication enabled.                                                                                                                                                                                                                                                                                                                                          |
+| [`availabilityZone`](#parameter-availabilityzone)                     | string       | Availability zone information of the server. Default will have no preference set.                                                                                                                                                                                                                                                                                                                     |
+| [`backupRetentionDays`](#parameter-backupretentiondays)               | int          | Backup retention days for the server.                                                                                                                                                                                                                                                                                                                                                                 |
+| [`createMode`](#parameter-createmode)                                 | string       | The mode to create a new MySQL server.                                                                                                                                                                                                                                                                                                                                                                |
+| [`customerManagedKey`](#parameter-customermanagedkey)                 | object       | The customer managed key definition to use for the managed service.                                                                                                                                                                                                                                                                                                                                   |
+| [`customerManagedKeyGeo`](#parameter-customermanagedkeygeo)           | object       | The customer managed key definition to use when geoRedundantBackup is "Enabled".                                                                                                                                                                                                                                                                                                                      |
+| [`databases`](#parameter-databases)                                   | array        | The databases to create in the server.                                                                                                                                                                                                                                                                                                                                                                |
+| [`delegatedSubnetResourceId`](#parameter-delegatedsubnetresourceid)   | string       | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. Delegation must be enabled on the subnet for MySQL Flexible Servers and subnet CIDR size is /29.                                                                                                                                                                         |
+| [`diagnosticSettings`](#parameter-diagnosticsettings)                 | array        | The diagnostic settings of the service.                                                                                                                                                                                                                                                                                                                                                               |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)         | bool         | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                                                                                                                                                                                             |
+| [`firewallRules`](#parameter-firewallrules)                           | array        | The firewall rules to create in the MySQL flexible server.                                                                                                                                                                                                                                                                                                                                            |
+| [`geoRedundantBackup`](#parameter-georedundantbackup)                 | string       | A value indicating whether Geo-Redundant backup is enabled on the server. If "Enabled" and "cMKKeyName" is not empty, then "geoBackupCMKKeyVaultResourceId" and "cMKUserAssignedIdentityResourceId" are also required.                                                                                                                                                                                |
+| [`highAvailability`](#parameter-highavailability)                     | string       | The mode for High Availability (HA). It is not supported for the Burstable pricing tier and Zone redundant HA can only be set during server provisioning.                                                                                                                                                                                                                                             |
+| [`location`](#parameter-location)                                     | string       | Location for all resources.                                                                                                                                                                                                                                                                                                                                                                           |
+| [`lock`](#parameter-lock)                                             | object       | The lock settings of the service.                                                                                                                                                                                                                                                                                                                                                                     |
+| [`maintenanceWindow`](#parameter-maintenancewindow)                   | object       | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".                                                                                                                                                                                                                                                                                          |
+| [`replicationRole`](#parameter-replicationrole)                       | string       | The replication role.                                                                                                                                                                                                                                                                                                                                                                                 |
+| [`roleAssignments`](#parameter-roleassignments)                       | array        | Array of role assignment objects that contain the "roleDefinitionIdOrName" and "principalId" to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11". |
+| [`storageAutoIoScaling`](#parameter-storageautoioscaling)             | string       | Enable IO Auto Scaling or not. The server scales IOPs up or down automatically depending on your workload needs.                                                                                                                                                                                                                                                                                      |
+| [`storageIOPS`](#parameter-storageiops)                               | int          | Storage IOPS for a server. Max IOPS are determined by compute size.                                                                                                                                                                                                                                                                                                                                   |
+| [`storageSizeGB`](#parameter-storagesizegb)                           | int          | Max storage allowed for a server. In all compute tiers, the minimum storage supported is 20 GiB and maximum is 16 TiB.                                                                                                                                                                                                                                                                                |
+| [`tags`](#parameter-tags)                                             | object       | Tags of the resource.                                                                                                                                                                                                                                                                                                                                                                                 |
+| [`version`](#parameter-version)                                       | string       | MySQL Server version.                                                                                                                                                                                                                                                                                                                                                                                 |
 
 ### Parameter: `name`
 
@@ -679,8 +677,8 @@ The managed identity definition for this resource. Required if 'customerManagedK
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                                                        | Type  | Description                                   |
+|:---------------------------------------------------------------------------------|:------|:----------------------------------------------|
 | [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.userAssignedResourceIds`
@@ -804,16 +802,16 @@ The customer managed key definition to use for the managed service.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`keyName`](#parameter-customermanagedkeykeyname) | string | The name of the customer managed key to use for encryption. |
-| [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. |
-| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. |
+| Parameter                                                                                       | Type   | Description                                                                             |
+|:------------------------------------------------------------------------------------------------|:-------|:----------------------------------------------------------------------------------------|
+| [`keyName`](#parameter-customermanagedkeykeyname)                                               | string | The name of the customer managed key to use for encryption.                             |
+| [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid)                         | string | The resource ID of a key vault to reference a customer managed key for encryption from. |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key.                   |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                               | Type   | Description                                                                                           |
+|:--------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------|
 | [`keyVersion`](#parameter-customermanagedkeykeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
 
 ### Parameter: `customerManagedKey.keyName`
@@ -853,16 +851,16 @@ The customer managed key definition to use when geoRedundantBackup is "Enabled".
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`keyName`](#parameter-customermanagedkeygeokeyname) | string | The name of the customer managed key to use for encryption. |
-| [`keyVaultResourceId`](#parameter-customermanagedkeygeokeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. |
-| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeygeouserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. |
+| Parameter                                                                                          | Type   | Description                                                                             |
+|:---------------------------------------------------------------------------------------------------|:-------|:----------------------------------------------------------------------------------------|
+| [`keyName`](#parameter-customermanagedkeygeokeyname)                                               | string | The name of the customer managed key to use for encryption.                             |
+| [`keyVaultResourceId`](#parameter-customermanagedkeygeokeyvaultresourceid)                         | string | The resource ID of a key vault to reference a customer managed key for encryption from. |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeygeouserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key.                   |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                                  | Type   | Description                                                                                           |
+|:-----------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------|
 | [`keyVersion`](#parameter-customermanagedkeygeokeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
 
 ### Parameter: `customerManagedKeyGeo.keyName`
@@ -918,17 +916,17 @@ The diagnostic settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
-| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`name`](#parameter-diagnosticsettingsname) | string | The name of diagnostic setting. |
-| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| Parameter                                                                                                 | Type   | Description                                                                                                                                                                                                                                                                                     |
+|:----------------------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.                                                                                                                                                |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname)                                               | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype)                 | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.                                                                                                                                              |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups)                           | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid)               | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.                                                                                                                                                                                           |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories)                                       | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`name`](#parameter-diagnosticsettingsname)                                                               | string | The name of diagnostic setting.                                                                                                                                                                                                                                                                 |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid)                       | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                                 |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid)                                 | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                         |
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
@@ -1064,8 +1062,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -1124,20 +1122,20 @@ Array of role assignment objects that contain the "roleDefinitionIdOrName" and "
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -1276,12 +1274,12 @@ MySQL Server version.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed MySQL Flexible server. |
+| Output              | Type   | Description                                               |
+|:--------------------|:-------|:----------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.              |
+| `name`              | string | The name of the deployed MySQL Flexible server.           |
 | `resourceGroupName` | string | The resource group of the deployed MySQL Flexible server. |
-| `resourceId` | string | The resource ID of the deployed MySQL Flexible server. |
+| `resourceId`        | string | The resource ID of the deployed MySQL Flexible server.    |
 
 ## Cross-referenced modules
 

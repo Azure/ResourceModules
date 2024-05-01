@@ -1,7 +1,5 @@
 # Service Bus Namespaces `[Microsoft.ServiceBus/namespaces]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Service Bus Namespace.
 
 ## Navigation
@@ -14,21 +12,21 @@ This module deploys a Service Bus Namespace.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.ServiceBus/namespaces` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces) |
-| `Microsoft.ServiceBus/namespaces/AuthorizationRules` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/AuthorizationRules) |
-| `Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/disasterRecoveryConfigs) |
-| `Microsoft.ServiceBus/namespaces/migrationConfigurations` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/migrationConfigurations) |
-| `Microsoft.ServiceBus/namespaces/networkRuleSets` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/networkRuleSets) |
-| `Microsoft.ServiceBus/namespaces/queues` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/queues) |
+| Resource Type                                               | API Version                                                                                                                                          |
+|:------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`                             | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                                             |
+| `Microsoft.Authorization/roleAssignments`                   | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)                                   |
+| `Microsoft.Insights/diagnosticSettings`                     | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)                     |
+| `Microsoft.Network/privateEndpoints`                        | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints)                                        |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups`   | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups)                   |
+| `Microsoft.ServiceBus/namespaces`                           | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces)                           |
+| `Microsoft.ServiceBus/namespaces/AuthorizationRules`        | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/AuthorizationRules)        |
+| `Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs`   | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/disasterRecoveryConfigs)   |
+| `Microsoft.ServiceBus/namespaces/migrationConfigurations`   | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/migrationConfigurations)   |
+| `Microsoft.ServiceBus/namespaces/networkRuleSets`           | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/networkRuleSets)           |
+| `Microsoft.ServiceBus/namespaces/queues`                    | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/queues)                    |
 | `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/queues/authorizationRules) |
-| `Microsoft.ServiceBus/namespaces/topics` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/topics) |
+| `Microsoft.ServiceBus/namespaces/topics`                    | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/topics)                    |
 | `Microsoft.ServiceBus/namespaces/topics/authorizationRules` | [2022-10-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2022-10-01-preview/namespaces/topics/authorizationRules) |
 
 ## Usage examples
@@ -1172,38 +1170,38 @@ module namespace 'br:bicep/modules/service-bus.namespace:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                 | Type   | Description                        |
+|:--------------------------|:-------|:-----------------------------------|
 | [`name`](#parameter-name) | string | Name of the Service Bus Namespace. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`alternateName`](#parameter-alternatename) | string | Alternate name for namespace. |
-| [`authorizationRules`](#parameter-authorizationrules) | array | Authorization Rules for the Service Bus namespace. |
-| [`customerManagedKey`](#parameter-customermanagedkey) | object | The customer managed key definition. |
-| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
-| [`disableLocalAuth`](#parameter-disablelocalauth) | bool | This property disables SAS authentication for the Service Bus namespace. |
-| [`disasterRecoveryConfigs`](#parameter-disasterrecoveryconfigs) | object | The disaster recovery configuration. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
-| [`migrationConfigurations`](#parameter-migrationconfigurations) | object | The migration configuration. |
-| [`minimumTlsVersion`](#parameter-minimumtlsversion) | string | The minimum TLS version for the cluster to support. |
-| [`networkRuleSets`](#parameter-networkrulesets) | object | Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
-| [`premiumMessagingPartitions`](#parameter-premiummessagingpartitions) | int | The number of partitions of a Service Bus namespace. This property is only applicable to Premium SKU namespaces. The default value is 1 and possible values are 1, 2 and 4. |
-| [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
-| [`queues`](#parameter-queues) | array | The queues to create in the service bus namespace. |
-| [`requireInfrastructureEncryption`](#parameter-requireinfrastructureencryption) | bool | Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`skuCapacity`](#parameter-skucapacity) | int | The specified messaging units for the tier. Only used for Premium Sku tier. |
-| [`skuName`](#parameter-skuname) | string | Name of this SKU. - Basic, Standard, Premium. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`topics`](#parameter-topics) | array | The topics to create in the service bus namespace. |
-| [`zoneRedundant`](#parameter-zoneredundant) | bool | Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. |
+| Parameter                                                                       | Type   | Description                                                                                                                                                                                                                          |
+|:--------------------------------------------------------------------------------|:-------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`alternateName`](#parameter-alternatename)                                     | string | Alternate name for namespace.                                                                                                                                                                                                        |
+| [`authorizationRules`](#parameter-authorizationrules)                           | array  | Authorization Rules for the Service Bus namespace.                                                                                                                                                                                   |
+| [`customerManagedKey`](#parameter-customermanagedkey)                           | object | The customer managed key definition.                                                                                                                                                                                                 |
+| [`diagnosticSettings`](#parameter-diagnosticsettings)                           | array  | The diagnostic settings of the service.                                                                                                                                                                                              |
+| [`disableLocalAuth`](#parameter-disablelocalauth)                               | bool   | This property disables SAS authentication for the Service Bus namespace.                                                                                                                                                             |
+| [`disasterRecoveryConfigs`](#parameter-disasterrecoveryconfigs)                 | object | The disaster recovery configuration.                                                                                                                                                                                                 |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                   | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                            |
+| [`location`](#parameter-location)                                               | string | Location for all resources.                                                                                                                                                                                                          |
+| [`lock`](#parameter-lock)                                                       | object | The lock settings of the service.                                                                                                                                                                                                    |
+| [`managedIdentities`](#parameter-managedidentities)                             | object | The managed identity definition for this resource.                                                                                                                                                                                   |
+| [`migrationConfigurations`](#parameter-migrationconfigurations)                 | object | The migration configuration.                                                                                                                                                                                                         |
+| [`minimumTlsVersion`](#parameter-minimumtlsversion)                             | string | The minimum TLS version for the cluster to support.                                                                                                                                                                                  |
+| [`networkRuleSets`](#parameter-networkrulesets)                                 | object | Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
+| [`premiumMessagingPartitions`](#parameter-premiummessagingpartitions)           | int    | The number of partitions of a Service Bus namespace. This property is only applicable to Premium SKU namespaces. The default value is 1 and possible values are 1, 2 and 4.                                                          |
+| [`privateEndpoints`](#parameter-privateendpoints)                               | array  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.                                                                                                     |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess)                         | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.                                        |
+| [`queues`](#parameter-queues)                                                   | array  | The queues to create in the service bus namespace.                                                                                                                                                                                   |
+| [`requireInfrastructureEncryption`](#parameter-requireinfrastructureencryption) | bool   | Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters.                                                          |
+| [`roleAssignments`](#parameter-roleassignments)                                 | array  | Array of role assignments to create.                                                                                                                                                                                                 |
+| [`skuCapacity`](#parameter-skucapacity)                                         | int    | The specified messaging units for the tier. Only used for Premium Sku tier.                                                                                                                                                          |
+| [`skuName`](#parameter-skuname)                                                 | string | Name of this SKU. - Basic, Standard, Premium.                                                                                                                                                                                        |
+| [`tags`](#parameter-tags)                                                       | object | Tags of the resource.                                                                                                                                                                                                                |
+| [`topics`](#parameter-topics)                                                   | array  | The topics to create in the service bus namespace.                                                                                                                                                                                   |
+| [`zoneRedundant`](#parameter-zoneredundant)                                     | bool   | Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones.                                                                                                                              |
 
 ### Parameter: `name`
 
@@ -1249,16 +1247,16 @@ The customer managed key definition.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`keyName`](#parameter-customermanagedkeykeyname) | string | The name of the customer managed key to use for encryption. |
+| Parameter                                                               | Type   | Description                                                                             |
+|:------------------------------------------------------------------------|:-------|:----------------------------------------------------------------------------------------|
+| [`keyName`](#parameter-customermanagedkeykeyname)                       | string | The name of the customer managed key to use for encryption.                             |
 | [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`keyVersion`](#parameter-customermanagedkeykeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| Parameter                                                                                       | Type   | Description                                                                                                                         |
+|:------------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------|
+| [`keyVersion`](#parameter-customermanagedkeykeyversion)                                         | string | The version of the customer managed key to reference for encryption. If not provided, using 'latest'.                               |
 | [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
 
 ### Parameter: `customerManagedKey.keyName`
@@ -1298,17 +1296,17 @@ The diagnostic settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
-| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`name`](#parameter-diagnosticsettingsname) | string | The name of diagnostic setting. |
-| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| Parameter                                                                                                 | Type   | Description                                                                                                                                                                                                                                                                                     |
+|:----------------------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.                                                                                                                                                |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname)                                               | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype)                 | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.                                                                                                                                              |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups)                           | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid)               | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.                                                                                                                                                                                           |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories)                                       | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`name`](#parameter-diagnosticsettingsname)                                                               | string | The name of diagnostic setting.                                                                                                                                                                                                                                                                 |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid)                       | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                                 |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid)                                 | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                         |
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
@@ -1421,8 +1419,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -1457,10 +1455,10 @@ The managed identity definition for this resource.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | bool | Enables system assigned managed identity on the resource. |
-| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
+| Parameter                                                                        | Type  | Description                                               |
+|:---------------------------------------------------------------------------------|:------|:----------------------------------------------------------|
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned)                   | bool  | Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource.             |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -1525,28 +1523,28 @@ Configuration details for private endpoints. For security reasons, it is recomme
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                                         | Type   | Description                                                       |
+|:------------------------------------------------------------------|:-------|:------------------------------------------------------------------|
 | [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | string | Resource ID of the subnet where the endpoint needs to be created. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`applicationSecurityGroupResourceIds`](#parameter-privateendpointsapplicationsecuritygroupresourceids) | array | Application security groups in which the private endpoint IP configuration is included. |
-| [`customDnsConfigs`](#parameter-privateendpointscustomdnsconfigs) | array | Custom DNS configurations. |
-| [`customNetworkInterfaceName`](#parameter-privateendpointscustomnetworkinterfacename) | string | The custom name of the network interface attached to the private endpoint. |
-| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
-| [`ipConfigurations`](#parameter-privateendpointsipconfigurations) | array | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
-| [`location`](#parameter-privateendpointslocation) | string | The location to deploy the private endpoint to. |
-| [`lock`](#parameter-privateendpointslock) | object | Specify the type of lock. |
-| [`manualPrivateLinkServiceConnections`](#parameter-privateendpointsmanualprivatelinkserviceconnections) | array | Manual PrivateLink Service Connections. |
-| [`name`](#parameter-privateendpointsname) | string | The name of the private endpoint. |
-| [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | string | The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided. |
-| [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | array | The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
-| [`roleAssignments`](#parameter-privateendpointsroleassignments) | array | Array of role assignments to create. |
-| [`service`](#parameter-privateendpointsservice) | string | The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
-| [`tags`](#parameter-privateendpointstags) | object | Tags to be applied on all resources/resource groups in this deployment. |
+| Parameter                                                                                               | Type   | Description                                                                                                         |
+|:--------------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------|
+| [`applicationSecurityGroupResourceIds`](#parameter-privateendpointsapplicationsecuritygroupresourceids) | array  | Application security groups in which the private endpoint IP configuration is included.                             |
+| [`customDnsConfigs`](#parameter-privateendpointscustomdnsconfigs)                                       | array  | Custom DNS configurations.                                                                                          |
+| [`customNetworkInterfaceName`](#parameter-privateendpointscustomnetworkinterfacename)                   | string | The custom name of the network interface attached to the private endpoint.                                          |
+| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry)                                         | bool   | Enable/Disable usage telemetry for module.                                                                          |
+| [`ipConfigurations`](#parameter-privateendpointsipconfigurations)                                       | array  | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
+| [`location`](#parameter-privateendpointslocation)                                                       | string | The location to deploy the private endpoint to.                                                                     |
+| [`lock`](#parameter-privateendpointslock)                                                               | object | Specify the type of lock.                                                                                           |
+| [`manualPrivateLinkServiceConnections`](#parameter-privateendpointsmanualprivatelinkserviceconnections) | array  | Manual PrivateLink Service Connections.                                                                             |
+| [`name`](#parameter-privateendpointsname)                                                               | string | The name of the private endpoint.                                                                                   |
+| [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname)                         | string | The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided.                        |
+| [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids)                     | array  | The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
+| [`roleAssignments`](#parameter-privateendpointsroleassignments)                                         | array  | Array of role assignments to create.                                                                                |
+| [`service`](#parameter-privateendpointsservice)                                                         | string | The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob".                          |
+| [`tags`](#parameter-privateendpointstags)                                                               | object | Tags to be applied on all resources/resource groups in this deployment.                                             |
 
 ### Parameter: `privateEndpoints.subnetResourceId`
 
@@ -1606,8 +1604,8 @@ Specify the type of lock.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                     | Type   | Description               |
+|:----------------------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-privateendpointslockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-privateendpointslockname) | string | Specify the name of lock. |
 
@@ -1670,20 +1668,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-privateendpointsroleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:---------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-privateendpointsroleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-privateendpointsroleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-privateendpointsroleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-privateendpointsroleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-privateendpointsroleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-privateendpointsroleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-privateendpointsroleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:---------------------------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-privateendpointsroleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-privateendpointsroleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-privateendpointsroleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-privateendpointsroleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-privateendpointsroleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `privateEndpoints.roleAssignments.principalId`
 
@@ -1806,20 +1804,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -1947,18 +1945,18 @@ Enabling this property creates a Premium Service Bus Namespace in regions suppor
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed service bus namespace. |
-| `resourceGroupName` | string | The resource group of the deployed service bus namespace. |
-| `resourceId` | string | The resource ID of the deployed service bus namespace. |
-| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
+| Output                        | Type   | Description                                               |
+|:------------------------------|:-------|:----------------------------------------------------------|
+| `location`                    | string | The location the resource was deployed into.              |
+| `name`                        | string | The name of the deployed service bus namespace.           |
+| `resourceGroupName`           | string | The resource group of the deployed service bus namespace. |
+| `resourceId`                  | string | The resource ID of the deployed service bus namespace.    |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity.         |
 
 ## Cross-referenced modules
 
 This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
 
-| Reference | Type |
-| :-- | :-- |
+| Reference                          | Type            |
+|:-----------------------------------|:----------------|
 | `modules/network/private-endpoint` | Local reference |

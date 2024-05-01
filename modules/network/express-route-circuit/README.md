@@ -1,7 +1,5 @@
 # ExpressRoute Circuits `[Microsoft.Network/expressRouteCircuits]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys an Express Route Circuit.
 
 ## Navigation
@@ -14,12 +12,12 @@ This module deploys an Express Route Circuit.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/expressRouteCircuits` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/expressRouteCircuits) |
+| Resource Type                             | API Version                                                                                                                      |
+|:------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`           | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                         |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)               |
+| `Microsoft.Insights/diagnosticSettings`   | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Network/expressRouteCircuits`  | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/expressRouteCircuits)                |
 
 ## Usage examples
 
@@ -382,36 +380,36 @@ module expressRouteCircuit 'br:bicep/modules/network.express-route-circuit:1.0.0
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`bandwidthInMbps`](#parameter-bandwidthinmbps) | int | This is the bandwidth in Mbps of the circuit being created. It must exactly match one of the available bandwidth offers List ExpressRoute Service Providers API call. |
-| [`name`](#parameter-name) | string | This is the name of the ExpressRoute circuit. |
-| [`peeringLocation`](#parameter-peeringlocation) | string | This is the name of the peering location and not the ARM resource location. It must exactly match one of the available peering locations from List ExpressRoute Service Providers API call. |
-| [`serviceProviderName`](#parameter-serviceprovidername) | string | This is the name of the ExpressRoute Service Provider. It must exactly match one of the Service Providers from List ExpressRoute Service Providers API call. |
+| Parameter                                               | Type   | Description                                                                                                                                                                                 |
+|:--------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`bandwidthInMbps`](#parameter-bandwidthinmbps)         | int    | This is the bandwidth in Mbps of the circuit being created. It must exactly match one of the available bandwidth offers List ExpressRoute Service Providers API call.                       |
+| [`name`](#parameter-name)                               | string | This is the name of the ExpressRoute circuit.                                                                                                                                               |
+| [`peeringLocation`](#parameter-peeringlocation)         | string | This is the name of the peering location and not the ARM resource location. It must exactly match one of the available peering locations from List ExpressRoute Service Providers API call. |
+| [`serviceProviderName`](#parameter-serviceprovidername) | string | This is the name of the ExpressRoute Service Provider. It must exactly match one of the Service Providers from List ExpressRoute Service Providers API call.                                |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`allowClassicOperations`](#parameter-allowclassicoperations) | bool | Allow classic operations. You can connect to virtual networks in the classic deployment model by setting allowClassicOperations to true. |
-| [`bandwidthInGbps`](#parameter-bandwidthingbps) | int | The bandwidth of the circuit when the circuit is provisioned on an ExpressRoutePort resource. Available when configuring Express Route Direct. Default value of 0 will set the property to null. |
-| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`expressRoutePortResourceId`](#parameter-expressrouteportresourceid) | string | The reference to the ExpressRoutePort resource when the circuit is provisioned on an ExpressRoutePort resource. Available when configuring Express Route Direct. |
-| [`globalReachEnabled`](#parameter-globalreachenabled) | bool | Flag denoting global reach status. To enable ExpressRoute Global Reach between different geopolitical regions, your circuits must be Premium SKU. |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`peerASN`](#parameter-peerasn) | int | The autonomous system number of the customer/connectivity provider. |
-| [`peering`](#parameter-peering) | bool | Enabled BGP peering type for the Circuit. |
-| [`peeringType`](#parameter-peeringtype) | string | BGP peering type for the Circuit. Choose from AzurePrivatePeering, AzurePublicPeering or MicrosoftPeering. |
-| [`primaryPeerAddressPrefix`](#parameter-primarypeeraddressprefix) | string | A /30 subnet used to configure IP addresses for interfaces on Link1. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`secondaryPeerAddressPrefix`](#parameter-secondarypeeraddressprefix) | string | A /30 subnet used to configure IP addresses for interfaces on Link2. |
-| [`sharedKey`](#parameter-sharedkey) | string | The shared key for peering configuration. Router does MD5 hash comparison to validate the packets sent by BGP connection. This parameter is optional and can be removed from peering configuration if not required. |
-| [`skuFamily`](#parameter-skufamily) | string | Chosen SKU family of ExpressRoute circuit. Choose from MeteredData or UnlimitedData SKU families. |
-| [`skuTier`](#parameter-skutier) | string | Chosen SKU Tier of ExpressRoute circuit. Choose from Local, Premium or Standard SKU tiers. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`vlanId`](#parameter-vlanid) | int | Specifies the identifier that is used to identify the customer. |
+| Parameter                                                             | Type   | Description                                                                                                                                                                                                         |
+|:----------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`allowClassicOperations`](#parameter-allowclassicoperations)         | bool   | Allow classic operations. You can connect to virtual networks in the classic deployment model by setting allowClassicOperations to true.                                                                            |
+| [`bandwidthInGbps`](#parameter-bandwidthingbps)                       | int    | The bandwidth of the circuit when the circuit is provisioned on an ExpressRoutePort resource. Available when configuring Express Route Direct. Default value of 0 will set the property to null.                    |
+| [`diagnosticSettings`](#parameter-diagnosticsettings)                 | array  | The diagnostic settings of the service.                                                                                                                                                                             |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)         | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                           |
+| [`expressRoutePortResourceId`](#parameter-expressrouteportresourceid) | string | The reference to the ExpressRoutePort resource when the circuit is provisioned on an ExpressRoutePort resource. Available when configuring Express Route Direct.                                                    |
+| [`globalReachEnabled`](#parameter-globalreachenabled)                 | bool   | Flag denoting global reach status. To enable ExpressRoute Global Reach between different geopolitical regions, your circuits must be Premium SKU.                                                                   |
+| [`location`](#parameter-location)                                     | string | Location for all resources.                                                                                                                                                                                         |
+| [`lock`](#parameter-lock)                                             | object | The lock settings of the service.                                                                                                                                                                                   |
+| [`peerASN`](#parameter-peerasn)                                       | int    | The autonomous system number of the customer/connectivity provider.                                                                                                                                                 |
+| [`peering`](#parameter-peering)                                       | bool   | Enabled BGP peering type for the Circuit.                                                                                                                                                                           |
+| [`peeringType`](#parameter-peeringtype)                               | string | BGP peering type for the Circuit. Choose from AzurePrivatePeering, AzurePublicPeering or MicrosoftPeering.                                                                                                          |
+| [`primaryPeerAddressPrefix`](#parameter-primarypeeraddressprefix)     | string | A /30 subnet used to configure IP addresses for interfaces on Link1.                                                                                                                                                |
+| [`roleAssignments`](#parameter-roleassignments)                       | array  | Array of role assignments to create.                                                                                                                                                                                |
+| [`secondaryPeerAddressPrefix`](#parameter-secondarypeeraddressprefix) | string | A /30 subnet used to configure IP addresses for interfaces on Link2.                                                                                                                                                |
+| [`sharedKey`](#parameter-sharedkey)                                   | string | The shared key for peering configuration. Router does MD5 hash comparison to validate the packets sent by BGP connection. This parameter is optional and can be removed from peering configuration if not required. |
+| [`skuFamily`](#parameter-skufamily)                                   | string | Chosen SKU family of ExpressRoute circuit. Choose from MeteredData or UnlimitedData SKU families.                                                                                                                   |
+| [`skuTier`](#parameter-skutier)                                       | string | Chosen SKU Tier of ExpressRoute circuit. Choose from Local, Premium or Standard SKU tiers.                                                                                                                          |
+| [`tags`](#parameter-tags)                                             | object | Tags of the resource.                                                                                                                                                                                               |
+| [`vlanId`](#parameter-vlanid)                                         | int    | Specifies the identifier that is used to identify the customer.                                                                                                                                                     |
 
 ### Parameter: `bandwidthInMbps`
 
@@ -466,17 +464,17 @@ The diagnostic settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
-| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`name`](#parameter-diagnosticsettingsname) | string | The name of diagnostic setting. |
-| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| Parameter                                                                                                 | Type   | Description                                                                                                                                                                                                                                                                                     |
+|:----------------------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.                                                                                                                                                |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname)                                               | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype)                 | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.                                                                                                                                              |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups)                           | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid)               | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.                                                                                                                                                                                           |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories)                                       | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`name`](#parameter-diagnosticsettingsname)                                                               | string | The name of diagnostic setting.                                                                                                                                                                                                                                                                 |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid)                       | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                                 |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid)                                 | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                         |
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
@@ -589,8 +587,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -664,20 +662,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -809,13 +807,13 @@ Specifies the identifier that is used to identify the customer.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of express route curcuit. |
+| Output              | Type   | Description                                                     |
+|:--------------------|:-------|:----------------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.                    |
+| `name`              | string | The name of express route curcuit.                              |
 | `resourceGroupName` | string | The resource group the express route curcuit was deployed into. |
-| `resourceId` | string | The resource ID of express route curcuit. |
-| `serviceKey` | string | The service key of the express route circuit. |
+| `resourceId`        | string | The resource ID of express route curcuit.                       |
+| `serviceKey`        | string | The service key of the express route circuit.                   |
 
 ## Cross-referenced modules
 

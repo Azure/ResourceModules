@@ -1,7 +1,5 @@
 # Azure Databricks Workspaces `[Microsoft.Databricks/workspaces]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys an Azure Databricks Workspace.
 
 ## Navigation
@@ -15,13 +13,13 @@ This module deploys an Azure Databricks Workspace.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Databricks/workspaces` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Databricks/2023-02-01/workspaces) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
+| Resource Type                                             | API Version                                                                                                                        |
+|:----------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`                           | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                           |
+| `Microsoft.Authorization/roleAssignments`                 | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)                 |
+| `Microsoft.Databricks/workspaces`                         | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Databricks/2023-02-01/workspaces)                         |
+| `Microsoft.Insights/diagnosticSettings`                   | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)   |
+| `Microsoft.Network/privateEndpoints`                      | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints)                      |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Usage examples
@@ -585,41 +583,41 @@ module workspace 'br:bicep/modules/databricks.workspace:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                 | Type   | Description                                           |
+|:--------------------------|:-------|:------------------------------------------------------|
 | [`name`](#parameter-name) | string | The name of the Azure Databricks workspace to create. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`amlWorkspaceResourceId`](#parameter-amlworkspaceresourceid) | string | The resource ID of a Azure Machine Learning workspace to link with Databricks workspace. |
-| [`customerManagedKey`](#parameter-customermanagedkey) | object | The customer managed key definition to use for the managed service. |
-| [`customerManagedKeyManagedDisk`](#parameter-customermanagedkeymanageddisk) | object | The customer managed key definition to use for the managed disk. |
-| [`customPrivateSubnetName`](#parameter-customprivatesubnetname) | string | The name of the Private Subnet within the Virtual Network. |
-| [`customPublicSubnetName`](#parameter-custompublicsubnetname) | string | The name of a Public Subnet within the Virtual Network. |
-| [`customVirtualNetworkResourceId`](#parameter-customvirtualnetworkresourceid) | string | The resource ID of a Virtual Network where this Databricks Cluster should be created. |
-| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
-| [`disablePublicIp`](#parameter-disablepublicip) | bool | Disable Public IP. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`loadBalancerBackendPoolName`](#parameter-loadbalancerbackendpoolname) | string | Name of the outbound Load Balancer Backend Pool for Secure Cluster Connectivity (No Public IP). |
-| [`loadBalancerResourceId`](#parameter-loadbalancerresourceid) | string | Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No Public IP) workspace. |
-| [`location`](#parameter-location) | string | Location for all Resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managedResourceGroupResourceId`](#parameter-managedresourcegroupresourceid) | string | The managed resource group ID. It is created by the module as per the to-be resource ID you provide. |
-| [`natGatewayName`](#parameter-natgatewayname) | string | Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace subnets. |
-| [`prepareEncryption`](#parameter-prepareencryption) | bool | Prepare the workspace for encryption. Enables the Managed Identity for managed storage account. |
-| [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| [`publicIpName`](#parameter-publicipname) | string | Name of the Public IP for No Public IP workspace with managed vNet. |
-| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | 	The network access type for accessing workspace. Set value to disabled to access workspace only via private link. |
-| [`requiredNsgRules`](#parameter-requirednsgrules) | string | Gets or sets a value indicating whether data plane (clusters) to control plane communication happen over private endpoint. |
-| [`requireInfrastructureEncryption`](#parameter-requireinfrastructureencryption) | bool | A boolean indicating whether or not the DBFS root file system will be enabled with secondary layer of encryption with platform managed keys for data at rest. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`skuName`](#parameter-skuname) | string | The pricing tier of workspace. |
-| [`storageAccountName`](#parameter-storageaccountname) | string | Default DBFS storage account name. |
-| [`storageAccountSkuName`](#parameter-storageaccountskuname) | string | Storage account SKU name. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`vnetAddressPrefix`](#parameter-vnetaddressprefix) | string | Address prefix for Managed virtual network. |
+| Parameter                                                                       | Type   | Description                                                                                                                                                   |
+|:--------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`amlWorkspaceResourceId`](#parameter-amlworkspaceresourceid)                   | string | The resource ID of a Azure Machine Learning workspace to link with Databricks workspace.                                                                      |
+| [`customerManagedKey`](#parameter-customermanagedkey)                           | object | The customer managed key definition to use for the managed service.                                                                                           |
+| [`customerManagedKeyManagedDisk`](#parameter-customermanagedkeymanageddisk)     | object | The customer managed key definition to use for the managed disk.                                                                                              |
+| [`customPrivateSubnetName`](#parameter-customprivatesubnetname)                 | string | The name of the Private Subnet within the Virtual Network.                                                                                                    |
+| [`customPublicSubnetName`](#parameter-custompublicsubnetname)                   | string | The name of a Public Subnet within the Virtual Network.                                                                                                       |
+| [`customVirtualNetworkResourceId`](#parameter-customvirtualnetworkresourceid)   | string | The resource ID of a Virtual Network where this Databricks Cluster should be created.                                                                         |
+| [`diagnosticSettings`](#parameter-diagnosticsettings)                           | array  | The diagnostic settings of the service.                                                                                                                       |
+| [`disablePublicIp`](#parameter-disablepublicip)                                 | bool   | Disable Public IP.                                                                                                                                            |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                   | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                     |
+| [`loadBalancerBackendPoolName`](#parameter-loadbalancerbackendpoolname)         | string | Name of the outbound Load Balancer Backend Pool for Secure Cluster Connectivity (No Public IP).                                                               |
+| [`loadBalancerResourceId`](#parameter-loadbalancerresourceid)                   | string | Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No Public IP) workspace.                                                              |
+| [`location`](#parameter-location)                                               | string | Location for all Resources.                                                                                                                                   |
+| [`lock`](#parameter-lock)                                                       | object | The lock settings of the service.                                                                                                                             |
+| [`managedResourceGroupResourceId`](#parameter-managedresourcegroupresourceid)   | string | The managed resource group ID. It is created by the module as per the to-be resource ID you provide.                                                          |
+| [`natGatewayName`](#parameter-natgatewayname)                                   | string | Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace subnets.                                                                     |
+| [`prepareEncryption`](#parameter-prepareencryption)                             | bool   | Prepare the workspace for encryption. Enables the Managed Identity for managed storage account.                                                               |
+| [`privateEndpoints`](#parameter-privateendpoints)                               | array  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.                              |
+| [`publicIpName`](#parameter-publicipname)                                       | string | Name of the Public IP for No Public IP workspace with managed vNet.                                                                                           |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess)                         | string | The network access type for accessing workspace. Set value to disabled to access workspace only via private link.                                             |
+| [`requiredNsgRules`](#parameter-requirednsgrules)                               | string | Gets or sets a value indicating whether data plane (clusters) to control plane communication happen over private endpoint.                                    |
+| [`requireInfrastructureEncryption`](#parameter-requireinfrastructureencryption) | bool   | A boolean indicating whether or not the DBFS root file system will be enabled with secondary layer of encryption with platform managed keys for data at rest. |
+| [`roleAssignments`](#parameter-roleassignments)                                 | array  | Array of role assignments to create.                                                                                                                          |
+| [`skuName`](#parameter-skuname)                                                 | string | The pricing tier of workspace.                                                                                                                                |
+| [`storageAccountName`](#parameter-storageaccountname)                           | string | Default DBFS storage account name.                                                                                                                            |
+| [`storageAccountSkuName`](#parameter-storageaccountskuname)                     | string | Storage account SKU name.                                                                                                                                     |
+| [`tags`](#parameter-tags)                                                       | object | Tags of the resource.                                                                                                                                         |
+| [`vnetAddressPrefix`](#parameter-vnetaddressprefix)                             | string | Address prefix for Managed virtual network.                                                                                                                   |
 
 ### Parameter: `name`
 
@@ -645,16 +643,16 @@ The customer managed key definition to use for the managed service.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`keyName`](#parameter-customermanagedkeykeyname) | string | The name of the customer managed key to use for encryption. |
+| Parameter                                                               | Type   | Description                                                                             |
+|:------------------------------------------------------------------------|:-------|:----------------------------------------------------------------------------------------|
+| [`keyName`](#parameter-customermanagedkeykeyname)                       | string | The name of the customer managed key to use for encryption.                             |
 | [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`keyVersion`](#parameter-customermanagedkeykeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| Parameter                                                                                       | Type   | Description                                                                                                                         |
+|:------------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------|
+| [`keyVersion`](#parameter-customermanagedkeykeyversion)                                         | string | The version of the customer managed key to reference for encryption. If not provided, using 'latest'.                               |
 | [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
 
 ### Parameter: `customerManagedKey.keyName`
@@ -694,18 +692,18 @@ The customer managed key definition to use for the managed disk.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`keyName`](#parameter-customermanagedkeymanageddiskkeyname) | string | The name of the customer managed key to use for encryption. |
+| Parameter                                                                          | Type   | Description                                                                             |
+|:-----------------------------------------------------------------------------------|:-------|:----------------------------------------------------------------------------------------|
+| [`keyName`](#parameter-customermanagedkeymanageddiskkeyname)                       | string | The name of the customer managed key to use for encryption.                             |
 | [`keyVaultResourceId`](#parameter-customermanagedkeymanageddiskkeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`keyVersion`](#parameter-customermanagedkeymanageddiskkeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
-| [`rotationToLatestKeyVersionEnabled`](#parameter-customermanagedkeymanageddiskrotationtolatestkeyversionenabled) | bool | Indicate whether the latest key version should be automatically used for Managed Disk Encryption. Enabled by default. |
-| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeymanageddiskuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
+| Parameter                                                                                                        | Type   | Description                                                                                                                         |
+|:-----------------------------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------|
+| [`keyVersion`](#parameter-customermanagedkeymanageddiskkeyversion)                                               | string | The version of the customer managed key to reference for encryption. If not provided, using 'latest'.                               |
+| [`rotationToLatestKeyVersionEnabled`](#parameter-customermanagedkeymanageddiskrotationtolatestkeyversionenabled) | bool   | Indicate whether the latest key version should be automatically used for Managed Disk Encryption. Enabled by default.               |
+| [`userAssignedIdentityResourceId`](#parameter-customermanagedkeymanageddiskuserassignedidentityresourceid)       | string | User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
 
 ### Parameter: `customerManagedKeyManagedDisk.keyName`
 
@@ -775,16 +773,16 @@ The diagnostic settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
-| [`name`](#parameter-diagnosticsettingsname) | string | The name of diagnostic setting. |
-| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| Parameter                                                                                                 | Type   | Description                                                                                                                                                                                                                                                                                     |
+|:----------------------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.                                                                                                                                                |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname)                                               | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype)                 | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.                                                                                                                                              |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups)                           | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid)               | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.                                                                                                                                                                                           |
+| [`name`](#parameter-diagnosticsettingsname)                                                               | string | The name of diagnostic setting.                                                                                                                                                                                                                                                                 |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid)                       | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                                 |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid)                                 | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                         |
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
@@ -898,8 +896,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -958,28 +956,28 @@ Configuration details for private endpoints. For security reasons, it is recomme
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                                         | Type   | Description                                                       |
+|:------------------------------------------------------------------|:-------|:------------------------------------------------------------------|
 | [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | string | Resource ID of the subnet where the endpoint needs to be created. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`applicationSecurityGroupResourceIds`](#parameter-privateendpointsapplicationsecuritygroupresourceids) | array | Application security groups in which the private endpoint IP configuration is included. |
-| [`customDnsConfigs`](#parameter-privateendpointscustomdnsconfigs) | array | Custom DNS configurations. |
-| [`customNetworkInterfaceName`](#parameter-privateendpointscustomnetworkinterfacename) | string | The custom name of the network interface attached to the private endpoint. |
-| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
-| [`ipConfigurations`](#parameter-privateendpointsipconfigurations) | array | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
-| [`location`](#parameter-privateendpointslocation) | string | The location to deploy the private endpoint to. |
-| [`lock`](#parameter-privateendpointslock) | object | Specify the type of lock. |
-| [`manualPrivateLinkServiceConnections`](#parameter-privateendpointsmanualprivatelinkserviceconnections) | array | Manual PrivateLink Service Connections. |
-| [`name`](#parameter-privateendpointsname) | string | The name of the private endpoint. |
-| [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | string | The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided. |
-| [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | array | The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
-| [`roleAssignments`](#parameter-privateendpointsroleassignments) | array | Array of role assignments to create. |
-| [`service`](#parameter-privateendpointsservice) | string | The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
-| [`tags`](#parameter-privateendpointstags) | object | Tags to be applied on all resources/resource groups in this deployment. |
+| Parameter                                                                                               | Type   | Description                                                                                                         |
+|:--------------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------|
+| [`applicationSecurityGroupResourceIds`](#parameter-privateendpointsapplicationsecuritygroupresourceids) | array  | Application security groups in which the private endpoint IP configuration is included.                             |
+| [`customDnsConfigs`](#parameter-privateendpointscustomdnsconfigs)                                       | array  | Custom DNS configurations.                                                                                          |
+| [`customNetworkInterfaceName`](#parameter-privateendpointscustomnetworkinterfacename)                   | string | The custom name of the network interface attached to the private endpoint.                                          |
+| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry)                                         | bool   | Enable/Disable usage telemetry for module.                                                                          |
+| [`ipConfigurations`](#parameter-privateendpointsipconfigurations)                                       | array  | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
+| [`location`](#parameter-privateendpointslocation)                                                       | string | The location to deploy the private endpoint to.                                                                     |
+| [`lock`](#parameter-privateendpointslock)                                                               | object | Specify the type of lock.                                                                                           |
+| [`manualPrivateLinkServiceConnections`](#parameter-privateendpointsmanualprivatelinkserviceconnections) | array  | Manual PrivateLink Service Connections.                                                                             |
+| [`name`](#parameter-privateendpointsname)                                                               | string | The name of the private endpoint.                                                                                   |
+| [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname)                         | string | The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided.                        |
+| [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids)                     | array  | The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
+| [`roleAssignments`](#parameter-privateendpointsroleassignments)                                         | array  | Array of role assignments to create.                                                                                |
+| [`service`](#parameter-privateendpointsservice)                                                         | string | The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob".                          |
+| [`tags`](#parameter-privateendpointstags)                                                               | object | Tags to be applied on all resources/resource groups in this deployment.                                             |
 
 ### Parameter: `privateEndpoints.subnetResourceId`
 
@@ -1039,8 +1037,8 @@ Specify the type of lock.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                     | Type   | Description               |
+|:----------------------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-privateendpointslockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-privateendpointslockname) | string | Specify the name of lock. |
 
@@ -1103,20 +1101,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-privateendpointsroleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:---------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-privateendpointsroleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-privateendpointsroleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-privateendpointsroleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-privateendpointsroleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-privateendpointsroleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-privateendpointsroleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-privateendpointsroleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:---------------------------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-privateendpointsroleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-privateendpointsroleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-privateendpointsroleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-privateendpointsroleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-privateendpointsroleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `privateEndpoints.roleAssignments.principalId`
 
@@ -1252,20 +1250,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -1382,19 +1380,19 @@ Address prefix for Managed virtual network.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed databricks workspace. |
+| Output              | Type   | Description                                              |
+|:--------------------|:-------|:---------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.             |
+| `name`              | string | The name of the deployed databricks workspace.           |
 | `resourceGroupName` | string | The resource group of the deployed databricks workspace. |
-| `resourceId` | string | The resource ID of the deployed databricks workspace. |
+| `resourceId`        | string | The resource ID of the deployed databricks workspace.    |
 
 ## Cross-referenced modules
 
 This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
 
-| Reference | Type |
-| :-- | :-- |
+| Reference                          | Type            |
+|:-----------------------------------|:----------------|
 | `modules/network/private-endpoint` | Local reference |
 
 ## Notes

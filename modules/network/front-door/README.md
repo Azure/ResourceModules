@@ -1,7 +1,5 @@
 # Azure Front Doors `[Microsoft.Network/frontDoors]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys an Azure Front Door.
 
 ## Navigation
@@ -14,12 +12,12 @@ This module deploys an Azure Front Door.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/frontDoors` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/frontDoors) |
+| Resource Type                             | API Version                                                                                                                      |
+|:------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`           | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                         |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)               |
+| `Microsoft.Insights/diagnosticSettings`   | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Network/frontDoors`            | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/frontDoors)                          |
 
 ## Usage examples
 
@@ -814,29 +812,29 @@ module frontDoor 'br:bicep/modules/network.front-door:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`backendPools`](#parameter-backendpools) | array | Backend address pool of the frontdoor resource. |
-| [`frontendEndpoints`](#parameter-frontendendpoints) | array | Frontend endpoints of the frontdoor resource. |
-| [`healthProbeSettings`](#parameter-healthprobesettings) | array | Heath probe settings of the frontdoor resource. |
-| [`loadBalancingSettings`](#parameter-loadbalancingsettings) | array | Load balancing settings of the frontdoor resource. |
-| [`name`](#parameter-name) | string | The name of the frontDoor. |
-| [`routingRules`](#parameter-routingrules) | array | Routing rules settings of the frontdoor resource. |
+| Parameter                                                   | Type   | Description                                        |
+|:------------------------------------------------------------|:-------|:---------------------------------------------------|
+| [`backendPools`](#parameter-backendpools)                   | array  | Backend address pool of the frontdoor resource.    |
+| [`frontendEndpoints`](#parameter-frontendendpoints)         | array  | Frontend endpoints of the frontdoor resource.      |
+| [`healthProbeSettings`](#parameter-healthprobesettings)     | array  | Heath probe settings of the frontdoor resource.    |
+| [`loadBalancingSettings`](#parameter-loadbalancingsettings) | array  | Load balancing settings of the frontdoor resource. |
+| [`name`](#parameter-name)                                   | string | The name of the frontDoor.                         |
+| [`routingRules`](#parameter-routingrules)                   | array  | Routing rules settings of the frontdoor resource.  |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`enabledState`](#parameter-enabledstate) | string | State of the frontdoor resource. |
+| Parameter                                                               | Type   | Description                                               |
+|:------------------------------------------------------------------------|:-------|:----------------------------------------------------------|
+| [`diagnosticSettings`](#parameter-diagnosticsettings)                   | array  | The diagnostic settings of the service.                   |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)           | bool   | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`enabledState`](#parameter-enabledstate)                               | string | State of the frontdoor resource.                          |
 | [`enforceCertificateNameCheck`](#parameter-enforcecertificatenamecheck) | string | Enforce certificate name check of the frontdoor resource. |
-| [`friendlyName`](#parameter-friendlyname) | string | Friendly name of the frontdoor resource. |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`sendRecvTimeoutSeconds`](#parameter-sendrecvtimeoutseconds) | int | Certificate name check time of the frontdoor resource. |
-| [`tags`](#parameter-tags) | object | Resource tags. |
+| [`friendlyName`](#parameter-friendlyname)                               | string | Friendly name of the frontdoor resource.                  |
+| [`location`](#parameter-location)                                       | string | Location for all resources.                               |
+| [`lock`](#parameter-lock)                                               | object | The lock settings of the service.                         |
+| [`roleAssignments`](#parameter-roleassignments)                         | array  | Array of role assignments to create.                      |
+| [`sendRecvTimeoutSeconds`](#parameter-sendrecvtimeoutseconds)           | int    | Certificate name check time of the frontdoor resource.    |
+| [`tags`](#parameter-tags)                                               | object | Resource tags.                                            |
 
 ### Parameter: `backendPools`
 
@@ -889,17 +887,17 @@ The diagnostic settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
-| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`name`](#parameter-diagnosticsettingsname) | string | The name of diagnostic setting. |
-| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| Parameter                                                                                                 | Type   | Description                                                                                                                                                                                                                                                                                     |
+|:----------------------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.                                                                                                                                                |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname)                                               | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype)                 | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.                                                                                                                                              |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups)                           | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid)               | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.                                                                                                                                                                                           |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories)                                       | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`name`](#parameter-diagnosticsettingsname)                                                               | string | The name of diagnostic setting.                                                                                                                                                                                                                                                                 |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid)                       | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                                 |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid)                                 | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                         |
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
@@ -1020,8 +1018,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -1056,20 +1054,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -1154,11 +1152,11 @@ Resource tags.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the front door. |
+| Output              | Type   | Description                                          |
+|:--------------------|:-------|:-----------------------------------------------------|
+| `name`              | string | The name of the front door.                          |
 | `resourceGroupName` | string | The resource group the front door was deployed into. |
-| `resourceId` | string | The resource ID of the front door. |
+| `resourceId`        | string | The resource ID of the front door.                   |
 
 ## Cross-referenced modules
 

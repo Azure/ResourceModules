@@ -1,7 +1,5 @@
 # DevTest Labs `[Microsoft.DevTestLab/labs]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a DevTest Lab.
 
 ## Navigation
@@ -14,17 +12,17 @@ This module deploys a DevTest Lab.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DevTestLab/labs` | [2018-10-15-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/labs) |
-| `Microsoft.DevTestLab/labs/artifactsources` | [2018-09-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/artifactsources) |
-| `Microsoft.DevTestLab/labs/costs` | [2018-09-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/costs) |
+| Resource Type                                    | API Version                                                                                                               |
+|:-------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`                  | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                  |
+| `Microsoft.Authorization/roleAssignments`        | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)        |
+| `Microsoft.DevTestLab/labs`                      | [2018-10-15-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/labs)                         |
+| `Microsoft.DevTestLab/labs/artifactsources`      | [2018-09-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/artifactsources)      |
+| `Microsoft.DevTestLab/labs/costs`                | [2018-09-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/costs)                |
 | `Microsoft.DevTestLab/labs/notificationchannels` | [2018-09-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/notificationchannels) |
-| `Microsoft.DevTestLab/labs/policysets/policies` | [2018-09-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/policysets/policies) |
-| `Microsoft.DevTestLab/labs/schedules` | [2018-09-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/schedules) |
-| `Microsoft.DevTestLab/labs/virtualnetworks` | [2018-09-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/virtualnetworks) |
+| `Microsoft.DevTestLab/labs/policysets/policies`  | [2018-09-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/policysets/policies)  |
+| `Microsoft.DevTestLab/labs/schedules`            | [2018-09-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/schedules)            |
+| `Microsoft.DevTestLab/labs/virtualnetworks`      | [2018-09-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/virtualnetworks)      |
 
 ## Usage examples
 
@@ -1179,47 +1177,47 @@ module lab 'br:bicep/modules/dev-test-lab.lab:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                 | Type   | Description          |
+|:--------------------------|:-------|:---------------------|
 | [`name`](#parameter-name) | string | The name of the lab. |
 
 **Conditional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                                                   | Type   | Description                                                                                                                                                                   |
+|:----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [`encryptionDiskEncryptionSetId`](#parameter-encryptiondiskencryptionsetid) | string | The Disk Encryption Set Resource ID used to encrypt OS and data disks created as part of the the lab. Required if encryptionType is set to "EncryptionAtRestWithCustomerKey". |
-| [`notificationchannels`](#parameter-notificationchannels) | array | Notification Channels to create for the lab. Required if the schedules property "notificationSettingsStatus" is set to "Enabled. |
+| [`notificationchannels`](#parameter-notificationchannels)                   | array  | Notification Channels to create for the lab. Required if the schedules property "notificationSettingsStatus" is set to "Enabled.                                              |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`announcement`](#parameter-announcement) | object | The properties of any lab announcement associated with this lab. |
-| [`artifactsources`](#parameter-artifactsources) | array | Artifact sources to create for the lab. |
-| [`artifactsStorageAccount`](#parameter-artifactsstorageaccount) | string | The resource ID of the storage account used to store artifacts and images by the lab. Also used for defaultStorageAccount, defaultPremiumStorageAccount and premiumDataDiskStorageAccount properties. If left empty, a default storage account will be created by the lab and used. |
-| [`browserConnect`](#parameter-browserconnect) | string | Enable browser connect on virtual machines if the lab's VNETs have configured Azure Bastion. |
-| [`costs`](#parameter-costs) | object | Costs to create for the lab. |
-| [`disableAutoUpgradeCseMinorVersion`](#parameter-disableautoupgradecseminorversion) | bool | Disable auto upgrade custom script extension minor version. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`encryptionType`](#parameter-encryptiontype) | string | Specify how OS and data disks created as part of the lab are encrypted. |
-| [`environmentPermission`](#parameter-environmentpermission) | string | The access rights to be granted to the user when provisioning an environment. |
-| [`extendedProperties`](#parameter-extendedproperties) | object | Extended properties of the lab used for experimental features. |
-| [`isolateLabResources`](#parameter-isolatelabresources) | string | Enable lab resources isolation from the public internet. |
-| [`labStorageType`](#parameter-labstoragetype) | string | Type of storage used by the lab. It can be either Premium or Standard. |
-| [`location`](#parameter-location) | string | Location for all Resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
-| [`managementIdentitiesResourceIds`](#parameter-managementidentitiesresourceids) | array | The resource ID(s) to assign to the virtual machines associated with this lab. |
-| [`mandatoryArtifactsResourceIdsLinux`](#parameter-mandatoryartifactsresourceidslinux) | array | The ordered list of artifact resource IDs that should be applied on all Linux VM creations by default, prior to the artifacts specified by the user. |
-| [`mandatoryArtifactsResourceIdsWindows`](#parameter-mandatoryartifactsresourceidswindows) | array | The ordered list of artifact resource IDs that should be applied on all Windows VM creations by default, prior to the artifacts specified by the user. |
-| [`policies`](#parameter-policies) | array | Policies to create for the lab. |
-| [`premiumDataDisks`](#parameter-premiumdatadisks) | string | The setting to enable usage of premium data disks. When its value is "Enabled", creation of standard or premium data disks is allowed. When its value is "Disabled", only creation of standard data disks is allowed. Default is "Disabled". |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| [`schedules`](#parameter-schedules) | array | Schedules to create for the lab. |
-| [`support`](#parameter-support) | object | The properties of any lab support message associated with this lab. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`virtualnetworks`](#parameter-virtualnetworks) | array | Virtual networks to create for the lab. |
-| [`vmCreationResourceGroupId`](#parameter-vmcreationresourcegroupid) | string | Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab. |
+| Parameter                                                                                 | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                            |
+|:------------------------------------------------------------------------------------------|:-------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`announcement`](#parameter-announcement)                                                 | object | The properties of any lab announcement associated with this lab.                                                                                                                                                                                                                                                                                                                                       |
+| [`artifactsources`](#parameter-artifactsources)                                           | array  | Artifact sources to create for the lab.                                                                                                                                                                                                                                                                                                                                                                |
+| [`artifactsStorageAccount`](#parameter-artifactsstorageaccount)                           | string | The resource ID of the storage account used to store artifacts and images by the lab. Also used for defaultStorageAccount, defaultPremiumStorageAccount and premiumDataDiskStorageAccount properties. If left empty, a default storage account will be created by the lab and used.                                                                                                                    |
+| [`browserConnect`](#parameter-browserconnect)                                             | string | Enable browser connect on virtual machines if the lab's VNETs have configured Azure Bastion.                                                                                                                                                                                                                                                                                                           |
+| [`costs`](#parameter-costs)                                                               | object | Costs to create for the lab.                                                                                                                                                                                                                                                                                                                                                                           |
+| [`disableAutoUpgradeCseMinorVersion`](#parameter-disableautoupgradecseminorversion)       | bool   | Disable auto upgrade custom script extension minor version.                                                                                                                                                                                                                                                                                                                                            |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                             | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                                                                                                                                                                                              |
+| [`encryptionType`](#parameter-encryptiontype)                                             | string | Specify how OS and data disks created as part of the lab are encrypted.                                                                                                                                                                                                                                                                                                                                |
+| [`environmentPermission`](#parameter-environmentpermission)                               | string | The access rights to be granted to the user when provisioning an environment.                                                                                                                                                                                                                                                                                                                          |
+| [`extendedProperties`](#parameter-extendedproperties)                                     | object | Extended properties of the lab used for experimental features.                                                                                                                                                                                                                                                                                                                                         |
+| [`isolateLabResources`](#parameter-isolatelabresources)                                   | string | Enable lab resources isolation from the public internet.                                                                                                                                                                                                                                                                                                                                               |
+| [`labStorageType`](#parameter-labstoragetype)                                             | string | Type of storage used by the lab. It can be either Premium or Standard.                                                                                                                                                                                                                                                                                                                                 |
+| [`location`](#parameter-location)                                                         | string | Location for all Resources.                                                                                                                                                                                                                                                                                                                                                                            |
+| [`lock`](#parameter-lock)                                                                 | object | The lock settings of the service.                                                                                                                                                                                                                                                                                                                                                                      |
+| [`managedIdentities`](#parameter-managedidentities)                                       | object | The managed identity definition for this resource.                                                                                                                                                                                                                                                                                                                                                     |
+| [`managementIdentitiesResourceIds`](#parameter-managementidentitiesresourceids)           | array  | The resource ID(s) to assign to the virtual machines associated with this lab.                                                                                                                                                                                                                                                                                                                         |
+| [`mandatoryArtifactsResourceIdsLinux`](#parameter-mandatoryartifactsresourceidslinux)     | array  | The ordered list of artifact resource IDs that should be applied on all Linux VM creations by default, prior to the artifacts specified by the user.                                                                                                                                                                                                                                                   |
+| [`mandatoryArtifactsResourceIdsWindows`](#parameter-mandatoryartifactsresourceidswindows) | array  | The ordered list of artifact resource IDs that should be applied on all Windows VM creations by default, prior to the artifacts specified by the user.                                                                                                                                                                                                                                                 |
+| [`policies`](#parameter-policies)                                                         | array  | Policies to create for the lab.                                                                                                                                                                                                                                                                                                                                                                        |
+| [`premiumDataDisks`](#parameter-premiumdatadisks)                                         | string | The setting to enable usage of premium data disks. When its value is "Enabled", creation of standard or premium data disks is allowed. When its value is "Disabled", only creation of standard data disks is allowed. Default is "Disabled".                                                                                                                                                           |
+| [`roleAssignments`](#parameter-roleassignments)                                           | array  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`schedules`](#parameter-schedules)                                                       | array  | Schedules to create for the lab.                                                                                                                                                                                                                                                                                                                                                                       |
+| [`support`](#parameter-support)                                                           | object | The properties of any lab support message associated with this lab.                                                                                                                                                                                                                                                                                                                                    |
+| [`tags`](#parameter-tags)                                                                 | object | Tags of the resource.                                                                                                                                                                                                                                                                                                                                                                                  |
+| [`virtualnetworks`](#parameter-virtualnetworks)                                           | array  | Virtual networks to create for the lab.                                                                                                                                                                                                                                                                                                                                                                |
+| [`vmCreationResourceGroupId`](#parameter-vmcreationresourcegroupid)                       | string | Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab.                                                                                                                                                                                                                     |
 
 ### Parameter: `name`
 
@@ -1393,8 +1391,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -1429,8 +1427,8 @@ The managed identity definition for this resource.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                                                        | Type  | Description                                   |
+|:---------------------------------------------------------------------------------|:------|:----------------------------------------------|
 | [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.userAssignedResourceIds`
@@ -1496,20 +1494,20 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -1618,14 +1616,14 @@ Resource Group allocation for virtual machines. If left empty, virtual machines 
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the lab. |
-| `resourceGroupName` | string | The resource group the lab was deployed into. |
-| `resourceId` | string | The resource ID of the lab. |
-| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
-| `uniqueIdentifier` | string | The unique identifier for the lab. Used to track tags that the lab applies to each resource that it creates. |
+| Output                        | Type   | Description                                                                                                  |
+|:------------------------------|:-------|:-------------------------------------------------------------------------------------------------------------|
+| `location`                    | string | The location the resource was deployed into.                                                                 |
+| `name`                        | string | The name of the lab.                                                                                         |
+| `resourceGroupName`           | string | The resource group the lab was deployed into.                                                                |
+| `resourceId`                  | string | The resource ID of the lab.                                                                                  |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity.                                                            |
+| `uniqueIdentifier`            | string | The unique identifier for the lab. Used to track tags that the lab applies to each resource that it creates. |
 
 ## Cross-referenced modules
 

@@ -1,7 +1,5 @@
 # Automation Accounts `[Microsoft.Automation/automationAccounts]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys an Azure Automation Account.
 
 ## Navigation
@@ -14,22 +12,22 @@ This module deploys an Azure Automation Account.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Automation/automationAccounts` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts) |
-| `Microsoft.Automation/automationAccounts/jobSchedules` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/jobSchedules) |
-| `Microsoft.Automation/automationAccounts/modules` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/modules) |
-| `Microsoft.Automation/automationAccounts/runbooks` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/runbooks) |
-| `Microsoft.Automation/automationAccounts/schedules` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/schedules) |
+| Resource Type                                                          | API Version                                                                                                                                     |
+|:-----------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`                                        | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                                        |
+| `Microsoft.Authorization/roleAssignments`                              | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)                              |
+| `Microsoft.Automation/automationAccounts`                              | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts)                              |
+| `Microsoft.Automation/automationAccounts/jobSchedules`                 | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/jobSchedules)                 |
+| `Microsoft.Automation/automationAccounts/modules`                      | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/modules)                      |
+| `Microsoft.Automation/automationAccounts/runbooks`                     | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/runbooks)                     |
+| `Microsoft.Automation/automationAccounts/schedules`                    | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/schedules)                    |
 | `Microsoft.Automation/automationAccounts/softwareUpdateConfigurations` | [2019-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/softwareUpdateConfigurations) |
-| `Microsoft.Automation/automationAccounts/variables` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/variables) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.OperationalInsights/workspaces/linkedServices` | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices) |
-| `Microsoft.OperationsManagement/solutions` | [2015-11-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions) |
+| `Microsoft.Automation/automationAccounts/variables`                    | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/variables)                    |
+| `Microsoft.Insights/diagnosticSettings`                                | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)                |
+| `Microsoft.Network/privateEndpoints`                                   | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints)                                   |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups`              | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups)              |
+| `Microsoft.OperationalInsights/workspaces/linkedServices`              | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices)              |
+| `Microsoft.OperationsManagement/solutions`                             | [2015-11-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions)             |
 
 ## Usage examples
 
@@ -1082,34 +1080,34 @@ module automationAccount 'br:bicep/modules/automation.automation-account:1.0.0' 
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                 | Type   | Description                     |
+|:--------------------------|:-------|:--------------------------------|
 | [`name`](#parameter-name) | string | Name of the Automation Account. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`customerManagedKey`](#parameter-customermanagedkey) | object | The customer managed key definition. |
-| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
-| [`disableLocalAuth`](#parameter-disablelocalauth) | bool | Disable local authentication profile used within the resource. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`gallerySolutions`](#parameter-gallerysolutions) | array | List of gallerySolutions to be created in the linked log analytics workspace. |
-| [`jobSchedules`](#parameter-jobschedules) | array | List of jobSchedules to be created in the automation account. |
-| [`linkedWorkspaceResourceId`](#parameter-linkedworkspaceresourceid) | string | ID of the log analytics workspace to be linked to the deployed automation account. |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
-| [`modules`](#parameter-modules) | array | List of modules to be created in the automation account. |
-| [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`runbooks`](#parameter-runbooks) | array | List of runbooks to be created in the automation account. |
-| [`schedules`](#parameter-schedules) | array | List of schedules to be created in the automation account. |
-| [`skuName`](#parameter-skuname) | string | SKU name of the account. |
-| [`softwareUpdateConfigurations`](#parameter-softwareupdateconfigurations) | array | List of softwareUpdateConfigurations to be created in the automation account. |
-| [`tags`](#parameter-tags) | object | Tags of the Automation Account resource. |
-| [`variables`](#parameter-variables) | array | List of variables to be created in the automation account. |
+| Parameter                                                                 | Type   | Description                                                                                                                                                                                   |
+|:--------------------------------------------------------------------------|:-------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`customerManagedKey`](#parameter-customermanagedkey)                     | object | The customer managed key definition.                                                                                                                                                          |
+| [`diagnosticSettings`](#parameter-diagnosticsettings)                     | array  | The diagnostic settings of the service.                                                                                                                                                       |
+| [`disableLocalAuth`](#parameter-disablelocalauth)                         | bool   | Disable local authentication profile used within the resource.                                                                                                                                |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)             | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                     |
+| [`gallerySolutions`](#parameter-gallerysolutions)                         | array  | List of gallerySolutions to be created in the linked log analytics workspace.                                                                                                                 |
+| [`jobSchedules`](#parameter-jobschedules)                                 | array  | List of jobSchedules to be created in the automation account.                                                                                                                                 |
+| [`linkedWorkspaceResourceId`](#parameter-linkedworkspaceresourceid)       | string | ID of the log analytics workspace to be linked to the deployed automation account.                                                                                                            |
+| [`location`](#parameter-location)                                         | string | Location for all resources.                                                                                                                                                                   |
+| [`lock`](#parameter-lock)                                                 | object | The lock settings of the service.                                                                                                                                                             |
+| [`managedIdentities`](#parameter-managedidentities)                       | object | The managed identity definition for this resource.                                                                                                                                            |
+| [`modules`](#parameter-modules)                                           | array  | List of modules to be created in the automation account.                                                                                                                                      |
+| [`privateEndpoints`](#parameter-privateendpoints)                         | array  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.                                                              |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess)                   | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
+| [`roleAssignments`](#parameter-roleassignments)                           | array  | Array of role assignments to create.                                                                                                                                                          |
+| [`runbooks`](#parameter-runbooks)                                         | array  | List of runbooks to be created in the automation account.                                                                                                                                     |
+| [`schedules`](#parameter-schedules)                                       | array  | List of schedules to be created in the automation account.                                                                                                                                    |
+| [`skuName`](#parameter-skuname)                                           | string | SKU name of the account.                                                                                                                                                                      |
+| [`softwareUpdateConfigurations`](#parameter-softwareupdateconfigurations) | array  | List of softwareUpdateConfigurations to be created in the automation account.                                                                                                                 |
+| [`tags`](#parameter-tags)                                                 | object | Tags of the Automation Account resource.                                                                                                                                                      |
+| [`variables`](#parameter-variables)                                       | array  | List of variables to be created in the automation account.                                                                                                                                    |
 
 ### Parameter: `name`
 
@@ -1127,16 +1125,16 @@ The customer managed key definition.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`keyName`](#parameter-customermanagedkeykeyname) | string | The name of the customer managed key to use for encryption. |
+| Parameter                                                               | Type   | Description                                                                             |
+|:------------------------------------------------------------------------|:-------|:----------------------------------------------------------------------------------------|
+| [`keyName`](#parameter-customermanagedkeykeyname)                       | string | The name of the customer managed key to use for encryption.                             |
 | [`keyVaultResourceId`](#parameter-customermanagedkeykeyvaultresourceid) | string | The resource ID of a key vault to reference a customer managed key for encryption from. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`keyVersion`](#parameter-customermanagedkeykeyversion) | string | The version of the customer managed key to reference for encryption. If not provided, using 'latest'. |
+| Parameter                                                                                       | Type   | Description                                                                                                                         |
+|:------------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------|
+| [`keyVersion`](#parameter-customermanagedkeykeyversion)                                         | string | The version of the customer managed key to reference for encryption. If not provided, using 'latest'.                               |
 | [`userAssignedIdentityResourceId`](#parameter-customermanagedkeyuserassignedidentityresourceid) | string | User assigned identity to use when fetching the customer managed key. Required if no system assigned identity is available for use. |
 
 ### Parameter: `customerManagedKey.keyName`
@@ -1176,17 +1174,17 @@ The diagnostic settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
-| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`name`](#parameter-diagnosticsettingsname) | string | The name of diagnostic setting. |
-| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| Parameter                                                                                                 | Type   | Description                                                                                                                                                                                                                                                                                     |
+|:----------------------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.                                                                                                                                                |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname)                                               | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype)                 | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.                                                                                                                                              |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups)                           | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid)               | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.                                                                                                                                                                                           |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories)                                       | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`name`](#parameter-diagnosticsettingsname)                                                               | string | The name of diagnostic setting.                                                                                                                                                                                                                                                                 |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid)                       | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                                 |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid)                                 | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                         |
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
@@ -1315,8 +1313,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -1351,10 +1349,10 @@ The managed identity definition for this resource.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | bool | Enables system assigned managed identity on the resource. |
-| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
+| Parameter                                                                        | Type  | Description                                               |
+|:---------------------------------------------------------------------------------|:------|:----------------------------------------------------------|
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned)                   | bool  | Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource.             |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -1387,28 +1385,28 @@ Configuration details for private endpoints. For security reasons, it is recomme
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`service`](#parameter-privateendpointsservice) | string | The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
-| [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | string | Resource ID of the subnet where the endpoint needs to be created. |
+| Parameter                                                         | Type   | Description                                                                                |
+|:------------------------------------------------------------------|:-------|:-------------------------------------------------------------------------------------------|
+| [`service`](#parameter-privateendpointsservice)                   | string | The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
+| [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | string | Resource ID of the subnet where the endpoint needs to be created.                          |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`applicationSecurityGroupResourceIds`](#parameter-privateendpointsapplicationsecuritygroupresourceids) | array | Application security groups in which the private endpoint IP configuration is included. |
-| [`customDnsConfigs`](#parameter-privateendpointscustomdnsconfigs) | array | Custom DNS configurations. |
-| [`customNetworkInterfaceName`](#parameter-privateendpointscustomnetworkinterfacename) | string | The custom name of the network interface attached to the private endpoint. |
-| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
-| [`ipConfigurations`](#parameter-privateendpointsipconfigurations) | array | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
-| [`location`](#parameter-privateendpointslocation) | string | The location to deploy the private endpoint to. |
-| [`lock`](#parameter-privateendpointslock) | object | Specify the type of lock. |
-| [`manualPrivateLinkServiceConnections`](#parameter-privateendpointsmanualprivatelinkserviceconnections) | array | Manual PrivateLink Service Connections. |
-| [`name`](#parameter-privateendpointsname) | string | The name of the private endpoint. |
-| [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | string | The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided. |
-| [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | array | The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
-| [`roleAssignments`](#parameter-privateendpointsroleassignments) | array | Array of role assignments to create. |
-| [`tags`](#parameter-privateendpointstags) | object | Tags to be applied on all resources/resource groups in this deployment. |
+| Parameter                                                                                               | Type   | Description                                                                                                         |
+|:--------------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------|
+| [`applicationSecurityGroupResourceIds`](#parameter-privateendpointsapplicationsecuritygroupresourceids) | array  | Application security groups in which the private endpoint IP configuration is included.                             |
+| [`customDnsConfigs`](#parameter-privateendpointscustomdnsconfigs)                                       | array  | Custom DNS configurations.                                                                                          |
+| [`customNetworkInterfaceName`](#parameter-privateendpointscustomnetworkinterfacename)                   | string | The custom name of the network interface attached to the private endpoint.                                          |
+| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry)                                         | bool   | Enable/Disable usage telemetry for module.                                                                          |
+| [`ipConfigurations`](#parameter-privateendpointsipconfigurations)                                       | array  | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
+| [`location`](#parameter-privateendpointslocation)                                                       | string | The location to deploy the private endpoint to.                                                                     |
+| [`lock`](#parameter-privateendpointslock)                                                               | object | Specify the type of lock.                                                                                           |
+| [`manualPrivateLinkServiceConnections`](#parameter-privateendpointsmanualprivatelinkserviceconnections) | array  | Manual PrivateLink Service Connections.                                                                             |
+| [`name`](#parameter-privateendpointsname)                                                               | string | The name of the private endpoint.                                                                                   |
+| [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname)                         | string | The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided.                        |
+| [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids)                     | array  | The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
+| [`roleAssignments`](#parameter-privateendpointsroleassignments)                                         | array  | Array of role assignments to create.                                                                                |
+| [`tags`](#parameter-privateendpointstags)                                                               | object | Tags to be applied on all resources/resource groups in this deployment.                                             |
 
 ### Parameter: `privateEndpoints.service`
 
@@ -1475,8 +1473,8 @@ Specify the type of lock.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                     | Type   | Description               |
+|:----------------------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-privateendpointslockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-privateendpointslockname) | string | Specify the name of lock. |
 
@@ -1539,20 +1537,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-privateendpointsroleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:---------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-privateendpointsroleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-privateendpointsroleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-privateendpointsroleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-privateendpointsroleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-privateendpointsroleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-privateendpointsroleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-privateendpointsroleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:---------------------------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-privateendpointsroleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-privateendpointsroleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-privateendpointsroleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-privateendpointsroleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-privateendpointsroleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `privateEndpoints.roleAssignments.principalId`
 
@@ -1651,20 +1649,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -1788,20 +1786,20 @@ List of variables to be created in the automation account.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed automation account. |
-| `resourceGroupName` | string | The resource group of the deployed automation account. |
-| `resourceId` | string | The resource ID of the deployed automation account. |
-| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
+| Output                        | Type   | Description                                            |
+|:------------------------------|:-------|:-------------------------------------------------------|
+| `location`                    | string | The location the resource was deployed into.           |
+| `name`                        | string | The name of the deployed automation account.           |
+| `resourceGroupName`           | string | The resource group of the deployed automation account. |
+| `resourceId`                  | string | The resource ID of the deployed automation account.    |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity.      |
 
 ## Cross-referenced modules
 
 This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
 
-| Reference | Type |
-| :-- | :-- |
-| `modules/network/private-endpoint` | Local reference |
+| Reference                                               | Type            |
+|:--------------------------------------------------------|:----------------|
+| `modules/network/private-endpoint`                      | Local reference |
 | `modules/operational-insights/workspace/linked-service` | Local reference |
-| `modules/operations-management/solution` | Local reference |
+| `modules/operations-management/solution`                | Local reference |

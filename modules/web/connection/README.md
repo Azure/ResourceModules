@@ -1,7 +1,5 @@
 # API Connections `[Microsoft.Web/connections]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys an Azure API Connection.
 
 ## Navigation
@@ -14,11 +12,11 @@ This module deploys an Azure API Connection.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| Resource Type                             | API Version                                                                                                        |
+|:------------------------------------------|:-------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`           | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)           |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Web/connections` | [2016-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2016-06-01/connections) |
+| `Microsoft.Web/connections`               | [2016-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2016-06-01/connections)               |
 
 ## Usage examples
 
@@ -236,26 +234,26 @@ module connection 'br:bicep/modules/web.connection:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`displayName`](#parameter-displayname) | string | Display name connection. Example: 'blobconnection' when using blobs. It can change depending on the resource. |
-| [`name`](#parameter-name) | string | Connection name for connection. Example: 'azureblob' when using blobs.  It can change depending on the resource. |
+| Parameter                               | Type   | Description                                                                                                      |
+|:----------------------------------------|:-------|:-----------------------------------------------------------------------------------------------------------------|
+| [`displayName`](#parameter-displayname) | string | Display name connection. Example: 'blobconnection' when using blobs. It can change depending on the resource.    |
+| [`name`](#parameter-name)               | string | Connection name for connection. Example: 'azureblob' when using blobs.  It can change depending on the resource. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`api`](#parameter-api) | object | Specific values for some API connections. |
-| [`customParameterValues`](#parameter-customparametervalues) | object | Customized parameter values for specific connections. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | Location of the deployment. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`nonSecretParameterValues`](#parameter-nonsecretparametervalues) | object | Dictionary of nonsecret parameter values. |
-| [`parameterValues`](#parameter-parametervalues) | secureObject | Connection strings or access keys for connection. Example: 'accountName' and 'accessKey' when using blobs.  It can change depending on the resource. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`statuses`](#parameter-statuses) | array | Status of the connection. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`testLinks`](#parameter-testlinks) | array | Links to test the API connection. |
+| Parameter                                                         | Type         | Description                                                                                                                                          |
+|:------------------------------------------------------------------|:-------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`api`](#parameter-api)                                           | object       | Specific values for some API connections.                                                                                                            |
+| [`customParameterValues`](#parameter-customparametervalues)       | object       | Customized parameter values for specific connections.                                                                                                |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)     | bool         | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                            |
+| [`location`](#parameter-location)                                 | string       | Location of the deployment.                                                                                                                          |
+| [`lock`](#parameter-lock)                                         | object       | The lock settings of the service.                                                                                                                    |
+| [`nonSecretParameterValues`](#parameter-nonsecretparametervalues) | object       | Dictionary of nonsecret parameter values.                                                                                                            |
+| [`parameterValues`](#parameter-parametervalues)                   | secureObject | Connection strings or access keys for connection. Example: 'accountName' and 'accessKey' when using blobs.  It can change depending on the resource. |
+| [`roleAssignments`](#parameter-roleassignments)                   | array        | Array of role assignments to create.                                                                                                                 |
+| [`statuses`](#parameter-statuses)                                 | array        | Status of the connection.                                                                                                                            |
+| [`tags`](#parameter-tags)                                         | object       | Tags of the resource.                                                                                                                                |
+| [`testLinks`](#parameter-testlinks)                               | array        | Links to test the API connection.                                                                                                                    |
 
 ### Parameter: `displayName`
 
@@ -312,8 +310,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -364,20 +362,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -470,12 +468,12 @@ Links to test the API connection.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the connection. |
+| Output              | Type   | Description                                          |
+|:--------------------|:-------|:-----------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.         |
+| `name`              | string | The name of the connection.                          |
 | `resourceGroupName` | string | The resource group the connection was deployed into. |
-| `resourceId` | string | The resource ID of the connection. |
+| `resourceId`        | string | The resource ID of the connection.                   |
 
 ## Cross-referenced modules
 

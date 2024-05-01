@@ -1,7 +1,5 @@
 # Operations Management Solutions `[Microsoft.OperationsManagement/solutions]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys an Operations Management Solution.
 
 ## Navigation
@@ -14,8 +12,8 @@ This module deploys an Operations Management Solution.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
+| Resource Type                              | API Version                                                                                                                         |
+|:-------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------|
 | `Microsoft.OperationsManagement/solutions` | [2015-11-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions) |
 
 ## Usage examples
@@ -201,19 +199,19 @@ module solution 'br:bicep/modules/operations-management.solution:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`logAnalyticsWorkspaceName`](#parameter-loganalyticsworkspacename) | string | Name of the Log Analytics workspace where the solution will be deployed/enabled. |
-| [`name`](#parameter-name) | string | Name of the solution. For Microsoft published gallery solution the target solution resource name will be composed as `{name}({logAnalyticsWorkspaceName})`. |
+| Parameter                                                           | Type   | Description                                                                                                                                                 |
+|:--------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`logAnalyticsWorkspaceName`](#parameter-loganalyticsworkspacename) | string | Name of the Log Analytics workspace where the solution will be deployed/enabled.                                                                            |
+| [`name`](#parameter-name)                                           | string | Name of the solution. For Microsoft published gallery solution the target solution resource name will be composed as `{name}({logAnalyticsWorkspaceName})`. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`product`](#parameter-product) | string | The product of the deployed solution. For Microsoft published gallery solution it should be `OMSGallery` and the target solution resource product will be composed as `OMSGallery/{name}`. For third party solution, it can be anything. This is case sensitive. |
-| [`publisher`](#parameter-publisher) | string | The publisher name of the deployed solution. For Microsoft published gallery solution, it is `Microsoft`. |
+| Parameter                                                     | Type   | Description                                                                                                                                                                                                                                                      |
+|:--------------------------------------------------------------|:-------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                                                        |
+| [`location`](#parameter-location)                             | string | Location for all resources.                                                                                                                                                                                                                                      |
+| [`product`](#parameter-product)                               | string | The product of the deployed solution. For Microsoft published gallery solution it should be `OMSGallery` and the target solution resource product will be composed as `OMSGallery/{name}`. For third party solution, it can be anything. This is case sensitive. |
+| [`publisher`](#parameter-publisher)                           | string | The publisher name of the deployed solution. For Microsoft published gallery solution, it is `Microsoft`.                                                                                                                                                        |
 
 ### Parameter: `logAnalyticsWorkspaceName`
 
@@ -264,12 +262,12 @@ The publisher name of the deployed solution. For Microsoft published gallery sol
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed solution. |
+| Output              | Type   | Description                                        |
+|:--------------------|:-------|:---------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.       |
+| `name`              | string | The name of the deployed solution.                 |
 | `resourceGroupName` | string | The resource group where the solution is deployed. |
-| `resourceId` | string | The resource ID of the deployed solution. |
+| `resourceId`        | string | The resource ID of the deployed solution.          |
 
 ## Cross-referenced modules
 

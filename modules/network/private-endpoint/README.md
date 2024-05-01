@@ -1,7 +1,5 @@
 # Private Endpoints `[Microsoft.Network/privateEndpoints]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Private Endpoint.
 
 ## Navigation
@@ -14,11 +12,11 @@ This module deploys a Private Endpoint.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
+| Resource Type                                             | API Version                                                                                                                        |
+|:----------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`                           | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                           |
+| `Microsoft.Authorization/roleAssignments`                 | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)                 |
+| `Microsoft.Network/privateEndpoints`                      | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints)                      |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Usage examples
@@ -426,29 +424,29 @@ module privateEndpoint 'br:bicep/modules/network.private-endpoint:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`groupIds`](#parameter-groupids) | array | Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to. |
-| [`name`](#parameter-name) | string | Name of the private endpoint resource to create. |
-| [`serviceResourceId`](#parameter-serviceresourceid) | string | Resource ID of the resource that needs to be connected to the network. |
-| [`subnetResourceId`](#parameter-subnetresourceid) | string | Resource ID of the subnet where the endpoint needs to be created. |
+| Parameter                                           | Type   | Description                                                                                                    |
+|:----------------------------------------------------|:-------|:---------------------------------------------------------------------------------------------------------------|
+| [`groupIds`](#parameter-groupids)                   | array  | Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to. |
+| [`name`](#parameter-name)                           | string | Name of the private endpoint resource to create.                                                               |
+| [`serviceResourceId`](#parameter-serviceresourceid) | string | Resource ID of the resource that needs to be connected to the network.                                         |
+| [`subnetResourceId`](#parameter-subnetresourceid)   | string | Resource ID of the subnet where the endpoint needs to be created.                                              |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`applicationSecurityGroupResourceIds`](#parameter-applicationsecuritygroupresourceids) | array | Application security groups in which the private endpoint IP configuration is included. |
-| [`customDnsConfigs`](#parameter-customdnsconfigs) | array | Custom DNS configurations. |
-| [`customNetworkInterfaceName`](#parameter-customnetworkinterfacename) | string | The custom name of the network interface attached to the private endpoint. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable/Disable usage telemetry for module. |
-| [`ipConfigurations`](#parameter-ipconfigurations) | array | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
-| [`location`](#parameter-location) | string | Location for all Resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`manualPrivateLinkServiceConnections`](#parameter-manualprivatelinkserviceconnections) | array | Manual PrivateLink Service Connections. |
-| [`privateDnsZoneGroupName`](#parameter-privatednszonegroupname) | string | The name of the private DNS zone group to create if `privateDnsZoneResourceIds` were provided. |
-| [`privateDnsZoneResourceIds`](#parameter-privatednszoneresourceids) | array | The private DNS zone groups to associate the private endpoint. A DNS zone group can support up to 5 DNS zones. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| [`tags`](#parameter-tags) | object | Tags to be applied on all resources/resource groups in this deployment. |
+| Parameter                                                                               | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                           |
+|:----------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`applicationSecurityGroupResourceIds`](#parameter-applicationsecuritygroupresourceids) | array  | Application security groups in which the private endpoint IP configuration is included.                                                                                                                                                                                                                                                                                                               |
+| [`customDnsConfigs`](#parameter-customdnsconfigs)                                       | array  | Custom DNS configurations.                                                                                                                                                                                                                                                                                                                                                                            |
+| [`customNetworkInterfaceName`](#parameter-customnetworkinterfacename)                   | string | The custom name of the network interface attached to the private endpoint.                                                                                                                                                                                                                                                                                                                            |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                           | bool   | Enable/Disable usage telemetry for module.                                                                                                                                                                                                                                                                                                                                                            |
+| [`ipConfigurations`](#parameter-ipconfigurations)                                       | array  | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.                                                                                                                                                                                                                                                                                   |
+| [`location`](#parameter-location)                                                       | string | Location for all Resources.                                                                                                                                                                                                                                                                                                                                                                           |
+| [`lock`](#parameter-lock)                                                               | object | The lock settings of the service.                                                                                                                                                                                                                                                                                                                                                                     |
+| [`manualPrivateLinkServiceConnections`](#parameter-manualprivatelinkserviceconnections) | array  | Manual PrivateLink Service Connections.                                                                                                                                                                                                                                                                                                                                                               |
+| [`privateDnsZoneGroupName`](#parameter-privatednszonegroupname)                         | string | The name of the private DNS zone group to create if `privateDnsZoneResourceIds` were provided.                                                                                                                                                                                                                                                                                                        |
+| [`privateDnsZoneResourceIds`](#parameter-privatednszoneresourceids)                     | array  | The private DNS zone groups to associate the private endpoint. A DNS zone group can support up to 5 DNS zones.                                                                                                                                                                                                                                                                                        |
+| [`roleAssignments`](#parameter-roleassignments)                                         | array  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`tags`](#parameter-tags)                                                               | object | Tags to be applied on all resources/resource groups in this deployment.                                                                                                                                                                                                                                                                                                                               |
 
 ### Parameter: `groupIds`
 
@@ -494,10 +492,10 @@ Custom DNS configurations.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`fqdn`](#parameter-customdnsconfigsfqdn) | string | Fqdn that resolves to private endpoint ip address. |
-| [`ipAddresses`](#parameter-customdnsconfigsipaddresses) | array | A list of private ip addresses of the private endpoint. |
+| Parameter                                               | Type   | Description                                             |
+|:--------------------------------------------------------|:-------|:--------------------------------------------------------|
+| [`fqdn`](#parameter-customdnsconfigsfqdn)               | string | Fqdn that resolves to private endpoint ip address.      |
+| [`ipAddresses`](#parameter-customdnsconfigsipaddresses) | array  | A list of private ip addresses of the private endpoint. |
 
 ### Parameter: `customDnsConfigs.fqdn`
 
@@ -537,10 +535,10 @@ A list of IP configurations of the private endpoint. This will be used to map to
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`name`](#parameter-ipconfigurationsname) | string | The name of the resource that is unique within a resource group. |
-| [`properties`](#parameter-ipconfigurationsproperties) | object | Properties of private endpoint IP configurations. |
+| Parameter                                             | Type   | Description                                                      |
+|:------------------------------------------------------|:-------|:-----------------------------------------------------------------|
+| [`name`](#parameter-ipconfigurationsname)             | string | The name of the resource that is unique within a resource group. |
+| [`properties`](#parameter-ipconfigurationsproperties) | object | Properties of private endpoint IP configurations.                |
 
 ### Parameter: `ipConfigurations.name`
 
@@ -573,8 +571,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -630,20 +628,20 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                           |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                        |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -720,12 +718,12 @@ Tags to be applied on all resources/resource groups in this deployment.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the private endpoint. |
+| Output              | Type   | Description                                                |
+|:--------------------|:-------|:-----------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.               |
+| `name`              | string | The name of the private endpoint.                          |
 | `resourceGroupName` | string | The resource group the private endpoint was deployed into. |
-| `resourceId` | string | The resource ID of the private endpoint. |
+| `resourceId`        | string | The resource ID of the private endpoint.                   |
 
 ## Cross-referenced modules
 

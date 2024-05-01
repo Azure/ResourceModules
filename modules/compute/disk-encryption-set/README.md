@@ -1,7 +1,5 @@
 # Disk Encryption Sets `[Microsoft.Compute/diskEncryptionSets]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Disk Encryption Set.
 
 ## Navigation
@@ -14,12 +12,12 @@ This module deploys a Disk Encryption Set.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/diskEncryptionSets` | [2022-07-02](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-07-02/diskEncryptionSets) |
-| `Microsoft.KeyVault/vaults/accessPolicies` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2022-07-01/vaults/accessPolicies) |
+| Resource Type                                      | API Version                                                                                                                 |
+|:---------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`                    | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                    |
+| `Microsoft.Authorization/roleAssignments`          | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)          |
+| `Microsoft.Compute/diskEncryptionSets`             | [2022-07-02](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-07-02/diskEncryptionSets)             |
+| `Microsoft.KeyVault/vaults/accessPolicies`         | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2022-07-01/vaults/accessPolicies)         |
 | `Microsoft.ManagedIdentity/userAssignedIdentities` | [2018-11-30](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ManagedIdentity/2018-11-30/userAssignedIdentities) |
 
 ## Usage examples
@@ -370,26 +368,26 @@ module diskEncryptionSet 'br:bicep/modules/compute.disk-encryption-set:1.0.0' = 
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`keyName`](#parameter-keyname) | string | Key URL (with version) pointing to a key or secret in KeyVault. |
-| [`keyVaultResourceId`](#parameter-keyvaultresourceid) | string | Resource ID of the KeyVault containing the key or secret. |
-| [`name`](#parameter-name) | string | The name of the disk encryption set that is being created. |
+| Parameter                                             | Type   | Description                                                     |
+|:------------------------------------------------------|:-------|:----------------------------------------------------------------|
+| [`keyName`](#parameter-keyname)                       | string | Key URL (with version) pointing to a key or secret in KeyVault. |
+| [`keyVaultResourceId`](#parameter-keyvaultresourceid) | string | Resource ID of the KeyVault containing the key or secret.       |
+| [`name`](#parameter-name)                             | string | The name of the disk encryption set that is being created.      |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`encryptionType`](#parameter-encryptiontype) | string | The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys. |
-| [`federatedClientId`](#parameter-federatedclientid) | string | Multi-tenant application client ID to access key vault in a different tenant. Setting the value to "None" will clear the property. |
-| [`keyVersion`](#parameter-keyversion) | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
-| [`location`](#parameter-location) | string | Resource location. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. At least one identity type is required. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`rotationToLatestKeyVersionEnabled`](#parameter-rotationtolatestkeyversionenabled) | bool | Set this flag to true to enable auto-updating of this disk encryption set to the latest key version. |
-| [`tags`](#parameter-tags) | object | Tags of the disk encryption resource. |
+| Parameter                                                                           | Type   | Description                                                                                                                                                         |
+|:------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                       | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                           |
+| [`encryptionType`](#parameter-encryptiontype)                                       | string | The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys. |
+| [`federatedClientId`](#parameter-federatedclientid)                                 | string | Multi-tenant application client ID to access key vault in a different tenant. Setting the value to "None" will clear the property.                                  |
+| [`keyVersion`](#parameter-keyversion)                                               | string | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.                                               |
+| [`location`](#parameter-location)                                                   | string | Resource location.                                                                                                                                                  |
+| [`lock`](#parameter-lock)                                                           | object | The lock settings of the service.                                                                                                                                   |
+| [`managedIdentities`](#parameter-managedidentities)                                 | object | The managed identity definition for this resource. At least one identity type is required.                                                                          |
+| [`roleAssignments`](#parameter-roleassignments)                                     | array  | Array of role assignments to create.                                                                                                                                |
+| [`rotationToLatestKeyVersionEnabled`](#parameter-rotationtolatestkeyversionenabled) | bool   | Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.                                                                |
+| [`tags`](#parameter-tags)                                                           | object | Tags of the disk encryption resource.                                                                                                                               |
 
 ### Parameter: `keyName`
 
@@ -468,8 +466,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -510,10 +508,10 @@ The managed identity definition for this resource. At least one identity type is
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | bool | Enables system assigned managed identity on the resource. |
-| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
+| Parameter                                                                        | Type  | Description                                               |
+|:---------------------------------------------------------------------------------|:------|:----------------------------------------------------------|
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned)                   | bool  | Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource.             |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -538,20 +536,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -636,20 +634,20 @@ Tags of the disk encryption resource.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `identities` | object | The idenities of the disk encryption set. |
-| `keyVaultName` | string | The name of the key vault with the disk encryption key. |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the disk encryption set. |
-| `resourceGroupName` | string | The resource group the disk encryption set was deployed into. |
-| `resourceId` | string | The resource ID of the disk encryption set. |
-| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
+| Output                        | Type   | Description                                                   |
+|:------------------------------|:-------|:--------------------------------------------------------------|
+| `identities`                  | object | The idenities of the disk encryption set.                     |
+| `keyVaultName`                | string | The name of the key vault with the disk encryption key.       |
+| `location`                    | string | The location the resource was deployed into.                  |
+| `name`                        | string | The name of the disk encryption set.                          |
+| `resourceGroupName`           | string | The resource group the disk encryption set was deployed into. |
+| `resourceId`                  | string | The resource ID of the disk encryption set.                   |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity.             |
 
 ## Cross-referenced modules
 
 This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
 
-| Reference | Type |
-| :-- | :-- |
+| Reference                               | Type            |
+|:----------------------------------------|:----------------|
 | `modules/key-vault/vault/access-policy` | Local reference |

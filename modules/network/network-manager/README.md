@@ -1,7 +1,5 @@
 # Network Managers `[Microsoft.Network/networkManagers]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Network Manager.
 
 ## Navigation
@@ -15,17 +13,17 @@ This module deploys a Network Manager.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/networkManagers` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers) |
-| `Microsoft.Network/networkManagers/connectivityConfigurations` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/connectivityConfigurations) |
-| `Microsoft.Network/networkManagers/networkGroups` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/networkGroups) |
-| `Microsoft.Network/networkManagers/networkGroups/staticMembers` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/networkGroups/staticMembers) |
-| `Microsoft.Network/networkManagers/scopeConnections` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/scopeConnections) |
-| `Microsoft.Network/networkManagers/securityAdminConfigurations` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/securityAdminConfigurations) |
-| `Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/securityAdminConfigurations/ruleCollections) |
+| Resource Type                                                                         | API Version                                                                                                                                                    |
+|:--------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`                                                       | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                                                       |
+| `Microsoft.Authorization/roleAssignments`                                             | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)                                             |
+| `Microsoft.Network/networkManagers`                                                   | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers)                                                   |
+| `Microsoft.Network/networkManagers/connectivityConfigurations`                        | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/connectivityConfigurations)                        |
+| `Microsoft.Network/networkManagers/networkGroups`                                     | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/networkGroups)                                     |
+| `Microsoft.Network/networkManagers/networkGroups/staticMembers`                       | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/networkGroups/staticMembers)                       |
+| `Microsoft.Network/networkManagers/scopeConnections`                                  | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/scopeConnections)                                  |
+| `Microsoft.Network/networkManagers/securityAdminConfigurations`                       | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/securityAdminConfigurations)                       |
+| `Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections`       | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/securityAdminConfigurations/ruleCollections)       |
 | `Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections/rules` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/securityAdminConfigurations/ruleCollections/rules) |
 
 ## Usage examples
@@ -948,31 +946,31 @@ module networkManager 'br:bicep/modules/network.network-manager:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`name`](#parameter-name) | string | Name of the Network Manager. |
-| [`networkManagerScopeAccesses`](#parameter-networkmanagerscopeaccesses) | array | Scope Access. String array containing any of "Connectivity", "SecurityAdmin". The connectivity feature allows you to create network topologies at scale. The security admin feature lets you create high-priority security rules, which take precedence over NSGs. |
-| [`networkManagerScopes`](#parameter-networkmanagerscopes) | object | Scope of Network Manager. Contains a list of management groups or a list of subscriptions. This defines the boundary of network resources that this Network Manager instance can manage. If using Management Groups, ensure that the "Microsoft.Network" resource provider is registered for those Management Groups prior to deployment. |
+| Parameter                                                               | Type   | Description                                                                                                                                                                                                                                                                                                                               |
+|:------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`name`](#parameter-name)                                               | string | Name of the Network Manager.                                                                                                                                                                                                                                                                                                              |
+| [`networkManagerScopeAccesses`](#parameter-networkmanagerscopeaccesses) | array  | Scope Access. String array containing any of "Connectivity", "SecurityAdmin". The connectivity feature allows you to create network topologies at scale. The security admin feature lets you create high-priority security rules, which take precedence over NSGs.                                                                        |
+| [`networkManagerScopes`](#parameter-networkmanagerscopes)               | object | Scope of Network Manager. Contains a list of management groups or a list of subscriptions. This defines the boundary of network resources that this Network Manager instance can manage. If using Management Groups, ensure that the "Microsoft.Network" resource provider is registered for those Management Groups prior to deployment. |
 
 **Conditional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                   | Type  | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|:--------------------------------------------|:------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [`networkGroups`](#parameter-networkgroups) | array | Network Groups and static members to create for the network manager. Required if using "connectivityConfigurations" or "securityAdminConfigurations" parameters. A network group is global container that includes a set of virtual network resources from any region. Then, configurations are applied to target the network group, which applies the configuration to all members of the group. The two types are group memberships are static and dynamic memberships. Static membership allows you to explicitly add virtual networks to a group by manually selecting individual virtual networks, and is available as a child module, while dynamic membership is defined through Azure policy. See [How Azure Policy works with Network Groups](https://learn.microsoft.com/en-us/azure/virtual-network-manager/concept-azure-policy-integration) for more details. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`connectivityConfigurations`](#parameter-connectivityconfigurations) | array | Connectivity Configurations to create for the network manager. Network manager must contain at least one network group in order to define connectivity configurations. |
-| [`description`](#parameter-description) | string | A description of the network manager. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| [`scopeConnections`](#parameter-scopeconnections) | array | Scope Connections to create for the network manager. Allows network manager to manage resources from another tenant. Supports management groups or subscriptions from another tenant. |
-| [`securityAdminConfigurations`](#parameter-securityadminconfigurations) | array | Security Admin Configurations, Rule Collections and Rules to create for the network manager. Azure Virtual Network Manager provides two different types of configurations you can deploy across your virtual networks, one of them being a SecurityAdmin configuration. A security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules. You then associate the rule collection with the network groups that you want to apply the security admin rules to. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| Parameter                                                               | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|:------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`connectivityConfigurations`](#parameter-connectivityconfigurations)   | array  | Connectivity Configurations to create for the network manager. Network manager must contain at least one network group in order to define connectivity configurations.                                                                                                                                                                                                                                                                                                                                                        |
+| [`description`](#parameter-description)                                 | string | A description of the network manager.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)           | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [`location`](#parameter-location)                                       | string | Location for all resources.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| [`lock`](#parameter-lock)                                               | object | The lock settings of the service.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| [`roleAssignments`](#parameter-roleassignments)                         | array  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.                                                                                                                         |
+| [`scopeConnections`](#parameter-scopeconnections)                       | array  | Scope Connections to create for the network manager. Allows network manager to manage resources from another tenant. Supports management groups or subscriptions from another tenant.                                                                                                                                                                                                                                                                                                                                         |
+| [`securityAdminConfigurations`](#parameter-securityadminconfigurations) | array  | Security Admin Configurations, Rule Collections and Rules to create for the network manager. Azure Virtual Network Manager provides two different types of configurations you can deploy across your virtual networks, one of them being a SecurityAdmin configuration. A security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules. You then associate the rule collection with the network groups that you want to apply the security admin rules to. |
+| [`tags`](#parameter-tags)                                               | object | Tags of the resource.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
 ### Parameter: `name`
 
@@ -1044,8 +1042,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -1080,20 +1078,20 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                           |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                        |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -1186,12 +1184,12 @@ Tags of the resource.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the network manager. |
+| Output              | Type   | Description                                               |
+|:--------------------|:-------|:----------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.              |
+| `name`              | string | The name of the network manager.                          |
 | `resourceGroupName` | string | The resource group the network manager was deployed into. |
-| `resourceId` | string | The resource ID of the network manager. |
+| `resourceId`        | string | The resource ID of the network manager.                   |
 
 ## Cross-referenced modules
 

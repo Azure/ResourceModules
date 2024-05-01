@@ -1,7 +1,5 @@
 # Azure Virtual Desktop (AVD) Host Pools `[Microsoft.DesktopVirtualization/hostPools]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys an Azure Virtual Desktop (AVD) Host Pool.
 
 ## Navigation
@@ -14,12 +12,12 @@ This module deploys an Azure Virtual Desktop (AVD) Host Pool.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DesktopVirtualization/hostPools` | [2022-09-09](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2022-09-09/hostPools) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| Resource Type                               | API Version                                                                                                                      |
+|:--------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`             | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                         |
+| `Microsoft.Authorization/roleAssignments`   | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)               |
+| `Microsoft.DesktopVirtualization/hostPools` | [2022-09-09](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2022-09-09/hostPools)             |
+| `Microsoft.Insights/diagnosticSettings`     | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Usage examples
 
@@ -502,49 +500,49 @@ module hostPool 'br:bicep/modules/desktop-virtualization.host-pool:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                 | Type   | Description            |
+|:--------------------------|:-------|:-----------------------|
 | [`name`](#parameter-name) | string | Name of the Host Pool. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`agentUpdate`](#parameter-agentupdate) | object | The session host configuration for updating agent, monitoring agent, and stack component. |
-| [`agentUpdateMaintenanceWindowDayOfWeek`](#parameter-agentupdatemaintenancewindowdayofweek) | string | Update day for scheduled agent updates. |
-| [`agentUpdateMaintenanceWindowHour`](#parameter-agentupdatemaintenancewindowhour) | int | Update hour for scheduled agent updates. |
-| [`agentUpdateMaintenanceWindows`](#parameter-agentupdatemaintenancewindows) | array | List of maintenance windows for scheduled agent updates. |
-| [`agentUpdateMaintenanceWindowTimeZone`](#parameter-agentupdatemaintenancewindowtimezone) | string | Time zone for scheduled agent updates. |
-| [`agentUpdateType`](#parameter-agentupdatetype) | string | Enable scheduled agent updates, Default means agent updates will automatically be installed by AVD when they become available. |
-| [`agentUpdateUseSessionHostLocalTime`](#parameter-agentupdateusesessionhostlocaltime) | bool | Whether to use localTime of the virtual machine for scheduled agent updates. |
-| [`customRdpProperty`](#parameter-customrdpproperty) | string | Host Pool RDP properties. |
-| [`description`](#parameter-description) | string | The description of the Host Pool to be created. |
-| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`friendlyName`](#parameter-friendlyname) | string | The friendly name of the Host Pool to be created. |
-| [`loadBalancerType`](#parameter-loadbalancertype) | string | Type of load balancer algorithm. |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`maxSessionLimit`](#parameter-maxsessionlimit) | int | Maximum number of sessions. |
-| [`personalDesktopAssignmentType`](#parameter-personaldesktopassignmenttype) | string | Set the type of assignment for a Personal Host Pool type. |
-| [`preferredAppGroupType`](#parameter-preferredappgrouptype) | string | The type of preferred application group type, default to Desktop Application Group. |
-| [`ring`](#parameter-ring) | int | The ring number of HostPool. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| [`ssoadfsAuthority`](#parameter-ssoadfsauthority) | string | URL to customer ADFS server for signing WVD SSO certificates. |
-| [`ssoClientId`](#parameter-ssoclientid) | string | ClientId for the registered Relying Party used to issue WVD SSO certificates. |
-| [`ssoClientSecretKeyVaultPath`](#parameter-ssoclientsecretkeyvaultpath) | string | Path to Azure KeyVault storing the secret used for communication to ADFS. |
-| [`ssoSecretType`](#parameter-ssosecrettype) | string | The type of single sign on Secret Type. |
-| [`startVMOnConnect`](#parameter-startvmonconnect) | bool | Enable Start VM on connect to allow users to start the virtual machine from a deallocated state. Important: Custom RBAC role required to power manage VMs. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`tokenValidityLength`](#parameter-tokenvaliditylength) | string | Host Pool token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the token will be valid for 8 hours. |
-| [`type`](#parameter-type) | string | Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to Pooled. |
-| [`validationEnvironment`](#parameter-validationenvironment) | bool | Validation host pools allows you to test service changes before they are deployed to production. When set to true, the Host Pool will be deployed in a validation 'ring' (environment) that receives all the new features (might be less stable). Defaults to false that stands for the stable, production-ready environment. |
-| [`vmTemplate`](#parameter-vmtemplate) | object | The necessary information for adding more VMs to this Host Pool. The object is converted to an in-line string when handed over to the resource deployment, since that only takes strings. |
+| Parameter                                                                                   | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                            |
+|:--------------------------------------------------------------------------------------------|:-------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`agentUpdate`](#parameter-agentupdate)                                                     | object | The session host configuration for updating agent, monitoring agent, and stack component.                                                                                                                                                                                                                                                                                                              |
+| [`agentUpdateMaintenanceWindowDayOfWeek`](#parameter-agentupdatemaintenancewindowdayofweek) | string | Update day for scheduled agent updates.                                                                                                                                                                                                                                                                                                                                                                |
+| [`agentUpdateMaintenanceWindowHour`](#parameter-agentupdatemaintenancewindowhour)           | int    | Update hour for scheduled agent updates.                                                                                                                                                                                                                                                                                                                                                               |
+| [`agentUpdateMaintenanceWindows`](#parameter-agentupdatemaintenancewindows)                 | array  | List of maintenance windows for scheduled agent updates.                                                                                                                                                                                                                                                                                                                                               |
+| [`agentUpdateMaintenanceWindowTimeZone`](#parameter-agentupdatemaintenancewindowtimezone)   | string | Time zone for scheduled agent updates.                                                                                                                                                                                                                                                                                                                                                                 |
+| [`agentUpdateType`](#parameter-agentupdatetype)                                             | string | Enable scheduled agent updates, Default means agent updates will automatically be installed by AVD when they become available.                                                                                                                                                                                                                                                                         |
+| [`agentUpdateUseSessionHostLocalTime`](#parameter-agentupdateusesessionhostlocaltime)       | bool   | Whether to use localTime of the virtual machine for scheduled agent updates.                                                                                                                                                                                                                                                                                                                           |
+| [`customRdpProperty`](#parameter-customrdpproperty)                                         | string | Host Pool RDP properties.                                                                                                                                                                                                                                                                                                                                                                              |
+| [`description`](#parameter-description)                                                     | string | The description of the Host Pool to be created.                                                                                                                                                                                                                                                                                                                                                        |
+| [`diagnosticSettings`](#parameter-diagnosticsettings)                                       | array  | The diagnostic settings of the service.                                                                                                                                                                                                                                                                                                                                                                |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                               | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                                                                                                                                                                                              |
+| [`friendlyName`](#parameter-friendlyname)                                                   | string | The friendly name of the Host Pool to be created.                                                                                                                                                                                                                                                                                                                                                      |
+| [`loadBalancerType`](#parameter-loadbalancertype)                                           | string | Type of load balancer algorithm.                                                                                                                                                                                                                                                                                                                                                                       |
+| [`location`](#parameter-location)                                                           | string | Location for all resources.                                                                                                                                                                                                                                                                                                                                                                            |
+| [`lock`](#parameter-lock)                                                                   | object | The lock settings of the service.                                                                                                                                                                                                                                                                                                                                                                      |
+| [`maxSessionLimit`](#parameter-maxsessionlimit)                                             | int    | Maximum number of sessions.                                                                                                                                                                                                                                                                                                                                                                            |
+| [`personalDesktopAssignmentType`](#parameter-personaldesktopassignmenttype)                 | string | Set the type of assignment for a Personal Host Pool type.                                                                                                                                                                                                                                                                                                                                              |
+| [`preferredAppGroupType`](#parameter-preferredappgrouptype)                                 | string | The type of preferred application group type, default to Desktop Application Group.                                                                                                                                                                                                                                                                                                                    |
+| [`ring`](#parameter-ring)                                                                   | int    | The ring number of HostPool.                                                                                                                                                                                                                                                                                                                                                                           |
+| [`roleAssignments`](#parameter-roleassignments)                                             | array  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`ssoadfsAuthority`](#parameter-ssoadfsauthority)                                           | string | URL to customer ADFS server for signing WVD SSO certificates.                                                                                                                                                                                                                                                                                                                                          |
+| [`ssoClientId`](#parameter-ssoclientid)                                                     | string | ClientId for the registered Relying Party used to issue WVD SSO certificates.                                                                                                                                                                                                                                                                                                                          |
+| [`ssoClientSecretKeyVaultPath`](#parameter-ssoclientsecretkeyvaultpath)                     | string | Path to Azure KeyVault storing the secret used for communication to ADFS.                                                                                                                                                                                                                                                                                                                              |
+| [`ssoSecretType`](#parameter-ssosecrettype)                                                 | string | The type of single sign on Secret Type.                                                                                                                                                                                                                                                                                                                                                                |
+| [`startVMOnConnect`](#parameter-startvmonconnect)                                           | bool   | Enable Start VM on connect to allow users to start the virtual machine from a deallocated state. Important: Custom RBAC role required to power manage VMs.                                                                                                                                                                                                                                             |
+| [`tags`](#parameter-tags)                                                                   | object | Tags of the resource.                                                                                                                                                                                                                                                                                                                                                                                  |
+| [`tokenValidityLength`](#parameter-tokenvaliditylength)                                     | string | Host Pool token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the token will be valid for 8 hours.                                                                                                                                                                                                                        |
+| [`type`](#parameter-type)                                                                   | string | Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to Pooled.                                                                                                                                                                                                                                                                                          |
+| [`validationEnvironment`](#parameter-validationenvironment)                                 | bool   | Validation host pools allows you to test service changes before they are deployed to production. When set to true, the Host Pool will be deployed in a validation 'ring' (environment) that receives all the new features (might be less stable). Defaults to false that stands for the stable, production-ready environment.                                                                          |
+| [`vmTemplate`](#parameter-vmtemplate)                                                       | object | The necessary information for adding more VMs to this Host Pool. The object is converted to an in-line string when handed over to the resource deployment, since that only takes strings.                                                                                                                                                                                                              |
 
 **Generated parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                         | Type   | Description                                                                       |
+|:----------------------------------|:-------|:----------------------------------------------------------------------------------|
 | [`baseTime`](#parameter-basetime) | string | Do not provide a value! This date value is used to generate a registration token. |
 
 ### Parameter: `name`
@@ -670,16 +668,16 @@ The diagnostic settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
-| [`name`](#parameter-diagnosticsettingsname) | string | The name of diagnostic setting. |
-| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| Parameter                                                                                                 | Type   | Description                                                                                                                                                                                                                                                                                     |
+|:----------------------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.                                                                                                                                                |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname)                                               | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype)                 | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.                                                                                                                                              |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups)                           | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid)               | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.                                                                                                                                                                                           |
+| [`name`](#parameter-diagnosticsettingsname)                                                               | string | The name of diagnostic setting.                                                                                                                                                                                                                                                                 |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid)                       | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                                 |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid)                                 | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                         |
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
@@ -793,8 +791,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -877,20 +875,20 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                           |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                        |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -1064,13 +1062,13 @@ Do not provide a value! This date value is used to generate a registration token
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the AVD host pool. |
-| `resourceGroupName` | string | The resource group the AVD host pool was deployed into. |
-| `resourceId` | string | The resource ID of the AVD host pool. |
-| `tokenExpirationTime` | string | The expiration time for the registration token. |
+| Output                | Type   | Description                                             |
+|:----------------------|:-------|:--------------------------------------------------------|
+| `location`            | string | The location the resource was deployed into.            |
+| `name`                | string | The name of the AVD host pool.                          |
+| `resourceGroupName`   | string | The resource group the AVD host pool was deployed into. |
+| `resourceId`          | string | The resource ID of the AVD host pool.                   |
+| `tokenExpirationTime` | string | The expiration time for the registration token.         |
 
 ## Cross-referenced modules
 

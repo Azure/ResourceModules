@@ -1,7 +1,5 @@
 # Web/Function Apps `[Microsoft.Web/sites]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Web or Function App.
 
 ## Navigation
@@ -15,21 +13,21 @@ This module deploys a Web or Function App.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.Web/sites` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites) |
-| `Microsoft.Web/sites/basicPublishingCredentialsPolicies` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
-| `Microsoft.Web/sites/config` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
-| `Microsoft.Web/sites/hybridConnectionNamespaces/relays` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/hybridConnectionNamespaces/relays) |
-| `Microsoft.Web/sites/slots` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/slots) |
-| `Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
-| `Microsoft.Web/sites/slots/config` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
-| `Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/slots/hybridConnectionNamespaces/relays) |
+| Resource Type                                                  | API Version                                                                                                                            |
+|:---------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`                                | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                               |
+| `Microsoft.Authorization/roleAssignments`                      | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)                     |
+| `Microsoft.Insights/diagnosticSettings`                        | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)       |
+| `Microsoft.Network/privateEndpoints`                           | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints)                          |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups`      | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/privateEndpoints/privateDnsZoneGroups)     |
+| `Microsoft.Web/sites`                                          | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites)                                         |
+| `Microsoft.Web/sites/basicPublishingCredentialsPolicies`       | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)                                                    |
+| `Microsoft.Web/sites/config`                                   | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)                                                    |
+| `Microsoft.Web/sites/hybridConnectionNamespaces/relays`        | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/hybridConnectionNamespaces/relays)       |
+| `Microsoft.Web/sites/slots`                                    | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/slots)                                   |
+| `Microsoft.Web/sites/slots/basicPublishingCredentialsPolicies` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)                                                    |
+| `Microsoft.Web/sites/slots/config`                             | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)                                                    |
+| `Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays`  | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-09-01/sites/slots/hybridConnectionNamespaces/relays) |
 
 ## Usage examples
 
@@ -929,55 +927,55 @@ module site 'br:bicep/modules/web.site:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`kind`](#parameter-kind) | string | Type of site to deploy. |
-| [`name`](#parameter-name) | string | Name of the site. |
+| Parameter                                                 | Type   | Description                                                  |
+|:----------------------------------------------------------|:-------|:-------------------------------------------------------------|
+| [`kind`](#parameter-kind)                                 | string | Type of site to deploy.                                      |
+| [`name`](#parameter-name)                                 | string | Name of the site.                                            |
 | [`serverFarmResourceId`](#parameter-serverfarmresourceid) | string | The resource ID of the app service plan to use for the site. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`appInsightResourceId`](#parameter-appinsightresourceid) | string | Resource ID of the app insight to leverage for this resource. |
-| [`appServiceEnvironmentResourceId`](#parameter-appserviceenvironmentresourceid) | string | The resource ID of the app service environment to use for this resource. |
-| [`appSettingsKeyValuePairs`](#parameter-appsettingskeyvaluepairs) | object | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
-| [`authSettingV2Configuration`](#parameter-authsettingv2configuration) | object | The auth settings V2 configuration. |
-| [`basicPublishingCredentialsPolicies`](#parameter-basicpublishingcredentialspolicies) | array | The site publishing credential policy names which are associated with the sites. |
-| [`clientAffinityEnabled`](#parameter-clientaffinityenabled) | bool | If client affinity is enabled. |
-| [`clientCertEnabled`](#parameter-clientcertenabled) | bool | To enable client certificate authentication (TLS mutual authentication). |
-| [`clientCertExclusionPaths`](#parameter-clientcertexclusionpaths) | string | Client certificate authentication comma-separated exclusion paths. |
-| [`clientCertMode`](#parameter-clientcertmode) | string | This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted. |
-| [`cloningInfo`](#parameter-cloninginfo) | object | If specified during app creation, the app is cloned from a source app. |
-| [`containerSize`](#parameter-containersize) | int | Size of the function container. |
-| [`customDomainVerificationId`](#parameter-customdomainverificationid) | string | Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification. |
-| [`dailyMemoryTimeQuota`](#parameter-dailymemorytimequota) | int | Maximum allowed daily memory-time quota (applicable on dynamic apps only). |
-| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
-| [`enabled`](#parameter-enabled) | bool | Setting this value to false disables the app (takes the app offline). |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`hostNameSslStates`](#parameter-hostnamesslstates) | array | Hostname SSL states are used to manage the SSL bindings for app's hostnames. |
-| [`httpsOnly`](#parameter-httpsonly) | bool | Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests. |
-| [`hybridConnectionRelays`](#parameter-hybridconnectionrelays) | array | Names of hybrid connection relays to connect app with. |
-| [`hyperV`](#parameter-hyperv) | bool | Hyper-V sandbox. |
-| [`keyVaultAccessIdentityResourceId`](#parameter-keyvaultaccessidentityresourceid) | string | The resource ID of the assigned identity to be used to access a key vault with. |
-| [`location`](#parameter-location) | string | Location for all Resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
-| [`privateEndpoints`](#parameter-privateendpoints) | array | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
-| [`redundancyMode`](#parameter-redundancymode) | string | Site redundancy mode. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`scmSiteAlsoStopped`](#parameter-scmsitealsostopped) | bool | Stop SCM (KUDU) site when the app is stopped. |
-| [`setAzureWebJobsDashboard`](#parameter-setazurewebjobsdashboard) | bool | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
-| [`siteConfig`](#parameter-siteconfig) | object | The site config object. |
-| [`slots`](#parameter-slots) | array | Configuration for deployment slots for an app. |
-| [`storageAccountRequired`](#parameter-storageaccountrequired) | bool | Checks if Customer provided storage account is required. |
-| [`storageAccountResourceId`](#parameter-storageaccountresourceid) | string | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`virtualNetworkSubnetId`](#parameter-virtualnetworksubnetid) | string | Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}. |
-| [`vnetContentShareEnabled`](#parameter-vnetcontentshareenabled) | bool | To enable accessing content over virtual network. |
-| [`vnetImagePullEnabled`](#parameter-vnetimagepullenabled) | bool | To enable pulling image over Virtual Network. |
-| [`vnetRouteAllEnabled`](#parameter-vnetrouteallenabled) | bool | Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied. |
+| Parameter                                                                             | Type   | Description                                                                                                                                                                                                                                                                                          |
+|:--------------------------------------------------------------------------------------|:-------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`appInsightResourceId`](#parameter-appinsightresourceid)                             | string | Resource ID of the app insight to leverage for this resource.                                                                                                                                                                                                                                        |
+| [`appServiceEnvironmentResourceId`](#parameter-appserviceenvironmentresourceid)       | string | The resource ID of the app service environment to use for this resource.                                                                                                                                                                                                                             |
+| [`appSettingsKeyValuePairs`](#parameter-appsettingskeyvaluepairs)                     | object | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING.                                                                                                                                        |
+| [`authSettingV2Configuration`](#parameter-authsettingv2configuration)                 | object | The auth settings V2 configuration.                                                                                                                                                                                                                                                                  |
+| [`basicPublishingCredentialsPolicies`](#parameter-basicpublishingcredentialspolicies) | array  | The site publishing credential policy names which are associated with the sites.                                                                                                                                                                                                                     |
+| [`clientAffinityEnabled`](#parameter-clientaffinityenabled)                           | bool   | If client affinity is enabled.                                                                                                                                                                                                                                                                       |
+| [`clientCertEnabled`](#parameter-clientcertenabled)                                   | bool   | To enable client certificate authentication (TLS mutual authentication).                                                                                                                                                                                                                             |
+| [`clientCertExclusionPaths`](#parameter-clientcertexclusionpaths)                     | string | Client certificate authentication comma-separated exclusion paths.                                                                                                                                                                                                                                   |
+| [`clientCertMode`](#parameter-clientcertmode)                                         | string | This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted. |
+| [`cloningInfo`](#parameter-cloninginfo)                                               | object | If specified during app creation, the app is cloned from a source app.                                                                                                                                                                                                                               |
+| [`containerSize`](#parameter-containersize)                                           | int    | Size of the function container.                                                                                                                                                                                                                                                                      |
+| [`customDomainVerificationId`](#parameter-customdomainverificationid)                 | string | Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification.                                                                                                                                                                  |
+| [`dailyMemoryTimeQuota`](#parameter-dailymemorytimequota)                             | int    | Maximum allowed daily memory-time quota (applicable on dynamic apps only).                                                                                                                                                                                                                           |
+| [`diagnosticSettings`](#parameter-diagnosticsettings)                                 | array  | The diagnostic settings of the service.                                                                                                                                                                                                                                                              |
+| [`enabled`](#parameter-enabled)                                                       | bool   | Setting this value to false disables the app (takes the app offline).                                                                                                                                                                                                                                |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                         | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                                                                                            |
+| [`hostNameSslStates`](#parameter-hostnamesslstates)                                   | array  | Hostname SSL states are used to manage the SSL bindings for app's hostnames.                                                                                                                                                                                                                         |
+| [`httpsOnly`](#parameter-httpsonly)                                                   | bool   | Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests.                                                                                                                                                                                                                  |
+| [`hybridConnectionRelays`](#parameter-hybridconnectionrelays)                         | array  | Names of hybrid connection relays to connect app with.                                                                                                                                                                                                                                               |
+| [`hyperV`](#parameter-hyperv)                                                         | bool   | Hyper-V sandbox.                                                                                                                                                                                                                                                                                     |
+| [`keyVaultAccessIdentityResourceId`](#parameter-keyvaultaccessidentityresourceid)     | string | The resource ID of the assigned identity to be used to access a key vault with.                                                                                                                                                                                                                      |
+| [`location`](#parameter-location)                                                     | string | Location for all Resources.                                                                                                                                                                                                                                                                          |
+| [`lock`](#parameter-lock)                                                             | object | The lock settings of the service.                                                                                                                                                                                                                                                                    |
+| [`managedIdentities`](#parameter-managedidentities)                                   | object | The managed identity definition for this resource.                                                                                                                                                                                                                                                   |
+| [`privateEndpoints`](#parameter-privateendpoints)                                     | array  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.                                                                                                                                                                     |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess)                               | string | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.                                                                                                        |
+| [`redundancyMode`](#parameter-redundancymode)                                         | string | Site redundancy mode.                                                                                                                                                                                                                                                                                |
+| [`roleAssignments`](#parameter-roleassignments)                                       | array  | Array of role assignments to create.                                                                                                                                                                                                                                                                 |
+| [`scmSiteAlsoStopped`](#parameter-scmsitealsostopped)                                 | bool   | Stop SCM (KUDU) site when the app is stopped.                                                                                                                                                                                                                                                        |
+| [`setAzureWebJobsDashboard`](#parameter-setazurewebjobsdashboard)                     | bool   | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons.                                                                                                         |
+| [`siteConfig`](#parameter-siteconfig)                                                 | object | The site config object.                                                                                                                                                                                                                                                                              |
+| [`slots`](#parameter-slots)                                                           | array  | Configuration for deployment slots for an app.                                                                                                                                                                                                                                                       |
+| [`storageAccountRequired`](#parameter-storageaccountrequired)                         | bool   | Checks if Customer provided storage account is required.                                                                                                                                                                                                                                             |
+| [`storageAccountResourceId`](#parameter-storageaccountresourceid)                     | string | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions.                                                                                                                                                                          |
+| [`tags`](#parameter-tags)                                                             | object | Tags of the resource.                                                                                                                                                                                                                                                                                |
+| [`virtualNetworkSubnetId`](#parameter-virtualnetworksubnetid)                         | string | Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.                    |
+| [`vnetContentShareEnabled`](#parameter-vnetcontentshareenabled)                       | bool   | To enable accessing content over virtual network.                                                                                                                                                                                                                                                    |
+| [`vnetImagePullEnabled`](#parameter-vnetimagepullenabled)                             | bool   | To enable pulling image over Virtual Network.                                                                                                                                                                                                                                                        |
+| [`vnetRouteAllEnabled`](#parameter-vnetrouteallenabled)                               | bool   | Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied.                                                                                                                                                         |
 
 ### Parameter: `kind`
 
@@ -1131,17 +1129,17 @@ The diagnostic settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
-| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`name`](#parameter-diagnosticsettingsname) | string | The name of diagnostic setting. |
-| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| Parameter                                                                                                 | Type   | Description                                                                                                                                                                                                                                                                                     |
+|:----------------------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.                                                                                                                                                |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname)                                               | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype)                 | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.                                                                                                                                              |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups)                           | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid)               | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.                                                                                                                                                                                           |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories)                                       | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`name`](#parameter-diagnosticsettingsname)                                                               | string | The name of diagnostic setting.                                                                                                                                                                                                                                                                 |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid)                       | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                                 |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid)                                 | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                         |
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
@@ -1286,8 +1284,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -1322,10 +1320,10 @@ The managed identity definition for this resource.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | bool | Enables system assigned managed identity on the resource. |
-| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
+| Parameter                                                                        | Type  | Description                                               |
+|:---------------------------------------------------------------------------------|:------|:----------------------------------------------------------|
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned)                   | bool  | Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource.             |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -1350,28 +1348,28 @@ Configuration details for private endpoints. For security reasons, it is recomme
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                                         | Type   | Description                                                       |
+|:------------------------------------------------------------------|:-------|:------------------------------------------------------------------|
 | [`subnetResourceId`](#parameter-privateendpointssubnetresourceid) | string | Resource ID of the subnet where the endpoint needs to be created. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`applicationSecurityGroupResourceIds`](#parameter-privateendpointsapplicationsecuritygroupresourceids) | array | Application security groups in which the private endpoint IP configuration is included. |
-| [`customDnsConfigs`](#parameter-privateendpointscustomdnsconfigs) | array | Custom DNS configurations. |
-| [`customNetworkInterfaceName`](#parameter-privateendpointscustomnetworkinterfacename) | string | The custom name of the network interface attached to the private endpoint. |
-| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry) | bool | Enable/Disable usage telemetry for module. |
-| [`ipConfigurations`](#parameter-privateendpointsipconfigurations) | array | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
-| [`location`](#parameter-privateendpointslocation) | string | The location to deploy the private endpoint to. |
-| [`lock`](#parameter-privateendpointslock) | object | Specify the type of lock. |
-| [`manualPrivateLinkServiceConnections`](#parameter-privateendpointsmanualprivatelinkserviceconnections) | array | Manual PrivateLink Service Connections. |
-| [`name`](#parameter-privateendpointsname) | string | The name of the private endpoint. |
-| [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname) | string | The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided. |
-| [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids) | array | The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
-| [`roleAssignments`](#parameter-privateendpointsroleassignments) | array | Array of role assignments to create. |
-| [`service`](#parameter-privateendpointsservice) | string | The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob". |
-| [`tags`](#parameter-privateendpointstags) | object | Tags to be applied on all resources/resource groups in this deployment. |
+| Parameter                                                                                               | Type   | Description                                                                                                         |
+|:--------------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------|
+| [`applicationSecurityGroupResourceIds`](#parameter-privateendpointsapplicationsecuritygroupresourceids) | array  | Application security groups in which the private endpoint IP configuration is included.                             |
+| [`customDnsConfigs`](#parameter-privateendpointscustomdnsconfigs)                                       | array  | Custom DNS configurations.                                                                                          |
+| [`customNetworkInterfaceName`](#parameter-privateendpointscustomnetworkinterfacename)                   | string | The custom name of the network interface attached to the private endpoint.                                          |
+| [`enableTelemetry`](#parameter-privateendpointsenabletelemetry)                                         | bool   | Enable/Disable usage telemetry for module.                                                                          |
+| [`ipConfigurations`](#parameter-privateendpointsipconfigurations)                                       | array  | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
+| [`location`](#parameter-privateendpointslocation)                                                       | string | The location to deploy the private endpoint to.                                                                     |
+| [`lock`](#parameter-privateendpointslock)                                                               | object | Specify the type of lock.                                                                                           |
+| [`manualPrivateLinkServiceConnections`](#parameter-privateendpointsmanualprivatelinkserviceconnections) | array  | Manual PrivateLink Service Connections.                                                                             |
+| [`name`](#parameter-privateendpointsname)                                                               | string | The name of the private endpoint.                                                                                   |
+| [`privateDnsZoneGroupName`](#parameter-privateendpointsprivatednszonegroupname)                         | string | The name of the private DNS zone group to create if privateDnsZoneResourceIds were provided.                        |
+| [`privateDnsZoneResourceIds`](#parameter-privateendpointsprivatednszoneresourceids)                     | array  | The private DNS zone groups to associate the private endpoint with. A DNS zone group can support up to 5 DNS zones. |
+| [`roleAssignments`](#parameter-privateendpointsroleassignments)                                         | array  | Array of role assignments to create.                                                                                |
+| [`service`](#parameter-privateendpointsservice)                                                         | string | The service (sub-) type to deploy the private endpoint for. For example "vault" or "blob".                          |
+| [`tags`](#parameter-privateendpointstags)                                                               | object | Tags to be applied on all resources/resource groups in this deployment.                                             |
 
 ### Parameter: `privateEndpoints.subnetResourceId`
 
@@ -1431,8 +1429,8 @@ Specify the type of lock.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                     | Type   | Description               |
+|:----------------------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-privateendpointslockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-privateendpointslockname) | string | Specify the name of lock. |
 
@@ -1495,20 +1493,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-privateendpointsroleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:---------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-privateendpointsroleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-privateendpointsroleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-privateendpointsroleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-privateendpointsroleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-privateendpointsroleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-privateendpointsroleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-privateendpointsroleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:---------------------------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-privateendpointsroleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-privateendpointsroleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-privateendpointsroleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-privateendpointsroleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-privateendpointsroleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `privateEndpoints.roleAssignments.principalId`
 
@@ -1632,20 +1630,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -1802,24 +1800,24 @@ Virtual Network Route All enabled. This causes all outbound traffic to have Virt
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `defaultHostname` | string | Default hostname of the app. |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the site. |
-| `resourceGroupName` | string | The resource group the site was deployed into. |
-| `resourceId` | string | The resource ID of the site. |
-| `slotResourceIds` | array | The list of the slot resource ids. |
-| `slots` | array | The list of the slots. |
-| `slotSystemAssignedMIPrincipalIds` | array | The principal ID of the system assigned identity of slots. |
-| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
+| Output                             | Type   | Description                                                |
+|:-----------------------------------|:-------|:-----------------------------------------------------------|
+| `defaultHostname`                  | string | Default hostname of the app.                               |
+| `location`                         | string | The location the resource was deployed into.               |
+| `name`                             | string | The name of the site.                                      |
+| `resourceGroupName`                | string | The resource group the site was deployed into.             |
+| `resourceId`                       | string | The resource ID of the site.                               |
+| `slotResourceIds`                  | array  | The list of the slot resource ids.                         |
+| `slots`                            | array  | The list of the slots.                                     |
+| `slotSystemAssignedMIPrincipalIds` | array  | The principal ID of the system assigned identity of slots. |
+| `systemAssignedMIPrincipalId`      | string | The principal ID of the system assigned identity.          |
 
 ## Cross-referenced modules
 
 This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
 
-| Reference | Type |
-| :-- | :-- |
+| Reference                          | Type            |
+|:-----------------------------------|:----------------|
 | `modules/network/private-endpoint` | Local reference |
 
 ## Notes

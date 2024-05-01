@@ -1,7 +1,5 @@
 # Kubernetes Configuration Extensions `[Microsoft.KubernetesConfiguration/extensions]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Kubernetes Configuration Extension.
 
 ## Navigation
@@ -14,10 +12,10 @@ This module deploys a Kubernetes Configuration Extension.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.KubernetesConfiguration/extensions` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions) |
-| `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/fluxConfigurations) |
+| Resource Type                                          | API Version                                                                                                             |
+|:-------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.KubernetesConfiguration/extensions`         | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions) |
+| `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/fluxConfigurations)    |
 
 ## Usage examples
 
@@ -368,25 +366,25 @@ module extension 'br:bicep/modules/kubernetes-configuration.extension:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`clusterName`](#parameter-clustername) | string | The name of the AKS cluster that should be configured. |
+| Parameter                                   | Type   | Description                                                                                                                                                                          |
+|:--------------------------------------------|:-------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`clusterName`](#parameter-clustername)     | string | The name of the AKS cluster that should be configured.                                                                                                                               |
 | [`extensionType`](#parameter-extensiontype) | string | Type of the Extension, of which this resource is an instance of. It must be one of the Extension Types registered with Microsoft.KubernetesConfiguration by the Extension publisher. |
-| [`name`](#parameter-name) | string | The name of the Flux Configuration. |
+| [`name`](#parameter-name)                   | string | The name of the Flux Configuration.                                                                                                                                                  |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`configurationProtectedSettings`](#parameter-configurationprotectedsettings) | secureObject | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
-| [`configurationSettings`](#parameter-configurationsettings) | object | Configuration settings, as name-value pairs for configuring this extension. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`fluxConfigurations`](#parameter-fluxconfigurations) | array | A list of flux configuraitons. |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`releaseNamespace`](#parameter-releasenamespace) | string | Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist, it will be created. |
-| [`releaseTrain`](#parameter-releasetrain) | string | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true". |
-| [`targetNamespace`](#parameter-targetnamespace) | string | Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will be created. |
-| [`version`](#parameter-version) | string | Version of the extension for this extension, if it is "pinned" to a specific version. |
+| Parameter                                                                     | Type         | Description                                                                                                                                 |
+|:------------------------------------------------------------------------------|:-------------|:--------------------------------------------------------------------------------------------------------------------------------------------|
+| [`configurationProtectedSettings`](#parameter-configurationprotectedsettings) | secureObject | Configuration settings that are sensitive, as name-value pairs for configuring this extension.                                              |
+| [`configurationSettings`](#parameter-configurationsettings)                   | object       | Configuration settings, as name-value pairs for configuring this extension.                                                                 |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                 | bool         | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                   |
+| [`fluxConfigurations`](#parameter-fluxconfigurations)                         | array        | A list of flux configuraitons.                                                                                                              |
+| [`location`](#parameter-location)                                             | string       | Location for all resources.                                                                                                                 |
+| [`releaseNamespace`](#parameter-releasenamespace)                             | string       | Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist, it will be created. |
+| [`releaseTrain`](#parameter-releasetrain)                                     | string       | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true".      |
+| [`targetNamespace`](#parameter-targetnamespace)                               | string       | Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will be created.      |
+| [`version`](#parameter-version)                                               | string       | Version of the extension for this extension, if it is "pinned" to a specific version.                                                       |
 
 ### Parameter: `clusterName`
 
@@ -484,16 +482,16 @@ Version of the extension for this extension, if it is "pinned" to a specific ver
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the extension. |
+| Output              | Type   | Description                                                     |
+|:--------------------|:-------|:----------------------------------------------------------------|
+| `name`              | string | The name of the extension.                                      |
 | `resourceGroupName` | string | The name of the resource group the extension was deployed into. |
-| `resourceId` | string | The resource ID of the extension. |
+| `resourceId`        | string | The resource ID of the extension.                               |
 
 ## Cross-referenced modules
 
 This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
 
-| Reference | Type |
-| :-- | :-- |
+| Reference                                             | Type            |
+|:------------------------------------------------------|:----------------|
 | `modules/kubernetes-configuration/flux-configuration` | Local reference |

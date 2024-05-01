@@ -1,7 +1,5 @@
 # Compute Disks `[Microsoft.Compute/disks]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Compute Disk
 
 ## Navigation
@@ -14,11 +12,11 @@ This module deploys a Compute Disk
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| Resource Type                             | API Version                                                                                                        |
+|:------------------------------------------|:-------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`           | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)           |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/disks` | [2022-07-02](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-07-02/disks) |
+| `Microsoft.Compute/disks`                 | [2022-07-02](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-07-02/disks)                 |
 
 ## Usage examples
 
@@ -541,46 +539,46 @@ module disk 'br:bicep/modules/compute.disk:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                 | Type   | Description                                 |
+|:--------------------------|:-------|:--------------------------------------------|
 | [`name`](#parameter-name) | string | The name of the disk that is being created. |
-| [`sku`](#parameter-sku) | string | The disks sku name. Can be . |
+| [`sku`](#parameter-sku)   | string | The disks sku name. Can be .                |
 
 **Conditional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`diskSizeGB`](#parameter-disksizegb) | int | The size of the disk to create. Required if create option is Empty. |
+| Parameter                                         | Type   | Description                                                                                                          |
+|:--------------------------------------------------|:-------|:---------------------------------------------------------------------------------------------------------------------|
+| [`diskSizeGB`](#parameter-disksizegb)             | int    | The size of the disk to create. Required if create option is Empty.                                                  |
 | [`storageAccountId`](#parameter-storageaccountid) | string | The resource ID of the storage account containing the blob to import as a disk. Required if create option is Import. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`acceleratedNetwork`](#parameter-acceleratednetwork) | bool | True if the image from which the OS disk is created supports accelerated networking. |
-| [`architecture`](#parameter-architecture) | string | CPU architecture supported by an OS disk. |
-| [`burstingEnabled`](#parameter-burstingenabled) | bool | Set to true to enable bursting beyond the provisioned performance target of the disk. |
-| [`completionPercent`](#parameter-completionpercent) | int | Percentage complete for the background copy when a resource is created via the CopyStart operation. |
-| [`createOption`](#parameter-createoption) | string | Sources of a disk creation. |
-| [`diskIOPSReadWrite`](#parameter-diskiopsreadwrite) | int | The number of IOPS allowed for this disk; only settable for UltraSSD disks. |
-| [`diskMBpsReadWrite`](#parameter-diskmbpsreadwrite) | int | The bandwidth allowed for this disk; only settable for UltraSSD disks. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`hyperVGeneration`](#parameter-hypervgeneration) | string | The hypervisor generation of the Virtual Machine. Applicable to OS disks only. |
-| [`imageReferenceId`](#parameter-imagereferenceid) | string | A relative uri containing either a Platform Image Repository or user image reference. |
-| [`location`](#parameter-location) | string | Resource location. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`logicalSectorSize`](#parameter-logicalsectorsize) | int | Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096. |
-| [`maxShares`](#parameter-maxshares) | int | The maximum number of VMs that can attach to the disk at the same time. Default value is 0. |
-| [`networkAccessPolicy`](#parameter-networkaccesspolicy) | string | Policy for accessing the disk via network. |
-| [`optimizedForFrequentAttach`](#parameter-optimizedforfrequentattach) | bool | Setting this property to true improves reliability and performance of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to another. This property should not be set for disks that are not detached and attached frequently as it causes the disks to not align with the fault domain of the virtual machine. |
-| [`osType`](#parameter-ostype) | string | Sources of a disk creation. |
-| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Policy for controlling export on the disk. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`securityDataUri`](#parameter-securitydatauri) | string | If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state. |
-| [`sourceResourceId`](#parameter-sourceresourceid) | string | If create option is Copy, this is the ARM ID of the source snapshot or disk. |
-| [`sourceUri`](#parameter-sourceuri) | string | If create option is Import, this is the URI of a blob to be imported into a managed disk. |
-| [`tags`](#parameter-tags) | object | Tags of the availability set resource. |
-| [`uploadSizeBytes`](#parameter-uploadsizebytes) | int | If create option is Upload, this is the size of the contents of the upload including the VHD footer. |
+| Parameter                                                             | Type   | Description                                                                                                                                                                                                                                                                                                                                                            |
+|:----------------------------------------------------------------------|:-------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`acceleratedNetwork`](#parameter-acceleratednetwork)                 | bool   | True if the image from which the OS disk is created supports accelerated networking.                                                                                                                                                                                                                                                                                   |
+| [`architecture`](#parameter-architecture)                             | string | CPU architecture supported by an OS disk.                                                                                                                                                                                                                                                                                                                              |
+| [`burstingEnabled`](#parameter-burstingenabled)                       | bool   | Set to true to enable bursting beyond the provisioned performance target of the disk.                                                                                                                                                                                                                                                                                  |
+| [`completionPercent`](#parameter-completionpercent)                   | int    | Percentage complete for the background copy when a resource is created via the CopyStart operation.                                                                                                                                                                                                                                                                    |
+| [`createOption`](#parameter-createoption)                             | string | Sources of a disk creation.                                                                                                                                                                                                                                                                                                                                            |
+| [`diskIOPSReadWrite`](#parameter-diskiopsreadwrite)                   | int    | The number of IOPS allowed for this disk; only settable for UltraSSD disks.                                                                                                                                                                                                                                                                                            |
+| [`diskMBpsReadWrite`](#parameter-diskmbpsreadwrite)                   | int    | The bandwidth allowed for this disk; only settable for UltraSSD disks.                                                                                                                                                                                                                                                                                                 |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)         | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                                                                                                                                                              |
+| [`hyperVGeneration`](#parameter-hypervgeneration)                     | string | The hypervisor generation of the Virtual Machine. Applicable to OS disks only.                                                                                                                                                                                                                                                                                         |
+| [`imageReferenceId`](#parameter-imagereferenceid)                     | string | A relative uri containing either a Platform Image Repository or user image reference.                                                                                                                                                                                                                                                                                  |
+| [`location`](#parameter-location)                                     | string | Resource location.                                                                                                                                                                                                                                                                                                                                                     |
+| [`lock`](#parameter-lock)                                             | object | The lock settings of the service.                                                                                                                                                                                                                                                                                                                                      |
+| [`logicalSectorSize`](#parameter-logicalsectorsize)                   | int    | Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096.                                                                                                                                                                                                                                                                                        |
+| [`maxShares`](#parameter-maxshares)                                   | int    | The maximum number of VMs that can attach to the disk at the same time. Default value is 0.                                                                                                                                                                                                                                                                            |
+| [`networkAccessPolicy`](#parameter-networkaccesspolicy)               | string | Policy for accessing the disk via network.                                                                                                                                                                                                                                                                                                                             |
+| [`optimizedForFrequentAttach`](#parameter-optimizedforfrequentattach) | bool   | Setting this property to true improves reliability and performance of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to another. This property should not be set for disks that are not detached and attached frequently as it causes the disks to not align with the fault domain of the virtual machine. |
+| [`osType`](#parameter-ostype)                                         | string | Sources of a disk creation.                                                                                                                                                                                                                                                                                                                                            |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess)               | string | Policy for controlling export on the disk.                                                                                                                                                                                                                                                                                                                             |
+| [`roleAssignments`](#parameter-roleassignments)                       | array  | Array of role assignments to create.                                                                                                                                                                                                                                                                                                                                   |
+| [`securityDataUri`](#parameter-securitydatauri)                       | string | If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state.                                                                                                                                                                                                                                                                        |
+| [`sourceResourceId`](#parameter-sourceresourceid)                     | string | If create option is Copy, this is the ARM ID of the source snapshot or disk.                                                                                                                                                                                                                                                                                           |
+| [`sourceUri`](#parameter-sourceuri)                                   | string | If create option is Import, this is the URI of a blob to be imported into a managed disk.                                                                                                                                                                                                                                                                              |
+| [`tags`](#parameter-tags)                                             | object | Tags of the availability set resource.                                                                                                                                                                                                                                                                                                                                 |
+| [`uploadSizeBytes`](#parameter-uploadsizebytes)                       | int    | If create option is Upload, this is the size of the contents of the upload including the VHD footer.                                                                                                                                                                                                                                                                   |
 
 ### Parameter: `name`
 
@@ -751,8 +749,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -858,20 +856,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -980,12 +978,12 @@ If create option is Upload, this is the size of the contents of the upload inclu
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the disk. |
+| Output              | Type   | Description                                     |
+|:--------------------|:-------|:------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.    |
+| `name`              | string | The name of the disk.                           |
 | `resourceGroupName` | string | The resource group the  disk was deployed into. |
-| `resourceId` | string | The resource ID of the disk. |
+| `resourceId`        | string | The resource ID of the disk.                    |
 
 ## Cross-referenced modules
 

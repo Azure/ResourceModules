@@ -1,7 +1,5 @@
 # Activity Log Alerts `[Microsoft.Insights/activityLogAlerts]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys an Activity Log Alert.
 
 ## Navigation
@@ -14,10 +12,10 @@ This module deploys an Activity Log Alert.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
+| Resource Type                             | API Version                                                                                                        |
+|:------------------------------------------|:-------------------------------------------------------------------------------------------------------------------|
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/activityLogAlerts` | [2020-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-10-01/activityLogAlerts) |
+| `Microsoft.Insights/activityLogAlerts`    | [2020-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-10-01/activityLogAlerts)    |
 
 ## Usage examples
 
@@ -363,23 +361,23 @@ module activityLogAlert 'br:bicep/modules/insights.activity-log-alert:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`conditions`](#parameter-conditions) | array | An Array of objects containing conditions that will cause this alert to activate. Conditions can also be combined with logical operators `allOf` and `anyOf`. Each condition can specify only one field between `equals` and `containsAny`. An alert rule condition must have exactly one category (Administrative, ServiceHealth, ResourceHealth, Alert, Autoscale, Recommendation, Security, or Policy). |
-| [`name`](#parameter-name) | string | The name of the alert. |
+| Parameter                             | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                                |
+|:--------------------------------------|:-------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`conditions`](#parameter-conditions) | array  | An Array of objects containing conditions that will cause this alert to activate. Conditions can also be combined with logical operators `allOf` and `anyOf`. Each condition can specify only one field between `equals` and `containsAny`. An alert rule condition must have exactly one category (Administrative, ServiceHealth, ResourceHealth, Alert, Autoscale, Recommendation, Security, or Policy). |
+| [`name`](#parameter-name)             | string | The name of the alert.                                                                                                                                                                                                                                                                                                                                                                                     |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`actions`](#parameter-actions) | array | The list of actions to take when alert triggers. |
-| [`alertDescription`](#parameter-alertdescription) | string | Description of the alert. |
-| [`enabled`](#parameter-enabled) | bool | Indicates whether this alert is enabled. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`scopes`](#parameter-scopes) | array | The list of resource IDs that this Activity Log Alert is scoped to. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| Parameter                                                     | Type   | Description                                                         |
+|:--------------------------------------------------------------|:-------|:--------------------------------------------------------------------|
+| [`actions`](#parameter-actions)                               | array  | The list of actions to take when alert triggers.                    |
+| [`alertDescription`](#parameter-alertdescription)             | string | Description of the alert.                                           |
+| [`enabled`](#parameter-enabled)                               | bool   | Indicates whether this alert is enabled.                            |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID).           |
+| [`location`](#parameter-location)                             | string | Location for all resources.                                         |
+| [`roleAssignments`](#parameter-roleassignments)               | array  | Array of role assignments to create.                                |
+| [`scopes`](#parameter-scopes)                                 | array  | The list of resource IDs that this Activity Log Alert is scoped to. |
+| [`tags`](#parameter-tags)                                     | object | Tags of the resource.                                               |
 
 ### Parameter: `conditions`
 
@@ -444,20 +442,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -547,12 +545,12 @@ Tags of the resource.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the activity log alert. |
+| Output              | Type   | Description                                                  |
+|:--------------------|:-------|:-------------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.                 |
+| `name`              | string | The name of the activity log alert.                          |
 | `resourceGroupName` | string | The resource group the activity log alert was deployed into. |
-| `resourceId` | string | The resource ID of the activity log alert. |
+| `resourceId`        | string | The resource ID of the activity log alert.                   |
 
 ## Cross-referenced modules
 

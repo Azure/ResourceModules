@@ -1,7 +1,5 @@
 # Private DNS Zones `[Microsoft.Network/privateDnsZones]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Private DNS zone.
 
 ## Navigation
@@ -14,19 +12,19 @@ This module deploys a Private DNS zone.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/privateDnsZones` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones) |
-| `Microsoft.Network/privateDnsZones/A` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/A) |
-| `Microsoft.Network/privateDnsZones/AAAA` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/AAAA) |
-| `Microsoft.Network/privateDnsZones/CNAME` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/CNAME) |
-| `Microsoft.Network/privateDnsZones/MX` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX) |
-| `Microsoft.Network/privateDnsZones/PTR` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/PTR) |
-| `Microsoft.Network/privateDnsZones/SOA` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SOA) |
-| `Microsoft.Network/privateDnsZones/SRV` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SRV) |
-| `Microsoft.Network/privateDnsZones/TXT` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/TXT) |
+| Resource Type                                           | API Version                                                                                                                      |
+|:--------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`                         | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                         |
+| `Microsoft.Authorization/roleAssignments`               | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)               |
+| `Microsoft.Network/privateDnsZones`                     | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones)                     |
+| `Microsoft.Network/privateDnsZones/A`                   | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/A)                   |
+| `Microsoft.Network/privateDnsZones/AAAA`                | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/AAAA)                |
+| `Microsoft.Network/privateDnsZones/CNAME`               | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/CNAME)               |
+| `Microsoft.Network/privateDnsZones/MX`                  | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX)                  |
+| `Microsoft.Network/privateDnsZones/PTR`                 | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/PTR)                 |
+| `Microsoft.Network/privateDnsZones/SOA`                 | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SOA)                 |
+| `Microsoft.Network/privateDnsZones/SRV`                 | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SRV)                 |
+| `Microsoft.Network/privateDnsZones/TXT`                 | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/TXT)                 |
 | `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/virtualNetworkLinks) |
 
 ## Usage examples
@@ -906,28 +904,28 @@ module privateDnsZone 'br:bicep/modules/network.private-dns-zone:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                 | Type   | Description            |
+|:--------------------------|:-------|:-----------------------|
 | [`name`](#parameter-name) | string | Private DNS zone name. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`a`](#parameter-a) | array | Array of A records. |
-| [`aaaa`](#parameter-aaaa) | array | Array of AAAA records. |
-| [`cname`](#parameter-cname) | array | Array of CNAME records. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | The location of the PrivateDNSZone. Should be global. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`mx`](#parameter-mx) | array | Array of MX records. |
-| [`ptr`](#parameter-ptr) | array | Array of PTR records. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| [`soa`](#parameter-soa) | array | Array of SOA records. |
-| [`srv`](#parameter-srv) | array | Array of SRV records. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`txt`](#parameter-txt) | array | Array of TXT records. |
-| [`virtualNetworkLinks`](#parameter-virtualnetworklinks) | array | Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource ID of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. |
+| Parameter                                                     | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                           |
+|:--------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`a`](#parameter-a)                                           | array  | Array of A records.                                                                                                                                                                                                                                                                                                                                                                                   |
+| [`aaaa`](#parameter-aaaa)                                     | array  | Array of AAAA records.                                                                                                                                                                                                                                                                                                                                                                                |
+| [`cname`](#parameter-cname)                                   | array  | Array of CNAME records.                                                                                                                                                                                                                                                                                                                                                                               |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                                                                                                                                                                                             |
+| [`location`](#parameter-location)                             | string | The location of the PrivateDNSZone. Should be global.                                                                                                                                                                                                                                                                                                                                                 |
+| [`lock`](#parameter-lock)                                     | object | The lock settings of the service.                                                                                                                                                                                                                                                                                                                                                                     |
+| [`mx`](#parameter-mx)                                         | array  | Array of MX records.                                                                                                                                                                                                                                                                                                                                                                                  |
+| [`ptr`](#parameter-ptr)                                       | array  | Array of PTR records.                                                                                                                                                                                                                                                                                                                                                                                 |
+| [`roleAssignments`](#parameter-roleassignments)               | array  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`soa`](#parameter-soa)                                       | array  | Array of SOA records.                                                                                                                                                                                                                                                                                                                                                                                 |
+| [`srv`](#parameter-srv)                                       | array  | Array of SRV records.                                                                                                                                                                                                                                                                                                                                                                                 |
+| [`tags`](#parameter-tags)                                     | object | Tags of the resource.                                                                                                                                                                                                                                                                                                                                                                                 |
+| [`txt`](#parameter-txt)                                       | array  | Array of TXT records.                                                                                                                                                                                                                                                                                                                                                                                 |
+| [`virtualNetworkLinks`](#parameter-virtualnetworklinks)       | array  | Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource ID of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet.                                                                                            |
 
 ### Parameter: `name`
 
@@ -985,8 +983,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -1037,20 +1035,20 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                           |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                        |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -1159,12 +1157,12 @@ Array of custom objects describing vNet links of the DNS zone. Each object shoul
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the private DNS zone. |
+| Output              | Type   | Description                                                |
+|:--------------------|:-------|:-----------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.               |
+| `name`              | string | The name of the private DNS zone.                          |
 | `resourceGroupName` | string | The resource group the private DNS zone was deployed into. |
-| `resourceId` | string | The resource ID of the private DNS zone. |
+| `resourceId`        | string | The resource ID of the private DNS zone.                   |
 
 ## Cross-referenced modules
 

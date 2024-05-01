@@ -1,7 +1,5 @@
 # App ManagedEnvironments `[Microsoft.App/managedEnvironments]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys an App Managed Environment (also known as a Container App Environment).
 
 ## Navigation
@@ -14,10 +12,10 @@ This module deploys an App Managed Environment (also known as a Container App En
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.App/managedEnvironments` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.App/2023-05-01/managedEnvironments) |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| Resource Type                             | API Version                                                                                                        |
+|:------------------------------------------|:-------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.App/managedEnvironments`       | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.App/2023-05-01/managedEnvironments)       |
+| `Microsoft.Authorization/locks`           | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)           |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 
 ## Usage examples
@@ -295,39 +293,39 @@ module managedEnvironment 'br:bicep/modules/app.managed-environment:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                                                       | Type   | Description                                                                                                                                                                                                                      |
+|:--------------------------------------------------------------------------------|:-------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [`logAnalyticsWorkspaceResourceId`](#parameter-loganalyticsworkspaceresourceid) | string | Existing Log Analytics Workspace resource ID. Note: This value is not required as per the resource type. However, not providing it currently causes an issue that is tracked [here](https://github.com/Azure/bicep/issues/9990). |
-| [`name`](#parameter-name) | string | Name of the Container Apps Managed Environment. |
+| [`name`](#parameter-name)                                                       | string | Name of the Container Apps Managed Environment.                                                                                                                                                                                  |
 
 **Conditional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                                     | Type   | Description                                                                                                                                                                                                      |
+|:--------------------------------------------------------------|:-------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [`infrastructureSubnetId`](#parameter-infrastructuresubnetid) | string | Resource ID of a subnet for infrastructure components. This is used to deploy the environment into a virtual network. Must not overlap with any other provided IP ranges. Required if "internal" is set to true. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`certificatePassword`](#parameter-certificatepassword) | securestring | Password of the certificate used by the custom domain. |
-| [`certificateValue`](#parameter-certificatevalue) | securestring | Certificate to use for the custom domain. PFX or PEM. |
-| [`daprAIConnectionString`](#parameter-dapraiconnectionstring) | securestring | Application Insights connection string used by Dapr to export Service to Service communication telemetry. |
-| [`daprAIInstrumentationKey`](#parameter-dapraiinstrumentationkey) | securestring | Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry. |
-| [`dnsSuffix`](#parameter-dnssuffix) | string | DNS suffix for the environment domain. |
-| [`dockerBridgeCidr`](#parameter-dockerbridgecidr) | string | CIDR notation IP range assigned to the Docker bridge, network. It must not overlap with any other provided IP ranges and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`infrastructureResourceGroupName`](#parameter-infrastructureresourcegroupname) | string | Name of the infrastructure resource group. If not provided, it will be set with a default value. |
-| [`internal`](#parameter-internal) | bool | Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. If set to true, then "infrastructureSubnetId" must be provided. |
-| [`location`](#parameter-location) | string | Location for all Resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`logsDestination`](#parameter-logsdestination) | string | Logs destination. |
-| [`platformReservedCidr`](#parameter-platformreservedcidr) | string | IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap with any other provided IP ranges and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
-| [`platformReservedDnsIP`](#parameter-platformreserveddnsip) | string | An IP address from the IP range defined by "platformReservedCidr" that will be reserved for the internal DNS server. It must not be the first address in the range and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`workloadProfiles`](#parameter-workloadprofiles) | array | Workload profiles configured for the Managed Environment. |
-| [`zoneRedundant`](#parameter-zoneredundant) | bool | Whether or not this Managed Environment is zone-redundant. |
+| Parameter                                                                       | Type         | Description                                                                                                                                                                                                                                                                                                            |
+|:--------------------------------------------------------------------------------|:-------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`certificatePassword`](#parameter-certificatepassword)                         | securestring | Password of the certificate used by the custom domain.                                                                                                                                                                                                                                                                 |
+| [`certificateValue`](#parameter-certificatevalue)                               | securestring | Certificate to use for the custom domain. PFX or PEM.                                                                                                                                                                                                                                                                  |
+| [`daprAIConnectionString`](#parameter-dapraiconnectionstring)                   | securestring | Application Insights connection string used by Dapr to export Service to Service communication telemetry.                                                                                                                                                                                                              |
+| [`daprAIInstrumentationKey`](#parameter-dapraiinstrumentationkey)               | securestring | Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry.                                                                                                                                                                                                                   |
+| [`dnsSuffix`](#parameter-dnssuffix)                                             | string       | DNS suffix for the environment domain.                                                                                                                                                                                                                                                                                 |
+| [`dockerBridgeCidr`](#parameter-dockerbridgecidr)                               | string       | CIDR notation IP range assigned to the Docker bridge, network. It must not overlap with any other provided IP ranges and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform.                                               |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                   | bool         | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                                                                                                              |
+| [`infrastructureResourceGroupName`](#parameter-infrastructureresourcegroupname) | string       | Name of the infrastructure resource group. If not provided, it will be set with a default value.                                                                                                                                                                                                                       |
+| [`internal`](#parameter-internal)                                               | bool         | Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. If set to true, then "infrastructureSubnetId" must be provided.                                                                                                                     |
+| [`location`](#parameter-location)                                               | string       | Location for all Resources.                                                                                                                                                                                                                                                                                            |
+| [`lock`](#parameter-lock)                                                       | object       | The lock settings of the service.                                                                                                                                                                                                                                                                                      |
+| [`logsDestination`](#parameter-logsdestination)                                 | string       | Logs destination.                                                                                                                                                                                                                                                                                                      |
+| [`platformReservedCidr`](#parameter-platformreservedcidr)                       | string       | IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap with any other provided IP ranges and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform.                  |
+| [`platformReservedDnsIP`](#parameter-platformreserveddnsip)                     | string       | An IP address from the IP range defined by "platformReservedCidr" that will be reserved for the internal DNS server. It must not be the first address in the range and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
+| [`roleAssignments`](#parameter-roleassignments)                                 | array        | Array of role assignments to create.                                                                                                                                                                                                                                                                                   |
+| [`tags`](#parameter-tags)                                                       | object       | Tags of the resource.                                                                                                                                                                                                                                                                                                  |
+| [`workloadProfiles`](#parameter-workloadprofiles)                               | array        | Workload profiles configured for the Managed Environment.                                                                                                                                                                                                                                                              |
+| [`zoneRedundant`](#parameter-zoneredundant)                                     | bool         | Whether or not this Managed Environment is zone-redundant.                                                                                                                                                                                                                                                             |
 
 ### Parameter: `logAnalyticsWorkspaceResourceId`
 
@@ -439,8 +437,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -499,20 +497,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -605,13 +603,13 @@ Whether or not this Managed Environment is zone-redundant.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `defaultDomain` | string | The Default domain of the Managed Environment. |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the Managed Environment. |
+| Output              | Type   | Description                                                               |
+|:--------------------|:-------|:--------------------------------------------------------------------------|
+| `defaultDomain`     | string | The Default domain of the Managed Environment.                            |
+| `location`          | string | The location the resource was deployed into.                              |
+| `name`              | string | The name of the Managed Environment.                                      |
 | `resourceGroupName` | string | The name of the resource group the Managed Environment was deployed into. |
-| `resourceId` | string | The resource ID of the Managed Environment. |
+| `resourceId`        | string | The resource ID of the Managed Environment.                               |
 
 ## Cross-referenced modules
 

@@ -1,7 +1,5 @@
 # Kubernetes Configuration Flux Configurations `[Microsoft.KubernetesConfiguration/fluxConfigurations]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Kubernetes Configuration Flux Configuration.
 
 ## Navigation
@@ -15,8 +13,8 @@ This module deploys a Kubernetes Configuration Flux Configuration.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
+| Resource Type                                          | API Version                                                                                                          |
+|:-------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------|
 | `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/fluxConfigurations) |
 
 ## Usage examples
@@ -354,25 +352,25 @@ module fluxConfiguration 'br:bicep/modules/kubernetes-configuration.flux-configu
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`clusterName`](#parameter-clustername) | string | The name of the AKS cluster that should be configured. |
-| [`kustomizations`](#parameter-kustomizations) | object | Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster. |
-| [`name`](#parameter-name) | string | The name of the Flux Configuration. |
-| [`namespace`](#parameter-namespace) | string | The namespace to which this configuration is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and period only. |
-| [`scope`](#parameter-scope) | string | Scope at which the configuration will be installed. |
-| [`sourceKind`](#parameter-sourcekind) | string | Source Kind to pull the configuration data from. |
+| Parameter                                     | Type   | Description                                                                                                                           |
+|:----------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------|
+| [`clusterName`](#parameter-clustername)       | string | The name of the AKS cluster that should be configured.                                                                                |
+| [`kustomizations`](#parameter-kustomizations) | object | Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster.                                      |
+| [`name`](#parameter-name)                     | string | The name of the Flux Configuration.                                                                                                   |
+| [`namespace`](#parameter-namespace)           | string | The namespace to which this configuration is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and period only. |
+| [`scope`](#parameter-scope)                   | string | Scope at which the configuration will be installed.                                                                                   |
+| [`sourceKind`](#parameter-sourcekind)         | string | Source Kind to pull the configuration data from.                                                                                      |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`bucket`](#parameter-bucket) | object | Parameters to reconcile to the GitRepository source kind type. |
-| [`configurationProtectedSettings`](#parameter-configurationprotectedsettings) | secureObject | Key-value pairs of protected configuration settings for the configuration. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`gitRepository`](#parameter-gitrepository) | object | Parameters to reconcile to the GitRepository source kind type. |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`suspend`](#parameter-suspend) | bool | Whether this configuration should suspend its reconciliation of its kustomizations and sources. |
+| Parameter                                                                     | Type         | Description                                                                                     |
+|:------------------------------------------------------------------------------|:-------------|:------------------------------------------------------------------------------------------------|
+| [`bucket`](#parameter-bucket)                                                 | object       | Parameters to reconcile to the GitRepository source kind type.                                  |
+| [`configurationProtectedSettings`](#parameter-configurationprotectedsettings) | secureObject | Key-value pairs of protected configuration settings for the configuration.                      |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                 | bool         | Enable telemetry via a Globally Unique Identifier (GUID).                                       |
+| [`gitRepository`](#parameter-gitrepository)                                   | object       | Parameters to reconcile to the GitRepository source kind type.                                  |
+| [`location`](#parameter-location)                                             | string       | Location for all resources.                                                                     |
+| [`suspend`](#parameter-suspend)                                               | bool         | Whether this configuration should suspend its reconciliation of its kustomizations and sources. |
 
 ### Parameter: `clusterName`
 
@@ -481,11 +479,11 @@ Whether this configuration should suspend its reconciliation of its kustomizatio
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the flux configuration. |
+| Output              | Type   | Description                                                              |
+|:--------------------|:-------|:-------------------------------------------------------------------------|
+| `name`              | string | The name of the flux configuration.                                      |
 | `resourceGroupName` | string | The name of the resource group the flux configuration was deployed into. |
-| `resourceId` | string | The resource ID of the flux configuration. |
+| `resourceId`        | string | The resource ID of the flux configuration.                               |
 
 ## Cross-referenced modules
 

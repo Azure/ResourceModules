@@ -1,7 +1,5 @@
 # Management Groups `[Microsoft.Management/managementGroups]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This template will prepare the management group structure based on the provided parameter.
 
 This module has some known **limitations**:
@@ -19,8 +17,8 @@ This module has some known **limitations**:
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
+| Resource Type                           | API Version                                                                                                      |
+|:----------------------------------------|:-----------------------------------------------------------------------------------------------------------------|
 | `Microsoft.Management/managementGroups` | [2021-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Management/2021-04-01/managementGroups) |
 
 ## Usage examples
@@ -200,18 +198,18 @@ module managementGroup 'br:bicep/modules/management.management-group:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                 | Type   | Description                           |
+|:--------------------------|:-------|:--------------------------------------|
 | [`name`](#parameter-name) | string | The group ID of the Management group. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`displayName`](#parameter-displayname) | string | The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | Location deployment metadata. |
-| [`parentId`](#parameter-parentid) | string | The management group parent ID. Defaults to current scope. |
+| Parameter                                                     | Type   | Description                                                                                                   |
+|:--------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------|
+| [`displayName`](#parameter-displayname)                       | string | The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                     |
+| [`location`](#parameter-location)                             | string | Location deployment metadata.                                                                                 |
+| [`parentId`](#parameter-parentid)                             | string | The management group parent ID. Defaults to current scope.                                                    |
 
 ### Parameter: `name`
 
@@ -255,9 +253,9 @@ The management group parent ID. Defaults to current scope.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the management group. |
+| Output       | Type   | Description                              |
+|:-------------|:-------|:-----------------------------------------|
+| `name`       | string | The name of the management group.        |
 | `resourceId` | string | The resource ID of the management group. |
 
 ## Cross-referenced modules

@@ -1,7 +1,5 @@
 # Virtual Network Gateway Connections `[Microsoft.Network/connections]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Virtual Network Gateway Connection.
 
 ## Navigation
@@ -15,8 +13,8 @@ This module deploys a Virtual Network Gateway Connection.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
+| Resource Type                   | API Version                                                                                              |
+|:--------------------------------|:---------------------------------------------------------------------------------------------------------|
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Network/connections` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/connections) |
 
@@ -130,35 +128,35 @@ module connection 'br:bicep/modules/network.connection:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`name`](#parameter-name) | string | Remote connection name. |
+| Parameter                                                     | Type   | Description                          |
+|:--------------------------------------------------------------|:-------|:-------------------------------------|
+| [`name`](#parameter-name)                                     | string | Remote connection name.              |
 | [`virtualNetworkGateway1`](#parameter-virtualnetworkgateway1) | object | The primary Virtual Network Gateway. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`authorizationKey`](#parameter-authorizationkey) | securestring | The Authorization Key to connect to an Express Route Circuit. Used for connection type [ExpressRoute]. |
-| [`connectionMode`](#parameter-connectionmode) | string | The connection connectionMode for this connection. Available for IPSec connections. |
-| [`connectionProtocol`](#parameter-connectionprotocol) | string | Connection connectionProtocol used for this connection. Available for IPSec connections. |
-| [`connectionType`](#parameter-connectiontype) | string | Gateway connection connectionType. |
-| [`customIPSecPolicy`](#parameter-customipsecpolicy) | object | The IPSec Policies to be considered by this connection. |
-| [`dpdTimeoutSeconds`](#parameter-dpdtimeoutseconds) | int | The dead peer detection timeout of this connection in seconds. Setting the timeout to shorter periods will cause IKE to rekey more aggressively, causing the connection to appear to be disconnected in some instances. The general recommendation is to set the timeout between 30 to 45 seconds. |
-| [`enableBgp`](#parameter-enablebgp) | bool | Value to specify if BGP is enabled or not. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`enablePrivateLinkFastPath`](#parameter-enableprivatelinkfastpath) | bool | Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled. Only available when connection connectionType is Express Route. |
-| [`expressRouteGatewayBypass`](#parameter-expressroutegatewaybypass) | bool | Bypass ExpressRoute Gateway for data forwarding. Only available when connection connectionType is Express Route. |
-| [`localNetworkGateway2`](#parameter-localnetworkgateway2) | object | The local network gateway. Used for connection type [IPsec]. |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`peer`](#parameter-peer) | object | The remote peer. Used for connection connectionType [ExpressRoute]. |
-| [`routingWeight`](#parameter-routingweight) | int | The weight added to routes learned from this BGP speaker. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`useLocalAzureIpAddress`](#parameter-uselocalazureipaddress) | bool | Use private local Azure IP for the connection. Only available for IPSec Virtual Network Gateways that use the Azure Private IP Property. |
-| [`usePolicyBasedTrafficSelectors`](#parameter-usepolicybasedtrafficselectors) | bool | Enable policy-based traffic selectors. |
-| [`virtualNetworkGateway2`](#parameter-virtualnetworkgateway2) | object | The remote Virtual Network Gateway. Used for connection connectionType [Vnet2Vnet]. |
-| [`vpnSharedKey`](#parameter-vpnsharedkey) | securestring | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways. |
+| Parameter                                                                     | Type         | Description                                                                                                                                                                                                                                                                                        |
+|:------------------------------------------------------------------------------|:-------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`authorizationKey`](#parameter-authorizationkey)                             | securestring | The Authorization Key to connect to an Express Route Circuit. Used for connection type [ExpressRoute].                                                                                                                                                                                             |
+| [`connectionMode`](#parameter-connectionmode)                                 | string       | The connection connectionMode for this connection. Available for IPSec connections.                                                                                                                                                                                                                |
+| [`connectionProtocol`](#parameter-connectionprotocol)                         | string       | Connection connectionProtocol used for this connection. Available for IPSec connections.                                                                                                                                                                                                           |
+| [`connectionType`](#parameter-connectiontype)                                 | string       | Gateway connection connectionType.                                                                                                                                                                                                                                                                 |
+| [`customIPSecPolicy`](#parameter-customipsecpolicy)                           | object       | The IPSec Policies to be considered by this connection.                                                                                                                                                                                                                                            |
+| [`dpdTimeoutSeconds`](#parameter-dpdtimeoutseconds)                           | int          | The dead peer detection timeout of this connection in seconds. Setting the timeout to shorter periods will cause IKE to rekey more aggressively, causing the connection to appear to be disconnected in some instances. The general recommendation is to set the timeout between 30 to 45 seconds. |
+| [`enableBgp`](#parameter-enablebgp)                                           | bool         | Value to specify if BGP is enabled or not.                                                                                                                                                                                                                                                         |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                 | bool         | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                                                                                          |
+| [`enablePrivateLinkFastPath`](#parameter-enableprivatelinkfastpath)           | bool         | Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled. Only available when connection connectionType is Express Route.                                                                                                   |
+| [`expressRouteGatewayBypass`](#parameter-expressroutegatewaybypass)           | bool         | Bypass ExpressRoute Gateway for data forwarding. Only available when connection connectionType is Express Route.                                                                                                                                                                                   |
+| [`localNetworkGateway2`](#parameter-localnetworkgateway2)                     | object       | The local network gateway. Used for connection type [IPsec].                                                                                                                                                                                                                                       |
+| [`location`](#parameter-location)                                             | string       | Location for all resources.                                                                                                                                                                                                                                                                        |
+| [`lock`](#parameter-lock)                                                     | object       | The lock settings of the service.                                                                                                                                                                                                                                                                  |
+| [`peer`](#parameter-peer)                                                     | object       | The remote peer. Used for connection connectionType [ExpressRoute].                                                                                                                                                                                                                                |
+| [`routingWeight`](#parameter-routingweight)                                   | int          | The weight added to routes learned from this BGP speaker.                                                                                                                                                                                                                                          |
+| [`tags`](#parameter-tags)                                                     | object       | Tags of the resource.                                                                                                                                                                                                                                                                              |
+| [`useLocalAzureIpAddress`](#parameter-uselocalazureipaddress)                 | bool         | Use private local Azure IP for the connection. Only available for IPSec Virtual Network Gateways that use the Azure Private IP Property.                                                                                                                                                           |
+| [`usePolicyBasedTrafficSelectors`](#parameter-usepolicybasedtrafficselectors) | bool         | Enable policy-based traffic selectors.                                                                                                                                                                                                                                                             |
+| [`virtualNetworkGateway2`](#parameter-virtualnetworkgateway2)                 | object       | The remote Virtual Network Gateway. Used for connection connectionType [Vnet2Vnet].                                                                                                                                                                                                                |
+| [`vpnSharedKey`](#parameter-vpnsharedkey)                                     | securestring | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways.                                                                                                                                                                                                   |
 
 ### Parameter: `name`
 
@@ -315,8 +313,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -400,12 +398,12 @@ Specifies a VPN shared key. The same value has to be specified on both Virtual N
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the remote connection. |
+| Output              | Type   | Description                                                 |
+|:--------------------|:-------|:------------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.                |
+| `name`              | string | The name of the remote connection.                          |
 | `resourceGroupName` | string | The resource group the remote connection was deployed into. |
-| `resourceId` | string | The resource ID of the remote connection. |
+| `resourceId`        | string | The resource ID of the remote connection.                   |
 
 ## Cross-referenced modules
 

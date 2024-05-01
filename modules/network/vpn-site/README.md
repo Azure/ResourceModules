@@ -1,7 +1,5 @@
 # VPN Sites `[Microsoft.Network/vpnSites]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a VPN Site.
 
 ## Navigation
@@ -15,11 +13,11 @@ This module deploys a VPN Site.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| Resource Type                             | API Version                                                                                                        |
+|:------------------------------------------|:-------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`           | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)           |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/vpnSites` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/vpnSites) |
+| `Microsoft.Network/vpnSites`              | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/vpnSites)              |
 
 ## Usage examples
 
@@ -458,32 +456,32 @@ module vpnSite 'br:bicep/modules/network.vpn-site:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`name`](#parameter-name) | string | Name of the VPN Site. |
+| Parameter                                 | Type   | Description                                |
+|:------------------------------------------|:-------|:-------------------------------------------|
+| [`name`](#parameter-name)                 | string | Name of the VPN Site.                      |
 | [`virtualWanId`](#parameter-virtualwanid) | string | Resource ID of the virtual WAN to link to. |
 
 **Conditional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`addressPrefixes`](#parameter-addressprefixes) | array | An array of IP address ranges that can be used by subnets of the virtual network. Required if no bgpProperties or VPNSiteLinks are configured. |
-| [`bgpProperties`](#parameter-bgpproperties) | object | BGP settings details. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. Required if no addressPrefixes or VPNSiteLinks are configured. |
+| Parameter                                       | Type   | Description                                                                                                                                                                           |
+|:------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`addressPrefixes`](#parameter-addressprefixes) | array  | An array of IP address ranges that can be used by subnets of the virtual network. Required if no bgpProperties or VPNSiteLinks are configured.                                        |
+| [`bgpProperties`](#parameter-bgpproperties)     | object | BGP settings details. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. Required if no addressPrefixes or VPNSiteLinks are configured. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`deviceProperties`](#parameter-deviceproperties) | object | List of properties of the device. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`ipAddress`](#parameter-ipaddress) | string | The IP-address for the VPN-site. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
-| [`isSecuritySite`](#parameter-issecuritysite) | bool | IsSecuritySite flag. |
-| [`location`](#parameter-location) | string | Location where all resources will be created. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`o365Policy`](#parameter-o365policy) | object | The Office365 breakout policy. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`vpnSiteLinks`](#parameter-vpnsitelinks) | array | List of all VPN site links. |
+| Parameter                                                     | Type   | Description                                                                                                                       |
+|:--------------------------------------------------------------|:-------|:----------------------------------------------------------------------------------------------------------------------------------|
+| [`deviceProperties`](#parameter-deviceproperties)             | object | List of properties of the device.                                                                                                 |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                         |
+| [`ipAddress`](#parameter-ipaddress)                           | string | The IP-address for the VPN-site. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
+| [`isSecuritySite`](#parameter-issecuritysite)                 | bool   | IsSecuritySite flag.                                                                                                              |
+| [`location`](#parameter-location)                             | string | Location where all resources will be created.                                                                                     |
+| [`lock`](#parameter-lock)                                     | object | The lock settings of the service.                                                                                                 |
+| [`o365Policy`](#parameter-o365policy)                         | object | The Office365 breakout policy.                                                                                                    |
+| [`roleAssignments`](#parameter-roleassignments)               | array  | Array of role assignments to create.                                                                                              |
+| [`tags`](#parameter-tags)                                     | object | Tags of the resource.                                                                                                             |
+| [`vpnSiteLinks`](#parameter-vpnsitelinks)                     | array  | List of all VPN site links.                                                                                                       |
 
 ### Parameter: `name`
 
@@ -564,8 +562,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -608,20 +606,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -706,12 +704,12 @@ List of all VPN site links.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the VPN site. |
+| Output              | Type   | Description                                        |
+|:--------------------|:-------|:---------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.       |
+| `name`              | string | The name of the VPN site.                          |
 | `resourceGroupName` | string | The resource group the VPN site was deployed into. |
-| `resourceId` | string | The resource ID of the VPN site. |
+| `resourceId`        | string | The resource ID of the VPN site.                   |
 
 ## Cross-referenced modules
 

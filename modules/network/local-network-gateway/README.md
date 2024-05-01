@@ -1,7 +1,5 @@
 # Local Network Gateways `[Microsoft.Network/localNetworkGateways]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Local Network Gateway.
 
 ## Navigation
@@ -14,11 +12,11 @@ This module deploys a Local Network Gateway.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| Resource Type                             | API Version                                                                                                        |
+|:------------------------------------------|:-------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`           | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)           |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/localNetworkGateways` | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/localNetworkGateways) |
+| `Microsoft.Network/localNetworkGateways`  | [2023-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-04-01/localNetworkGateways)  |
 
 ## Usage examples
 
@@ -313,25 +311,25 @@ module localNetworkGateway 'br:bicep/modules/network.local-network-gateway:1.0.0
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`localAddressPrefixes`](#parameter-localaddressprefixes) | array | List of the local (on-premises) IP address ranges. |
-| [`localGatewayPublicIpAddress`](#parameter-localgatewaypublicipaddress) | string | Public IP of the local gateway. |
-| [`name`](#parameter-name) | string | Name of the Local Network Gateway. |
+| Parameter                                                               | Type   | Description                                        |
+|:------------------------------------------------------------------------|:-------|:---------------------------------------------------|
+| [`localAddressPrefixes`](#parameter-localaddressprefixes)               | array  | List of the local (on-premises) IP address ranges. |
+| [`localGatewayPublicIpAddress`](#parameter-localgatewaypublicipaddress) | string | Public IP of the local gateway.                    |
+| [`name`](#parameter-name)                                               | string | Name of the Local Network Gateway.                 |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`fqdn`](#parameter-fqdn) | string | FQDN of local network gateway. |
-| [`localAsn`](#parameter-localasn) | string | The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
+| Parameter                                                     | Type   | Description                                                                                                                                                     |
+|:--------------------------------------------------------------|:-------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                       |
+| [`fqdn`](#parameter-fqdn)                                     | string | FQDN of local network gateway.                                                                                                                                  |
+| [`localAsn`](#parameter-localasn)                             | string | The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource.                                          |
 | [`localBgpPeeringAddress`](#parameter-localbgppeeringaddress) | string | The BGP peering address and BGP identifier of this BGP speaker. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
-| [`localPeerWeight`](#parameter-localpeerweight) | string | The weight added to routes learned from this BGP speaker. This will only take effect if both the localAsn and the localBgpPeeringAddress values are provided. |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`localPeerWeight`](#parameter-localpeerweight)               | string | The weight added to routes learned from this BGP speaker. This will only take effect if both the localAsn and the localBgpPeeringAddress values are provided.   |
+| [`location`](#parameter-location)                             | string | Location for all resources.                                                                                                                                     |
+| [`lock`](#parameter-lock)                                     | object | The lock settings of the service.                                                                                                                               |
+| [`roleAssignments`](#parameter-roleassignments)               | array  | Array of role assignments to create.                                                                                                                            |
+| [`tags`](#parameter-tags)                                     | object | Tags of the resource.                                                                                                                                           |
 
 ### Parameter: `localAddressPrefixes`
 
@@ -411,8 +409,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -447,20 +445,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -537,12 +535,12 @@ Tags of the resource.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the local network gateway. |
+| Output              | Type   | Description                                                     |
+|:--------------------|:-------|:----------------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.                    |
+| `name`              | string | The name of the local network gateway.                          |
 | `resourceGroupName` | string | The resource group the local network gateway was deployed into. |
-| `resourceId` | string | The resource ID of the local network gateway. |
+| `resourceId`        | string | The resource ID of the local network gateway.                   |
 
 ## Cross-referenced modules
 

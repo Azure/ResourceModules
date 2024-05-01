@@ -1,7 +1,5 @@
 # Deployment Scripts `[Microsoft.Resources/deploymentScripts]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Deployment Script.
 
 ## Navigation
@@ -14,9 +12,9 @@ This module deploys a Deployment Script.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| Resource Type                           | API Version                                                                                                      |
+|:----------------------------------------|:-----------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`         | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)         |
 | `Microsoft.Resources/deploymentScripts` | [2020-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-10-01/deploymentScripts) |
 
 ## Usage examples
@@ -273,38 +271,38 @@ module deploymentScript 'br:bicep/modules/resources.deployment-script:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                 | Type   | Description                           |
+|:--------------------------|:-------|:--------------------------------------|
 | [`name`](#parameter-name) | string | Display name of the script to be run. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`arguments`](#parameter-arguments) | string | Command-line arguments to pass to the script. Arguments are separated by spaces. |
-| [`azCliVersion`](#parameter-azcliversion) | string | Azure CLI module version to be used. |
-| [`azPowerShellVersion`](#parameter-azpowershellversion) | string | Azure PowerShell module version to be used. |
-| [`cleanupPreference`](#parameter-cleanuppreference) | string | The clean up preference when the script execution gets in a terminal state. Specify the preference on when to delete the deployment script resources. The default value is Always, which means the deployment script resources are deleted despite the terminal state (Succeeded, Failed, canceled). |
-| [`containerGroupName`](#parameter-containergroupname) | string | Container group name, if not specified then the name will get auto-generated. Not specifying a 'containerGroupName' indicates the system to generate a unique name which might end up flagging an Azure Policy as non-compliant. Use 'containerGroupName' when you have an Azure Policy that expects a specific naming convention or when you want to fully control the name. 'containerGroupName' property must be between 1 and 63 characters long, must contain only lowercase letters, numbers, and dashes and it cannot start or end with a dash and consecutive dashes are not allowed. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`environmentVariables`](#parameter-environmentvariables) | secureObject | The environment variables to pass over to the script. The list is passed as an object with a key name "secureList" and the value is the list of environment variables (array). The list must have a 'name' and a 'value' or a 'secretValue' property for each object. |
-| [`kind`](#parameter-kind) | string | Type of the script. AzurePowerShell, AzureCLI. |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
-| [`primaryScriptUri`](#parameter-primaryscripturi) | string | Uri for the external script. This is the entry point for the external script. To run an internal script, use the scriptContent instead. |
-| [`retentionInterval`](#parameter-retentioninterval) | string | Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P7D means one week). |
-| [`runOnce`](#parameter-runonce) | bool | When set to false, script will run every time the template is deployed. When set to true, the script will only run once. |
-| [`scriptContent`](#parameter-scriptcontent) | string | Script body. Max length: 32000 characters. To run an external script, use primaryScriptURI instead. |
-| [`storageAccountResourceId`](#parameter-storageaccountresourceid) | string | The resource ID of the storage account to use for this deployment script. If none is provided, the deployment script uses a temporary, managed storage account. |
-| [`supportingScriptUris`](#parameter-supportingscripturis) | array | List of supporting files for the external script (defined in primaryScriptUri). Does not work with internal scripts (code defined in scriptContent). |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`timeout`](#parameter-timeout) | string | Maximum allowed script execution time specified in ISO 8601 format. Default value is PT1H - 1 hour; 'PT30M' - 30 minutes; 'P5D' - 5 days; 'P1Y' 1 year. |
+| Parameter                                                         | Type         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|:------------------------------------------------------------------|:-------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`arguments`](#parameter-arguments)                               | string       | Command-line arguments to pass to the script. Arguments are separated by spaces.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| [`azCliVersion`](#parameter-azcliversion)                         | string       | Azure CLI module version to be used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [`azPowerShellVersion`](#parameter-azpowershellversion)           | string       | Azure PowerShell module version to be used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| [`cleanupPreference`](#parameter-cleanuppreference)               | string       | The clean up preference when the script execution gets in a terminal state. Specify the preference on when to delete the deployment script resources. The default value is Always, which means the deployment script resources are deleted despite the terminal state (Succeeded, Failed, canceled).                                                                                                                                                                                                                                                                                          |
+| [`containerGroupName`](#parameter-containergroupname)             | string       | Container group name, if not specified then the name will get auto-generated. Not specifying a 'containerGroupName' indicates the system to generate a unique name which might end up flagging an Azure Policy as non-compliant. Use 'containerGroupName' when you have an Azure Policy that expects a specific naming convention or when you want to fully control the name. 'containerGroupName' property must be between 1 and 63 characters long, must contain only lowercase letters, numbers, and dashes and it cannot start or end with a dash and consecutive dashes are not allowed. |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)     | bool         | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [`environmentVariables`](#parameter-environmentvariables)         | secureObject | The environment variables to pass over to the script. The list is passed as an object with a key name "secureList" and the value is the list of environment variables (array). The list must have a 'name' and a 'value' or a 'secretValue' property for each object.                                                                                                                                                                                                                                                                                                                         |
+| [`kind`](#parameter-kind)                                         | string       | Type of the script. AzurePowerShell, AzureCLI.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| [`location`](#parameter-location)                                 | string       | Location for all resources.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| [`lock`](#parameter-lock)                                         | object       | The lock settings of the service.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| [`managedIdentities`](#parameter-managedidentities)               | object       | The managed identity definition for this resource.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| [`primaryScriptUri`](#parameter-primaryscripturi)                 | string       | Uri for the external script. This is the entry point for the external script. To run an internal script, use the scriptContent instead.                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| [`retentionInterval`](#parameter-retentioninterval)               | string       | Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P7D means one week).                                                                                                                                                                                                                                                                                                                                                                    |
+| [`runOnce`](#parameter-runonce)                                   | bool         | When set to false, script will run every time the template is deployed. When set to true, the script will only run once.                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| [`scriptContent`](#parameter-scriptcontent)                       | string       | Script body. Max length: 32000 characters. To run an external script, use primaryScriptURI instead.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| [`storageAccountResourceId`](#parameter-storageaccountresourceid) | string       | The resource ID of the storage account to use for this deployment script. If none is provided, the deployment script uses a temporary, managed storage account.                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| [`supportingScriptUris`](#parameter-supportingscripturis)         | array        | List of supporting files for the external script (defined in primaryScriptUri). Does not work with internal scripts (code defined in scriptContent).                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [`tags`](#parameter-tags)                                         | object       | Tags of the resource.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| [`timeout`](#parameter-timeout)                                   | string       | Maximum allowed script execution time specified in ISO 8601 format. Default value is PT1H - 1 hour; 'PT30M' - 30 minutes; 'P5D' - 5 days; 'P1Y' 1 year.                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 **Generated parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                         | Type   | Description                                                                                                      |
+|:----------------------------------|:-------|:-----------------------------------------------------------------------------------------------------------------|
 | [`baseTime`](#parameter-basetime) | string | Do not provide a value! This date value is used to make sure the script run every time the template is deployed. |
 
 ### Parameter: `name`
@@ -410,8 +408,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -446,8 +444,8 @@ The managed identity definition for this resource.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                                                        | Type  | Description                                   |
+|:---------------------------------------------------------------------------------|:------|:----------------------------------------------|
 | [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
 
 ### Parameter: `managedIdentities.userAssignedResourceIds`
@@ -531,13 +529,13 @@ Do not provide a value! This date value is used to make sure the script run ever
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployment script. |
-| `outputs` | object | The output of the deployment script. |
+| Output              | Type   | Description                                                 |
+|:--------------------|:-------|:------------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.                |
+| `name`              | string | The name of the deployment script.                          |
+| `outputs`           | object | The output of the deployment script.                        |
 | `resourceGroupName` | string | The resource group the deployment script was deployed into. |
-| `resourceId` | string | The resource ID of the deployment script. |
+| `resourceId`        | string | The resource ID of the deployment script.                   |
 
 ## Cross-referenced modules
 

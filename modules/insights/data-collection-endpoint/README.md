@@ -1,7 +1,5 @@
 # Data Collection Endpoints `[Microsoft.Insights/dataCollectionEndpoints]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Data Collection Endpoint.
 
 ## Navigation
@@ -14,10 +12,10 @@ This module deploys a Data Collection Endpoint.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| Resource Type                                | API Version                                                                                                           |
+|:---------------------------------------------|:----------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`              | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)              |
+| `Microsoft.Authorization/roleAssignments`    | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)    |
 | `Microsoft.Insights/dataCollectionEndpoints` | [2021-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-04-01/dataCollectionEndpoints) |
 
 ## Usage examples
@@ -273,21 +271,21 @@ module dataCollectionEndpoint 'br:bicep/modules/insights.data-collection-endpoin
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                 | Type   | Description                                                             |
+|:--------------------------|:-------|:------------------------------------------------------------------------|
 | [`name`](#parameter-name) | string | The name of the data collection endpoint. The name is case insensitive. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| [`kind`](#parameter-kind) | string | The kind of the resource. |
-| [`location`](#parameter-location) | string | Location for all Resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | The configuration to set whether network access from public internet to the endpoints are allowed. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`tags`](#parameter-tags) | object | Resource tags. |
+| Parameter                                                     | Type   | Description                                                                                        |
+|:--------------------------------------------------------------|:-------|:---------------------------------------------------------------------------------------------------|
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via the Customer Usage Attribution ID (GUID).                                     |
+| [`kind`](#parameter-kind)                                     | string | The kind of the resource.                                                                          |
+| [`location`](#parameter-location)                             | string | Location for all Resources.                                                                        |
+| [`lock`](#parameter-lock)                                     | object | The lock settings of the service.                                                                  |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess)       | string | The configuration to set whether network access from public internet to the endpoints are allowed. |
+| [`roleAssignments`](#parameter-roleassignments)               | array  | Array of role assignments to create.                                                               |
+| [`tags`](#parameter-tags)                                     | object | Resource tags.                                                                                     |
 
 ### Parameter: `name`
 
@@ -336,8 +334,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -387,20 +385,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -477,12 +475,12 @@ Resource tags.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the dataCollectionEndpoint. |
+| Output              | Type   | Description                                                               |
+|:--------------------|:-------|:--------------------------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.                              |
+| `name`              | string | The name of the dataCollectionEndpoint.                                   |
 | `resourceGroupName` | string | The name of the resource group the dataCollectionEndpoint was created in. |
-| `resourceId` | string | The resource ID of the dataCollectionEndpoint. |
+| `resourceId`        | string | The resource ID of the dataCollectionEndpoint.                            |
 
 ## Cross-referenced modules
 

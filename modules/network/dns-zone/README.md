@@ -1,7 +1,5 @@
 # Public DNS Zones `[Microsoft.Network/dnsZones]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Public DNS zone.
 
 ## Navigation
@@ -14,21 +12,21 @@ This module deploys a Public DNS zone.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| Resource Type                             | API Version                                                                                                        |
+|:------------------------------------------|:-------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`           | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)           |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/dnsZones` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones) |
-| `Microsoft.Network/dnsZones/A` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/A) |
-| `Microsoft.Network/dnsZones/AAAA` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/AAAA) |
-| `Microsoft.Network/dnsZones/CAA` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/CAA) |
-| `Microsoft.Network/dnsZones/CNAME` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/CNAME) |
-| `Microsoft.Network/dnsZones/MX` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/MX) |
-| `Microsoft.Network/dnsZones/NS` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/NS) |
-| `Microsoft.Network/dnsZones/PTR` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/PTR) |
-| `Microsoft.Network/dnsZones/SOA` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/SOA) |
-| `Microsoft.Network/dnsZones/SRV` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/SRV) |
-| `Microsoft.Network/dnsZones/TXT` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/TXT) |
+| `Microsoft.Network/dnsZones`              | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones)              |
+| `Microsoft.Network/dnsZones/A`            | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/A)            |
+| `Microsoft.Network/dnsZones/AAAA`         | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/AAAA)         |
+| `Microsoft.Network/dnsZones/CAA`          | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/CAA)          |
+| `Microsoft.Network/dnsZones/CNAME`        | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/CNAME)        |
+| `Microsoft.Network/dnsZones/MX`           | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/MX)           |
+| `Microsoft.Network/dnsZones/NS`           | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/NS)           |
+| `Microsoft.Network/dnsZones/PTR`          | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/PTR)          |
+| `Microsoft.Network/dnsZones/SOA`          | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/SOA)          |
+| `Microsoft.Network/dnsZones/SRV`          | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/SRV)          |
+| `Microsoft.Network/dnsZones/TXT`          | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/TXT)          |
 
 ## Usage examples
 
@@ -895,29 +893,29 @@ module dnsZone 'br:bicep/modules/network.dns-zone:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                 | Type   | Description    |
+|:--------------------------|:-------|:---------------|
 | [`name`](#parameter-name) | string | DNS zone name. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`a`](#parameter-a) | array | Array of A records. |
-| [`aaaa`](#parameter-aaaa) | array | Array of AAAA records. |
-| [`caa`](#parameter-caa) | array | Array of CAA records. |
-| [`cname`](#parameter-cname) | array | Array of CNAME records. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | The location of the dnsZone. Should be global. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`mx`](#parameter-mx) | array | Array of MX records. |
-| [`ns`](#parameter-ns) | array | Array of NS records. |
-| [`ptr`](#parameter-ptr) | array | Array of PTR records. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| [`soa`](#parameter-soa) | array | Array of SOA records. |
-| [`srv`](#parameter-srv) | array | Array of SRV records. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`txt`](#parameter-txt) | array | Array of TXT records. |
+| Parameter                                                     | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                           |
+|:--------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`a`](#parameter-a)                                           | array  | Array of A records.                                                                                                                                                                                                                                                                                                                                                                                   |
+| [`aaaa`](#parameter-aaaa)                                     | array  | Array of AAAA records.                                                                                                                                                                                                                                                                                                                                                                                |
+| [`caa`](#parameter-caa)                                       | array  | Array of CAA records.                                                                                                                                                                                                                                                                                                                                                                                 |
+| [`cname`](#parameter-cname)                                   | array  | Array of CNAME records.                                                                                                                                                                                                                                                                                                                                                                               |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                                                                                                                                                                                             |
+| [`location`](#parameter-location)                             | string | The location of the dnsZone. Should be global.                                                                                                                                                                                                                                                                                                                                                        |
+| [`lock`](#parameter-lock)                                     | object | The lock settings of the service.                                                                                                                                                                                                                                                                                                                                                                     |
+| [`mx`](#parameter-mx)                                         | array  | Array of MX records.                                                                                                                                                                                                                                                                                                                                                                                  |
+| [`ns`](#parameter-ns)                                         | array  | Array of NS records.                                                                                                                                                                                                                                                                                                                                                                                  |
+| [`ptr`](#parameter-ptr)                                       | array  | Array of PTR records.                                                                                                                                                                                                                                                                                                                                                                                 |
+| [`roleAssignments`](#parameter-roleassignments)               | array  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| [`soa`](#parameter-soa)                                       | array  | Array of SOA records.                                                                                                                                                                                                                                                                                                                                                                                 |
+| [`srv`](#parameter-srv)                                       | array  | Array of SRV records.                                                                                                                                                                                                                                                                                                                                                                                 |
+| [`tags`](#parameter-tags)                                     | object | Tags of the resource.                                                                                                                                                                                                                                                                                                                                                                                 |
+| [`txt`](#parameter-txt)                                       | array  | Array of TXT records.                                                                                                                                                                                                                                                                                                                                                                                 |
 
 ### Parameter: `name`
 
@@ -983,8 +981,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -1043,20 +1041,20 @@ Array of role assignment objects that contain the 'roleDefinitionIdOrName' and '
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                           |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                        |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The name of the role to assign. If it cannot be found you can specify the role definition ID instead. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -1157,12 +1155,12 @@ Array of TXT records.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the DNS zone. |
+| Output              | Type   | Description                                        |
+|:--------------------|:-------|:---------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.       |
+| `name`              | string | The name of the DNS zone.                          |
 | `resourceGroupName` | string | The resource group the DNS zone was deployed into. |
-| `resourceId` | string | The resource ID of the DNS zone. |
+| `resourceId`        | string | The resource ID of the DNS zone.                   |
 
 ## Cross-referenced modules
 

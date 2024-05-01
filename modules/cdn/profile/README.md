@@ -1,7 +1,5 @@
 # CDN Profiles `[Microsoft.Cdn/profiles]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a CDN Profile.
 
 ## Navigation
@@ -14,21 +12,21 @@ This module deploys a CDN Profile.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Cdn/profiles` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles) |
-| `Microsoft.Cdn/profiles/afdEndpoints` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/afdEndpoints) |
-| `Microsoft.Cdn/profiles/afdEndpoints/routes` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/afdEndpoints/routes) |
-| `Microsoft.Cdn/profiles/customDomains` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/customDomains) |
-| `Microsoft.Cdn/profiles/endpoints` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2021-06-01/profiles/endpoints) |
-| `Microsoft.Cdn/profiles/endpoints/origins` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2021-06-01/profiles/endpoints/origins) |
-| `Microsoft.Cdn/profiles/originGroups` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/originGroups) |
+| Resource Type                                 | API Version                                                                                                            |
+|:----------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`               | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)               |
+| `Microsoft.Authorization/roleAssignments`     | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)     |
+| `Microsoft.Cdn/profiles`                      | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles)                      |
+| `Microsoft.Cdn/profiles/afdEndpoints`         | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/afdEndpoints)         |
+| `Microsoft.Cdn/profiles/afdEndpoints/routes`  | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/afdEndpoints/routes)  |
+| `Microsoft.Cdn/profiles/customDomains`        | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/customDomains)        |
+| `Microsoft.Cdn/profiles/endpoints`            | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2021-06-01/profiles/endpoints)            |
+| `Microsoft.Cdn/profiles/endpoints/origins`    | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2021-06-01/profiles/endpoints/origins)    |
+| `Microsoft.Cdn/profiles/originGroups`         | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/originGroups)         |
 | `Microsoft.Cdn/profiles/originGroups/origins` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/originGroups/origins) |
-| `Microsoft.Cdn/profiles/ruleSets` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/ruleSets) |
-| `Microsoft.Cdn/profiles/ruleSets/rules` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/ruleSets/rules) |
-| `Microsoft.Cdn/profiles/secrets` | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/secrets) |
+| `Microsoft.Cdn/profiles/ruleSets`             | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/ruleSets)             |
+| `Microsoft.Cdn/profiles/ruleSets/rules`       | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/ruleSets/rules)       |
+| `Microsoft.Cdn/profiles/secrets`              | [2023-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2023-05-01/profiles/secrets)              |
 
 ## Usage examples
 
@@ -584,33 +582,33 @@ module profile 'br:bicep/modules/cdn.profile:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`name`](#parameter-name) | string | Name of the CDN profile. |
-| [`sku`](#parameter-sku) | string | The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile. |
+| Parameter                 | Type   | Description                                                                          |
+|:--------------------------|:-------|:-------------------------------------------------------------------------------------|
+| [`name`](#parameter-name) | string | Name of the CDN profile.                                                             |
+| [`sku`](#parameter-sku)   | string | The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile. |
 
 **Conditional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                   | Type  | Description                                                               |
+|:--------------------------------------------|:------|:--------------------------------------------------------------------------|
 | [`origionGroups`](#parameter-origiongroups) | array | Array of origin group objects. Required if the afdEndpoints is specified. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`afdEndpoints`](#parameter-afdendpoints) | array | Array of AFD endpoint objects. |
-| [`customDomains`](#parameter-customdomains) | array | Array of custom domain objects. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`endpointName`](#parameter-endpointname) | string | Name of the endpoint under the profile which is unique globally. |
-| [`endpointProperties`](#parameter-endpointproperties) | object | Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details). |
-| [`location`](#parameter-location) | string | Location for all Resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`originResponseTimeoutSeconds`](#parameter-originresponsetimeoutseconds) | int | Send and receive timeout on forwarding request to the origin. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`ruleSets`](#parameter-rulesets) | array | Array of rule set objects. |
-| [`secrets`](#parameter-secrets) | array | Array of secret objects. |
-| [`tags`](#parameter-tags) | object | Endpoint tags. |
+| Parameter                                                                 | Type   | Description                                                                                                                                                                   |
+|:--------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`afdEndpoints`](#parameter-afdendpoints)                                 | array  | Array of AFD endpoint objects.                                                                                                                                                |
+| [`customDomains`](#parameter-customdomains)                               | array  | Array of custom domain objects.                                                                                                                                               |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)             | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                     |
+| [`endpointName`](#parameter-endpointname)                                 | string | Name of the endpoint under the profile which is unique globally.                                                                                                              |
+| [`endpointProperties`](#parameter-endpointproperties)                     | object | Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details). |
+| [`location`](#parameter-location)                                         | string | Location for all Resources.                                                                                                                                                   |
+| [`lock`](#parameter-lock)                                                 | object | The lock settings of the service.                                                                                                                                             |
+| [`originResponseTimeoutSeconds`](#parameter-originresponsetimeoutseconds) | int    | Send and receive timeout on forwarding request to the origin.                                                                                                                 |
+| [`roleAssignments`](#parameter-roleassignments)                           | array  | Array of role assignments to create.                                                                                                                                          |
+| [`ruleSets`](#parameter-rulesets)                                         | array  | Array of rule set objects.                                                                                                                                                    |
+| [`secrets`](#parameter-secrets)                                           | array  | Array of secret objects.                                                                                                                                                      |
+| [`tags`](#parameter-tags)                                                 | object | Endpoint tags.                                                                                                                                                                |
 
 ### Parameter: `name`
 
@@ -709,8 +707,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -753,20 +751,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -859,13 +857,13 @@ Endpoint tags.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the CDN profile. |
-| `profileType` | string | The type of the CDN profile. |
+| Output              | Type   | Description                                           |
+|:--------------------|:-------|:------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.          |
+| `name`              | string | The name of the CDN profile.                          |
+| `profileType`       | string | The type of the CDN profile.                          |
 | `resourceGroupName` | string | The resource group where the CDN profile is deployed. |
-| `resourceId` | string | The resource ID of the CDN profile. |
+| `resourceId`        | string | The resource ID of the CDN profile.                   |
 
 ## Cross-referenced modules
 

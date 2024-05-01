@@ -1,7 +1,5 @@
 # Virtual Hubs `[Microsoft.Network/virtualHubs]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Virtual Hub.
 If you are planning to deploy a Secure Virtual Hub (with an Azure Firewall integrated), please refer to the Azure Firewall module.
 
@@ -15,11 +13,11 @@ If you are planning to deploy a Secure Virtual Hub (with an Azure Firewall integ
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Network/virtualHubs` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-11-01/virtualHubs) |
-| `Microsoft.Network/virtualHubs/hubRouteTables` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-11-01/virtualHubs/hubRouteTables) |
+| Resource Type                                                | API Version                                                                                                                           |
+|:-------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`                              | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                              |
+| `Microsoft.Network/virtualHubs`                              | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-11-01/virtualHubs)                              |
+| `Microsoft.Network/virtualHubs/hubRouteTables`               | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-11-01/virtualHubs/hubRouteTables)               |
 | `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-11-01/virtualHubs/hubVirtualNetworkConnections) |
 
 ## Usage examples
@@ -363,34 +361,34 @@ module virtualHub 'br:bicep/modules/network.virtual-hub:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`addressPrefix`](#parameter-addressprefix) | string | Address-prefix for this VirtualHub. |
-| [`name`](#parameter-name) | string | The virtual hub name. |
-| [`virtualWanId`](#parameter-virtualwanid) | string | Resource ID of the virtual WAN to link to. |
+| Parameter                                   | Type   | Description                                |
+|:--------------------------------------------|:-------|:-------------------------------------------|
+| [`addressPrefix`](#parameter-addressprefix) | string | Address-prefix for this VirtualHub.        |
+| [`name`](#parameter-name)                   | string | The virtual hub name.                      |
+| [`virtualWanId`](#parameter-virtualwanid)   | string | Resource ID of the virtual WAN to link to. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`allowBranchToBranchTraffic`](#parameter-allowbranchtobranchtraffic) | bool | Flag to control transit for VirtualRouter hub. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`expressRouteGatewayId`](#parameter-expressroutegatewayid) | string | Resource ID of the Express Route Gateway to link to. |
-| [`hubRouteTables`](#parameter-hubroutetables) | array | Route tables to create for the virtual hub. |
-| [`hubVirtualNetworkConnections`](#parameter-hubvirtualnetworkconnections) | array | Virtual network connections to create for the virtual hub. |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`p2SVpnGatewayId`](#parameter-p2svpngatewayid) | string | Resource ID of the Point-to-Site VPN Gateway to link to. |
-| [`preferredRoutingGateway`](#parameter-preferredroutinggateway) | string | The preferred routing gateway types. |
-| [`routeTableRoutes`](#parameter-routetableroutes) | array | VirtualHub route tables. |
-| [`securityPartnerProviderId`](#parameter-securitypartnerproviderid) | string | ID of the Security Partner Provider to link to. |
-| [`securityProviderName`](#parameter-securityprovidername) | string | The Security Provider name. |
-| [`sku`](#parameter-sku) | string | The sku of this VirtualHub. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`virtualHubRouteTableV2s`](#parameter-virtualhubroutetablev2s) | array | List of all virtual hub route table v2s associated with this VirtualHub. |
-| [`virtualRouterAsn`](#parameter-virtualrouterasn) | int | VirtualRouter ASN. |
-| [`virtualRouterIps`](#parameter-virtualrouterips) | array | VirtualRouter IPs. |
-| [`vpnGatewayId`](#parameter-vpngatewayid) | string | Resource ID of the VPN Gateway to link to. |
+| Parameter                                                                 | Type   | Description                                                              |
+|:--------------------------------------------------------------------------|:-------|:-------------------------------------------------------------------------|
+| [`allowBranchToBranchTraffic`](#parameter-allowbranchtobranchtraffic)     | bool   | Flag to control transit for VirtualRouter hub.                           |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)             | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                |
+| [`expressRouteGatewayId`](#parameter-expressroutegatewayid)               | string | Resource ID of the Express Route Gateway to link to.                     |
+| [`hubRouteTables`](#parameter-hubroutetables)                             | array  | Route tables to create for the virtual hub.                              |
+| [`hubVirtualNetworkConnections`](#parameter-hubvirtualnetworkconnections) | array  | Virtual network connections to create for the virtual hub.               |
+| [`location`](#parameter-location)                                         | string | Location for all resources.                                              |
+| [`lock`](#parameter-lock)                                                 | object | The lock settings of the service.                                        |
+| [`p2SVpnGatewayId`](#parameter-p2svpngatewayid)                           | string | Resource ID of the Point-to-Site VPN Gateway to link to.                 |
+| [`preferredRoutingGateway`](#parameter-preferredroutinggateway)           | string | The preferred routing gateway types.                                     |
+| [`routeTableRoutes`](#parameter-routetableroutes)                         | array  | VirtualHub route tables.                                                 |
+| [`securityPartnerProviderId`](#parameter-securitypartnerproviderid)       | string | ID of the Security Partner Provider to link to.                          |
+| [`securityProviderName`](#parameter-securityprovidername)                 | string | The Security Provider name.                                              |
+| [`sku`](#parameter-sku)                                                   | string | The sku of this VirtualHub.                                              |
+| [`tags`](#parameter-tags)                                                 | object | Tags of the resource.                                                    |
+| [`virtualHubRouteTableV2s`](#parameter-virtualhubroutetablev2s)           | array  | List of all virtual hub route table v2s associated with this VirtualHub. |
+| [`virtualRouterAsn`](#parameter-virtualrouterasn)                         | int    | VirtualRouter ASN.                                                       |
+| [`virtualRouterIps`](#parameter-virtualrouterips)                         | array  | VirtualRouter IPs.                                                       |
+| [`vpnGatewayId`](#parameter-vpngatewayid)                                 | string | Resource ID of the VPN Gateway to link to.                               |
 
 ### Parameter: `addressPrefix`
 
@@ -470,8 +468,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -603,12 +601,12 @@ Resource ID of the VPN Gateway to link to.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the virtual hub. |
+| Output              | Type   | Description                                           |
+|:--------------------|:-------|:------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.          |
+| `name`              | string | The name of the virtual hub.                          |
 | `resourceGroupName` | string | The resource group the virtual hub was deployed into. |
-| `resourceId` | string | The resource ID of the virtual hub. |
+| `resourceId`        | string | The resource ID of the virtual hub.                   |
 
 ## Cross-referenced modules
 

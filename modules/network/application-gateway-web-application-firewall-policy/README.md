@@ -1,7 +1,5 @@
 # Application Gateway Web Application Firewall (WAF) Policies `[Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys an Application Gateway Web Application Firewall (WAF) Policy.
 
 ## Navigation
@@ -14,8 +12,8 @@ This module deploys an Application Gateway Web Application Firewall (WAF) Policy
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
+| Resource Type                                                        | API Version                                                                                                                                   |
+|:---------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------|
 | `Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-11-01/ApplicationGatewayWebApplicationFirewallPolicies) |
 
 ## Usage examples
@@ -238,20 +236,20 @@ module applicationGatewayWebApplicationFirewallPolicy 'br:bicep/modules/network.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                 | Type   | Description                                 |
+|:--------------------------|:-------|:--------------------------------------------|
 | [`name`](#parameter-name) | string | Name of the Application Gateway WAF policy. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`customRules`](#parameter-customrules) | array | The custom rules inside the policy. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`managedRules`](#parameter-managedrules) | object | Describes the managedRules structure. |
-| [`policySettings`](#parameter-policysettings) | object | The PolicySettings for policy. |
-| [`tags`](#parameter-tags) | object | Resource tags. |
+| Parameter                                                     | Type   | Description                                               |
+|:--------------------------------------------------------------|:-------|:----------------------------------------------------------|
+| [`customRules`](#parameter-customrules)                       | array  | The custom rules inside the policy.                       |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID). |
+| [`location`](#parameter-location)                             | string | Location for all resources.                               |
+| [`managedRules`](#parameter-managedrules)                     | object | Describes the managedRules structure.                     |
+| [`policySettings`](#parameter-policysettings)                 | object | The PolicySettings for policy.                            |
+| [`tags`](#parameter-tags)                                     | object | Resource tags.                                            |
 
 ### Parameter: `name`
 
@@ -310,12 +308,12 @@ Resource tags.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the application gateway WAF policy. |
+| Output              | Type   | Description                                                              |
+|:--------------------|:-------|:-------------------------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.                             |
+| `name`              | string | The name of the application gateway WAF policy.                          |
 | `resourceGroupName` | string | The resource group the application gateway WAF policy was deployed into. |
-| `resourceId` | string | The resource ID of the application gateway WAF policy. |
+| `resourceId`        | string | The resource ID of the application gateway WAF policy.                   |
 
 ## Cross-referenced modules
 

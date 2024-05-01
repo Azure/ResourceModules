@@ -1,7 +1,5 @@
 # Consumption Budgets `[Microsoft.Consumption/budgets]`
 
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
-
 This module deploys a Consumption Budget for Subscriptions.
 
 ## Navigation
@@ -14,8 +12,8 @@ This module deploys a Consumption Budget for Subscriptions.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
+| Resource Type                   | API Version                                                                                              |
+|:--------------------------------|:---------------------------------------------------------------------------------------------------------|
 | `Microsoft.Consumption/budgets` | [2021-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Consumption/2021-10-01/budgets) |
 
 ## Usage examples
@@ -247,30 +245,30 @@ module budget 'br:bicep/modules/consumption.budget:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`amount`](#parameter-amount) | int | The total amount of cost or usage to track with the budget. |
-| [`name`](#parameter-name) | string | The name of the budget. |
+| Parameter                     | Type   | Description                                                 |
+|:------------------------------|:-------|:------------------------------------------------------------|
+| [`amount`](#parameter-amount) | int    | The total amount of cost or usage to track with the budget. |
+| [`name`](#parameter-name)     | string | The name of the budget.                                     |
 
 **Conditional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`actionGroups`](#parameter-actiongroups) | array | List of action group resource IDs that will receive the alert. Required if neither `contactEmails` nor `contactEmails` was provided. |
+| Parameter                                   | Type  | Description                                                                                                                                                          |
+|:--------------------------------------------|:------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`actionGroups`](#parameter-actiongroups)   | array | List of action group resource IDs that will receive the alert. Required if neither `contactEmails` nor `contactEmails` was provided.                                 |
 | [`contactEmails`](#parameter-contactemails) | array | The list of email addresses to send the budget notification to when the thresholds are exceeded. Required if neither `contactRoles` nor `actionGroups` was provided. |
-| [`contactRoles`](#parameter-contactroles) | array | The list of contact roles to send the budget notification to when the thresholds are exceeded. Required if neither `contactEmails` nor `actionGroups` was provided. |
+| [`contactRoles`](#parameter-contactroles)   | array | The list of contact roles to send the budget notification to when the thresholds are exceeded. Required if neither `contactEmails` nor `actionGroups` was provided.  |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`category`](#parameter-category) | string | The category of the budget, whether the budget tracks cost or usage. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`endDate`](#parameter-enddate) | string | The end date for the budget. If not provided, it will default to 10 years from the start date. |
-| [`location`](#parameter-location) | string | Location deployment metadata. |
-| [`resetPeriod`](#parameter-resetperiod) | string | The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter, and BillingAnnual are only supported by WD customers. |
-| [`startDate`](#parameter-startdate) | string | The start date for the budget. Start date should be the first day of the month and cannot be in the past (except for the current month). |
-| [`thresholds`](#parameter-thresholds) | array | Percent thresholds of budget for when to get a notification. Can be up to 5 thresholds, where each must be between 1 and 1000. |
+| Parameter                                                     | Type   | Description                                                                                                                                                                     |
+|:--------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`category`](#parameter-category)                             | string | The category of the budget, whether the budget tracks cost or usage.                                                                                                            |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                       |
+| [`endDate`](#parameter-enddate)                               | string | The end date for the budget. If not provided, it will default to 10 years from the start date.                                                                                  |
+| [`location`](#parameter-location)                             | string | Location deployment metadata.                                                                                                                                                   |
+| [`resetPeriod`](#parameter-resetperiod)                       | string | The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter, and BillingAnnual are only supported by WD customers. |
+| [`startDate`](#parameter-startdate)                           | string | The start date for the budget. Start date should be the first day of the month and cannot be in the past (except for the current month).                                        |
+| [`thresholds`](#parameter-thresholds)                         | array  | Percent thresholds of budget for when to get a notification. Can be up to 5 thresholds, where each must be between 1 and 1000.                                                  |
 
 ### Parameter: `amount`
 
@@ -396,10 +394,10 @@ Percent thresholds of budget for when to get a notification. Can be up to 5 thre
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the budget. |
-| `resourceId` | string | The resource ID of the budget. |
+| Output             | Type   | Description                                    |
+|:-------------------|:-------|:-----------------------------------------------|
+| `name`             | string | The name of the budget.                        |
+| `resourceId`       | string | The resource ID of the budget.                 |
 | `subscriptionName` | string | The subscription the budget was deployed into. |
 
 ## Cross-referenced modules
