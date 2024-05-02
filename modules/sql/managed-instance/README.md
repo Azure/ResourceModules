@@ -1,3 +1,11 @@
+<h1 style="color: steelblue;">⚠️ Moved to AVM ⚠️</h1>
+
+**This module has been evolved into the following AVM module: [avm/res/sql/managed-instance](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res/sql/managed-instance).**
+
+The source code of this module has been removed from the main branch of this repository. If for any reason, you still need to access the CARML version of the module, you can find it [here](https://github.com/Azure/ResourceModules/tree/module-archive/modules/sql/managed-instance).
+
+For more information about this transition, see the notice, [here](https://github.com/Azure/ResourceModules?tab=readme-ov-file#%EF%B8%8F-CARML---AVM-transition-%EF%B8%8F).
+
 # SQL Managed Instances `[Microsoft.Sql/managedInstances]`
 
 This module deploys a SQL Managed Instance.
@@ -13,20 +21,20 @@ This module deploys a SQL Managed Instance.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Sql/managedInstances` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances) |
-| `Microsoft.Sql/managedInstances/administrators` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/administrators) |
-| `Microsoft.Sql/managedInstances/databases` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/databases) |
-| `Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/databases/backupLongTermRetentionPolicies) |
+| Resource Type                                                               | API Version                                                                                                                                                          |
+|:----------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`                                             | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                                                             |
+| `Microsoft.Authorization/roleAssignments`                                   | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)                                                   |
+| `Microsoft.Insights/diagnosticSettings`                                     | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)                                     |
+| `Microsoft.Sql/managedInstances`                                            | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances)                                            |
+| `Microsoft.Sql/managedInstances/administrators`                             | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/administrators)                             |
+| `Microsoft.Sql/managedInstances/databases`                                  | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/databases)                                  |
+| `Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies`  | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/databases/backupLongTermRetentionPolicies)  |
 | `Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/databases/backupShortTermRetentionPolicies) |
-| `Microsoft.Sql/managedInstances/encryptionProtector` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/encryptionProtector) |
-| `Microsoft.Sql/managedInstances/keys` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/keys) |
-| `Microsoft.Sql/managedInstances/securityAlertPolicies` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/securityAlertPolicies) |
-| `Microsoft.Sql/managedInstances/vulnerabilityAssessments` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/vulnerabilityAssessments) |
+| `Microsoft.Sql/managedInstances/encryptionProtector`                        | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/encryptionProtector)                        |
+| `Microsoft.Sql/managedInstances/keys`                                       | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/keys)                                       |
+| `Microsoft.Sql/managedInstances/securityAlertPolicies`                      | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/securityAlertPolicies)                      |
+| `Microsoft.Sql/managedInstances/vulnerabilityAssessments`                   | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/managedInstances/vulnerabilityAssessments)                   |
 
 ## Usage examples
 
@@ -807,55 +815,55 @@ module managedInstance 'br:bicep/modules/sql.managed-instance:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`administratorLogin`](#parameter-administratorlogin) | string | The username used to establish jumpbox VMs. |
-| [`administratorLoginPassword`](#parameter-administratorloginpassword) | securestring | The password given to the admin user. |
-| [`name`](#parameter-name) | string | The name of the SQL managed instance. |
-| [`subnetId`](#parameter-subnetid) | string | The fully qualified resource ID of the subnet on which the SQL managed instance will be placed. |
+| Parameter                                                             | Type         | Description                                                                                     |
+|:----------------------------------------------------------------------|:-------------|:------------------------------------------------------------------------------------------------|
+| [`administratorLogin`](#parameter-administratorlogin)                 | string       | The username used to establish jumpbox VMs.                                                     |
+| [`administratorLoginPassword`](#parameter-administratorloginpassword) | securestring | The password given to the admin user.                                                           |
+| [`name`](#parameter-name)                                             | string       | The name of the SQL managed instance.                                                           |
+| [`subnetId`](#parameter-subnetid)                                     | string       | The fully qualified resource ID of the subnet on which the SQL managed instance will be placed. |
 
 **Conditional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                                                                   | Type   | Description                                                                                                           |
+|:----------------------------------------------------------------------------|:-------|:----------------------------------------------------------------------------------------------------------------------|
 | [`primaryUserAssignedIdentityId`](#parameter-primaryuserassignedidentityid) | string | The resource ID of a user assigned identity to be used by default. Required if "userAssignedIdentities" is not empty. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`administratorsObj`](#parameter-administratorsobj) | object | The administrator configuration. |
-| [`collation`](#parameter-collation) | string | Collation of the managed instance. |
-| [`databases`](#parameter-databases) | array | Databases to create in this server. |
-| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
-| [`dnsZonePartner`](#parameter-dnszonepartner) | string | The resource ID of another managed instance whose DNS zone this managed instance will share after creation. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`encryptionProtectorObj`](#parameter-encryptionprotectorobj) | object | The encryption protection configuration. |
-| [`hardwareFamily`](#parameter-hardwarefamily) | string | If the service has different generations of hardware, for the same SKU, then that can be captured here. |
-| [`instancePoolResourceId`](#parameter-instancepoolresourceid) | string | The resource ID of the instance pool this managed server belongs to. |
-| [`keys`](#parameter-keys) | array | The keys to configure. |
-| [`licenseType`](#parameter-licensetype) | string | The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
-| [`managedInstanceCreateMode`](#parameter-managedinstancecreatemode) | string | Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
-| [`minimalTlsVersion`](#parameter-minimaltlsversion) | string | Minimal TLS version allowed. |
-| [`proxyOverride`](#parameter-proxyoverride) | string | Connection type used for connecting to the instance. |
-| [`publicDataEndpointEnabled`](#parameter-publicdataendpointenabled) | bool | Whether or not the public data endpoint is enabled. |
-| [`requestedBackupStorageRedundancy`](#parameter-requestedbackupstorageredundancy) | string | The storage account type used to store backups for this database. |
-| [`restorePointInTime`](#parameter-restorepointintime) | string | Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`securityAlertPoliciesObj`](#parameter-securityalertpoliciesobj) | object | The security alert policy configuration. |
-| [`servicePrincipal`](#parameter-serviceprincipal) | string | Service principal type. If using AD Authentication and applying Admin, must be set to `SystemAssigned`. Then Global Admin must allow Reader access to Azure AD for the Service Principal. |
-| [`skuName`](#parameter-skuname) | string | The name of the SKU, typically, a letter + Number code, e.g. P3. |
-| [`skuTier`](#parameter-skutier) | string | The tier or edition of the particular SKU, e.g. Basic, Premium. |
-| [`sourceManagedInstanceId`](#parameter-sourcemanagedinstanceid) | string | The resource identifier of the source managed instance associated with create operation of this instance. |
-| [`storageSizeInGB`](#parameter-storagesizeingb) | int | Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB allowed only. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`timezoneId`](#parameter-timezoneid) | string | ID of the timezone. Allowed values are timezones supported by Windows. |
-| [`vCores`](#parameter-vcores) | int | The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80. |
-| [`vulnerabilityAssessmentsObj`](#parameter-vulnerabilityassessmentsobj) | object | The vulnerability assessment configuration. |
-| [`zoneRedundant`](#parameter-zoneredundant) | bool | Whether or not multi-az is enabled. |
+| Parameter                                                                         | Type   | Description                                                                                                                                                                                                                          |
+|:----------------------------------------------------------------------------------|:-------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`administratorsObj`](#parameter-administratorsobj)                               | object | The administrator configuration.                                                                                                                                                                                                     |
+| [`collation`](#parameter-collation)                                               | string | Collation of the managed instance.                                                                                                                                                                                                   |
+| [`databases`](#parameter-databases)                                               | array  | Databases to create in this server.                                                                                                                                                                                                  |
+| [`diagnosticSettings`](#parameter-diagnosticsettings)                             | array  | The diagnostic settings of the service.                                                                                                                                                                                              |
+| [`dnsZonePartner`](#parameter-dnszonepartner)                                     | string | The resource ID of another managed instance whose DNS zone this managed instance will share after creation.                                                                                                                          |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                     | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                            |
+| [`encryptionProtectorObj`](#parameter-encryptionprotectorobj)                     | object | The encryption protection configuration.                                                                                                                                                                                             |
+| [`hardwareFamily`](#parameter-hardwarefamily)                                     | string | If the service has different generations of hardware, for the same SKU, then that can be captured here.                                                                                                                              |
+| [`instancePoolResourceId`](#parameter-instancepoolresourceid)                     | string | The resource ID of the instance pool this managed server belongs to.                                                                                                                                                                 |
+| [`keys`](#parameter-keys)                                                         | array  | The keys to configure.                                                                                                                                                                                                               |
+| [`licenseType`](#parameter-licensetype)                                           | string | The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses).                                                    |
+| [`location`](#parameter-location)                                                 | string | Location for all resources.                                                                                                                                                                                                          |
+| [`lock`](#parameter-lock)                                                         | object | The lock settings of the service.                                                                                                                                                                                                    |
+| [`managedIdentities`](#parameter-managedidentities)                               | object | The managed identity definition for this resource.                                                                                                                                                                                   |
+| [`managedInstanceCreateMode`](#parameter-managedinstancecreatemode)               | string | Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
+| [`minimalTlsVersion`](#parameter-minimaltlsversion)                               | string | Minimal TLS version allowed.                                                                                                                                                                                                         |
+| [`proxyOverride`](#parameter-proxyoverride)                                       | string | Connection type used for connecting to the instance.                                                                                                                                                                                 |
+| [`publicDataEndpointEnabled`](#parameter-publicdataendpointenabled)               | bool   | Whether or not the public data endpoint is enabled.                                                                                                                                                                                  |
+| [`requestedBackupStorageRedundancy`](#parameter-requestedbackupstorageredundancy) | string | The storage account type used to store backups for this database.                                                                                                                                                                    |
+| [`restorePointInTime`](#parameter-restorepointintime)                             | string | Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.                                                                                                                |
+| [`roleAssignments`](#parameter-roleassignments)                                   | array  | Array of role assignments to create.                                                                                                                                                                                                 |
+| [`securityAlertPoliciesObj`](#parameter-securityalertpoliciesobj)                 | object | The security alert policy configuration.                                                                                                                                                                                             |
+| [`servicePrincipal`](#parameter-serviceprincipal)                                 | string | Service principal type. If using AD Authentication and applying Admin, must be set to `SystemAssigned`. Then Global Admin must allow Reader access to Azure AD for the Service Principal.                                            |
+| [`skuName`](#parameter-skuname)                                                   | string | The name of the SKU, typically, a letter + Number code, e.g. P3.                                                                                                                                                                     |
+| [`skuTier`](#parameter-skutier)                                                   | string | The tier or edition of the particular SKU, e.g. Basic, Premium.                                                                                                                                                                      |
+| [`sourceManagedInstanceId`](#parameter-sourcemanagedinstanceid)                   | string | The resource identifier of the source managed instance associated with create operation of this instance.                                                                                                                            |
+| [`storageSizeInGB`](#parameter-storagesizeingb)                                   | int    | Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB allowed only.                                                                                                                                        |
+| [`tags`](#parameter-tags)                                                         | object | Tags of the resource.                                                                                                                                                                                                                |
+| [`timezoneId`](#parameter-timezoneid)                                             | string | ID of the timezone. Allowed values are timezones supported by Windows.                                                                                                                                                               |
+| [`vCores`](#parameter-vcores)                                                     | int    | The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.                                                                                                                                                                     |
+| [`vulnerabilityAssessmentsObj`](#parameter-vulnerabilityassessmentsobj)           | object | The vulnerability assessment configuration.                                                                                                                                                                                          |
+| [`zoneRedundant`](#parameter-zoneredundant)                                       | bool   | Whether or not multi-az is enabled.                                                                                                                                                                                                  |
 
 ### Parameter: `administratorLogin`
 
@@ -926,17 +934,17 @@ The diagnostic settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
-| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`name`](#parameter-diagnosticsettingsname) | string | The name of diagnostic setting. |
-| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| Parameter                                                                                                 | Type   | Description                                                                                                                                                                                                                                                                                     |
+|:----------------------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.                                                                                                                                                |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname)                                               | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype)                 | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.                                                                                                                                              |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups)                           | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid)               | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.                                                                                                                                                                                           |
+| [`metricCategories`](#parameter-diagnosticsettingsmetriccategories)                                       | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`name`](#parameter-diagnosticsettingsname)                                                               | string | The name of diagnostic setting.                                                                                                                                                                                                                                                                 |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid)                       | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                                 |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid)                                 | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                         |
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
@@ -1088,8 +1096,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -1124,10 +1132,10 @@ The managed identity definition for this resource.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | bool | Enables system assigned managed identity on the resource. |
-| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
+| Parameter                                                                        | Type  | Description                                               |
+|:---------------------------------------------------------------------------------|:------|:----------------------------------------------------------|
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned)                   | bool  | Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource.             |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -1233,20 +1241,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -1410,13 +1418,13 @@ Whether or not multi-az is enabled.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed managed instance. |
-| `resourceGroupName` | string | The resource group of the deployed managed instance. |
-| `resourceId` | string | The resource ID of the deployed managed instance. |
-| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity. |
+| Output                        | Type   | Description                                          |
+|:------------------------------|:-------|:-----------------------------------------------------|
+| `location`                    | string | The location the resource was deployed into.         |
+| `name`                        | string | The name of the deployed managed instance.           |
+| `resourceGroupName`           | string | The resource group of the deployed managed instance. |
+| `resourceId`                  | string | The resource ID of the deployed managed instance.    |
+| `systemAssignedMIPrincipalId` | string | The principal ID of the system assigned identity.    |
 
 ## Cross-referenced modules
 

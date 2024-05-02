@@ -1,3 +1,11 @@
+<h1 style="color: steelblue;">⚠️ Retired ⚠️</h1>
+
+This module has been retired without a replacement in Azure Verified Modules ([AVM](https://aka.ms/AVM)).
+
+The source code of this module has been removed from the main branch of this repository. If for any reason, you still need to access the CARML version of the module, you can find it [here](https://github.com/Azure/ResourceModules/tree/module-archive/modules/authorization/lock).
+
+For more information about this transition, see the notice, [here](https://github.com/Azure/ResourceModules?tab=readme-ov-file#%EF%B8%8F-CARML---AVM-transition-%EF%B8%8F).
+
 # Authorization Locks (All scopes) `[Microsoft.Authorization/locks]`
 
 This module deploys an Authorization Lock at a Subscription or Resource Group scope.
@@ -12,8 +20,8 @@ This module deploys an Authorization Lock at a Subscription or Resource Group sc
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
+| Resource Type                   | API Version                                                                                              |
+|:--------------------------------|:---------------------------------------------------------------------------------------------------------|
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 
 ## Usage examples
@@ -144,19 +152,19 @@ module lock 'br:bicep/modules/authorization.lock:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                   | Type   | Description     |
+|:----------------------------|:-------|:----------------|
 | [`level`](#parameter-level) | string | Set lock level. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`notes`](#parameter-notes) | string | The decription attached to the lock. |
-| [`resourceGroupName`](#parameter-resourcegroupname) | string | Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group. |
-| [`subscriptionId`](#parameter-subscriptionid) | string | Subscription ID of the subscription to assign the lock to. If not provided, will use the current scope for deployment. If no resource group name is provided, the module deploys at subscription level, therefore assigns the provided locks to the subscription. |
+| Parameter                                                     | Type   | Description                                                                                                                                                                                                                                                       |
+|:--------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                                                         |
+| [`location`](#parameter-location)                             | string | Location for all resources.                                                                                                                                                                                                                                       |
+| [`notes`](#parameter-notes)                                   | string | The decription attached to the lock.                                                                                                                                                                                                                              |
+| [`resourceGroupName`](#parameter-resourcegroupname)           | string | Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group.                                     |
+| [`subscriptionId`](#parameter-subscriptionid)                 | string | Subscription ID of the subscription to assign the lock to. If not provided, will use the current scope for deployment. If no resource group name is provided, the module deploys at subscription level, therefore assigns the provided locks to the subscription. |
 
 ### Parameter: `level`
 
@@ -215,11 +223,11 @@ Subscription ID of the subscription to assign the lock to. If not provided, will
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the lock. |
-| `resourceId` | string | The resource ID of the lock. |
-| `scope` | string | The scope this lock applies to. |
+| Output       | Type   | Description                     |
+|:-------------|:-------|:--------------------------------|
+| `name`       | string | The name of the lock.           |
+| `resourceId` | string | The resource ID of the lock.    |
+| `scope`      | string | The scope this lock applies to. |
 
 ## Cross-referenced modules
 

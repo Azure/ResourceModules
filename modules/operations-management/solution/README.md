@@ -1,3 +1,11 @@
+<h1 style="color: steelblue;">⚠️ Moved to AVM ⚠️</h1>
+
+**This module has been evolved into the following AVM module: [avm/res/operations-management/solution](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res/operations-management/solution).**
+
+The source code of this module has been removed from the main branch of this repository. If for any reason, you still need to access the CARML version of the module, you can find it [here](https://github.com/Azure/ResourceModules/tree/module-archive/modules/operations-management/solution).
+
+For more information about this transition, see the notice, [here](https://github.com/Azure/ResourceModules?tab=readme-ov-file#%EF%B8%8F-CARML---AVM-transition-%EF%B8%8F).
+
 # Operations Management Solutions `[Microsoft.OperationsManagement/solutions]`
 
 This module deploys an Operations Management Solution.

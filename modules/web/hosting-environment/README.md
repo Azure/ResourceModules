@@ -1,3 +1,11 @@
+<h1 style="color: steelblue;">⚠️ Moved to AVM ⚠️</h1>
+
+**This module has been evolved into the following AVM module: [avm/res/web/hosting-environment](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res/web/hosting-environment).**
+
+The source code of this module has been removed from the main branch of this repository. If for any reason, you still need to access the CARML version of the module, you can find it [here](https://github.com/Azure/ResourceModules/tree/module-archive/modules/web/hosting-environment).
+
+For more information about this transition, see the notice, [here](https://github.com/Azure/ResourceModules?tab=readme-ov-file#%EF%B8%8F-CARML---AVM-transition-%EF%B8%8F).
+
 # App Service Environments `[Microsoft.Web/hostingEnvironments]`
 
 This module deploys an App Service Environment.
@@ -12,13 +20,13 @@ This module deploys an App Service Environment.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Web/hostingEnvironments` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/hostingEnvironments) |
-| `Microsoft.Web/hostingEnvironments/configurations` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/hostingEnvironments/configurations) |
+| Resource Type                                      | API Version                                                                                                                      |
+|:---------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`                    | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                         |
+| `Microsoft.Authorization/roleAssignments`          | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)               |
+| `Microsoft.Insights/diagnosticSettings`            | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Web/hostingEnvironments`                | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/hostingEnvironments)                     |
+| `Microsoft.Web/hostingEnvironments/configurations` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/hostingEnvironments/configurations)                 |
 
 ## Usage examples
 
@@ -402,45 +410,45 @@ module hostingEnvironment 'br:bicep/modules/web.hosting-environment:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`name`](#parameter-name) | string | Name of the App Service Environment. |
-| [`subnetResourceId`](#parameter-subnetresourceid) | string | ResourceId for the subnet. |
+| Parameter                                         | Type   | Description                          |
+|:--------------------------------------------------|:-------|:-------------------------------------|
+| [`name`](#parameter-name)                         | string | Name of the App Service Environment. |
+| [`subnetResourceId`](#parameter-subnetresourceid) | string | ResourceId for the subnet.           |
 
 **Conditional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`customDnsSuffixCertificateUrl`](#parameter-customdnssuffixcertificateurl) | string | The URL referencing the Azure Key Vault certificate secret that should be used as the default SSL/TLS certificate for sites with the custom domain suffix. Required if customDnsSuffix is not empty. Cannot be used when kind is set to ASEv2. |
+| Parameter                                                                                         | Type   | Description                                                                                                                                                                                                                                            |
+|:--------------------------------------------------------------------------------------------------|:-------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`customDnsSuffixCertificateUrl`](#parameter-customdnssuffixcertificateurl)                       | string | The URL referencing the Azure Key Vault certificate secret that should be used as the default SSL/TLS certificate for sites with the custom domain suffix. Required if customDnsSuffix is not empty. Cannot be used when kind is set to ASEv2.         |
 | [`customDnsSuffixKeyVaultReferenceIdentity`](#parameter-customdnssuffixkeyvaultreferenceidentity) | string | The user-assigned identity to use for resolving the key vault certificate reference. If not specified, the system-assigned ASE identity will be used if available. Required if customDnsSuffix is not empty. Cannot be used when kind is set to ASEv2. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`allowNewPrivateEndpointConnections`](#parameter-allownewprivateendpointconnections) | bool | Property to enable and disable new private endpoint connection creation on ASE. Ignored when kind is set to ASEv2. |
-| [`clusterSettings`](#parameter-clustersettings) | array | Custom settings for changing the behavior of the App Service Environment. |
-| [`customDnsSuffix`](#parameter-customdnssuffix) | string | Enable the default custom domain suffix to use for all sites deployed on the ASE. If provided, then customDnsSuffixCertificateUrl and customDnsSuffixKeyVaultReferenceIdentity are required. Cannot be used when kind is set to ASEv2. |
-| [`dedicatedHostCount`](#parameter-dedicatedhostcount) | int | The Dedicated Host Count. If `zoneRedundant` is false, and you want physical hardware isolation enabled, set to 2. Otherwise 0. Cannot be used when kind is set to ASEv2. |
-| [`diagnosticSettings`](#parameter-diagnosticsettings) | array | The diagnostic settings of the service. |
-| [`dnsSuffix`](#parameter-dnssuffix) | string | DNS suffix of the App Service Environment. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`frontEndScaleFactor`](#parameter-frontendscalefactor) | int | Scale factor for frontends. |
-| [`ftpEnabled`](#parameter-ftpenabled) | bool | Property to enable and disable FTP on ASEV3. Ignored when kind is set to ASEv2. |
-| [`inboundIpAddressOverride`](#parameter-inboundipaddressoverride) | string | Customer provided Inbound IP Address. Only able to be set on Ase create. Ignored when kind is set to ASEv2. |
-| [`internalLoadBalancingMode`](#parameter-internalloadbalancingmode) | string | Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing. "None" Exposes the ASE-hosted apps on an internet-accessible IP address. |
-| [`ipsslAddressCount`](#parameter-ipssladdresscount) | int | Number of IP SSL addresses reserved for the App Service Environment. Cannot be used when kind is set to ASEv3. |
-| [`kind`](#parameter-kind) | string | Kind of resource. |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. |
-| [`multiSize`](#parameter-multisize) | string | Frontend VM size. Cannot be used when kind is set to ASEv3. |
-| [`remoteDebugEnabled`](#parameter-remotedebugenabled) | bool | Property to enable and disable Remote Debug on ASEv3. Ignored when kind is set to ASEv2. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`tags`](#parameter-tags) | object | Resource tags. |
-| [`upgradePreference`](#parameter-upgradepreference) | string | Specify preference for when and how the planned maintenance is applied. |
-| [`userWhitelistedIpRanges`](#parameter-userwhitelistedipranges) | array | User added IP ranges to whitelist on ASE DB. Cannot be used with 'kind' `ASEv3`. |
-| [`zoneRedundant`](#parameter-zoneredundant) | bool | Switch to make the App Service Environment zone redundant. If enabled, the minimum App Service plan instance count will be three, otherwise 1. If enabled, the `dedicatedHostCount` must be set to `-1`. |
+| Parameter                                                                             | Type   | Description                                                                                                                                                                                                                            |
+|:--------------------------------------------------------------------------------------|:-------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`allowNewPrivateEndpointConnections`](#parameter-allownewprivateendpointconnections) | bool   | Property to enable and disable new private endpoint connection creation on ASE. Ignored when kind is set to ASEv2.                                                                                                                     |
+| [`clusterSettings`](#parameter-clustersettings)                                       | array  | Custom settings for changing the behavior of the App Service Environment.                                                                                                                                                              |
+| [`customDnsSuffix`](#parameter-customdnssuffix)                                       | string | Enable the default custom domain suffix to use for all sites deployed on the ASE. If provided, then customDnsSuffixCertificateUrl and customDnsSuffixKeyVaultReferenceIdentity are required. Cannot be used when kind is set to ASEv2. |
+| [`dedicatedHostCount`](#parameter-dedicatedhostcount)                                 | int    | The Dedicated Host Count. If `zoneRedundant` is false, and you want physical hardware isolation enabled, set to 2. Otherwise 0. Cannot be used when kind is set to ASEv2.                                                              |
+| [`diagnosticSettings`](#parameter-diagnosticsettings)                                 | array  | The diagnostic settings of the service.                                                                                                                                                                                                |
+| [`dnsSuffix`](#parameter-dnssuffix)                                                   | string | DNS suffix of the App Service Environment.                                                                                                                                                                                             |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                         | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                              |
+| [`frontEndScaleFactor`](#parameter-frontendscalefactor)                               | int    | Scale factor for frontends.                                                                                                                                                                                                            |
+| [`ftpEnabled`](#parameter-ftpenabled)                                                 | bool   | Property to enable and disable FTP on ASEV3. Ignored when kind is set to ASEv2.                                                                                                                                                        |
+| [`inboundIpAddressOverride`](#parameter-inboundipaddressoverride)                     | string | Customer provided Inbound IP Address. Only able to be set on Ase create. Ignored when kind is set to ASEv2.                                                                                                                            |
+| [`internalLoadBalancingMode`](#parameter-internalloadbalancingmode)                   | string | Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing. "None" Exposes the ASE-hosted apps on an internet-accessible IP address.                |
+| [`ipsslAddressCount`](#parameter-ipssladdresscount)                                   | int    | Number of IP SSL addresses reserved for the App Service Environment. Cannot be used when kind is set to ASEv3.                                                                                                                         |
+| [`kind`](#parameter-kind)                                                             | string | Kind of resource.                                                                                                                                                                                                                      |
+| [`location`](#parameter-location)                                                     | string | Location for all resources.                                                                                                                                                                                                            |
+| [`lock`](#parameter-lock)                                                             | object | The lock settings of the service.                                                                                                                                                                                                      |
+| [`managedIdentities`](#parameter-managedidentities)                                   | object | The managed identity definition for this resource.                                                                                                                                                                                     |
+| [`multiSize`](#parameter-multisize)                                                   | string | Frontend VM size. Cannot be used when kind is set to ASEv3.                                                                                                                                                                            |
+| [`remoteDebugEnabled`](#parameter-remotedebugenabled)                                 | bool   | Property to enable and disable Remote Debug on ASEv3. Ignored when kind is set to ASEv2.                                                                                                                                               |
+| [`roleAssignments`](#parameter-roleassignments)                                       | array  | Array of role assignments to create.                                                                                                                                                                                                   |
+| [`tags`](#parameter-tags)                                                             | object | Resource tags.                                                                                                                                                                                                                         |
+| [`upgradePreference`](#parameter-upgradepreference)                                   | string | Specify preference for when and how the planned maintenance is applied.                                                                                                                                                                |
+| [`userWhitelistedIpRanges`](#parameter-userwhitelistedipranges)                       | array  | User added IP ranges to whitelist on ASE DB. Cannot be used with 'kind' `ASEv3`.                                                                                                                                                       |
+| [`zoneRedundant`](#parameter-zoneredundant)                                           | bool   | Switch to make the App Service Environment zone redundant. If enabled, the minimum App Service plan instance count will be three, otherwise 1. If enabled, the `dedicatedHostCount` must be set to `-1`.                               |
 
 ### Parameter: `name`
 
@@ -521,16 +529,16 @@ The diagnostic settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| [`eventHubName`](#parameter-diagnosticsettingseventhubname) | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype) | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type. |
-| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups) | array | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
-| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid) | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs. |
-| [`name`](#parameter-diagnosticsettingsname) | string | The name of diagnostic setting. |
-| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid) | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid) | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| Parameter                                                                                                 | Type   | Description                                                                                                                                                                                                                                                                                     |
+|:----------------------------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`eventHubAuthorizationRuleResourceId`](#parameter-diagnosticsettingseventhubauthorizationruleresourceid) | string | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.                                                                                                                                                |
+| [`eventHubName`](#parameter-diagnosticsettingseventhubname)                                               | string | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| [`logAnalyticsDestinationType`](#parameter-diagnosticsettingsloganalyticsdestinationtype)                 | string | A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type.                                                                                                                                              |
+| [`logCategoriesAndGroups`](#parameter-diagnosticsettingslogcategoriesandgroups)                           | array  | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection.                                                                                                                                                             |
+| [`marketplacePartnerResourceId`](#parameter-diagnosticsettingsmarketplacepartnerresourceid)               | string | The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.                                                                                                                                                                                           |
+| [`name`](#parameter-diagnosticsettingsname)                                                               | string | The name of diagnostic setting.                                                                                                                                                                                                                                                                 |
+| [`storageAccountResourceId`](#parameter-diagnosticsettingsstorageaccountresourceid)                       | string | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                                 |
+| [`workspaceResourceId`](#parameter-diagnosticsettingsworkspaceresourceid)                                 | string | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.                                                                                         |
 
 ### Parameter: `diagnosticSettings.eventHubAuthorizationRuleResourceId`
 
@@ -692,8 +700,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -728,10 +736,10 @@ The managed identity definition for this resource.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`systemAssigned`](#parameter-managedidentitiessystemassigned) | bool | Enables system assigned managed identity on the resource. |
-| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
+| Parameter                                                                        | Type  | Description                                               |
+|:---------------------------------------------------------------------------------|:------|:----------------------------------------------------------|
+| [`systemAssigned`](#parameter-managedidentitiessystemassigned)                   | bool  | Enables system assigned managed identity on the resource. |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource.             |
 
 ### Parameter: `managedIdentities.systemAssigned`
 
@@ -788,20 +796,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -911,12 +919,12 @@ Switch to make the App Service Environment zone redundant. If enabled, the minim
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the App Service Environment. |
+| Output              | Type   | Description                                                       |
+|:--------------------|:-------|:------------------------------------------------------------------|
+| `location`          | string | The location the resource was deployed into.                      |
+| `name`              | string | The name of the App Service Environment.                          |
 | `resourceGroupName` | string | The resource group the App Service Environment was deployed into. |
-| `resourceId` | string | The resource ID of the App Service Environment. |
+| `resourceId`        | string | The resource ID of the App Service Environment.                   |
 
 ## Cross-referenced modules
 

@@ -1,3 +1,11 @@
+<h1 style="color: steelblue;">⚠️ Moved to AVM ⚠️</h1>
+
+**This module has been evolved into the following AVM module: [avm/res/managed-services/registration-definition](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res/managed-services/registration-definition).**
+
+The source code of this module has been removed from the main branch of this repository. If for any reason, you still need to access the CARML version of the module, you can find it [here](https://github.com/Azure/ResourceModules/tree/module-archive/modules/managed-services/registration-definition).
+
+For more information about this transition, see the notice, [here](https://github.com/Azure/ResourceModules?tab=readme-ov-file#%EF%B8%8F-CARML---AVM-transition-%EF%B8%8F).
+
 # Registration Definitions `[Microsoft.ManagedServices/registrationDefinitions]`
 
 This module deploys a `Registration Definition` and a `Registration Assignment` (often referred to as 'Lighthouse' or 'resource delegation')
@@ -17,8 +25,8 @@ remote/managing tenant.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
+| Resource Type                                       | API Version                                                                                                                  |
+|:----------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------|
 | `Microsoft.ManagedServices/registrationAssignments` | [2019-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments) |
 | `Microsoft.ManagedServices/registrationDefinitions` | [2019-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions) |
 
@@ -316,20 +324,20 @@ module registrationDefinition 'br:bicep/modules/managed-services.registration-de
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`authorizations`](#parameter-authorizations) | array | Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
-| [`managedByTenantId`](#parameter-managedbytenantid) | string | Specify the tenant ID of the tenant which homes the principals you are delegating permissions to. |
-| [`name`](#parameter-name) | string | Specify a unique name for your offer/registration. i.e '<Managing Tenant> - <Remote Tenant> - <ResourceName>'. |
-| [`registrationDescription`](#parameter-registrationdescription) | string | Description of the offer/registration. i.e. 'Managed by <Managing Org Name>'. |
+| Parameter                                                       | Type   | Description                                                                                                                                                                                                                                                                                                   |
+|:----------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`authorizations`](#parameter-authorizations)                   | array  | Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
+| [`managedByTenantId`](#parameter-managedbytenantid)             | string | Specify the tenant ID of the tenant which homes the principals you are delegating permissions to.                                                                                                                                                                                                             |
+| [`name`](#parameter-name)                                       | string | Specify a unique name for your offer/registration. i.e '<Managing Tenant> - <Remote Tenant> - <ResourceName>'.                                                                                                                                                                                                |
+| [`registrationDescription`](#parameter-registrationdescription) | string | Description of the offer/registration. i.e. 'Managed by <Managing Org Name>'.                                                                                                                                                                                                                                 |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | Location deployment metadata. |
-| [`resourceGroupName`](#parameter-resourcegroupname) | string | Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
+| Parameter                                                     | Type   | Description                                                                                                                          |
+|:--------------------------------------------------------------|:-------|:-------------------------------------------------------------------------------------------------------------------------------------|
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                            |
+| [`location`](#parameter-location)                             | string | Location deployment metadata.                                                                                                        |
+| [`resourceGroupName`](#parameter-resourcegroupname)           | string | Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
 
 ### Parameter: `authorizations`
 
@@ -386,12 +394,12 @@ Specify the name of the Resource Group to delegate access to. If not provided, d
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `assignmentResourceId` | string | The registration assignment resource ID. |
-| `name` | string | The name of the registration definition. |
-| `resourceId` | string | The resource ID of the registration definition. |
-| `subscriptionName` | string | The subscription the registration definition was deployed into. |
+| Output                 | Type   | Description                                                     |
+|:-----------------------|:-------|:----------------------------------------------------------------|
+| `assignmentResourceId` | string | The registration assignment resource ID.                        |
+| `name`                 | string | The name of the registration definition.                        |
+| `resourceId`           | string | The resource ID of the registration definition.                 |
+| `subscriptionName`     | string | The subscription the registration definition was deployed into. |
 
 ## Cross-referenced modules
 

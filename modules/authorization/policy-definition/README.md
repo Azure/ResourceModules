@@ -1,3 +1,11 @@
+<h1 style="color: steelblue;">⚠️ Retired ⚠️</h1>
+
+This module has been retired without a replacement in Azure Verified Modules ([AVM](https://aka.ms/AVM)).
+
+The source code of this module has been removed from the main branch of this repository. If for any reason, you still need to access the CARML version of the module, you can find it [here](https://github.com/Azure/ResourceModules/tree/module-archive/modules/authorization/policy-definition).
+
+For more information about this transition, see the notice, [here](https://github.com/Azure/ResourceModules?tab=readme-ov-file#%EF%B8%8F-CARML---AVM-transition-%EF%B8%8F).
+
 # Policy Definitions (All scopes) `[Microsoft.Authorization/policyDefinitions]`
 
 This module deploys a Policy Definition at a Management Group or Subscription scope.
@@ -13,8 +21,8 @@ This module deploys a Policy Definition at a Management Group or Subscription sc
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
+| Resource Type                               | API Version                                                                                                          |
+|:--------------------------------------------|:---------------------------------------------------------------------------------------------------------------------|
 | `Microsoft.Authorization/policyDefinitions` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyDefinitions) |
 
 ## Usage examples
@@ -531,24 +539,24 @@ module policyDefinition 'br:bicep/modules/authorization.policy-definition:1.0.0'
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`name`](#parameter-name) | string | Specifies the name of the policy definition. Maximum length is 64 characters for management group scope and subscription scope. |
-| [`policyRule`](#parameter-policyrule) | object | The Policy Rule details for the Policy Definition. |
+| Parameter                             | Type   | Description                                                                                                                     |
+|:--------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------|
+| [`name`](#parameter-name)             | string | Specifies the name of the policy definition. Maximum length is 64 characters for management group scope and subscription scope. |
+| [`policyRule`](#parameter-policyrule) | object | The Policy Rule details for the Policy Definition.                                                                              |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`description`](#parameter-description) | string | The policy definition description. |
-| [`displayName`](#parameter-displayname) | string | The display name of the policy definition. Maximum length is 128 characters. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | Location deployment metadata. |
-| [`managementGroupId`](#parameter-managementgroupid) | string | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
-| [`metadata`](#parameter-metadata) | object | The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| [`mode`](#parameter-mode) | string | The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
-| [`parameters`](#parameter-parameters) | object | The policy definition parameters that can be used in policy definition references. |
-| [`subscriptionId`](#parameter-subscriptionid) | string | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId. |
+| Parameter                                                     | Type   | Description                                                                                                        |
+|:--------------------------------------------------------------|:-------|:-------------------------------------------------------------------------------------------------------------------|
+| [`description`](#parameter-description)                       | string | The policy definition description.                                                                                 |
+| [`displayName`](#parameter-displayname)                       | string | The display name of the policy definition. Maximum length is 128 characters.                                       |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                          |
+| [`location`](#parameter-location)                             | string | Location deployment metadata.                                                                                      |
+| [`managementGroupId`](#parameter-managementgroupid)           | string | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment.          |
+| [`metadata`](#parameter-metadata)                             | object | The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
+| [`mode`](#parameter-mode)                                     | string | The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data.               |
+| [`parameters`](#parameter-parameters)                         | object | The policy definition parameters that can be used in policy definition references.                                 |
+| [`subscriptionId`](#parameter-subscriptionid)                 | string | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId.                            |
 
 ### Parameter: `name`
 
@@ -650,11 +658,11 @@ The subscription ID of the subscription (Scope). Cannot be used with managementG
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Policy Definition Name. |
-| `resourceId` | string | Policy Definition resource ID. |
-| `roleDefinitionIds` | array | Policy Definition Role Definition IDs. |
+| Output              | Type   | Description                            |
+|:--------------------|:-------|:---------------------------------------|
+| `name`              | string | Policy Definition Name.                |
+| `resourceId`        | string | Policy Definition resource ID.         |
+| `roleDefinitionIds` | array  | Policy Definition Role Definition IDs. |
 
 ## Cross-referenced modules
 

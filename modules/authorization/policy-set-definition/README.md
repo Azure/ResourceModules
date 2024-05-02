@@ -1,3 +1,11 @@
+<h1 style="color: steelblue;">⚠️ Retired ⚠️</h1>
+
+This module has been retired without a replacement in Azure Verified Modules ([AVM](https://aka.ms/AVM)).
+
+The source code of this module has been removed from the main branch of this repository. If for any reason, you still need to access the CARML version of the module, you can find it [here](https://github.com/Azure/ResourceModules/tree/module-archive/modules/authorization/policy-set-definition).
+
+For more information about this transition, see the notice, [here](https://github.com/Azure/ResourceModules?tab=readme-ov-file#%EF%B8%8F-CARML---AVM-transition-%EF%B8%8F).
+
 # Policy Set Definitions (Initiatives) (All scopes) `[Microsoft.Authorization/policySetDefinitions]`
 
 This module deploys a Policy Set Definition (Initiative) at a Management Group or Subscription scope.
@@ -13,8 +21,8 @@ This module deploys a Policy Set Definition (Initiative) at a Management Group o
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
+| Resource Type                                  | API Version                                                                                                             |
+|:-----------------------------------------------|:------------------------------------------------------------------------------------------------------------------------|
 | `Microsoft.Authorization/policySetDefinitions` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policySetDefinitions) |
 
 ## Usage examples
@@ -463,24 +471,24 @@ module policySetDefinition 'br:bicep/modules/authorization.policy-set-definition
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`name`](#parameter-name) | string | Specifies the name of the policy Set Definition (Initiative). |
-| [`policyDefinitions`](#parameter-policydefinitions) | array | The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters. |
+| Parameter                                           | Type   | Description                                                                                                                                                                |
+|:----------------------------------------------------|:-------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`name`](#parameter-name)                           | string | Specifies the name of the policy Set Definition (Initiative).                                                                                                              |
+| [`policyDefinitions`](#parameter-policydefinitions) | array  | The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`description`](#parameter-description) | string | The description name of the Set Definition (Initiative). |
-| [`displayName`](#parameter-displayname) | string | The display name of the Set Definition (Initiative). Maximum length is 128 characters. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | Location deployment metadata. |
-| [`managementGroupId`](#parameter-managementgroupid) | string | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
-| [`metadata`](#parameter-metadata) | object | The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| [`parameters`](#parameter-parameters) | object | The Set Definition (Initiative) parameters that can be used in policy definition references. |
-| [`policyDefinitionGroups`](#parameter-policydefinitiongroups) | array | The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
-| [`subscriptionId`](#parameter-subscriptionid) | string | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId. |
+| Parameter                                                     | Type   | Description                                                                                                                  |
+|:--------------------------------------------------------------|:-------|:-----------------------------------------------------------------------------------------------------------------------------|
+| [`description`](#parameter-description)                       | string | The description name of the Set Definition (Initiative).                                                                     |
+| [`displayName`](#parameter-displayname)                       | string | The display name of the Set Definition (Initiative). Maximum length is 128 characters.                                       |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                    |
+| [`location`](#parameter-location)                             | string | Location deployment metadata.                                                                                                |
+| [`managementGroupId`](#parameter-managementgroupid)           | string | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment.                    |
+| [`metadata`](#parameter-metadata)                             | object | The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
+| [`parameters`](#parameter-parameters)                         | object | The Set Definition (Initiative) parameters that can be used in policy definition references.                                 |
+| [`policyDefinitionGroups`](#parameter-policydefinitiongroups) | array  | The metadata describing groups of policy definition references within the Policy Set Definition (Initiative).                |
+| [`subscriptionId`](#parameter-subscriptionid)                 | string | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId.                                      |
 
 ### Parameter: `name`
 
@@ -571,9 +579,9 @@ The subscription ID of the subscription (Scope). Cannot be used with managementG
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Policy Set Definition Name. |
+| Output       | Type   | Description                        |
+|:-------------|:-------|:-----------------------------------|
+| `name`       | string | Policy Set Definition Name.        |
 | `resourceId` | string | Policy Set Definition resource ID. |
 
 ## Cross-referenced modules

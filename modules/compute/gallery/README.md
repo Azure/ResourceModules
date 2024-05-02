@@ -1,3 +1,11 @@
+<h1 style="color: steelblue;">⚠️ Moved to AVM ⚠️</h1>
+
+**This module has been evolved into the following AVM module: [avm/res/compute/gallery](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res/compute/gallery).**
+
+The source code of this module has been removed from the main branch of this repository. If for any reason, you still need to access the CARML version of the module, you can find it [here](https://github.com/Azure/ResourceModules/tree/module-archive/modules/compute/gallery).
+
+For more information about this transition, see the notice, [here](https://github.com/Azure/ResourceModules?tab=readme-ov-file#%EF%B8%8F-CARML---AVM-transition-%EF%B8%8F).
+
 # Azure Compute Galleries `[Microsoft.Compute/galleries]`
 
 This module deploys an Azure Compute Gallery (formerly known as Shared Image Gallery).

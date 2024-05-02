@@ -1,3 +1,11 @@
+<h1 style="color: steelblue;">⚠️ Moved to AVM ⚠️</h1>
+
+**This module has been evolved into the following AVM module: [avm/res/service-fabric/cluster](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res/service-fabric/cluster).**
+
+The source code of this module has been removed from the main branch of this repository. If for any reason, you still need to access the CARML version of the module, you can find it [here](https://github.com/Azure/ResourceModules/tree/module-archive/modules/service-fabric/cluster).
+
+For more information about this transition, see the notice, [here](https://github.com/Azure/ResourceModules?tab=readme-ov-file#%EF%B8%8F-CARML---AVM-transition-%EF%B8%8F).
+
 # Service Fabric Clusters `[Microsoft.ServiceFabric/clusters]`
 
 This module deploys a Service Fabric Cluster.
@@ -13,11 +21,11 @@ This module deploys a Service Fabric Cluster.
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.ServiceFabric/clusters` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters) |
+| Resource Type                                       | API Version                                                                                                                  |
+|:----------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------|
+| `Microsoft.Authorization/locks`                     | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)                     |
+| `Microsoft.Authorization/roleAssignments`           | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments)           |
+| `Microsoft.ServiceFabric/clusters`                  | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters)                  |
 | `Microsoft.ServiceFabric/clusters/applicationTypes` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes) |
 
 ## Usage examples
@@ -1073,47 +1081,47 @@ module cluster 'br:bicep/modules/service-fabric.cluster:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`managementEndpoint`](#parameter-managementendpoint) | string | The http management endpoint of the cluster. |
-| [`name`](#parameter-name) | string | Name of the Service Fabric cluster. |
-| [`nodeTypes`](#parameter-nodetypes) | array | The list of node types in the cluster. |
-| [`reliabilityLevel`](#parameter-reliabilitylevel) | string | The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://learn.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9. |
+| Parameter                                             | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|:------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`managementEndpoint`](#parameter-managementendpoint) | string | The http management endpoint of the cluster.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| [`name`](#parameter-name)                             | string | Name of the Service Fabric cluster.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| [`nodeTypes`](#parameter-nodetypes)                   | array  | The list of node types in the cluster.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| [`reliabilityLevel`](#parameter-reliabilitylevel)     | string | The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://learn.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`addOnFeatures`](#parameter-addonfeatures) | array | The list of add-on features to enable in the cluster. |
-| [`applicationTypes`](#parameter-applicationtypes) | array | Array of Service Fabric cluster application types. |
-| [`azureActiveDirectory`](#parameter-azureactivedirectory) | object | The settings to enable AAD authentication on the cluster. |
-| [`certificate`](#parameter-certificate) | object | Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location. |
-| [`certificateCommonNames`](#parameter-certificatecommonnames) | object | Describes a list of server certificates referenced by common name that are used to secure the cluster. |
-| [`clientCertificateCommonNames`](#parameter-clientcertificatecommonnames) | array | The list of client certificates referenced by common name that are allowed to manage the cluster. |
-| [`clientCertificateThumbprints`](#parameter-clientcertificatethumbprints) | array | The list of client certificates referenced by thumbprint that are allowed to manage the cluster. |
-| [`clusterCodeVersion`](#parameter-clustercodeversion) | string | The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to "Manual". To get list of available Service Fabric versions for new clusters use ClusterVersion API. To get the list of available version for existing clusters use availableClusterVersions. |
-| [`diagnosticsStorageAccountConfig`](#parameter-diagnosticsstorageaccountconfig) | object | The storage account information for storing Service Fabric diagnostic logs. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`eventStoreServiceEnabled`](#parameter-eventstoreserviceenabled) | bool | Indicates if the event store service is enabled. |
-| [`fabricSettings`](#parameter-fabricsettings) | array | The list of custom fabric settings to configure the cluster. |
-| [`infrastructureServiceManager`](#parameter-infrastructureservicemanager) | bool | Indicates if infrastructure service manager is enabled. |
-| [`location`](#parameter-location) | string | Location for all resources. |
-| [`lock`](#parameter-lock) | object | The lock settings of the service. |
-| [`maxUnusedVersionsToKeep`](#parameter-maxunusedversionstokeep) | int | Number of unused versions per application type to keep. |
-| [`notifications`](#parameter-notifications) | array | Indicates a list of notification channels for cluster events. |
-| [`reverseProxyCertificate`](#parameter-reverseproxycertificate) | object | Describes the certificate details. |
-| [`reverseProxyCertificateCommonNames`](#parameter-reverseproxycertificatecommonnames) | object | Describes a list of server certificates referenced by common name that are used to secure the cluster. |
-| [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
-| [`sfZonalUpgradeMode`](#parameter-sfzonalupgrademode) | string | This property controls the logical grouping of VMs in upgrade domains (UDs). This property cannot be modified if a node type with multiple Availability Zones is already present in the cluster. |
-| [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`upgradeDescription`](#parameter-upgradedescription) | object | Describes the policy used when upgrading the cluster. |
-| [`upgradeMode`](#parameter-upgrademode) | string | The upgrade mode of the cluster when new Service Fabric runtime version is available. |
-| [`upgradePauseEndTimestampUtc`](#parameter-upgradepauseendtimestamputc) | string | Indicates the end date and time to pause automatic runtime version upgrades on the cluster for an specific period of time on the cluster (UTC). |
-| [`upgradePauseStartTimestampUtc`](#parameter-upgradepausestarttimestamputc) | string | Indicates the start date and time to pause automatic runtime version upgrades on the cluster for an specific period of time on the cluster (UTC). |
-| [`upgradeWave`](#parameter-upgradewave) | string | Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0. |
-| [`vmImage`](#parameter-vmimage) | string | The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used. |
-| [`vmssZonalUpgradeMode`](#parameter-vmsszonalupgrademode) | string | This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability Zones is added. |
-| [`waveUpgradePaused`](#parameter-waveupgradepaused) | bool | Boolean to pause automatic runtime version upgrades to the cluster. |
+| Parameter                                                                             | Type   | Description                                                                                                                                                                                                                                                                                                       |
+|:--------------------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`addOnFeatures`](#parameter-addonfeatures)                                           | array  | The list of add-on features to enable in the cluster.                                                                                                                                                                                                                                                             |
+| [`applicationTypes`](#parameter-applicationtypes)                                     | array  | Array of Service Fabric cluster application types.                                                                                                                                                                                                                                                                |
+| [`azureActiveDirectory`](#parameter-azureactivedirectory)                             | object | The settings to enable AAD authentication on the cluster.                                                                                                                                                                                                                                                         |
+| [`certificate`](#parameter-certificate)                                               | object | Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location.                                                                                                                                                   |
+| [`certificateCommonNames`](#parameter-certificatecommonnames)                         | object | Describes a list of server certificates referenced by common name that are used to secure the cluster.                                                                                                                                                                                                            |
+| [`clientCertificateCommonNames`](#parameter-clientcertificatecommonnames)             | array  | The list of client certificates referenced by common name that are allowed to manage the cluster.                                                                                                                                                                                                                 |
+| [`clientCertificateThumbprints`](#parameter-clientcertificatethumbprints)             | array  | The list of client certificates referenced by thumbprint that are allowed to manage the cluster.                                                                                                                                                                                                                  |
+| [`clusterCodeVersion`](#parameter-clustercodeversion)                                 | string | The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to "Manual". To get list of available Service Fabric versions for new clusters use ClusterVersion API. To get the list of available version for existing clusters use availableClusterVersions. |
+| [`diagnosticsStorageAccountConfig`](#parameter-diagnosticsstorageaccountconfig)       | object | The storage account information for storing Service Fabric diagnostic logs.                                                                                                                                                                                                                                       |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                         | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                                                                                                         |
+| [`eventStoreServiceEnabled`](#parameter-eventstoreserviceenabled)                     | bool   | Indicates if the event store service is enabled.                                                                                                                                                                                                                                                                  |
+| [`fabricSettings`](#parameter-fabricsettings)                                         | array  | The list of custom fabric settings to configure the cluster.                                                                                                                                                                                                                                                      |
+| [`infrastructureServiceManager`](#parameter-infrastructureservicemanager)             | bool   | Indicates if infrastructure service manager is enabled.                                                                                                                                                                                                                                                           |
+| [`location`](#parameter-location)                                                     | string | Location for all resources.                                                                                                                                                                                                                                                                                       |
+| [`lock`](#parameter-lock)                                                             | object | The lock settings of the service.                                                                                                                                                                                                                                                                                 |
+| [`maxUnusedVersionsToKeep`](#parameter-maxunusedversionstokeep)                       | int    | Number of unused versions per application type to keep.                                                                                                                                                                                                                                                           |
+| [`notifications`](#parameter-notifications)                                           | array  | Indicates a list of notification channels for cluster events.                                                                                                                                                                                                                                                     |
+| [`reverseProxyCertificate`](#parameter-reverseproxycertificate)                       | object | Describes the certificate details.                                                                                                                                                                                                                                                                                |
+| [`reverseProxyCertificateCommonNames`](#parameter-reverseproxycertificatecommonnames) | object | Describes a list of server certificates referenced by common name that are used to secure the cluster.                                                                                                                                                                                                            |
+| [`roleAssignments`](#parameter-roleassignments)                                       | array  | Array of role assignments to create.                                                                                                                                                                                                                                                                              |
+| [`sfZonalUpgradeMode`](#parameter-sfzonalupgrademode)                                 | string | This property controls the logical grouping of VMs in upgrade domains (UDs). This property cannot be modified if a node type with multiple Availability Zones is already present in the cluster.                                                                                                                  |
+| [`tags`](#parameter-tags)                                                             | object | Tags of the resource.                                                                                                                                                                                                                                                                                             |
+| [`upgradeDescription`](#parameter-upgradedescription)                                 | object | Describes the policy used when upgrading the cluster.                                                                                                                                                                                                                                                             |
+| [`upgradeMode`](#parameter-upgrademode)                                               | string | The upgrade mode of the cluster when new Service Fabric runtime version is available.                                                                                                                                                                                                                             |
+| [`upgradePauseEndTimestampUtc`](#parameter-upgradepauseendtimestamputc)               | string | Indicates the end date and time to pause automatic runtime version upgrades on the cluster for an specific period of time on the cluster (UTC).                                                                                                                                                                   |
+| [`upgradePauseStartTimestampUtc`](#parameter-upgradepausestarttimestamputc)           | string | Indicates the start date and time to pause automatic runtime version upgrades on the cluster for an specific period of time on the cluster (UTC).                                                                                                                                                                 |
+| [`upgradeWave`](#parameter-upgradewave)                                               | string | Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0.                                                                                                                                                                                                 |
+| [`vmImage`](#parameter-vmimage)                                                       | string | The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used.                                                                                                                                                                                                                   |
+| [`vmssZonalUpgradeMode`](#parameter-vmsszonalupgrademode)                             | string | This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability Zones is added.                                                                                                                                                               |
+| [`waveUpgradePaused`](#parameter-waveupgradepaused)                                   | bool   | Boolean to pause automatic runtime version upgrades to the cluster.                                                                                                                                                                                                                                               |
 
 ### Parameter: `managementEndpoint`
 
@@ -1283,8 +1291,8 @@ The lock settings of the service.
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                     | Type   | Description               |
+|:------------------------------|:-------|:--------------------------|
 | [`kind`](#parameter-lockkind) | string | Specify the type of lock. |
 | [`name`](#parameter-lockname) | string | Specify the name of lock. |
 
@@ -1351,20 +1359,20 @@ Array of role assignments to create.
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-roleassignmentsprincipalid) | string | The principal ID of the principal (user/group/identity) to assign the role to. |
+| Parameter                                                                    | Type   | Description                                                                                                                                                                                                                                                 |
+|:-----------------------------------------------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-roleassignmentsprincipalid)                       | string | The principal ID of the principal (user/group/identity) to assign the role to.                                                                                                                                                                              |
 | [`roleDefinitionIdOrName`](#parameter-roleassignmentsroledefinitionidorname) | string | The role to assign. You can provide either the display name of the role definition, the role definition GUID, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-roleassignmentscondition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
-| [`conditionVersion`](#parameter-roleassignmentsconditionversion) | string | Version of the condition. |
-| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource. |
-| [`description`](#parameter-roleassignmentsdescription) | string | The description of the role assignment. |
-| [`principalType`](#parameter-roleassignmentsprincipaltype) | string | The principal type of the assigned principal ID. |
+| Parameter                                                                                            | Type   | Description                                                                                                                                                                                                                     |
+|:-----------------------------------------------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-roleassignmentscondition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container" |
+| [`conditionVersion`](#parameter-roleassignmentsconditionversion)                                     | string | Version of the condition.                                                                                                                                                                                                       |
+| [`delegatedManagedIdentityResourceId`](#parameter-roleassignmentsdelegatedmanagedidentityresourceid) | string | The Resource Id of the delegated managed identity resource.                                                                                                                                                                     |
+| [`description`](#parameter-roleassignmentsdescription)                                               | string | The description of the role assignment.                                                                                                                                                                                         |
+| [`principalType`](#parameter-roleassignmentsprincipaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                |
 
 ### Parameter: `roleAssignments.principalId`
 
@@ -1542,13 +1550,13 @@ Boolean to pause automatic runtime version upgrades to the cluster.
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `endpoint` | string | The Service Fabric Cluster endpoint. |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The Service Fabric Cluster name. |
-| `resourceGroupName` | string | The Service Fabric Cluster resource group. |
-| `resourceId` | string | The Service Fabric Cluster resource ID. |
+| Output              | Type   | Description                                  |
+|:--------------------|:-------|:---------------------------------------------|
+| `endpoint`          | string | The Service Fabric Cluster endpoint.         |
+| `location`          | string | The location the resource was deployed into. |
+| `name`              | string | The Service Fabric Cluster name.             |
+| `resourceGroupName` | string | The Service Fabric Cluster resource group.   |
+| `resourceId`        | string | The Service Fabric Cluster resource ID.      |
 
 ## Cross-referenced modules
 

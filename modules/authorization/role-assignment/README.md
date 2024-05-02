@@ -1,3 +1,11 @@
+<h1 style="color: steelblue;">⚠️ Moved to AVM ⚠️</h1>
+
+**This module has been evolved into the following AVM module: [avm/ptn/authorization/role-assignment](https://github.com/Azure/bicep-registry-modules/tree/main/avm/ptn/authorization/role-assignment).**
+
+The source code of this module has been removed from the main branch of this repository. If for any reason, you still need to access the CARML version of the module, you can find it [here](https://github.com/Azure/ResourceModules/tree/module-archive/modules/authorization/role-assignment).
+
+For more information about this transition, see the notice, [here](https://github.com/Azure/ResourceModules?tab=readme-ov-file#%EF%B8%8F-CARML---AVM-transition-%EF%B8%8F).
+
 # Role Assignments (All scopes) `[Microsoft.Authorization/roleAssignments]`
 
 This module deploys a Role Assignment at a Management Group, Subscription or Resource Group scope.
@@ -13,8 +21,8 @@ This module deploys a Role Assignment at a Management Group, Subscription or Res
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
+| Resource Type                             | API Version                                                                                                        |
+|:------------------------------------------|:-------------------------------------------------------------------------------------------------------------------|
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 
 ## Usage examples
@@ -395,25 +403,25 @@ module roleAssignment 'br:bicep/modules/authorization.role-assignment:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`principalId`](#parameter-principalid) | string | The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity). |
+| Parameter                                                     | Type   | Description                                                                                                                                                                                                   |
+|:--------------------------------------------------------------|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`principalId`](#parameter-principalid)                       | string | The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity).                                                                                                      |
 | [`roleDefinitionIdOrName`](#parameter-roledefinitionidorname) | string | You can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`condition`](#parameter-condition) | string | The conditions on the role assignment. This limits the resources it can be assigned to. |
-| [`conditionVersion`](#parameter-conditionversion) | string | Version of the condition. Currently accepted value is "2.0". |
-| [`delegatedManagedIdentityResourceId`](#parameter-delegatedmanagedidentityresourceid) | string | ID of the delegated managed identity resource. |
-| [`description`](#parameter-description) | string | The description of the role assignment. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | Location deployment metadata. |
-| [`managementGroupId`](#parameter-managementgroupid) | string | Group ID of the Management Group to assign the RBAC role to. If not provided, will use the current scope for deployment. |
-| [`principalType`](#parameter-principaltype) | string | The principal type of the assigned principal ID. |
-| [`resourceGroupName`](#parameter-resourcegroupname) | string | Name of the Resource Group to assign the RBAC role to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided RBAC role to the resource group. |
-| [`subscriptionId`](#parameter-subscriptionid) | string | Subscription ID of the subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription. |
+| Parameter                                                                             | Type   | Description                                                                                                                                                                                                                             |
+|:--------------------------------------------------------------------------------------|:-------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`condition`](#parameter-condition)                                                   | string | The conditions on the role assignment. This limits the resources it can be assigned to.                                                                                                                                                 |
+| [`conditionVersion`](#parameter-conditionversion)                                     | string | Version of the condition. Currently accepted value is "2.0".                                                                                                                                                                            |
+| [`delegatedManagedIdentityResourceId`](#parameter-delegatedmanagedidentityresourceid) | string | ID of the delegated managed identity resource.                                                                                                                                                                                          |
+| [`description`](#parameter-description)                                               | string | The description of the role assignment.                                                                                                                                                                                                 |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry)                         | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                                                                                               |
+| [`location`](#parameter-location)                                                     | string | Location deployment metadata.                                                                                                                                                                                                           |
+| [`managementGroupId`](#parameter-managementgroupid)                                   | string | Group ID of the Management Group to assign the RBAC role to. If not provided, will use the current scope for deployment.                                                                                                                |
+| [`principalType`](#parameter-principaltype)                                           | string | The principal type of the assigned principal ID.                                                                                                                                                                                        |
+| [`resourceGroupName`](#parameter-resourcegroupname)                                   | string | Name of the Resource Group to assign the RBAC role to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided RBAC role to the resource group. |
+| [`subscriptionId`](#parameter-subscriptionid)                                         | string | Subscription ID of the subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription.                          |
 
 ### Parameter: `principalId`
 
@@ -529,11 +537,11 @@ Subscription ID of the subscription to assign the RBAC role to. If no Resource G
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The GUID of the Role Assignment. |
-| `resourceId` | string | The resource ID of the Role Assignment. |
-| `scope` | string | The scope this Role Assignment applies to. |
+| Output       | Type   | Description                                |
+|:-------------|:-------|:-------------------------------------------|
+| `name`       | string | The GUID of the Role Assignment.           |
+| `resourceId` | string | The resource ID of the Role Assignment.    |
+| `scope`      | string | The scope this Role Assignment applies to. |
 
 ## Cross-referenced modules
 

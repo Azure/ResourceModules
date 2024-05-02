@@ -1,3 +1,11 @@
+<h1 style="color: steelblue;">⚠️ Retired ⚠️</h1>
+
+This module has been retired without a replacement in Azure Verified Modules ([AVM](https://aka.ms/AVM)).
+
+The source code of this module has been removed from the main branch of this repository. If for any reason, you still need to access the CARML version of the module, you can find it [here](https://github.com/Azure/ResourceModules/tree/module-archive/modules/authorization/role-definition).
+
+For more information about this transition, see the notice, [here](https://github.com/Azure/ResourceModules?tab=readme-ov-file#%EF%B8%8F-CARML---AVM-transition-%EF%B8%8F).
+
 # Role Definitions (All scopes) `[Microsoft.Authorization/roleDefinitions]`
 
 This module deploys a Role Definition at a Management Group, Subscription or Resource Group scope.
@@ -13,8 +21,8 @@ This module deploys a Role Definition at a Management Group, Subscription or Res
 
 ## Resource Types
 
-| Resource Type | API Version |
-| :-- | :-- |
+| Resource Type                             | API Version                                                                                                        |
+|:------------------------------------------|:-------------------------------------------------------------------------------------------------------------------|
 | `Microsoft.Authorization/roleDefinitions` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleDefinitions) |
 
 ## Usage examples
@@ -475,25 +483,25 @@ module roleDefinition 'br:bicep/modules/authorization.role-definition:1.0.0' = {
 
 **Required parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
+| Parameter                         | Type   | Description                                 |
+|:----------------------------------|:-------|:--------------------------------------------|
 | [`roleName`](#parameter-rolename) | string | Name of the custom RBAC role to be created. |
 
 **Optional parameters**
 
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`actions`](#parameter-actions) | array | List of allowed actions. |
-| [`assignableScopes`](#parameter-assignablescopes) | array | Role definition assignable scopes. If not provided, will use the current scope provided. |
-| [`dataActions`](#parameter-dataactions) | array | List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes. |
-| [`description`](#parameter-description) | string | Description of the custom RBAC role to be created. |
-| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool | Enable telemetry via a Globally Unique Identifier (GUID). |
-| [`location`](#parameter-location) | string | Location deployment metadata. |
-| [`managementGroupId`](#parameter-managementgroupid) | string | The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
-| [`notActions`](#parameter-notactions) | array | List of denied actions. |
-| [`notDataActions`](#parameter-notdataactions) | array | List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes. |
-| [`resourceGroupName`](#parameter-resourcegroupname) | string | The name of the Resource Group where the Role Definition and Target Scope will be applied to. |
-| [`subscriptionId`](#parameter-subscriptionid) | string | The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level. |
+| Parameter                                                     | Type   | Description                                                                                                                                                     |
+|:--------------------------------------------------------------|:-------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`actions`](#parameter-actions)                               | array  | List of allowed actions.                                                                                                                                        |
+| [`assignableScopes`](#parameter-assignablescopes)             | array  | Role definition assignable scopes. If not provided, will use the current scope provided.                                                                        |
+| [`dataActions`](#parameter-dataactions)                       | array  | List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes.                                                   |
+| [`description`](#parameter-description)                       | string | Description of the custom RBAC role to be created.                                                                                                              |
+| [`enableDefaultTelemetry`](#parameter-enabledefaulttelemetry) | bool   | Enable telemetry via a Globally Unique Identifier (GUID).                                                                                                       |
+| [`location`](#parameter-location)                             | string | Location deployment metadata.                                                                                                                                   |
+| [`managementGroupId`](#parameter-managementgroupid)           | string | The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
+| [`notActions`](#parameter-notactions)                         | array  | List of denied actions.                                                                                                                                         |
+| [`notDataActions`](#parameter-notdataactions)                 | array  | List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes.                                                    |
+| [`resourceGroupName`](#parameter-resourcegroupname)           | string | The name of the Resource Group where the Role Definition and Target Scope will be applied to.                                                                   |
+| [`subscriptionId`](#parameter-subscriptionid)                 | string | The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level.                    |
 
 ### Parameter: `roleName`
 
@@ -593,11 +601,11 @@ The subscription ID where the Role Definition and Target Scope will be applied t
 
 ## Outputs
 
-| Output | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The GUID of the Role Definition. |
-| `resourceId` | string | The resource ID of the Role Definition. |
-| `scope` | string | The scope this Role Definition applies to. |
+| Output       | Type   | Description                                |
+|:-------------|:-------|:-------------------------------------------|
+| `name`       | string | The GUID of the Role Definition.           |
+| `resourceId` | string | The resource ID of the Role Definition.    |
+| `scope`      | string | The scope this Role Definition applies to. |
 
 ## Cross-referenced modules
 

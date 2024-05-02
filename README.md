@@ -15,6 +15,8 @@ A notice with additional details has been placed in each module. If for any reas
 - To open an AVM module issue, use the [Module Issue](https://aka.ms/BRM/AVMModuleIssue) template in the BRM repository.
 - If you accidentally raise an issue in the wrong place, we will transfer it to its correct home  - the AVM Bicep repository ([BRM](https://aka.ms/BRM)).
 
+> NOTE: A few modules have been retired without being moved to AVM as is. In most of these cases, capabilities originally provided by these modules have been implemented differently in AVM - e.g., as part of all AVM modules.
+
 In the upcoming period, **the AVM team will work on integrating CARML's inner-sourcing solution (CI environment) into AVM**. Until this is completed, the CARML CI environment will be maintained.
 
 # ![AzureIcon] Common Azure Resource Modules Library
