@@ -17,7 +17,7 @@ A notice with additional details has been placed in each module. If for any reas
 
 > NOTE: A few modules have been retired without being moved to AVM as is. In most of these cases, capabilities originally provided by these modules have been implemented differently in AVM - e.g., as part of all AVM modules.
 
-In the upcoming period, **the AVM team will work on integrating CARML's inner-sourcing solution (CI environment) into AVM**. Until this is completed, the CARML CI environment will be maintained.
+In the upcoming period, **the AVM team will work on ensuring full compatibility of CARML's inner-sourcing solution (CI environment) with AVM**.
 
 # ![AzureIcon] Common Azure Resource Modules Library
 
