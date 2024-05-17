@@ -36,7 +36,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 - For reference documentation, visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
 - For an outline of the module features, visit [Module overview](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview)
 
-> **Note:** To ensure the modules and environment work as expected, please ensure you are using the latest version of the used tools such as PowerShell and Bicep. Especially in case of the later, note, that you need to manually update the Bicep CLI. For further information, see our [troubleshooting guide](./The%20CI%20environment%20-%20Troubleshooting).
+> **Note:** To ensure the modules and environment work as expected, please ensure you are using the latest version of the used tools such as PowerShell and Bicep. Especially in case of the latter, note, that you need to manually update the Bicep CLI. For further information, see our [troubleshooting guide](./The%20CI%20environment%20-%20Troubleshooting).
 
 ## Available Resource Modules
 
@@ -198,7 +198,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 
 ## Disclaimer
 
-Please note that CARML is constantly evolving and introducing new features. The `main` branch of this repository changes frequently and thus, it always contains the latest available version of the code. Some of the updates may introduce breaking changes as well.
+Please note that the `main` branch of this repository always contains the latest available version of the code. Some of the updates may introduce breaking changes as well.
 
 - **Default path**: To avoid disruptions, use distinct versions available through [releases](https://github.com/Azure/ResourceModules/releases).
 - **Early adopter path**: If the risk of breaking changes is understood and accepted, you can use the code in the `main` branch directly. However, the CARML team recommends against automatically pulling code from `main`. It is always recommended to review changes before you pull them into your own repository.
