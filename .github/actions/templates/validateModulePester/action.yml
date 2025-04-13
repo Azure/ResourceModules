@@ -102,6 +102,9 @@ runs:
 
         $testResults = Invoke-Pester -Configuration $pesterConfiguration
 
+        Write-Verbose 'Storing test results in file [testResults.json]' -Verbose
+        $testResults | ConvertTo-Json -Depth 3 | Out-File -FilePath 'testResults.json' -Force -Encoding 'utf8'
+
         # ----------------------------------------- #
         # Create formatted Pester Test Results File #
         # ----------------------------------------- #
@@ -111,6 +114,7 @@ runs:
           OutputFilePath    = Join-Path $env:GITHUB_WORKSPACE 'Pester-output.md'
           GitHubRepository  = $env:GITHUB_REPOSITORY
           BranchName        = $env:GITHUB_REF
+          ErrorAction       = 'SilentlyContinue'
         }
 
         Write-Verbose 'Invoke Pester formatting function with' -Verbose
@@ -118,10 +122,12 @@ runs:
 
         Set-PesterGitHubOutput @functionInput -Verbose
 
-        Write-Output ('{0}={1}' -f 'formattedPesterResultsPath', $functionInput.outputFilePath) >> $env:GITHUB_OUTPUT
+        if(Test-Path $functionInput.outputFilePath) {
+          Write-Output ('{0}={1}' -f 'formattedPesterResultsPath', $functionInput.outputFilePath) >> $env:GITHUB_OUTPUT
+        }
 
     - name: 'Output to GitHub job summaries'
-      if: always()
+      if: always() && steps.pester_run_step.outputs.formattedPesterResultsPath != ''
       shell: pwsh
       run: |
         # Grouping task logs
@@ -137,3 +143,11 @@ runs:
         }
 
         Write-Output '::endgroup::'
+
+    - name: Upload artifacts
+      if: always()
+      uses: actions/upload-artifact@v4.6.2
+      with:
+        name: Upload & store test results
+        path: |
+          testResults.json
