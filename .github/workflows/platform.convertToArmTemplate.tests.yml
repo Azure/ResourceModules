@@ -9,6 +9,10 @@ on:
       - 'utilities/tools/ConvertTo-ARMTemplate.ps1'
       - 'utilities/tools/tests/ConvertTo-ARMTemplate**'
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   job_test_convert:
     runs-on: ubuntu-latest

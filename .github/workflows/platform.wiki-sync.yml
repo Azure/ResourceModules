@@ -20,6 +20,10 @@ env:
   pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
   pipelinePrincipalGitUserEmail: 'CARML@noreply.microsoft.com'
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   sync-wiki:
     name: Sync docs/wiki to Wiki

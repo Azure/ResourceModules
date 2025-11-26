@@ -34,7 +34,9 @@ on:
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
-
+permissions:
+  contents: read
+  id-token: write
 env:
   modulePath: 'modules/web/connection'
   workflowPath: '.github/workflows/ms.web.connections.yml'

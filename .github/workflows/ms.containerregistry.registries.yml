@@ -43,6 +43,10 @@ env:
 concurrency:
   group: ${{ github.workflow }}
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   ###########################
   #   Initialize pipeline   #

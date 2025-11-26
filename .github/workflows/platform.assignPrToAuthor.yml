@@ -3,6 +3,10 @@ on:
   pull_request:
     types: [opened]
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   autoassign:
     runs-on: ubuntu-latest
