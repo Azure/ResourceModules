@@ -8,6 +8,10 @@ on:
     paths:
       - '**/*.md'
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   build:
     name: Broken Links Check
@@ -29,4 +33,3 @@ jobs:
           fail: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-

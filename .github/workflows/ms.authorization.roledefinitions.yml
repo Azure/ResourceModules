@@ -35,6 +35,10 @@ on:
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
+permissions:
+  contents: read
+  id-token: write
+
 env:
   modulePath: 'modules/authorization/role-definition'
   workflowPath: '.github/workflows/ms.authorization.roledefinitions.yml'

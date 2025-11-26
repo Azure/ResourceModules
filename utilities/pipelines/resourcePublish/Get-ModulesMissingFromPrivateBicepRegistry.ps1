@@ -91,7 +91,8 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
 
         if (-not (Get-AzContainerRegistry -Name $BicepRegistryName -ResourceGroupName $BicepRegistryRgName -ErrorAction 'SilentlyContinue')) {
             $missingTemplatePaths = $availableModuleTemplatePaths
-        } else {
+        }
+        else {
             # Test all children against ACR
             $missingTemplatePaths = @()
             foreach ($templatePath in $availableModuleTemplatePaths) {

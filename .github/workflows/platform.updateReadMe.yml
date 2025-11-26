@@ -21,6 +21,10 @@ env:
   relativeScriptPath_SetModuleOverviewTable: 'utilities/tools/platform/Set-ModuleOverviewTable.ps1'
   relativeScriptPath_SetReadMePlatformTable: 'utilities/tools/platform/Set-ReadMePlatformTable.ps1'
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   job_update_readme:
     runs-on: ubuntu-latest

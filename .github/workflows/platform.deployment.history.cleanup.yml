@@ -25,6 +25,10 @@ env:
   variablesPath: 'settings.yml'
   workflowPath: '.github/workflows/platform.deployment.history.cleanup.yml'
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   ###########################
   #   Initialize pipeline   #
