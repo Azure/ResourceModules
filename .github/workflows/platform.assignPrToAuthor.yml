@@ -7,6 +7,6 @@ jobs:
   autoassign:
     runs-on: ubuntu-latest
     steps:
-      - uses: kentaro-m/auto-assign-action@v1.2.4
+      - uses: kentaro-m/auto-assign-action@6d966a1f3bd73adfe44dd19dc42cc5845e39ebd3 # v1.2.4
         with:
           configuration-path: '.github/platform.assignPrToAuthor.configuration.yml'
