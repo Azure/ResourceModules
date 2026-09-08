@@ -19,7 +19,7 @@ jobs:
         tags: ['Default', 'Skip']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
       - name: 'Run Pester tests'
@@ -45,7 +45,7 @@ jobs:
             }
           }
       - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
+        uses: EnricoMi/publish-unit-test-result-action@d0a4676d0e0b938bc201470d88276b7c74c712b3 # v2.24.0
         if: always()
         with:
           junit_files: 'utilities/tools/tests/conversion-testResults-${{ matrix.tags }}.xml'
